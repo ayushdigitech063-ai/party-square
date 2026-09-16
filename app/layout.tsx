@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar"; 
 import Footer from "./components/Footer"; 
-
+import ScrollToTop from "./components/ScrollToTop";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -35,6 +35,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistDivider.variable} antialiased overflow-x-hidden`}>
         <Navbar />
+        <ScrollToTop />
         <main className="w-full overflow-hidden">
           {children}
         </main>
