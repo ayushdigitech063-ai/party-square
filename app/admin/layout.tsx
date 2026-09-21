@@ -17,7 +17,8 @@ import {
   Image,
   Star
 } from "lucide-react";
-
+// fguydju
+//hudg
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
