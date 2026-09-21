@@ -119,6 +119,79 @@ export default function DiwaliPage() {
           </div>
         </div>
       </section>
+      {/* Trending Picks - 3 Product Cards + View More */}
+<section className="py-16 px-6 max-w-7xl mx-auto">
+  <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
+    <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
+      Trending This Season
+    </span>
+    <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">
+      Our Top Diwali Picks
+    </h2>
+    <p className="text-neutral-600 text-sm font-light">
+      Handpicked festive favourites loved by our customers.
+    </p>
+  </div>
+
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    {bestLovedDecor.slice(0, 3).map((item) => (
+      <div
+        key={item.id}
+        className="bg-white border border-amber-100 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col group"
+      >
+        <div className="relative h-72 w-full overflow-hidden bg-neutral-100">
+          <img
+            src={item.image}
+            alt={item.name}
+            className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+          />
+          <button className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-500 shadow transition">
+            <Heart size={18} />
+          </button>
+        </div>
+        <div className="p-6 flex flex-col flex-grow justify-between space-y-4">
+          <div className="space-y-1.5">
+            <h3 className="font-serif text-lg font-bold text-neutral-900">
+              {item.name}
+            </h3>
+            <p className="text-neutral-500 text-xs leading-relaxed font-light">
+              {item.desc}
+            </p>
+          </div>
+
+          <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+            <div>
+              <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">
+                Starts At
+              </span>
+              <span className="text-neutral-900 font-bold text-lg">
+                {item.price}
+              </span>
+            </div>
+            <Link
+              href="/contact"
+              className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1"
+            >
+              <span>Book</span>
+              <ArrowRight size={14} />
+            </Link>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {/* View More Button */}
+  <div className="flex justify-center mt-12">
+    <Link
+      href="/Festivals/diwali/all-products"
+      className="inline-flex items-center space-x-2 border-2 border-amber-500 text-amber-700 hover:bg-amber-500 hover:text-neutral-950 px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest transition shadow-md"
+    >
+      <span>View More Products</span>
+      <ArrowRight size={16} />
+    </Link>
+  </div>
+</section>
 
       {/* Most Loved Decorations (diwali1 to diwali4) */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
