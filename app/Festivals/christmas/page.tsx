@@ -16,20 +16,20 @@ export default function ChristmasPage() {
   }
 
   const christmasDecor = [
-    { id: 1, name: "Grand Christmas Tree & Lighting Setup", price: "₹6,499", image: "/crismas.png", desc: "Exquisitely decorated giant Christmas tree adorned with glittering baubles, stars, and fairy lights." },
-    { id: 2, name: "Snowy Winter Wonderland Theme", price: "₹8,999", image: "/crismas1.png", desc: "Magical artificial snow sprays, white faux fur accents, and frosty winter decor elements." },
-    { id: 3, name: "Santa's Grotto & Gift Corner", price: "₹5,899", image: "/crismas2.png", desc: "Festive corner setup with Santa props, gift boxes, stockings, and warm festive backdrops." },
-    { id: 4, name: "Merry & Bright Entrance Archway", price: "₹7,499", image: "/crismas3.png", desc: "Grand holiday entrance arch decorated with red-gold ornaments, pine cones, and green garlands." }
+    { id: 1, name: "Grand Christmas Tree & Lighting Setup", price: "₹6,499", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBGNDDxdate3wKiX02hMXWRLTVGaun1kQpFGELKfORzOTZF-mVOHUWG9hs&s=10", desc: "Exquisitely decorated giant Christmas tree adorned with glittering baubles, stars, and fairy lights." },
+    { id: 2, name: "Snowy Winter Wonderland Theme", price: "₹8,999", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwBYs6LfDeJ58ZmW5HwEZNKn_qpAjwdWdzCnVcbiJhLg&s=10", desc: "Magical artificial snow sprays, white faux fur accents, and frosty winter decor elements." },
+    { id: 3, name: "Santa's Grotto & Gift Corner", price: "₹5,899", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxK90e4AlKRqbOnIp93VEWcG9F1JeDc4Bx74lFVstsyw&s=10", desc: "Festive corner setup with Santa props, gift boxes, stockings, and warm festive backdrops." },
+    { id: 4, name: "Merry & Bright Entrance Archway", price: "₹7,499", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9B2yevJe49MW_IGD1rIyizOIXX7aKGfcqTaOY9nEDLg&s=10", desc: "Grand holiday entrance arch decorated with red-gold ornaments, pine cones, and green garlands." }
   ];
 
   return (
     <div className="min-h-screen text-neutral-900 font-sans bg-[#F3EFE9] selection:bg-amber-400 selection:text-black overflow-x-hidden pb-20">
       
-      {/* Hero Section with backgrounddecoration.png as Full Width & Height Background */}
+      {/* Hero Section with background link */}
       <section className="relative w-full h-[85vh] min-h-[550px] px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[35px] shadow-2xl">
         <div 
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/backgrounddecoration.png')" }}
+          style={{ backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmhHn1L4k6qg_HB8dffCqMkJzok0Ac3Ds1uPDCN2x-QQ&s=10')` }}
         >
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/85 via-neutral-950/50 to-neutral-950/30" />
         </div>
@@ -48,7 +48,7 @@ export default function ChristmasPage() {
         </div>
       </section>
 
-      {/* Christmas Cards Section (crismas.png to crismas3.png) */}
+      {/* Christmas Cards Section */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
           <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">Holiday Highlights</span>
@@ -85,7 +85,7 @@ export default function ChristmasPage() {
         </div>
       </section>
 
-      {/* Full Width Video Section using crismas.mp4 (Edge-to-Edge Stretched) */}
+      {/* Full Width Video Section */}
       <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="relative w-full h-[450px] sm:h-[550px] rounded-[32px] overflow-hidden shadow-2xl border border-amber-500/30 bg-neutral-950 flex items-center justify-center">
           <video 
@@ -117,12 +117,12 @@ export default function ChristmasPage() {
         </div>
       </section>
 
-      {/* Special Card with Golden-Dark Theme & candeldecoration.png on Left */}
+      {/* Special Card Section */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
         <div className="bg-gradient-to-r from-neutral-900 via-stone-950 to-neutral-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-amber-400/30 grid grid-cols-1 lg:grid-cols-12 items-center">
           
           <div className="lg:col-span-5 h-72 sm:h-96 w-full overflow-hidden bg-neutral-950 p-4 flex items-center justify-center">
-            <img src="/candeldecoration.png" alt="Candle and Festive Decoration" className="w-full h-full object-cover rounded-2xl shadow-lg hover:scale-105 transition duration-700" />
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBGNDDxdate3wKiX02hMXWRLTVGaun1kQpFGELKfORzOTZF-mVOHUWG9hs&s=10" alt="Candle and Festive Decoration" className="w-full h-full object-cover rounded-2xl shadow-lg hover:scale-105 transition duration-700" />
           </div>
 
           <div className="p-8 sm:p-12 lg:col-span-7 flex flex-col justify-center space-y-5">
