@@ -55,7 +55,7 @@ export default function JanmashtamiPage() {
         </div>
       </section>
 
-      {/* Celebration Cards Section (janmasthmmi.png to janmasthmmi4.png) */}
+{/* Celebration Cards Section */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
           <span className="text-xs uppercase tracking-[0.25em] text-emerald-700 font-bold">Festive Highlights</span>
@@ -63,8 +63,8 @@ export default function JanmashtamiPage() {
           <p className="text-neutral-600 text-sm font-light">Handcrafted jhulas and ethnic makhan handi setups for joyful celebrations.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {celebrationDecor.map((item) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {celebrationDecor.slice(0, 3).map((item) => (
             <div key={item.id} className="bg-white border border-emerald-100 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
               <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
@@ -92,6 +92,17 @@ export default function JanmashtamiPage() {
             </div>
           ))}
         </div>
+
+        {/* View More Products Button - Yahan spelling folder ke hisaab se janmasthmi kar di hai */}
+        <div className="text-center mt-12">
+          <Link 
+            href="/Festivals/janmasthmi/all-products" 
+            className="inline-flex items-center space-x-2 bg-white hover:bg-neutral-950 hover:text-white text-neutral-950 font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-wider transition shadow-sm border border-emerald-200"
+          >
+            <span>View More Products</span>
+            <ArrowRight size={14} />
+          </Link>
+        </div>
       </section>
 
       {/* Grand Green & Golden Banner using contnet.png */}
@@ -107,7 +118,7 @@ export default function JanmashtamiPage() {
               The Grand <span className="text-amber-400 italic">Janmotsav Experience</span>
             </h2>
             <p className="text-neutral-200 text-xs sm:text-sm leading-relaxed font-light">
-              Immerse your family and society in the divine ecstasy of Lord Krishna's birth. Our professional decorators weave traditional Pichwai art, fresh fragrant florals, and majestic lighting into an unforgettable celebration.
+              Immerse your family and society in the divine ecstasy of Lord Krishna&apos;s birth. Our professional decorators weave traditional Pichwai art, fresh fragrant florals, and majestic lighting into an unforgettable celebration.
             </p>
             <div className="space-y-2.5 pt-1">
               <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
@@ -174,7 +185,6 @@ export default function JanmashtamiPage() {
         </div>
       </section>
       
-
       {/* Special Shrinath Ji Card with srenath.png on Right */}
       <section className="py-12 px-6 max-w-6xl mx-auto">
         <div className="bg-gradient-to-r from-emerald-950 via-emerald-900 to-amber-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-amber-500/40 grid grid-cols-1 lg:grid-cols-12 items-center">

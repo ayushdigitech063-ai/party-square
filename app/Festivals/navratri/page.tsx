@@ -29,6 +29,12 @@ export default function NavratriPage() {
     { id: 8, name: "Dhol & Folk Beats Pandal Canopy", price: "₹15,499", image: "/garba3.png", desc: "Overhead canopy drapes and vibrant cultural elements for community Garba celebrations." }
   ];
 
+  const divineEssentials = [
+    { id: 9, name: "Divine Festive Flower Decoration", price: "₹1,299", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJaZ1rs3P1NjRNAHiBEB7mDIa-vYBsdT6osygPyiU0yA&s=10", desc: "Fresh-look ornamental floral arrangements and decorative strings for temple sanctum." },
+    { id: 10, name: "Mata Ji Heavy Zari Poshak", price: "₹1,899", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZPiEhDgiTwnUG61tRbvZ76NvWeotRitwJclxG7hNEgg&s=10", desc: "Exquisite designer attire and vastra set adorned with rich gold embroidery for Goddess Durga." },
+    { id: 11, name: "Sacred Navratri Prasad Hamper", price: "₹599", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTanhSePMZJEwsmiFFf7T-eCYKewx84kaSKKSWVD-Q83A&s=10", desc: "Pure traditional sweets and bhog essentials hygienically packaged for daily offerings." }
+  ];
+
   return (
     <div className="min-h-screen text-neutral-900 font-sans bg-[#FFFDF9] selection:bg-rose-600 selection:text-white overflow-x-hidden pb-20">
       
@@ -55,7 +61,56 @@ export default function NavratriPage() {
         </div>
       </section>
 
-      {/* Mata Ji Pandal Cards Section (mata.png to mata3.png) */}
+      {/* Naya Section: Exclusive Divine Essentials */}
+      <section className="py-16 px-6 max-w-7xl mx-auto">
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+          <span className="text-xs uppercase tracking-[0.3em] text-rose-700 font-bold bg-rose-100 px-4 py-1.5 rounded-full inline-block">Divine Essentials</span>
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-neutral-900">Exclusive Puja Offerings</h2>
+          <p className="text-neutral-600 text-sm sm:text-base font-light">
+            Essential festival items including sacred flower decorations, Mata Ji poshak, and holy prasad hampers.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {divineEssentials.map((item) => (
+            <div key={item.id} className="bg-white border border-rose-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+              <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
+                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                <span className="absolute top-3 left-3 bg-rose-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">Puja Special</span>
+              </div>
+              <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
+                <div className="space-y-1.5">
+                  <h3 className="font-serif text-base font-bold text-neutral-900">{item.name}</h3>
+                  <p className="text-neutral-500 text-xs leading-relaxed font-light">{item.desc}</p>
+                </div>
+                
+                <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                  <div>
+                    <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
+                    <span className="text-neutral-900 font-bold text-base">{item.price}</span>
+                  </div>
+                  <Link href="/contact" className="bg-rose-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-500 transition shadow flex items-center space-x-1">
+                    <span>Book</span>
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-12">
+          <Link 
+            href="/Festivals/navratri/all-products" 
+            className="inline-flex items-center space-x-2 bg-white hover:bg-neutral-950 hover:text-white text-neutral-950 font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-wider transition shadow-sm border border-rose-200"
+          >
+            <span>View More Products</span>
+            <ArrowRight size={14} />
+          </Link>
+        </div>
+      </section>
+
+      {/* Mata Ji Pandal Cards Section */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
           <span className="text-xs uppercase tracking-[0.25em] text-rose-600 font-bold">Mata Ji Pandal</span>
@@ -94,7 +149,7 @@ export default function NavratriPage() {
         </div>
       </section>
 
-      {/* Special Garba Pandal Section (garba.png to garba3.png) */}
+      {/* Special Garba Pandal Section */}
       <section className="py-16 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
           <span className="text-xs uppercase tracking-[0.3em] text-rose-700 font-bold bg-rose-100 px-4 py-1.5 rounded-full inline-block">Garba Nights</span>

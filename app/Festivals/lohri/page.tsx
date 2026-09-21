@@ -55,7 +55,7 @@ export default function LohriPage() {
         </div>
       </section>
 
-      {/* Traditional Lohri Cards Section (loripic1 to loripic4) */}
+      {/* Traditional Lohri Cards Section (3 Cards + View More Button) */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
           <span className="text-xs uppercase tracking-[0.25em] text-orange-600 font-bold">Traditional Setup</span>
@@ -63,8 +63,8 @@ export default function LohriPage() {
           <p className="text-neutral-600 text-sm font-light">Bring warmth and authentic Punjabi tradition to your home festivities.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {traditionalLohriDecor.map((item) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {traditionalLohriDecor.slice(0, 3).map((item) => (
             <div key={item.id} className="bg-white border border-orange-100 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
               <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
@@ -91,6 +91,17 @@ export default function LohriPage() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* View More Products Button */}
+        <div className="text-center mt-12">
+          <Link 
+            href="/Festivals/lohri/all-products" 
+            className="inline-flex items-center space-x-2 bg-white hover:bg-neutral-950 hover:text-white text-neutral-950 font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-wider transition shadow-sm border border-orange-200"
+          >
+            <span>View More Products</span>
+            <ArrowRight size={14} />
+          </Link>
         </div>
       </section>
 

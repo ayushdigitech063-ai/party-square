@@ -1,26 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { ganeshProducts } from "@/app/data/ganeshProducts";
+import { lohriProducts } from "@/app/data/lohriProducts";
 import { use } from "react";
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export default function GaneshProductDetail({ params }: PageProps) {
+export default function LohriProductDetail({ params }: PageProps) {
   const resolvedParams = use(params);
   const productId = resolvedParams.id;
 
-  const product = ganeshProducts.find((p) => p.id === productId);
+  const product = lohriProducts.find((p) => p.id === productId);
 
   if (!product) {
     return (
       <div className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center px-6">
         <h1 className="text-4xl font-bold font-serif text-neutral-900 mb-2">404</h1>
-        <p className="text-neutral-600 mb-6">Product nahi mila!</p>
+        <p className="text-neutral-600 mb-6">Product nahi mila bhai!</p>
         <Link
-          href="/Festivals/ganeshchaturthi/all-products"
+          href="/Festivals/lohri/all-products"
           className="bg-neutral-950 text-white px-6 py-3 rounded-full text-xs uppercase tracking-wider font-bold"
         >
           Back to Catalogue
@@ -33,7 +33,7 @@ export default function GaneshProductDetail({ params }: PageProps) {
     <div className="min-h-screen bg-[#FAF7F2] px-6 py-10">
       <div className="max-w-5xl mx-auto space-y-8">
         <Link
-          href="/Festivals/ganeshchaturthi/all-products"
+          href="/Festivals/lohri/all-products"
           className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-neutral-600 hover:text-amber-600"
         >
           &larr; Back to All Products

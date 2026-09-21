@@ -94,7 +94,7 @@ export default function GaneshChaturthiPage() {
         </div>
       </section>
 
-      {/* Best Loved Decorations */}
+      {/* Best Loved Decorations (3 Cards Grid) */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
           <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">Most Loved</span>
@@ -102,8 +102,8 @@ export default function GaneshChaturthiPage() {
           <p className="text-neutral-600 text-sm font-light">Our most sought-after traditional and modern mandap designs.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {bestLovedDecor.map((item) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {bestLovedDecor.slice(0, 3).map((item) => (
             <div key={item.id} className="bg-white border border-amber-100 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
               <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
@@ -130,6 +130,17 @@ export default function GaneshChaturthiPage() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* View More Button at Bottom */}
+        <div className="text-center mt-10">
+          <Link 
+            href="/Festivals/ganeshchaturthi/all-products" 
+            className="inline-flex items-center space-x-2 bg-white hover:bg-neutral-950 hover:text-white text-neutral-950 font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-wider transition shadow-sm border border-neutral-200"
+          >
+            <span>View More Products</span>
+            <ArrowRight size={14} />
+          </Link>
         </div>
       </section>
 
@@ -172,7 +183,7 @@ export default function GaneshChaturthiPage() {
         </div>
       </section>
 
-      {/* Mumbai Cha Raja Special Cards (Fixed Mobile Order: Image on top, Content below) */}
+      {/* Mumbai Cha Raja Special Cards */}
       <section className="py-16 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
           <span className="text-xs uppercase tracking-[0.3em] text-amber-700 font-bold bg-amber-100/70 px-4 py-1.5 rounded-full inline-block">Grand Special Collection</span>
@@ -186,7 +197,6 @@ export default function GaneshChaturthiPage() {
           {mumbaiChaRajaCards.map((card) => (
             <div key={card.id} className={`rounded-[32px] overflow-hidden shadow-2xl border border-white/20 bg-gradient-to-r ${card.gradientBg} text-white flex flex-col lg:flex-row items-stretch group`}>
               
-              {/* Content: mobile me neeche (order-2), desktop me left (lg:order-1) */}
               <div className="p-6 sm:p-8 flex flex-col justify-between flex-1 space-y-4 order-2 lg:order-1">
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
@@ -213,7 +223,6 @@ export default function GaneshChaturthiPage() {
                 </div>
               </div>
 
-              {/* Image: mobile me upar (order-1), desktop me right (lg:order-2) */}
               <div className="relative w-full lg:w-64 h-64 lg:h-auto overflow-hidden bg-neutral-950 order-1 lg:order-2">
                 <img src={card.image} alt={card.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
               </div>
@@ -222,11 +231,10 @@ export default function GaneshChaturthiPage() {
         </div>
       </section>
 
-      {/* Masterpiece Showcase Section (Fixed Mobile Order: Image on top, Content below) */}
+      {/* Masterpiece Showcase Section */}
       <section className="py-16 px-6 max-w-7xl mx-auto mb-10">
         <div className="bg-gradient-to-r from-amber-950 via-amber-900 to-neutral-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-amber-500/40 grid grid-cols-1 lg:grid-cols-2 items-stretch">
           
-          {/* Content: mobile me neeche (order-2), desktop me left (lg:order-1) */}
           <div className="p-8 sm:p-12 flex flex-col justify-between space-y-6 order-2 lg:order-1">
             <div className="space-y-4">
               <div className="inline-flex items-center space-x-2 bg-amber-500/20 border border-amber-500/40 px-3.5 py-1.5 rounded-full text-amber-300 text-xs font-bold uppercase tracking-widest">
@@ -259,7 +267,6 @@ export default function GaneshChaturthiPage() {
             </div>
           </div>
 
-          {/* Image: mobile me upar (order-1), desktop me right (lg:order-2) */}
           <div className="relative h-72 sm:h-auto w-full overflow-hidden bg-neutral-950 order-1 lg:order-2">
             <img src="/cardganeshji.png" alt="Card Ganesh Ji Masterpiece" className="w-full h-full object-cover hover:scale-105 transition duration-700" />
           </div>
