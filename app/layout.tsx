@@ -1,45 +1,34 @@
+"use client";
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { usePathname } from "next/navigation";
 import "./globals.css";
 import Navbar from "./components/Navbar"; 
 import Footer from "./components/Footer"; 
 import ScrollToTop from "./components/ScrollToTop";
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistDivider = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "DreamDeco - Special Moments",
-  description: "Luxury Event & Wedding Decor",
-};
-
-// Mobile scaling fix ke liye viewport configuration
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  
+  // Check karein kya current page admin section ka hai ya nahi
+  const isAdminRoute = pathname?.startsWith("/admin");
+
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistDivider.variable} antialiased overflow-x-hidden`}>
-        <Navbar />
-        <ScrollToTop />
+      <body className="antialiased overflow-x-hidden">
+        {/* Agar admin route nahi hai, tabhi website ka Navbar dikhega */}
+        {!isAdminRoute && <Navbar />}
+        
+        {!isAdminRoute && <ScrollToTop />}
+        
         <main className="w-full overflow-hidden">
           {children}
         </main>
-        <Footer />
+
+        {/* Agar admin route nahi hai, tabhi website ka Footer dikhega */}
+        {!isAdminRoute && <Footer />}
       </body>
     </html>
   );

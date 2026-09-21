@@ -137,7 +137,7 @@ export default function WallDecorationPage() {
           </div>
         </div>
       </section>
-
+  {/*   New  Feature  code   */}
       {/* ================= FEATURES HIGHLIGHTS ================= */}
       <section className="py-12 bg-white border-b border-[#E8DFD1]">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -163,8 +163,7 @@ export default function WallDecorationPage() {
           </div>
         </div>
       </section>
-
-
+                 
       {/* ================= SPECIAL RED CARD WITH IMAGE SLIDER ================= */}
       <section className="py-16 px-6 max-w-7xl mx-auto">
         <div className="bg-gradient-to-br from-rose-900 via-rose-800 to-red-950 rounded-3xl p-8 sm:p-12 text-white shadow-2xl border border-rose-700/50 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
@@ -278,7 +277,7 @@ export default function WallDecorationPage() {
                     Select Package
                   </Link>
                 </div>
-              </div>
+              </div>                                                          
             </div>
           ))}
         </div>
@@ -292,11 +291,11 @@ export default function WallDecorationPage() {
               <span className="text-xs uppercase tracking-[0.25em] text-[#C5A059] font-bold">Visual Showcase</span>
               <h2 className="font-serif text-3xl font-bold mt-1">Wall & Door Decoration Gallery</h2>
             </div>
-            <Link href="/gallery" className="mt-4 md:mt-0 text-xs font-bold text-[#C5A059] hover:underline flex items-center space-x-1">
+            <Link href="/services" className="mt-4 md:mt-0 text-xs font-bold text-[#C5A059] hover:underline flex items-center space-x-1">
               <span>View Full Gallery</span>
               <ArrowRight size={14} />
             </Link>
-          </div>
+          </div>                                   
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {galleryImages.map((img, idx) => (
@@ -307,7 +306,7 @@ export default function WallDecorationPage() {
                     {idx < 2 ? "Wall Decoration" : "Door Decoration"}
                   </span>
                 </div>
-              </div>
+              </div>   
             ))}
           </div>
         </div>

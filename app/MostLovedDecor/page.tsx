@@ -69,10 +69,12 @@ export default function MostLovedDecor() {
   const isDragging = useRef(false);
   const startX = useRef(0);
   const scrollLeft = useRef(0);
+  const dragDistance = useRef(0); // Track actual movement to support smooth clicking
 
   // Mouse Drag to Scroll Handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     isDragging.current = true;
+    dragDistance.current = 0;
     startX.current = e.pageX - (scrollContainerRef.current?.offsetLeft || 0);
     scrollLeft.current = scrollContainerRef.current?.scrollLeft || 0;
   };
@@ -87,9 +89,11 @@ export default function MostLovedDecor() {
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging.current) return;
-    e.preventDefault();
     const x = e.pageX - (scrollContainerRef.current?.offsetLeft || 0);
-    const walk = (x - startX.current) * 1.5; // Scroll speed multiplier
+    const walk = (x - startX.current) * 1.5;
+    
+    dragDistance.current += Math.abs(walk); // Accumulate distance moved
+
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollLeft = scrollLeft.current - walk;
     }
@@ -140,12 +144,12 @@ export default function MostLovedDecor() {
             <div 
               key={item.id}
               onClick={() => {
-                // Prevent opening modal if user was dragging/scrolling
-                if (!isDragging.current) {
+                // Only open modal if user clicked without dragging
+                if (dragDistance.current < 5) {
                   setSelectedItem(item);
                 }
               }}
-              className="min-w-[280px] sm:min-w-[320px] max-w-[340px] h-[400px] snap-start relative rounded-3xl overflow-hidden border border-[#EAE2CE] hover:border-[#C5A059] transition-all duration-300 group shadow-[0_10px_30px_rgba(0,0,0,0.06)] bg-white flex flex-col justify-end shrink-0"
+              className="min-w-[280px] sm:min-w-[320px] max-w-[340px] h-[400px] snap-start relative rounded-3xl overflow-hidden border border-[#EAE2CE] hover:border-[#C5A059] transition-all duration-300 group shadow-[0_10px_30px_rgba(0,0,0,0.06)] bg-white flex flex-col justify-end shrink-0 cursor-pointer"
             >
               {/* Card Background Image */}
               <div className="absolute inset-0 z-0 pointer-events-none">
@@ -176,16 +180,15 @@ export default function MostLovedDecor() {
         </div>
 
       </div>
-
-      {/* Interactive Detail Modal */}
+{/* Interactive Detail Modal */}
       {selectedItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
-          <div className="relative bg-[#FFFDF9] border border-[#E2D2B0] rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl text-[#1A1A1A] p-6 sm:p-8 space-y-6">
+          <div className="relative bg-[#FFFDF9] border border-[#E2D2B0] rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl text-[#1A1A1A] p-6 sm:p-8 pt-14 space-y-6">
             
-            {/* Close Button */}
+            {/* Properly Positioned Close Button */}
             <button 
               onClick={() => setSelectedItem(null)}
-              className="absolute top-5 right-5 w-9 h-9 rounded-full bg-[#F4EFE6] border border-[#D9CEB3] text-[#8C6D24] hover:bg-[#EBE2D0] flex items-center justify-center transition cursor-pointer"
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-[#F4EFE6] border border-[#D9CEB3] text-[#8C6D24] hover:bg-[#EBE2D0] flex items-center justify-center transition shadow-sm cursor-pointer"
             >
               <X size={18} />
             </button>
@@ -231,7 +234,6 @@ export default function MostLovedDecor() {
           </div>
         </div>
       )}
-
     </section>
   );
 }

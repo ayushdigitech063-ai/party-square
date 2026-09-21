@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Sparkles, ArrowRight, Camera, Globe, Share2, Phone, Mail, MapPin } from "lucide-react";
 
 export default function Footer() {
@@ -76,11 +77,11 @@ export default function Footer() {
           <div className="lg:col-span-2 space-y-4">
             <h4 className="text-xs font-bold uppercase tracking-wider text-amber-950">Quick Links</h4>
             <ul className="space-y-2.5 text-sm font-semibold text-neutral-800">
-              <li><a href="/" className="hover:text-amber-800 hover:underline transition">Home</a></li>
-              <li><a href="/about" className="hover:text-amber-800 hover:underline transition">About Us</a></li>
-              <li><a href="/services" className="hover:text-amber-800 hover:underline transition">Collections</a></li>
-              <li><a href="/services" className="hover:text-amber-800 hover:underline transition">Gallery</a></li>
-              <li><a href="/contact" className="hover:text-amber-800 hover:underline transition">Contact</a></li>
+              <li><Link href="/" className="hover:text-amber-800 hover:underline transition">Home</Link></li>
+              <li><Link href="/about" className="hover:text-amber-800 hover:underline transition">About Us</Link></li>
+              <li><Link href="/services" className="hover:text-amber-800 hover:underline transition">Collections</Link></li>
+              <li><Link href="/services" className="hover:text-amber-800 hover:underline transition">Gallery</Link></li>
+              <li><Link href="/contact" className="hover:text-amber-800 hover:underline transition">Contact</Link></li>
             </ul>
           </div>
 
@@ -88,11 +89,11 @@ export default function Footer() {
           <div className="lg:col-span-3 space-y-4">
             <h4 className="text-xs font-bold uppercase tracking-wider text-amber-950">Decor Themes</h4>
             <ul className="space-y-2.5 text-sm font-semibold text-neutral-800">
-              <li><a href="/services" className="hover:text-amber-800 hover:underline transition">Wedding Mandaps & Stages</a></li>
-              <li><a href="/services/ring-decoration" className="hover:text-amber-800 hover:underline transition">Anniversary Candlelight</a></li>
-              <li><a href="/services/birthday" className="hover:text-amber-800 hover:underline transition">Kids Birthday Parties</a></li>
-              <li><a href="/services/wall-decoration" className="hover:text-amber-800 hover:underline transition">Home Makeovers</a></li>
-              <li><a href="/Festivals/ganeshchaturthi" className="hover:text-amber-800 hover:underline transition">Festive & Housewarming</a></li>
+              <li><Link href="/services" className="hover:text-amber-800 hover:underline transition">Wedding Mandaps & Stages</Link></li>
+              <li><Link href="/services/ring-decoration" className="hover:text-amber-800 hover:underline transition">Anniversary Candlelight</Link></li>
+              <li><Link href="/services/birthday" className="hover:text-amber-800 hover:underline transition">Kids Birthday Parties</Link></li>
+              <li><Link href="/services/wall-decoration" className="hover:text-amber-800 hover:underline transition">Home Makeovers</Link></li>
+              <li><Link href="/Festivals/ganeshchaturthi" className="hover:text-amber-800 hover:underline transition">Festive & Housewarming</Link></li>
             </ul>
           </div>
 
@@ -121,9 +122,9 @@ export default function Footer() {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-700 font-semibold gap-4">
           <p>© {new Date().getFullYear()} Aesthetic Decor. All rights reserved.</p>
           <div className="flex space-x-6">
-            <a href="#" className="hover:text-amber-950 hover:underline transition">Privacy Policy</a>
-            <a href="#" className="hover:text-amber-950 hover:underline transition">Terms of Service</a>
-            <a href="#" className="hover:text-amber-950 hover:underline transition">Cookie Settings</a>
+            <Link href="#" className="hover:text-amber-950 hover:underline transition">Privacy Policy</Link>
+            <Link href="#" className="hover:text-amber-950 hover:underline transition">Terms of Service</Link>
+            <Link href="#" className="hover:text-amber-950 hover:underline transition">Cookie Settings</Link>
           </div>
         </div>
 
