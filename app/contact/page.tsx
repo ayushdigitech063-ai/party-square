@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mail, Phone, MapPin, Send, Sparkles, CheckCircle2, Clock, Calendar, HeartHandshake } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Sparkles, CheckCircle2, AlertCircle } from "lucide-react";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -13,9 +13,59 @@ export default function ContactPage() {
     message: "",
   });
 
+  // Errors state for tracking validation issues
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const validateForm = () => {
+    let isValid = true;
+    let newErrors = { name: "", email: "", phone: "", message: "" };
+
+    // Name Validation
+    if (!formData.name.trim()) {
+      newErrors.name = "Full name is required.";
+      isValid = false;
+    }
+
+    // Email Validation (Regex pattern)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim()) {
+      newErrors.email = "Email address is required.";
+      isValid = false;
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address.";
+      isValid = false;
+    }
+
+    // Phone Validation (Basic check for numbers / length)
+    const phoneRegex = /^[0-9+\s()-]{10,15}$/;
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required.";
+      isValid = false;
+    } else if (!phoneRegex.test(formData.phone)) {
+      newErrors.phone = "Please enter a valid phone number (min 10 digits).";
+      isValid = false;
+    }
+
+    // Message Validation
+    if (!formData.message.trim()) {
+      newErrors.message = "Please share your event vision & requirements.";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (validateForm()) {
+      setSubmitted(true);
+    }
   };
 
   return (
@@ -162,64 +212,93 @@ export default function ContactPage() {
                     Your inquiry has been successfully submitted. Our senior design specialist will review your request and get in touch with you within 24 hours.
                   </p>
                   <button 
-                    onClick={() => setSubmitted(false)}
-                    className="mt-6 bg-neutral-950 hover:bg-amber-800 text-white px-8 py-3.5 rounded-full text-sm font-bold transition shadow"
+                    onClick={() => {
+                      setSubmitted(false);
+                      setFormData({ name: "", email: "", phone: "", eventType: "Wedding Decoration", message: "" });
+                      setErrors({ name: "", email: "", phone: "", message: "" });
+                    }}
+                    className="mt-6 bg-neutral-950 hover:bg-amber-800 text-white px-8 py-3.5 rounded-full text-sm font-bold transition shadow cursor-pointer"
                   >
                     Send Another Inquiry
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6" noValidate>
                   <div>
                     <h3 className="text-2xl font-serif font-bold text-neutral-950 mb-1">Book a Consultation</h3>
                     <p className="text-neutral-600 text-sm font-medium">Share your event details below to receive a custom proposal.</p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {/* Name Field */}
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-wider text-neutral-800">Your Full Name</label>
                       <input 
                         type="text" 
-                        required
                         placeholder="Aarav Sharma"
                         value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="w-full bg-[#FAF7F2] border border-amber-300 px-4 py-3.5 rounded-xl text-sm text-neutral-950 focus:outline-none focus:border-amber-700 font-medium"
+                        onChange={(e) => {
+                          setFormData({...formData, name: e.target.value});
+                          if(errors.name) setErrors({...errors, name: ""});
+                        }}
+                        className={`w-full bg-[#FAF7F2] border px-4 py-3.5 rounded-xl text-sm text-neutral-950 focus:outline-none font-medium ${errors.name ? 'border-red-500 focus:border-red-600' : 'border-amber-300 focus:border-amber-700'}`}
                       />
+                      {errors.name && (
+                        <p className="text-red-500 text-xs flex items-center space-x-1 mt-1 font-medium">
+                          <AlertCircle size={12} /> <span>{errors.name}</span>
+                        </p>
+                      )}
                     </div>
 
+                    {/* Email Field */}
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-wider text-neutral-800">Email Address</label>
                       <input 
                         type="email" 
-                        required
                         placeholder="aarav@example.com"
                         value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="w-full bg-[#FAF7F2] border border-amber-300 px-4 py-3.5 rounded-xl text-sm text-neutral-950 focus:outline-none focus:border-amber-700 font-medium"
+                        onChange={(e) => {
+                          setFormData({...formData, email: e.target.value});
+                          if(errors.email) setErrors({...errors, email: ""});
+                        }}
+                        className={`w-full bg-[#FAF7F2] border px-4 py-3.5 rounded-xl text-sm text-neutral-950 focus:outline-none font-medium ${errors.email ? 'border-red-500 focus:border-red-600' : 'border-amber-300 focus:border-amber-700'}`}
                       />
+                      {errors.email && (
+                        <p className="text-red-500 text-xs flex items-center space-x-1 mt-1 font-medium">
+                          <AlertCircle size={12} /> <span>{errors.email}</span>
+                        </p>
+                      )}
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {/* Phone Field */}
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-wider text-neutral-800">Phone Number</label>
                       <input 
                         type="tel" 
-                        required
                         placeholder="+91 98765 43210"
                         value={formData.phone}
-                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                        className="w-full bg-[#FAF7F2] border border-amber-300 px-4 py-3.5 rounded-xl text-sm text-neutral-950 focus:outline-none focus:border-amber-700 font-medium"
+                        onChange={(e) => {
+                          setFormData({...formData, phone: e.target.value});
+                          if(errors.phone) setErrors({...errors, phone: ""});
+                        }}
+                        className={`w-full bg-[#FAF7F2] border px-4 py-3.5 rounded-xl text-sm text-neutral-950 focus:outline-none font-medium ${errors.phone ? 'border-red-500 focus:border-red-600' : 'border-amber-300 focus:border-amber-700'}`}
                       />
+                      {errors.phone && (
+                        <p className="text-red-500 text-xs flex items-center space-x-1 mt-1 font-medium">
+                          <AlertCircle size={12} /> <span>{errors.phone}</span>
+                        </p>
+                      )}
                     </div>
 
+                    {/* Event Type Select */}
                     <div className="space-y-2">
                       <label className="text-xs font-bold uppercase tracking-wider text-neutral-800">Event Theme / Category</label>
                       <select 
                         value={formData.eventType}
                         onChange={(e) => setFormData({...formData, eventType: e.target.value})}
-                        className="w-full bg-[#FAF7F2] border border-amber-300 px-4 py-3.5 rounded-xl text-sm text-neutral-950 focus:outline-none focus:border-amber-700 font-medium"
+                        className="w-full bg-[#FAF7F2] border border-amber-300 px-4 py-3.5 rounded-xl text-sm text-neutral-950 focus:outline-none focus:border-amber-700 font-medium cursor-pointer"
                       >
                         <option value="Wedding Decoration">Wedding Mandaps & Stages</option>
                         <option value="Anniversary Celebration">Anniversary Candlelight</option>
@@ -230,21 +309,29 @@ export default function ContactPage() {
                     </div>
                   </div>
 
+                  {/* Message Field */}
                   <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-wider text-neutral-800">Event Vision & Requirements</label>
                     <textarea 
                       rows={4}
-                      required
                       placeholder="Tell us about your event date, expected guest count, venue location, and color preferences..."
                       value={formData.message}
-                      onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      className="w-full bg-[#FAF7F2] border border-amber-300 px-4 py-3.5 rounded-xl text-sm text-neutral-950 focus:outline-none focus:border-amber-700 font-medium resize-none"
+                      onChange={(e) => {
+                        setFormData({...formData, message: e.target.value});
+                        if(errors.message) setErrors({...errors, message: ""});
+                      }}
+                      className={`w-full bg-[#FAF7F2] border px-4 py-3.5 rounded-xl text-sm text-neutral-950 focus:outline-none font-medium resize-none ${errors.message ? 'border-red-500 focus:border-red-600' : 'border-amber-300 focus:border-amber-700'}`}
                     />
+                    {errors.message && (
+                      <p className="text-red-500 text-xs flex items-center space-x-1 mt-1 font-medium">
+                        <AlertCircle size={12} /> <span>{errors.message}</span>
+                      </p>
+                    )}
                   </div>
 
                   <button 
                     type="submit" 
-                    className="w-full bg-neutral-950 hover:bg-amber-800 text-white py-4 rounded-xl text-sm font-bold transition flex items-center justify-center space-x-2 shadow-lg"
+                    className="w-full bg-neutral-950 hover:bg-amber-800 text-white py-4 rounded-xl text-sm font-bold transition flex items-center justify-center space-x-2 shadow-lg cursor-pointer"
                   >
                     <span>Submit Design Request</span>
                     <Send size={16} />

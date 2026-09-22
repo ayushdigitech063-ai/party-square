@@ -15,24 +15,25 @@ export default function NavratriPage() {
     return null;
   }
 
+  // IDs start from 8 onwards to avoid conflict with product.ts (1 to 7)
+  const divineEssentials = [
+    { id: 8, name: "Divine Festive Flower Decoration", price: "₹1,299", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJaZ1rs3P1NjRNAHiBEB7mDIa-vYBsdT6osygPyiU0yA&s=10", desc: "Fresh-look ornamental floral arrangements and decorative strings for temple sanctum." },
+    { id: 9, name: "Mata Ji Heavy Zari Poshak", price: "₹1,899", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZPiEhDgiTwnUG61tRbvZ76NvWeotRitwJclxG7hNEgg&s=10", desc: "Exquisite designer attire and vastra set adorned with rich gold embroidery for Goddess Durga." },
+    { id: 10, name: "Sacred Navratri Prasad Hamper", price: "₹599", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTanhSePMZJEwsmiFFf7T-eCYKewx84kaSKKSWVD-Q83A&s=10", desc: "Pure traditional sweets and bhog essentials hygienically packaged for daily offerings." }
+  ];
+
   const mataJiPandalDecor = [
-    { id: 1, name: "Divine Mata Ji Royal Darbar Setup", price: "₹8,499", image: "/mata.png", desc: "Auspicious flower backdrops and traditional chowki setup for divine Mata Ji worship." },
-    { id: 2, name: "Grand Navdurga Floral Mandap", price: "₹12,999", image: "/mata1.png", desc: "Exquisite floral decorations and lighting dedicated to the nine forms of Goddess Durga." },
-    { id: 3, name: "Akhand Jyoti & Prasad Station", price: "₹4,599", image: "/mata2.png", desc: "Sacred corner arrangement for sacred flames, traditional offerings, and bhog." },
-    { id: 4, name: "Traditional Ghatasthapana Decor", price: "₹6,299", image: "/mata3.png", desc: "Authentic ritualistic setup for Kalash sthapana with fresh mango leaves and holy coconuts." }
+    { id: 11, name: "Divine Mata Ji Royal Darbar Setup", price: "₹8,499", image: "/mata.png", desc: "Auspicious flower backdrops and traditional chowki setup for divine Mata Ji worship." },
+    { id: 12, name: "Grand Navdurga Floral Mandap", price: "₹12,999", image: "/mata1.png", desc: "Exquisite floral decorations and lighting dedicated to the nine forms of Goddess Durga." },
+    { id: 13, name: "Akhand Jyoti & Prasad Station", price: "₹4,599", image: "/mata2.png", desc: "Sacred corner arrangement for sacred flames, traditional offerings, and bhog." },
+    { id: 14, name: "Traditional Ghatasthapana Decor", price: "₹6,299", image: "/mata3.png", desc: "Authentic ritualistic setup for Kalash sthapana with fresh mango leaves and holy coconuts." }
   ];
 
   const specialGarbaPandal = [
-    { id: 5, name: "Vibrant Garba Night Stage & Backdrop", price: "₹18,999", image: "/garba.png", desc: "High-energy colorful stage styling with traditional hangings and ethnic motifs for dandiya nights." },
-    { id: 6, name: "Society Dandiya Ground Illumination", price: "₹24,999", image: "/garba1.png", desc: "Complete ground fairy lighting, colorful umbrellas, and traditional dandiya event setup." },
-    { id: 7, name: "Traditional Chaniya Choli Photo Booth", price: "₹9,499", image: "/garba2.png", desc: "Stunning ethnic photo corner styled with traditional props and colourful Gujarati prints." },
-    { id: 8, name: "Dhol & Folk Beats Pandal Canopy", price: "₹15,499", image: "/garba3.png", desc: "Overhead canopy drapes and vibrant cultural elements for community Garba celebrations." }
-  ];
-
-  const divineEssentials = [
-    { id: 9, name: "Divine Festive Flower Decoration", price: "₹1,299", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJaZ1rs3P1NjRNAHiBEB7mDIa-vYBsdT6osygPyiU0yA&s=10", desc: "Fresh-look ornamental floral arrangements and decorative strings for temple sanctum." },
-    { id: 10, name: "Mata Ji Heavy Zari Poshak", price: "₹1,899", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZPiEhDgiTwnUG61tRbvZ76NvWeotRitwJclxG7hNEgg&s=10", desc: "Exquisite designer attire and vastra set adorned with rich gold embroidery for Goddess Durga." },
-    { id: 11, name: "Sacred Navratri Prasad Hamper", price: "₹599", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTanhSePMZJEwsmiFFf7T-eCYKewx84kaSKKSWVD-Q83A&s=10", desc: "Pure traditional sweets and bhog essentials hygienically packaged for daily offerings." }
+    { id: 15, name: "Vibrant Garba Night Stage & Backdrop", price: "₹18,999", image: "/garba.png", desc: "High-energy colorful stage styling with traditional hangings and ethnic motifs for dandiya nights." },
+    { id: 16, name: "Society Dandiya Ground Illumination", price: "₹24,999", image: "/garba1.png", desc: "Complete ground fairy lighting, colorful umbrellas, and traditional dandiya event setup." },
+    { id: 17, name: "Traditional Chaniya Choli Photo Booth", price: "₹9,499", image: "/garba2.png", desc: "Stunning ethnic photo corner styled with traditional props and colourful Gujarati prints." },
+    { id: 18, name: "Dhol & Folk Beats Pandal Canopy", price: "₹15,499", image: "/garba3.png", desc: "Overhead canopy drapes and vibrant cultural elements for community Garba celebrations." }
   ];
 
   return (
@@ -61,7 +62,7 @@ export default function NavratriPage() {
         </div>
       </section>
 
-      {/* Naya Section: Exclusive Divine Essentials */}
+      {/* Exclusive Divine Essentials Section */}
       <section className="py-16 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
           <span className="text-xs uppercase tracking-[0.3em] text-rose-700 font-bold bg-rose-100 px-4 py-1.5 rounded-full inline-block">Divine Essentials</span>
@@ -89,7 +90,7 @@ export default function NavratriPage() {
                     <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
                     <span className="text-neutral-900 font-bold text-base">{item.price}</span>
                   </div>
-                  <Link href="/contact" className="bg-rose-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-500 transition shadow flex items-center space-x-1">
+                  <Link href={`/Festivals/navratri/${item.id}`} className="bg-rose-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-500 transition shadow flex items-center space-x-1">
                     <span>Book</span>
                     <ArrowRight size={14} />
                   </Link>
@@ -138,7 +139,7 @@ export default function NavratriPage() {
                     <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
                     <span className="text-neutral-900 font-bold text-base">{item.price}</span>
                   </div>
-                  <Link href="/contact" className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-600 transition shadow flex items-center space-x-1">
+                  <Link href={`/Festivals/navratri/${item.id}`} className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-600 transition shadow flex items-center space-x-1">
                     <span>Book</span>
                     <ArrowRight size={14} />
                   </Link>
@@ -177,7 +178,7 @@ export default function NavratriPage() {
                     <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
                     <span className="text-neutral-900 font-bold text-base">{item.price}</span>
                   </div>
-                  <Link href="/contact" className="bg-rose-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-500 transition shadow flex items-center space-x-1">
+                  <Link href={`/Festivals/navratri/${item.id}`} className="bg-rose-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-500 transition shadow flex items-center space-x-1">
                     <span>Book</span>
                     <ArrowRight size={14} />
                   </Link>

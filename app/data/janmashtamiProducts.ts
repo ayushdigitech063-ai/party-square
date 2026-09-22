@@ -9,6 +9,7 @@ export interface Product {
 }
 
 export const janmashtamiProducts: Product[] = [
+  // Aapka pehle ka 1 se 7 tak ka data bilkul safe aur waisa hi hai:
   {
     id: "1",
     name: "Chota Jhula for Kanha",
@@ -105,6 +106,120 @@ export const janmashtamiProducts: Product[] = [
       "Easy to wear and lightweight",
       "Traditional ethnic patterns",
       "Skin-friendly for kids"
+    ]
+  },
+
+  // Ab yahan se ID 8, 9, 10... mein main page wali saari pics add kar di gayi hain:
+  {
+    id: "8",
+    name: "Divine Jhulan & Laddu Gopal Swing",
+    desc: "Exquisitely decorated floral swings (jhula) adorned with fragrant flowers and golden bells.",
+    fullDesc: "Exquisitely decorated floral swings (jhula) adorned with fragrant flowers and golden bells for an enchanting Janmashtami celebration.",
+    price: 5499,
+    image: "/janmasthmmi.png",
+    features: [
+      "Exquisite floral decoration",
+      "Adorned with golden bells",
+      "Perfect for home and temple mandaps",
+      "Sturdy structural support"
+    ]
+  },
+  {
+    id: "9",
+    name: "Makhan Handi & Ethnic Decor Setup",
+    desc: "Traditional hanging handis, peacock feathers, and vibrant butter pot arrangements.",
+    fullDesc: "Traditional hanging handis, peacock feathers, and vibrant butter pot arrangements bringing Gokul vibes to your home.",
+    price: 4299,
+    image: "/janmasthmmi1.png",
+    features: [
+      "Traditional hanging handis",
+      "Peacock feathers included",
+      "Vibrant butter pot arrangements",
+      "Easy installation"
+    ]
+  },
+  {
+    id: "10",
+    name: "Vibrant Raas Leela Backdrop",
+    desc: "Colorful traditional backdrop depicting Lord Krishna's divine leelas and pastimes.",
+    fullDesc: "Colorful traditional backdrop depicting Lord Krishna's divine leelas and pastimes to elevate your festive aesthetics.",
+    price: 7899,
+    image: "/janmasthmmi2.png",
+    features: [
+      "High-resolution traditional art print",
+      "Durable fabric material",
+      "Rich and vibrant festive colors",
+      "Ideal for main stage backdrops"
+    ]
+  },
+  {
+    id: "11",
+    name: "Peacock Motif Festive Arch",
+    desc: "Grand entrance arch styled with peacock feathers, blue drapes, and glowing fairy lights.",
+    fullDesc: "Grand entrance arch styled with peacock feathers, blue drapes, and glowing fairy lights to welcome your guests in style.",
+    price: 6499,
+    image: "/janmasthmmi4.png",
+    features: [
+      "Peacock feather theme styling",
+      "Includes glowing fairy lights",
+      "Graceful blue drapes",
+      "Grand entrance appeal"
+    ]
+  },
+  {
+    id: "12",
+    name: "Grand Mandir Floral Sanctum",
+    desc: "Heavy marigold and orchid flower decorations transforming your home mandir into Gokul.",
+    fullDesc: "Heavy marigold and orchid flower decorations transforming your home mandir into a heavenly Gokul sanctum.",
+    price: 14999,
+    image: "/janmasthmmi6.png",
+    features: [
+      "Heavy marigold and orchid arrangement",
+      "Complete mandir transformation",
+      "Fresh floral aesthetics",
+      "Professional setup support"
+    ]
+  },
+  {
+    id: "13",
+    name: "Janmotsav Midnight Glow Illumination",
+    desc: "Special midnight celebration lighting setup with serial lights, diyas, and spotlights.",
+    fullDesc: "Special midnight celebration lighting setup with serial lights, diyas, and spotlights for the divine birth moment.",
+    price: 11599,
+    image: "/janmasthmmi7.png",
+    features: [
+      "Special midnight glow lighting",
+      "Includes decorative diyas and spotlights",
+      "Serial lights arrangement",
+      "Creates a divine spiritual ambiance"
+    ]
+  },
+  {
+    id: "14",
+    name: "Radha-Krishna Phoolon ki Holi Setup",
+    desc: "Auspicious flower petal arrangements and divine deity chowki decoration.",
+    fullDesc: "Auspicious flower petal arrangements and divine deity chowki decoration for celebrating Phoolon ki Holi with Kanha.",
+    price: 9299,
+    image: "/janmasthmmi8.png",
+    features: [
+      "Auspicious flower petal patterns",
+      "Divine deity chowki styling",
+      "Fragrant traditional setup",
+      "Perfect for rituals and pooja"
+    ]
+  },
+  {
+    id: "15",
+    name: "Braj Style Vrindavan Street Theme",
+    desc: "Complete thematic temple compound decoration recreating the magical lanes of Vrindavan.",
+    fullDesc: "Complete thematic temple compound decoration recreating the magical lanes and rustic charm of Vrindavan.",
+    price: 18499,
+    image: "/janmasthmmi9.png",
+    features: [
+      "Complete thematic compound setup",
+      "Recreates Vrindavan street lanes",
+      "Immersive traditional props",
+      "Grand community celebration design"
     ]
   }
 ];

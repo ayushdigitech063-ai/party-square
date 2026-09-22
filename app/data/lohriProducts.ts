@@ -9,6 +9,7 @@ export interface Product {
 }
 
 export const lohriProducts: Product[] = [
+  // --- Purane Products (Apni purani IDs ke sath safe hain) ---
   {
     id: "1",
     name: "Traditional Lohri Food Setup",
@@ -77,6 +78,122 @@ export const lohriProducts: Product[] = [
       "Vibrant cultural colors",
       "Weather-resistant hanging items",
       "Easy installation support"
+    ]
+  },
+
+  // --- Specific IDs wali lohripic items ---
+  {
+    id: "100",
+    name: "Traditional Bonfire & Seating Setup",
+    desc: "Authentic traditional bonfire arrangement with comfortable ethnic floor seating for family.",
+    fullDesc: "Celebrate the warmth of Lohri with our authentic traditional bonfire arrangement, featuring comfortable ethnic floor seating for family and complete festive setup.",
+    price: 6499,
+    image: "/loripic1.png",
+    features: [
+      "Authentic traditional bonfire arrangement",
+      "Comfortable ethnic floor seating for family",
+      "Safe and managed setup",
+      "Perfect festive ambiance"
+    ]
+  },
+  {
+    id: "102",
+    name: "Peanuts, Popcorn & Revri Station",
+    desc: "Traditional festive snacking station decorated with rustic Punjabi elements and bells.",
+    fullDesc: "Traditional festive snacking station decorated with rustic Punjabi elements and bells, offering fresh popcorn, peanuts, and revri.",
+    price: 3999,
+    image: "/loripic2.png",
+    features: [
+      "Traditional festive snacking station",
+      "Decorated with rustic Punjabi elements",
+      "Hygienic arrangement",
+      "Includes revdi, popcorn, and peanuts"
+    ]
+  },
+  {
+    id: "103",
+    name: "Dhol & Folk Music Corner",
+    desc: "Vibrant cultural corner styling featuring traditional Dhol, phulkari props, and folk elements.",
+    fullDesc: "Bring the true Punjabi beat and festive spirit to your party space with this vibrant cultural corner styling featuring traditional Dhol and phulkari props.",
+    price: 8499,
+    image: "/loripic3.png",
+    features: [
+      "Traditional Punjabi dhol setup",
+      "Phulkari props and folk elements",
+      "Enhances festive photography backdrop",
+      "Sturdy build quality"
+    ]
+  },
+
+  // --- Baki bachi Hui lohripic items (104 se 108) ---
+  {
+    id: "104",
+    name: "Warm Marigold & Sugarcane Arch",
+    desc: "Fresh sugarcane stalks intertwined with bright marigold flowers for auspicious welcomes.",
+    fullDesc: "Fresh sugarcane stalks intertwined with bright marigold flowers for auspicious welcomes, adding a traditional touch to your entrance.",
+    price: 5899,
+    image: "/loripic4.png",
+    features: [
+      "Fresh sugarcane stalks styling",
+      "Bright marigold flower decorations",
+      "Auspicious entrance arch",
+      "Vibrant festive look"
+    ]
+  },
+  {
+    id: "105",
+    name: "Royal Phulkari Backdrop & Mandap",
+    desc: "Exquisite handmade colorful phulkari cloth backdrop curated for grand Lohri celebrations.",
+    fullDesc: "Exquisite handmade colorful phulkari cloth backdrop curated for grand Lohri celebrations, giving a royal ethnic look to the venue.",
+    price: 12499,
+    image: "/loripic5.png",
+    features: [
+      "Exquisite handmade phulkari cloth backdrop",
+      "Curated for grand Lohri celebrations",
+      "Vibrant ethnic colors",
+      "Royal seating setup support"
+    ]
+  },
+  {
+    id: "106",
+    name: "Bhangra & Folk Dance Stage Decor",
+    desc: "High-energy stage decoration with traditional Punjabi props, lights, and vibrant drapes.",
+    fullDesc: "High-energy stage decoration with traditional Punjabi props, lights, and vibrant drapes designed specifically for dance performances and celebrations.",
+    price: 16999,
+    image: "/loripic6.png",
+    features: [
+      "High-energy stage decoration",
+      "Traditional Punjabi props and lights",
+      "Vibrant drapes and backdrops",
+      "Ideal for live folk music and dance"
+    ]
+  },
+  {
+    id: "107",
+    name: "Desi Ghee & Til Sweets Station",
+    desc: "Traditional winter festive counter highlighting sesame sweets, jaggery, and festive treats.",
+    fullDesc: "Traditional winter festive counter highlighting sesame sweets, jaggery, desi ghee treats, and winter delicacies for guests.",
+    price: 4999,
+    image: "/loripic7.png",
+    features: [
+      "Traditional winter festive counter",
+      "Sesame sweets and jaggery treats",
+      "Desi ghee delicacies",
+      "Beautiful rustic food counter styling"
+    ]
+  },
+  {
+    id: "108",
+    name: "Grand Bonfire & Lighting Canopy",
+    desc: "Spectacular overhead canopy lights and bonfire enclosure for community and family feasts.",
+    fullDesc: "Spectacular overhead canopy lights and bonfire enclosure designed for large community and family feasts with complete safety measures.",
+    price: 19999,
+    image: "/loripic8.png",
+    features: [
+      "Spectacular overhead canopy lights",
+      "Secure large bonfire enclosure",
+      "Ideal for community and family feasts",
+      "Professional installation and management"
     ]
   }
 ];
