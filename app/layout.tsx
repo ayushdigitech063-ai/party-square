@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "./components/Navbar"; 
 import Footer from "./components/Footer"; 
 import ScrollToTop from "./components/ScrollToTop";
+import { WishlistProvider } from "./context/wishlistcontext";
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -19,14 +20,14 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased overflow-x-hidden">
         {/* Agar admin route nahi hai, tabhi website ka Navbar dikhega */}
-        {!isAdminRoute && <Navbar />}
         
         {!isAdminRoute && <ScrollToTop />}
-        
+        <WishlistProvider>
+        {!isAdminRoute && <Navbar />}
         <main className="w-full overflow-hidden">
           {children}
         </main>
-
+        </WishlistProvider>
         {/* Agar admin route nahi hai, tabhi website ka Footer dikhega */}
         {!isAdminRoute && <Footer />}
       </body>

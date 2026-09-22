@@ -2,69 +2,192 @@
 
 import React, { useState } from "react";
 import { Heart, ArrowRight, Sparkles } from "lucide-react";
+import { useWishlist } from "../context/wishlistcontext";
 
 const categories = [
   {
     title: "Wedding Decoration",
     note: "Grand mandaps, floral aisles & royal setups",
     items: [
-      { src: "/wedding1.png", name: "Royal Mandap Setup", desc: "Floral mandap with drapes & chandeliers", price: "₹45,000" },
-      { src: "/wedding2.png", name: "Entrance Gate Decor", desc: "Grand floral welcome gate", price: "₹18,000" },
-      { src: "/wedding3.png", name: "Stage Backdrop", desc: "Elegant floral & fairy-light backdrop", price: "₹22,000" },
-      { src: "/wedding4.png", name: "Aisle Walkway", desc: "Petal-lined aisle with lanterns", price: "₹15,000" },
-      { src: "/wedding5.png", name: "Reception Setup", desc: "Full reception hall styling", price: "₹35,000" },
+      {
+        id: 1,
+        src: "/wedding1.png",
+        name: "Royal Mandap Setup",
+        desc: "Floral mandap with drapes & chandeliers",
+        price: "₹45,000",
+      },
+      {
+        id: 2,
+        src: "/wedding2.png",
+        name: "Entrance Gate Decor",
+        desc: "Grand floral welcome gate",
+        price: "₹18,000",
+      },
+      {
+        id: 3,
+        src: "/wedding3.png",
+        name: "Stage Backdrop",
+        desc: "Elegant floral & fairy-light backdrop",
+        price: "₹22,000",
+      },
+      {
+        id: 4,
+        src: "/wedding4.png",
+        name: "Aisle Walkway",
+        desc: "Petal-lined aisle with lanterns",
+        price: "₹15,000",
+      },
+      {
+        id: 5,
+        src: "/wedding5.png",
+        name: "Reception Setup",
+        desc: "Full reception hall styling",
+        price: "₹35,000",
+      },
     ],
   },
   {
     title: "Home Decoration",
     note: "Everyday spaces, made a little more special",
     items: [
-      { src: "/home1.png", name: "Living Room Refresh", desc: "Seasonal florals & accent styling", price: "₹6,000" },
-      { src: "/home2.png", name: "Balcony Makeover", desc: "Fairy lights & potted greens", price: "₹4,500" },
-      { src: "/home3.png", name: "Puja Room Decor", desc: "Traditional festive styling", price: "₹5,000" },
-      { src: "/home4.png", name: "Dining Setup", desc: "Table centerpiece & lighting", price: "₹3,500" },
-      { src: "/home5.png", name: "Entrance Decor", desc: "Doorway rangoli & floral toran", price: "₹2,500" },
+      {
+        id: 6,
+        src: "/home1.png",
+        name: "Living Room Refresh",
+        desc: "Seasonal florals & accent styling",
+        price: "₹6,000",
+      },
+      {
+        id: 7,
+        src: "/home2.png",
+        name: "Balcony Makeover",
+        desc: "Fairy lights & potted greens",
+        price: "₹4,500",
+      },
+      {
+        id: 8,
+        src: "/home3.png",
+        name: "Puja Room Decor",
+        desc: "Traditional festive styling",
+        price: "₹5,000",
+      },
+      {
+        id: 9,
+        src: "/home4.png",
+        name: "Dining Setup",
+        desc: "Table centerpiece & lighting",
+        price: "₹3,500",
+      },
+      {
+        id: 10,
+        src: "/home5.png",
+        name: "Entrance Decor",
+        desc: "Doorway rangoli & floral toran",
+        price: "₹2,500",
+      },
     ],
   },
   {
     title: "Anniversary Decoration",
     note: "Candlelight, florals & romantic themes",
     items: [
-      { src: "/aniversarry1.png", name: "Candlelight Setup", desc: "Romantic candle & rose petal path", price: "₹8,000" },
-      { src: "/aniversarry2.png", name: "Balloon Backdrop", desc: "Themed balloon wall with lights", price: "₹6,500" },
-      { src: "/aniversarry3.png", name: "Floral Arch", desc: "Rose & fairy-light arch", price: "₹9,500" },
-      { src: "/aniversarry4.png", name: "Table for Two", desc: "Private dinner setup", price: "₹7,000" },
-      { src: "/aniversarry5.png", name: "Terrace Theme", desc: "Fairy-lit terrace celebration", price: "₹11,000" },
+      {
+        id: 11,
+        src: "/aniversarry1.png",
+        name: "Candlelight Setup",
+        desc: "Romantic candle & rose petal path",
+        price: "₹8,000",
+      },
+      {
+        id: 12,
+        src: "/aniversarry2.png",
+        name: "Balloon Backdrop",
+        desc: "Themed balloon wall with lights",
+        price: "₹6,500",
+      },
+      {
+        id: 13,
+        src: "/aniversarry3.png",
+        name: "Floral Arch",
+        desc: "Rose & fairy-light arch",
+        price: "₹9,500",
+      },
+      {
+        id: 14,
+        src: "/aniversarry4.png",
+        name: "Table for Two",
+        desc: "Private dinner setup",
+        price: "₹7,000",
+      },
+      {
+        id: 15,
+        src: "/aniversarry5.png",
+        name: "Terrace Theme",
+        desc: "Fairy-lit terrace celebration",
+        price: "₹11,000",
+      },
     ],
   },
   {
     title: "Child Birthday",
     note: "Playful themes, balloons & bright colours",
     items: [
-      { src: "/childbirthday1.png", name: "Balloon Theme Party", desc: "Colourful balloon arch & backdrop", price: "₹7,500" },
-      { src: "/childbirthday2.png", name: "Cartoon Theme Setup", desc: "Character cutouts & banners", price: "₹9,000" },
-      { src: "/childbirthday3.png", name: "Photo Booth Corner", desc: "Themed props & backdrop", price: "₹4,000" },
-      { src: "/childbirthday4.png", name: "Table & Cake Decor", desc: "Themed cake table styling", price: "₹5,500" },
-      { src: "/childbirthday5.png", name: "Full Venue Setup", desc: "Complete themed venue styling", price: "₹15,000" },
+      {
+        id: 16,
+        src: "/childbirthday1.png",
+        name: "Balloon Theme Party",
+        desc: "Colourful balloon arch & backdrop",
+        price: "₹7,500",
+      },
+      {
+        id: 17,
+        src: "/childbirthday2.png",
+        name: "Cartoon Theme Setup",
+        desc: "Character cutouts & banners",
+        price: "₹9,000",
+      },
+      {
+        id: 18,
+        src: "/childbirthday3.png",
+        name: "Photo Booth Corner",
+        desc: "Themed props & backdrop",
+        price: "₹4,000",
+      },
+      {
+        id: 19,
+        src: "/childbirthday4.png",
+        name: "Table & Cake Decor",
+        desc: "Themed cake table styling",
+        price: "₹5,500",
+      },
+      {
+        id: 20,
+        src: "/childbirthday5.png",
+        name: "Full Venue Setup",
+        desc: "Complete themed venue styling",
+        price: "₹15,000",
+      },
     ],
   },
 ];
 
 export default function Gallery() {
-  const [liked, setLiked] = useState(new Set());
+  // const [liked, setLiked] = useState(new Set());
   const [activeTab, setActiveTab] = useState("All");
 
-  const toggleLike = (key) => {
-    setLiked((prev) => {
-      const next = new Set(prev);
-      next.has(key) ? next.delete(key) : next.add(key);
-      return next;
-    });
-  };
+  // const toggleLike = (key) => {
+  //   setLiked((prev) => {
+  //     const next = new Set(prev);
+  //     next.has(key) ? next.delete(key) : next.add(key);
+  //     return next;
+  //   });
+  // };
+  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
 
-  const filteredCategories = activeTab === "All" 
-    ? categories 
-    : categories.filter((c) => c.title === activeTab);
+  const filteredCategories =
+    activeTab === "All"
+      ? categories
+      : categories.filter((c) => c.title === activeTab);
 
   return (
     <section className="bg-[#FAF7F2] py-16 sm:py-24 px-4 sm:px-8 md:px-16 text-[#1A1A1A] relative overflow-hidden font-sans">
@@ -73,7 +196,6 @@ export default function Gallery() {
       <div className="absolute bottom-10 left-10 w-72 sm:w-96 h-72 sm:h-96 bg-amber-300/30 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
           <div className="inline-flex items-center space-x-2 bg-amber-100/80 border border-amber-300/60 px-4 py-1.5 rounded-full shadow-sm mb-4">
@@ -84,7 +206,9 @@ export default function Gallery() {
           </div>
           <h2 className="text-3xl sm:text-5xl font-serif font-normal leading-[1.15] text-gray-900">
             A closer look at <br />
-            <span className="italic font-light text-amber-800">every celebration</span>
+            <span className="italic font-light text-amber-800">
+              every celebration
+            </span>
           </h2>
         </div>
 
@@ -119,7 +243,6 @@ export default function Gallery() {
         <div className="space-y-16 sm:space-y-20">
           {filteredCategories.map((category, ci) => (
             <div key={ci} className="space-y-6">
-              
               {/* Category Title Bar */}
               <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-amber-200/60 pb-4 gap-1 sm:gap-2">
                 <h3 className="text-xl sm:text-3xl font-serif font-normal text-gray-900 flex items-center gap-3">
@@ -134,8 +257,7 @@ export default function Gallery() {
               {/* Items Grid (1 col on mobile, 2 on sm, 3 on md/lg, 5 on xl) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6">
                 {category.items.map((item, idx) => {
-                  const key = `${ci}-${idx}`;
-                  const isLiked = liked.has(key);
+                  const isLiked = isInWishlist(item.id);
                   return (
                     <div
                       key={idx}
@@ -149,16 +271,22 @@ export default function Gallery() {
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        
+
                         {/* Like Button */}
                         <button
-                          onClick={() => toggleLike(key)}
-                          aria-label={isLiked ? "Remove from favourites" : "Add to favourites"}
+                          onClick={() =>{ toggleWishlist(item)}}
+                          aria-label={
+                            isLiked ? "Remove from wishlist" : "Add to wishlist"
+                          }
                           className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
                         >
                           <Heart
                             size={16}
-                            className={isLiked ? "fill-rose-500 text-rose-500" : "text-gray-700"}
+                            className={
+                              isLiked
+                                ? "fill-rose-500 text-rose-500"
+                                : "text-gray-700"
+                            }
                           />
                         </button>
                       </div>
@@ -177,25 +305,29 @@ export default function Gallery() {
                         {/* Price & Action Button */}
                         <div className="flex items-center justify-between pt-3 border-t border-amber-100 mt-auto">
                           <div>
-                            <span className="text-[10px] uppercase tracking-wider text-gray-400 block font-medium">Starts at</span>
-                            <span className="text-sm font-semibold text-amber-900">{item.price}</span>
+                            <span className="text-[10px] uppercase tracking-wider text-gray-400 block font-medium">
+                              Starts at
+                            </span>
+                            <span className="text-sm font-semibold text-amber-900">
+                              {item.price}
+                            </span>
                           </div>
                           <button className="group/btn inline-flex items-center gap-1.5 bg-black hover:bg-amber-900 text-white text-xs font-medium px-3.5 py-2 rounded-full transition-colors shadow-sm cursor-pointer">
                             <span>Book</span>
-                            <ArrowRight size={12} className="group-hover/btn:translate-x-0.5 transition-transform" />
+                            <ArrowRight
+                              size={12}
+                              className="group-hover/btn:translate-x-0.5 transition-transform"
+                            />
                           </button>
                         </div>
                       </div>
-
                     </div>
                   );
                 })}
               </div>
-
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

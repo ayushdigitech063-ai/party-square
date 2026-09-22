@@ -34,7 +34,6 @@
 // //   children: DropdownChild[];
 // // };
 
-
 // // const NAV_PILLS: (LinkPill | DropdownPillData)[] = [
 // //   { type: "link", label: "Decorations", href: "/", icon: HomeIcon },
 // //   {
@@ -49,8 +48,6 @@
 // //       { label: "Young Birthday Party", href: "/services/birthday/young", image: "/party.png" },
 // //         { label: "Welcome Baby  Program", href: "/services/birthday/babaywelcom", image: "/babaywelcom.png" },
 
-
-    
 // //     ],
 // //   },
 // //   { type: "link", label: "Theme Decoration", href: "/services", icon: LayoutList },
@@ -67,7 +64,6 @@
 // //       { label: "Christmas", href: "/Festivals/christmas", image: "/crismasdecoration.png" },
 // //          { label: "Independence Day", href: "/Festivals/independenceday", image: "/independenceday.png" },
 
-   
 // //     ],
 // //   },
 // //   { type: "link", label: "Ring Decoration", href: "/services/ring-decoration", icon: Gem },
@@ -592,8 +588,8 @@
 // import CityModal from "./CityModal"; // <-- CityModal import kiya hai (apne folder path ke hisaab se adjust kar lein)
 
 // const CITIES = [
-//   "Delhi", "Mumbai", "Bangalore", "Hyderabad", "Chennai", 
-//   "Ahmedabad", "Faridabad", "Ghaziabad", "Gurugram", "Jaipur", 
+//   "Delhi", "Mumbai", "Bangalore", "Hyderabad", "Chennai",
+//   "Ahmedabad", "Faridabad", "Ghaziabad", "Gurugram", "Jaipur",
 //   "Kolkata", "Lucknow", "Mangalore", "Mysore", "Noida", "Pune", "Thane"
 // ];
 
@@ -894,7 +890,7 @@
 // export default function Navbar() {
 //   const [locationOpen, setLocationOpen] = useState(false);
 //   const [selectedCity, setSelectedCity] = useState("Delhi");
-  
+
 //   // State for controlling the popup automatically on website load
 //   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
 
@@ -1117,13 +1113,29 @@ import {
   Search,
   ShoppingBasket,
   X,
+  Heart,
 } from "lucide-react";
 import CityModal from "./CityModal"; // <-- CityModal import kiya hai (apne folder path ke hisaab se adjust kar lein)
+import { useWishlist } from "../context/wishlistcontext";
 
 const CITIES = [
-  "Delhi", "Mumbai", "Bangalore", "Hyderabad", "Chennai", 
-  "Ahmedabad", "Faridabad", "Ghaziabad", "Gurugram", "Jaipur", 
-  "Kolkata", "Lucknow", "Mangalore", "Mysore", "Noida", "Pune", "Thane"
+  "Delhi",
+  "Mumbai",
+  "Bangalore",
+  "Hyderabad",
+  "Chennai",
+  "Ahmedabad",
+  "Faridabad",
+  "Ghaziabad",
+  "Gurugram",
+  "Jaipur",
+  "Kolkata",
+  "Lucknow",
+  "Mangalore",
+  "Mysore",
+  "Noida",
+  "Pune",
+  "Thane",
 ];
 
 type LinkPill = { type: "link"; label: string; href: string; icon: LucideIcon };
@@ -1144,36 +1156,107 @@ const NAV_PILLS: (LinkPill | DropdownPillData)[] = [
     icon: Cake,
     href: "/services/birthday",
     children: [
-      { label: "Kids Birthday", href: "/services/birthday", image: "/birthdaydesign.png" },
-      { label: "Mother Birthday", href: "/services/birthday/mother", image: "/motherbirthday.png" },
-      { label: "Father Birthday", href: "/services/birthday/father", image: "/dad1.png" },
-      { label: "Young Birthday Party", href: "/services/birthday/young", image: "/party.png" },
-      { label: "Welcome Baby Program", href: "/services/birthday/babaywelcom", image: "/babaywelcom.png" },
+      {
+        label: "Kids Birthday",
+        href: "/services/birthday",
+        image: "/birthdaydesign.png",
+      },
+      {
+        label: "Mother Birthday",
+        href: "/services/birthday/mother",
+        image: "/motherbirthday.png",
+      },
+      {
+        label: "Father Birthday",
+        href: "/services/birthday/father",
+        image: "/dad1.png",
+      },
+      {
+        label: "Young Birthday Party",
+        href: "/services/birthday/young",
+        image: "/party.png",
+      },
+      {
+        label: "Welcome Baby Program",
+        href: "/services/birthday/babaywelcom",
+        image: "/babaywelcom.png",
+      },
     ],
   },
-  { type: "link", label: "Theme Decoration", href: "/services", icon: LayoutList },
+  {
+    type: "link",
+    label: "Theme Decoration",
+    href: "/services",
+    icon: LayoutList,
+  },
   {
     type: "dropdown",
     label: "Festivals",
     icon: PartyPopper,
     children: [
-      { label: "Ganesh Chaturthi", href: "/Festivals/ganeshchaturthi", image: "/ganeshcaturti.png" },
+      {
+        label: "Ganesh Chaturthi",
+        href: "/Festivals/ganeshchaturthi",
+        image: "/ganeshcaturti.png",
+      },
       { label: "Lohri", href: "/Festivals/lohri", image: "/lohri.png" },
-      { label: "Janmashtami", href: "/Festivals/janmasthmi", image: "/janmasthmi.png" },
-      { label: "Navratri", href: "/Festivals/navratri", image: "/navratridecoration.png" },
-      { label: "Diwali", href: "/Festivals/diwali", image: "/diwalidecoration.png" },
-      { label: "Christmas", href: "/Festivals/christmas", image: "/crismasdecoration.png" },
-      { label: "Independence Day", href: "/Festivals/independenceday", image: "/independenceday.png" },
+      {
+        label: "Janmashtami",
+        href: "/Festivals/janmasthmi",
+        image: "/janmasthmi.png",
+      },
+      {
+        label: "Navratri",
+        href: "/Festivals/navratri",
+        image: "/navratridecoration.png",
+      },
+      {
+        label: "Diwali",
+        href: "/Festivals/diwali",
+        image: "/diwalidecoration.png",
+      },
+      {
+        label: "Christmas",
+        href: "/Festivals/christmas",
+        image: "/crismasdecoration.png",
+      },
+      {
+        label: "Independence Day",
+        href: "/Festivals/independenceday",
+        image: "/independenceday.png",
+      },
     ],
   },
-  { type: "link", label: "Ring Decoration", href: "/services/ring-decoration", icon: Gem },
-  { type: "link", label: "Wall Decoration", href: "/services/wall-decoration", icon: LayoutGrid },
+  {
+    type: "link",
+    label: "Ring Decoration",
+    href: "/services/ring-decoration",
+    icon: Gem,
+  },
+  {
+    type: "link",
+    label: "Wall Decoration",
+    href: "/services/wall-decoration",
+    icon: LayoutGrid,
+  },
   { type: "link", label: "Corporate Planner", href: "/about", icon: Info },
 ];
 
-function WhatsAppIcon({ size = 18, className = "" }: { size?: number; className?: string }) {
+function WhatsAppIcon({
+  size = 18,
+  className = "",
+}: {
+  size?: number;
+  className?: string;
+}) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+    >
       <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.7.44 3.36 1.28 4.82L2 22l5.4-1.42a9.9 9.9 0 0 0 4.64 1.18h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0 0 12.04 2zm0 18.1h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.2.84.85-3.12-.2-.32a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.55-3.7 8.28-8.19 8.28zm4.52-6.19c-.25-.12-1.47-.72-1.7-.8-.23-.09-.4-.12-.56.12-.17.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.12-1.06-.39-2.02-1.25-.75-.66-1.25-1.48-1.4-1.73-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.24-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.42h-.48c-.16 0-.43.06-.66.31-.22.25-.87.85-.87 2.08 0 1.22.89 2.4 1.02 2.57.12.16 1.75 2.67 4.24 3.74.59.26 1.06.41 1.42.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.28z" />
     </svg>
   );
@@ -1214,7 +1297,9 @@ function DropdownPill({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const closeTimerRef = useRef<ReturnType<typeof window.setTimeout> | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof window.setTimeout> | null>(
+    null,
+  );
 
   const clearCloseTimer = () => {
     if (closeTimerRef.current !== null) {
@@ -1285,7 +1370,11 @@ function DropdownPill({
     if (!open) return;
     const handleScroll = (e: Event) => {
       // Scrolling *inside* the panel (mobile, tall content) must not close it.
-      if (panelRef.current && e.target instanceof Node && panelRef.current.contains(e.target)) {
+      if (
+        panelRef.current &&
+        e.target instanceof Node &&
+        panelRef.current.contains(e.target)
+      ) {
         return;
       }
       close();
@@ -1301,7 +1390,8 @@ function DropdownPill({
 
   useEffect(() => () => clearCloseTimer(), []);
 
-  const isActive = pathname === href || children.some((c) => pathname === c.href);
+  const isActive =
+    pathname === href || children.some((c) => pathname === c.href);
 
   const megaPanel =
     open &&
@@ -1346,8 +1436,8 @@ function DropdownPill({
                         childActive
                           ? "text-amber-600 font-semibold bg-amber-50"
                           : isPreviewed
-                          ? "text-amber-600 font-semibold bg-amber-50/70"
-                          : "text-neutral-800 font-medium hover:bg-amber-50 hover:text-amber-600"
+                            ? "text-amber-600 font-semibold bg-amber-50/70"
+                            : "text-neutral-800 font-medium hover:bg-amber-50 hover:text-amber-600"
                       }`}
                     >
                       {child.label}
@@ -1394,7 +1484,9 @@ function DropdownPill({
                   </div>
                   <span
                     className={`mt-2.5 block text-center text-[13px] sm:text-sm font-semibold leading-snug transition-colors ${
-                      isPreviewed ? "text-amber-600" : "text-neutral-800 group-hover:text-amber-600"
+                      isPreviewed
+                        ? "text-amber-600"
+                        : "text-neutral-800 group-hover:text-amber-600"
                     }`}
                   >
                     {child.label}
@@ -1405,7 +1497,7 @@ function DropdownPill({
           </div>
         </div>
       </div>,
-      document.body
+      document.body,
     );
 
   if (href) {
@@ -1423,10 +1515,15 @@ function DropdownPill({
         <Link
           href={href}
           className={`flex items-center gap-1.5 sm:gap-2 pl-3 sm:pl-4 pr-2 sm:pr-2.5 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
-            isActive || open ? "text-white" : "text-neutral-700 hover:text-amber-700 hover:bg-amber-50"
+            isActive || open
+              ? "text-white"
+              : "text-neutral-700 hover:text-amber-700 hover:bg-amber-50"
           }`}
         >
-          <Icon size={16} className={isActive || open ? "text-white" : "text-amber-500"} />
+          <Icon
+            size={16}
+            className={isActive || open ? "text-white" : "text-amber-500"}
+          />
           {label}
         </Link>
         <button
@@ -1441,7 +1538,10 @@ function DropdownPill({
               : "border-neutral-200 text-neutral-500 hover:text-amber-700 hover:bg-amber-50"
           }`}
         >
-          <ChevronDown size={14} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+          <ChevronDown
+            size={14}
+            className={`transition-transform ${open ? "rotate-180" : ""}`}
+          />
         </button>
 
         {megaPanel}
@@ -1467,9 +1567,15 @@ function DropdownPill({
             : "bg-white text-neutral-700 border-neutral-200 hover:border-amber-300 hover:text-amber-700 hover:bg-amber-50"
         }`}
       >
-        <Icon size={16} className={isActive || open ? "text-white" : "text-amber-500"} />
+        <Icon
+          size={16}
+          className={isActive || open ? "text-white" : "text-amber-500"}
+        />
         {label}
-        <ChevronDown size={14} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+        <ChevronDown
+          size={14}
+          className={`transition-transform ${open ? "rotate-180" : ""}`}
+        />
       </button>
 
       {megaPanel}
@@ -1478,9 +1584,10 @@ function DropdownPill({
 }
 
 export default function Navbar() {
+  const { wishlist } = useWishlist();
   const [locationOpen, setLocationOpen] = useState(false);
   const [selectedCity, setSelectedCity] = useState("Delhi");
-  
+
   // State for controlling the popup automatically on website load
   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
 
@@ -1499,7 +1606,10 @@ export default function Navbar() {
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (locationRef.current && !locationRef.current.contains(e.target as Node)) {
+      if (
+        locationRef.current &&
+        !locationRef.current.contains(e.target as Node)
+      ) {
         setLocationOpen(false);
       }
     }
@@ -1525,7 +1635,10 @@ export default function Navbar() {
 
       <nav className="w-full bg-white border-b border-neutral-200 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
-          <Link href="/" className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <Link
+            href="/"
+            className="flex items-center gap-1.5 sm:gap-2 shrink-0"
+          >
             <span className="text-xl sm:text-2xl leading-none">🪷</span>
             <span className="text-base sm:text-xl font-extrabold tracking-tight text-neutral-900 whitespace-nowrap">
               DreamDeco
@@ -1604,6 +1717,20 @@ export default function Navbar() {
               )}
             </Link>
 
+            <Link
+              href="/wishlist"
+              aria-label={`Wishlist${wishlist.length > 0 ? `, ${wishlist.length} items` : ""}`}
+              className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-600 hover:border-amber-300 hover:text-amber-600 transition-colors"
+            >
+              <Heart size={18} />
+
+              {wishlist.length > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center border-2 border-white">
+                  {wishlist.length}
+                </span>
+              )}
+            </Link>
+
             <a
               href="https://wa.me/910000000000"
               target="_blank"
@@ -1623,7 +1750,10 @@ export default function Navbar() {
 
         {searchOpen && (
           <div className="md:hidden border-t border-neutral-100 px-3 sm:px-6 py-3 bg-white">
-            <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 h-11 px-4 rounded-full border border-neutral-200 bg-neutral-50 focus-within:border-amber-400 focus-within:bg-white transition-colors">
+            <form
+              onSubmit={handleSearchSubmit}
+              className="flex items-center gap-2 h-11 px-4 rounded-full border border-neutral-200 bg-neutral-50 focus-within:border-amber-400 focus-within:bg-white transition-colors"
+            >
               <Search size={16} className="text-neutral-400 shrink-0" />
               <input
                 type="text"
@@ -1665,13 +1795,18 @@ export default function Navbar() {
                         : "bg-white text-neutral-700 border-neutral-200 hover:border-amber-300 hover:text-amber-700 hover:bg-amber-50"
                     }`}
                   >
-                    <Icon size={16} className={isActive ? "text-white" : "text-amber-500"} />
+                    <Icon
+                      size={16}
+                      className={isActive ? "text-white" : "text-amber-500"}
+                    />
                     {label}
                   </Link>
                 );
               }
 
-              return <DropdownPill key={item.label} {...item} pathname={pathname} />;
+              return (
+                <DropdownPill key={item.label} {...item} pathname={pathname} />
+              );
             })}
           </div>
 

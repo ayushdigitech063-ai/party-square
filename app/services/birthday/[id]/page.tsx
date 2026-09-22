@@ -1,43 +1,30 @@
 "use client"; 
 
 import Link from "next/link";
-import { diwaliProducts } from "@/app/data/diwaliProducts";
+import { birthdayProducts } from "../data/kidsbirthdayproduct";
 import { use } from "react";
+import { useRouter } from "next/navigation";
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export default function DiwaliProductDetail({ params }: PageProps) {
+export default function BirthdayProductDetail({ params }: PageProps) {
+  const router = useRouter();
   const resolvedParams = use(params);
-  const productId = resolvedParams.id;
-
-  const product = diwaliProducts.find((p) => p.id === productId);
-
-  if (!product) {
-    return (
-      <div className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center px-6">
-        <h1 className="text-4xl font-bold font-serif text-neutral-900 mb-2">404</h1>
-        <p className="text-neutral-600 mb-6">No products available</p>
-        <Link
-          href="/Festivals/diwali/all-products"
-          className="bg-neutral-950 text-white px-6 py-3 rounded-full text-xs uppercase tracking-wider font-bold"
-        >
-          Back to Catalogue
-        </Link>
-      </div>
-    );
-  }
-
+  const productId = Number(resolvedParams.id);
+ 
+  const product = birthdayProducts.find((p) => p.id == productId);
+  
   return (
     <div className="min-h-screen bg-[#FAF7F2] px-6 py-10">
       <div className="max-w-5xl mx-auto space-y-8">
-        <Link
-          href="/Festivals/diwali/all-products"
+        <button
+          onClick={() => router.back()}
           className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-neutral-600 hover:text-amber-600"
         >
           &larr; Back to All Products
-        </Link>
+        </button>
 
         <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-amber-200/60 grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:p-10">
           <div className="w-full h-80 md:h-[420px] bg-neutral-50 rounded-2xl overflow-hidden relative">
@@ -54,11 +41,11 @@ export default function DiwaliProductDetail({ params }: PageProps) {
                 {product.name}
               </h1>
               <p className="text-neutral-500 text-sm leading-relaxed">
-                {product.fullDesc}
+                {product.description}
               </p>
             </div>
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-900">
                 Key Features:
               </h3>
@@ -67,7 +54,7 @@ export default function DiwaliProductDetail({ params }: PageProps) {
                   <li key={index}>{feature}</li>
                 ))}
               </ul>
-            </div>
+            </div> */}
 
             <div className="pt-6 border-t border-neutral-100 flex items-center justify-between">
               <div>
