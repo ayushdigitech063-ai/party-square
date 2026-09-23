@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { birthdayProducts } from "../../data/motherbirthdayproduct";
 import { use } from "react";
 import { useRouter } from "next/navigation";
 
@@ -9,51 +8,28 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export default function BirthdayProduct({ params }: PageProps) {
-  const router = useRouter();
+export default function FatherBookingPage({ params }: PageProps) {
+    const router = useRouter();
   const resolvedParams = use(params);
+
   const productId = Number(resolvedParams.id);
 
-  const product = birthdayProducts.find((p) => p.id == productId);
-
-
-  if (!product) {
   return (
-    <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center px-6">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold text-neutral-900">
-          Product Not Found
-        </h1>
+    <div className="min-h-screen bg-[#FAF8F5] px-6 py-10">
+      <div className="max-w-4xl mx-auto">
 
-        <p className="mt-2 text-sm text-neutral-500">
-          The birthday decoration product you are looking for does not exist.
-        </p>
-
-        <button
-          onClick={() => router.back()}
-          className="mt-6 bg-neutral-950 text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition-colors"
-        >
-          Go Back
-        </button>
-      </div>
-    </div>
-  );
-}
-  return (
-    <div className="min-h-screen bg-[#FAF7F2] px-6 py-10">
-      <div className="max-w-5xl mx-auto space-y-8">
         <button
           onClick={() => router.back()}
           className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-neutral-600 hover:text-amber-600"
         >
           &larr; Back to All Products
         </button>
-
-        <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-amber-200/60 grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:p-10">
+         
+       {/* <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-amber-200/60 grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:p-10">
           <div className="w-full h-80 md:h-[420px] bg-neutral-50 rounded-2xl overflow-hidden relative">
             <img
               src={product.image}
-              alt="product image"
+              alt={product.name}
               className="w-full h-full object-cover"
             />
           </div>
@@ -67,17 +43,6 @@ export default function BirthdayProduct({ params }: PageProps) {
                 {product.description}
               </p>
             </div>
-
-            {/* <div className="space-y-2">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-900">
-                Key Features:
-              </h3>
-              <ul className="list-disc list-inside text-xs text-neutral-600 space-y-1">
-                {product.features.map((feature, index) => (
-                  <li key={index}>{feature}</li>
-                ))}
-              </ul>
-            </div> */}
 
             <div className="pt-6 border-t border-neutral-100 flex items-center justify-between">
               <div>
@@ -97,7 +62,8 @@ export default function BirthdayProduct({ params }: PageProps) {
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
+
       </div>
     </div>
   );

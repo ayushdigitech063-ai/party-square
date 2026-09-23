@@ -15,6 +15,29 @@ export default function BirthdayProductDetail({ params }: PageProps) {
   const productId = Number(resolvedParams.id);
  
   const product = birthdayProducts.find((p) => p.id == productId);
+
+  if (!product) {
+  return (
+    <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center px-6">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold text-neutral-900">
+          Product Not Found
+        </h1>
+
+        <p className="mt-2 text-sm text-neutral-500">
+          The birthday decoration product you are looking for does not exist.
+        </p>
+
+        <button
+          onClick={() => router.back()}
+          className="mt-6 bg-neutral-950 text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition-colors"
+        >
+          Go Back
+        </button>
+      </div>
+    </div>
+  );
+}
   
   return (
     <div className="min-h-screen bg-[#FAF7F2] px-6 py-10">
@@ -30,7 +53,7 @@ export default function BirthdayProductDetail({ params }: PageProps) {
           <div className="w-full h-80 md:h-[420px] bg-neutral-50 rounded-2xl overflow-hidden relative">
             <img
               src={product.image}
-              alt={product.name}
+              alt="product image"
               className="w-full h-full object-cover"
             />
           </div>

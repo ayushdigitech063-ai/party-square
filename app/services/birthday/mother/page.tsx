@@ -50,7 +50,7 @@ export default function MotherBirthdayPage() {
   ];
 
   // Active hover state for interactive cards feedback
-  const [activeCard, setActiveCard] = useState(null);
+  const [activeCard, setActiveCard] = useState<number | null>(null);
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-neutral-900 font-sans selection:bg-[#C5A059] selection:text-white">

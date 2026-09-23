@@ -118,7 +118,7 @@ export default function Wishlist() {
                   </h2>
 
                   <p className="mt-2 text-[13px] leading-5 text-[#776e66]">
-                    {product.description}
+                    {product.desc}
                   </p>
 
                   <div className="my-5 h-px bg-[#eee4dc]" />

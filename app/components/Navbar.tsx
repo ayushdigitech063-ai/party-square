@@ -1297,7 +1297,7 @@ function DropdownPill({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const closeTimerRef = useRef<ReturnType<typeof window.setTimeout> | null>(
+  const closeTimerRef = useRef<number | null>(
     null,
   );
 
