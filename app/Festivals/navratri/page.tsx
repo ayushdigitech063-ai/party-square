@@ -9,12 +9,15 @@ import {
   Star,
   Heart,
   Flame,
+  ShoppingBag,
 } from "lucide-react";
 import { useWishlist } from "../../context/wishlistcontext";
+import { useCart } from "@/app/context/CartContext";
 
 export default function NavratriPage() {
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
   const [isMounted, setIsMounted] = useState(false);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     setIsMounted(true);
@@ -24,7 +27,19 @@ export default function NavratriPage() {
     return null;
   }
 
-  // IDs start from 8 onwards to avoid conflict with product.ts (1 to 7)
+  const handleAddToCart = (product: any, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart({
+      id: String(product.id),
+      name: product.name,
+      price: String(product.price),
+      image: product.image,
+      desc: product.desc || "",
+      category: "Navratri Decoration",
+    });
+  };
+
   const divineEssentials = [
     { id: 8, name: "Divine Festive Flower Decoration", price: "₹1,299", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJaZ1rs3P1NjRNAHiBEB7mDIa-vYBsdT6osygPyiU0yA&s=10", desc: "Fresh-look ornamental floral arrangements and decorative strings for temple sanctum." },
     { id: 9, name: "Mata Ji Heavy Zari Poshak", price: "₹1,899", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZPiEhDgiTwnUG61tRbvZ76NvWeotRitwJclxG7hNEgg&s=10", desc: "Exquisite designer attire and vastra set adorned with rich gold embroidery for Goddess Durga." },
@@ -91,22 +106,11 @@ export default function NavratriPage() {
       image: "/garba3.png",
       desc: "Overhead canopy drapes and vibrant cultural elements for community Garba celebrations.",
     },
-    { id: 11, name: "Divine Mata Ji Royal Darbar Setup", price: "₹8,499", image: "/mata.png", desc: "Auspicious flower backdrops and traditional chowki setup for divine Mata Ji worship." },
-    { id: 12, name: "Grand Navdurga Floral Mandap", price: "₹12,999", image: "/mata1.png", desc: "Exquisite floral decorations and lighting dedicated to the nine forms of Goddess Durga." },
-    { id: 13, name: "Akhand Jyoti & Prasad Station", price: "₹4,599", image: "/mata2.png", desc: "Sacred corner arrangement for sacred flames, traditional offerings, and bhog." },
-    { id: 14, name: "Traditional Ghatasthapana Decor", price: "₹6,299", image: "/mata3.png", desc: "Authentic ritualistic setup for Kalash sthapana with fresh mango leaves and holy coconuts." }
-  ];
-
-  const specialGarbaPandal = [
-    { id: 15, name: "Vibrant Garba Night Stage & Backdrop", price: "₹18,999", image: "/garba.png", desc: "High-energy colorful stage styling with traditional hangings and ethnic motifs for dandiya nights." },
-    { id: 16, name: "Society Dandiya Ground Illumination", price: "₹24,999", image: "/garba1.png", desc: "Complete ground fairy lighting, colorful umbrellas, and traditional dandiya event setup." },
-    { id: 17, name: "Traditional Chaniya Choli Photo Booth", price: "₹9,499", image: "/garba2.png", desc: "Stunning ethnic photo corner styled with traditional props and colourful Gujarati prints." },
-    { id: 18, name: "Dhol & Folk Beats Pandal Canopy", price: "₹15,499", image: "/garba3.png", desc: "Overhead canopy drapes and vibrant cultural elements for community Garba celebrations." }
   ];
 
   return (
     <div className="min-h-screen text-neutral-900 font-sans bg-[#FFFDF9] selection:bg-rose-600 selection:text-white overflow-x-hidden pb-20">
-      {/* Hero Section with beground.png as Full Width & Height Background */}
+      {/* Hero Section */}
       <section className="relative w-full h-[85vh] min-h-[550px] px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[35px] shadow-2xl">
         <div
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
@@ -143,31 +147,62 @@ export default function NavratriPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {divineEssentials.map((item) => (
-            <div key={item.id} className="bg-white border border-rose-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-              <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                <span className="absolute top-3 left-3 bg-rose-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">Puja Special</span>
-              </div>
-              <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                <div className="space-y-1.5">
-                  <h3 className="font-serif text-base font-bold text-neutral-900">{item.name}</h3>
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light">{item.desc}</p>
+          {divineEssentials.map((item) => {
+            const isLiked = isInWishlist(item.id);
+            return (
+              <div key={item.id} className="bg-white border border-rose-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
+                  <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                  <span className="absolute top-3 left-3 bg-rose-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">Puja Special</span>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleWishlist(item);
+                    }}
+                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-500 shadow transition cursor-pointer"
+                  >
+                    <Heart
+                      size={18}
+                      className={
+                        isLiked
+                          ? "fill-rose-500 text-rose-500"
+                          : "text-gray-700"
+                      }
+                    />
+                  </button>
                 </div>
-                
-                <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
-                    <span className="text-neutral-900 font-bold text-base">{item.price}</span>
+                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
+                  <div className="space-y-1.5">
+                    <h3 className="font-serif text-base font-bold text-neutral-900">{item.name}</h3>
+                    <p className="text-neutral-500 text-xs leading-relaxed font-light">{item.desc}</p>
                   </div>
-                  <Link href={`/Festivals/navratri/${item.id}`} className="bg-rose-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-500 transition shadow flex items-center space-x-1">
-                    <span>Book</span>
-                    <ArrowRight size={14} />
-                  </Link>
+                  
+                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
+                      <span className="text-neutral-900 font-bold text-base">{item.price}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        type="button"
+                        onClick={(e) => handleAddToCart(item, e)}
+                        title="Add to Cart"
+                        className="bg-rose-100 hover:bg-rose-200 text-rose-900 p-2.5 rounded-full transition-colors cursor-pointer border border-rose-200 shadow-sm"
+                      >
+                        <ShoppingBag size={16} />
+                      </button>
+                      <Link href={`/Festivals/navratri/${item.id}`} className="bg-rose-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-500 transition shadow flex items-center space-x-1">
+                        <span>Book</span>
+                        <ArrowRight size={14} />
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="text-center mt-12">
@@ -211,7 +246,10 @@ export default function NavratriPage() {
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                   />
                   <button
-                    onClick={() => {
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
                       toggleWishlist(item);
                     }}
                     aria-label={
@@ -248,18 +286,21 @@ export default function NavratriPage() {
                         {item.price}
                       </span>
                     </div>
-                    <Link
-                      href="/contact"
-                      className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-600 transition shadow flex items-center space-x-1"
-                    >
-                      <span>Book</span>
-                      <ArrowRight size={14} />
-                    </Link>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        type="button"
+                        onClick={(e) => handleAddToCart(item, e)}
+                        title="Add to Cart"
+                        className="bg-rose-100 hover:bg-rose-200 text-rose-900 p-2.5 rounded-full transition-colors cursor-pointer border border-rose-200 shadow-sm"
+                      >
+                        <ShoppingBag size={16} />
+                      </button>
+                      <Link href={`/Festivals/navratri/${item.id}`} className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-600 transition shadow flex items-center space-x-1">
+                        <span>Book</span>
+                        <ArrowRight size={14} />
+                      </Link>
+                    </div>
                   </div>
-                  <Link href={`/Festivals/navratri/${item.id}`} className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-600 transition shadow flex items-center space-x-1">
-                    <span>Book</span>
-                    <ArrowRight size={14} />
-                  </Link>
                 </div>
               </div>
             );
@@ -297,7 +338,10 @@ export default function NavratriPage() {
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                   />
                   <button
-                    onClick={() => {
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
                       toggleWishlist(item);
                     }}
                     aria-label={
@@ -337,18 +381,21 @@ export default function NavratriPage() {
                         {item.price}
                       </span>
                     </div>
-                    <Link
-                      href="/contact"
-                      className="bg-rose-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-500 transition shadow flex items-center space-x-1"
-                    >
-                      <span>Book</span>
-                      <ArrowRight size={14} />
-                    </Link>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        type="button"
+                        onClick={(e) => handleAddToCart(item, e)}
+                        title="Add to Cart"
+                        className="bg-rose-100 hover:bg-rose-200 text-rose-900 p-2.5 rounded-full transition-colors cursor-pointer border border-rose-200 shadow-sm"
+                      >
+                        <ShoppingBag size={16} />
+                      </button>
+                      <Link href={`/Festivals/navratri/${item.id}`} className="bg-rose-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-500 transition shadow flex items-center space-x-1">
+                        <span>Book</span>
+                        <ArrowRight size={14} />
+                      </Link>
+                    </div>
                   </div>
-                  <Link href={`/Festivals/navratri/${item.id}`} className="bg-rose-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-rose-500 transition shadow flex items-center space-x-1">
-                    <span>Book</span>
-                    <ArrowRight size={14} />
-                  </Link>
                 </div>
               </div>
             );

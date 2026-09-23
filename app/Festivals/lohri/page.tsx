@@ -9,13 +9,15 @@ import {
   Star,
   Flame,
   Heart,
+  ShoppingBag,
 } from "lucide-react";
 import { useWishlist } from "../../context/wishlistcontext";
-import { Sparkles, CheckCircle, ArrowRight, Flame, Heart } from "lucide-react";
+import { useCart } from "@/app/context/CartContext";
 
 export default function LohriPage() {
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
   const [isMounted, setIsMounted] = useState(false);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     setIsMounted(true);
@@ -25,7 +27,19 @@ export default function LohriPage() {
     return null;
   }
 
-  // Yahan IDs ko lohriProducts.ts ke mutabiq 100, 102, 103, 104 kar diya gaya hai
+  const handleAddToCart = (product: any, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart({
+      id: String(product.id),
+      name: product.name,
+      price: String(product.price),
+      image: product.image,
+      desc: product.desc || "",
+      category: "Lohri Decoration",
+    });
+  };
+
   const traditionalLohriDecor = [
     {
       id: 1,
@@ -86,23 +100,10 @@ export default function LohriPage() {
       image: "/loripic8.png",
       desc: "Spectacular overhead canopy lights and bonfire enclosure for community and family feasts.",
     },
-    { id: 100, name: "Traditional Bonfire & Seating Setup", price: "₹6,499", image: "/loripic1.png", desc: "Authentic traditional bonfire arrangement with comfortable ethnic floor seating for family." },
-    { id: 102, name: "Peanuts, Popcorn & Revri Station", price: "₹3,999", image: "/loripic2.png", desc: "Traditional festive snacking station decorated with rustic Punjabi elements and bells." },
-    { id: 103, name: "Dhol & Folk Music Corner", price: "₹8,499", image: "/loripic3.png", desc: "Vibrant cultural corner styling featuring traditional Dhol, phulkari props, and folk elements." },
-    { id: 104, name: "Warm Marigold & Sugarcane Arch", price: "₹5,899", image: "/loripic4.png", desc: "Fresh sugarcane stalks intertwined with bright marigold flowers for auspicious welcomes." }
-  ];
-
-  const specialPunjabiLohri = [
-    { id: 105, name: "Royal Phulkari Backdrop & Mandap", price: "₹12,499", image: "/loripic5.png", desc: "Exquisite handmade colorful phulkari cloth backdrop curated for grand Lohri celebrations." },
-    { id: 106, name: "Bhangra & Folk Dance Stage Decor", price: "₹16,999", image: "/loripic6.png", desc: "High-energy stage decoration with traditional Punjabi props, lights, and vibrant drapes." },
-    { id: 107, name: "Desi Ghee & Til Sweets Station", price: "₹4,999", image: "/loripic7.png", desc: "Traditional winter festive counter highlighting sesame sweets, jaggery, and festive treats." },
-    { id: 108, name: "Grand Bonfire & Lighting Canopy", price: "₹19,999", image: "/loripic8.png", desc: "Spectacular overhead canopy lights and bonfire enclosure for community and family feasts." }
   ];
 
   return (
     <div className="min-h-screen text-neutral-900 font-sans bg-[#FFF9F5] selection:bg-orange-600 selection:text-white overflow-x-hidden pb-20">
-      {/* Hero Section with loribgpic.png as Background */}
-      
       {/* Hero Section */}
       <section className="relative w-full h-[85vh] min-h-[550px] px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[35px] shadow-2xl">
         <div
@@ -160,7 +161,10 @@ export default function LohriPage() {
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                   />
                   <button
-                    onClick={() => {
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
                       toggleWishlist(item);
                     }}
                     aria-label={
@@ -177,27 +181,14 @@ export default function LohriPage() {
                       }
                     />
                   </button>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {traditionalLohriDecor.slice(0, 3).map((item) => (
-            <div key={item.id} className="bg-white border border-orange-100 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-              <Link href={`/Festivals/lohri/${item.id}`} className="relative h-64 w-full overflow-hidden bg-neutral-100 block">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                <span className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-500 shadow transition">
-                  <Heart size={18} />
-                </span>
-              </Link>
-              <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                <div className="space-y-1.5">
-                  <Link href={`/Festivals/lohri/${item.id}`}>
-                    <h3 className="font-serif text-base font-bold text-neutral-900 hover:text-orange-600 transition-colors">{item.name}</h3>
-                  </Link>
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light">{item.desc}</p>
                 </div>
                 <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
                   <div className="space-y-1.5">
-                    <h3 className="font-serif text-base font-bold text-neutral-900">
-                      {item.name}
-                    </h3>
+                    <Link href={`/Festivals/lohri/${item.id}`}>
+                      <h3 className="font-serif text-base font-bold text-neutral-900 hover:text-orange-600 transition-colors">
+                        {item.name}
+                      </h3>
+                    </Link>
                     <p className="text-neutral-500 text-xs leading-relaxed font-light">
                       {item.desc}
                     </p>
@@ -212,18 +203,24 @@ export default function LohriPage() {
                         {item.price}
                       </span>
                     </div>
-                    <Link
-                      href="/contact"
-                      className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-orange-600 transition shadow flex items-center space-x-1"
-                    >
-                      <span>Book</span>
-                      <ArrowRight size={14} />
-                    </Link>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        type="button"
+                        onClick={(e) => handleAddToCart(item, e)}
+                        title="Add to Cart"
+                        className="bg-orange-100 hover:bg-orange-200 text-orange-900 p-2.5 rounded-full transition-colors cursor-pointer border border-orange-200 shadow-sm"
+                      >
+                        <ShoppingBag size={16} />
+                      </button>
+                      <Link
+                        href={`/Festivals/lohri/${item.id}`}
+                        className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-orange-600 transition shadow flex items-center space-x-1"
+                      >
+                        <span>Book</span>
+                        <ArrowRight size={14} />
+                      </Link>
+                    </div>
                   </div>
-                  <Link href={`/Festivals/lohri/${item.id}`} className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-orange-600 transition shadow flex items-center space-x-1">
-                    <span>Book</span>
-                    <ArrowRight size={14} />
-                  </Link>
                 </div>
               </div>
             );
@@ -273,12 +270,6 @@ export default function LohriPage() {
             </div>
 
             <div className="pt-2">
-              <Link
-                href="/contact"
-                className="bg-orange-500 hover:bg-orange-400 text-neutral-950 px-6 py-3 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-lg inline-flex items-center space-x-2"
-              >
-                <span>Book Grand Lohri Package</span>
-            <div className="pt-2">
               <Link href="/Festivals/lohri/all-products" className="bg-orange-500 hover:bg-orange-400 text-neutral-950 px-6 py-3 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-lg inline-flex items-center space-x-2">
                 <span>Explore All Packages</span>
                 <ArrowRight size={14} />
@@ -311,65 +302,84 @@ export default function LohriPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {specialPunjabiLohri.map((item) => (
-            <div
-              key={item.id}
-              className="bg-white border border-orange-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-            >
-              <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                />
-                <span className="absolute top-3 left-3 bg-orange-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">
-                  Punjabi Special
-                </span>
-              </div>
-              <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                <div className="space-y-1.5">
-                  <h3 className="font-serif text-base font-bold text-neutral-900">
-                    {item.name}
-                  </h3>
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light">
-                    {item.desc}
-                  </p>
-            <div key={item.id} className="bg-white border border-orange-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-              <Link href={`/Festivals/lohri/${item.id}`} className="relative h-64 w-full overflow-hidden bg-neutral-100 block">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                <span className="absolute top-3 left-3 bg-orange-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">Punjabi Special</span>
-              </Link>
-              <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                <div className="space-y-1.5">
-                  <Link href={`/Festivals/lohri/${item.id}`}>
-                    <h3 className="font-serif text-base font-bold text-neutral-900 hover:text-orange-600 transition-colors">{item.name}</h3>
-                  </Link>
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light">{item.desc}</p>
-                </div>
-
-                <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">
-                      Starts At
-                    </span>
-                    <span className="text-neutral-900 font-bold text-base">
-                      {item.price}
-                    </span>
-                  </div>
-                  <Link
-                    href="/contact"
-                    className="bg-orange-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-orange-500 transition shadow flex items-center space-x-1"
+          {specialPunjabiLohri.map((item) => {
+            const isLiked = isInWishlist(item.id);
+            return (
+              <div
+                key={item.id}
+                className="bg-white border border-orange-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+              >
+                <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                  />
+                  <span className="absolute top-3 left-3 bg-orange-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">
+                    Punjabi Special
+                  </span>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleWishlist(item);
+                    }}
+                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-500 shadow transition cursor-pointer"
                   >
-                  <Link href={`/Festivals/lohri/${item.id}`} className="bg-orange-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-orange-500 transition shadow flex items-center space-x-1">
-                    <span>Book</span>
-                    <ArrowRight size={14} />
-                  </Link>
+                    <Heart
+                      size={18}
+                      className={
+                        isLiked
+                          ? "fill-rose-500 text-rose-500"
+                          : "text-gray-700"
+                      }
+                    />
+                  </button>
+                </div>
+                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
+                  <div className="space-y-1.5">
+                    <Link href={`/Festivals/lohri/${item.id}`}>
+                      <h3 className="font-serif text-base font-bold text-neutral-900 hover:text-orange-600 transition-colors">
+                        {item.name}
+                      </h3>
+                    </Link>
+                    <p className="text-neutral-500 text-xs leading-relaxed font-light">
+                      {item.desc}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">
+                        Starts At
+                      </span>
+                      <span className="text-neutral-900 font-bold text-base">
+                        {item.price}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        type="button"
+                        onClick={(e) => handleAddToCart(item, e)}
+                        title="Add to Cart"
+                        className="bg-orange-100 hover:bg-orange-200 text-orange-900 p-2.5 rounded-full transition-colors cursor-pointer border border-orange-200 shadow-sm"
+                      >
+                        <ShoppingBag size={16} />
+                      </button>
+                      <Link href={`/Festivals/lohri/${item.id}`} className="bg-orange-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-orange-500 transition shadow flex items-center space-x-1">
+                        <span>Book</span>
+                        <ArrowRight size={14} />
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
     </div>
   );
 }
+

@@ -9,13 +9,15 @@ import {
   Star,
   Heart,
   Flame,
+  ShoppingBag,
 } from "lucide-react";
 import { useWishlist } from "../../context/wishlistcontext";
-import { Sparkles, CheckCircle, ArrowRight, Star, Heart } from "lucide-react";
+import { useCart } from "@/app/context/CartContext";
 
 export default function JanmashtamiPage() {
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
   const [isMounted, setIsMounted] = useState(false);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     setIsMounted(true);
@@ -24,6 +26,19 @@ export default function JanmashtamiPage() {
   if (!isMounted) {
     return null;
   }
+
+  const handleAddToCart = (product: any, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart({
+      id: String(product.id),
+      name: product.name,
+      price: String(product.price),
+      image: product.image,
+      desc: product.desc || "",
+      category: "Janmashtami Decoration",
+    });
+  };
 
   const celebrationDecor = [
     {
@@ -85,23 +100,10 @@ export default function JanmashtamiPage() {
       image: "/janmasthmmi9.png",
       desc: "Complete thematic temple compound decoration recreating the magical lanes of Vrindavan.",
     },
-    { id: "8", name: "Divine Jhulan & Laddu Gopal Swing", price: "₹5,499", image: "/janmasthmmi.png", desc: "Exquisitely decorated floral swings (jhula) adorned with fragrant flowers and golden bells." },
-    { id: "9", name: "Makhan Handi & Ethnic Decor Setup", price: "₹4,299", image: "/janmasthmmi1.png", desc: "Traditional hanging handis, peacock feathers, and vibrant butter pot arrangements." },
-    { id: "10", name: "Vibrant Raas Leela Backdrop", price: "₹7,899", image: "/janmasthmmi2.png", desc: "Colorful traditional backdrop depicting Lord Krishna's divine leelas and pastimes." },
-    { id: "11", name: "Peacock Motif Festive Arch", price: "₹6,499", image: "/janmasthmmi4.png", desc: "Grand entrance arch styled with peacock feathers, blue drapes, and glowing fairy lights." }
-  ];
-
-  const templeDecor = [
-    { id: "12", name: "Grand Mandir Floral Sanctum", price: "₹14,999", image: "/janmasthmmi6.png", desc: "Heavy marigold and orchid flower decorations transforming your home mandir into Gokul." },
-    { id: "13", name: "Janmotsav Midnight Glow Illumination", price: "₹11,599", image: "/janmasthmmi7.png", desc: "Special midnight celebration lighting setup with serial lights, diyas, and spotlights." },
-    { id: "14", name: "Radha-Krishna Phoolon ki Holi Setup", price: "₹9,299", image: "/janmasthmmi8.png", desc: "Auspicious flower petal arrangements and divine deity chowki decoration." },
-    { id: "15", name: "Braj Style Vrindavan Street Theme", price: "₹18,499", image: "/janmasthmmi9.png", desc: "Complete thematic temple compound decoration recreating the magical lanes of Vrindavan." }
   ];
 
   return (
     <div className="min-h-screen text-neutral-900 font-sans bg-[#FBF9F4] selection:bg-emerald-600 selection:text-white overflow-x-hidden pb-20">
-      {/* Hero Section with bgcolor.png as Full Width & Height Background */}
-      
       {/* Hero Section */}
       <section className="relative w-full h-[85vh] min-h-[550px] px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[35px] shadow-2xl">
         <div
@@ -160,7 +162,10 @@ export default function JanmashtamiPage() {
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                   />
                   <button
-                    onClick={() => {
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
                       toggleWishlist(item);
                     }}
                     aria-label={
@@ -177,19 +182,6 @@ export default function JanmashtamiPage() {
                       }
                     />
                   </button>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {celebrationDecor.slice(0, 3).map((item) => (
-            <div key={item.id} className="bg-white border border-emerald-100 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-              <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                <button className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-emerald-600 shadow transition">
-                  <Heart size={18} />
-                </button>
-              </div>
-              <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                <div className="space-y-1.5">
-                  <h3 className="font-serif text-base font-bold text-neutral-900">{item.name}</h3>
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light">{item.desc}</p>
                 </div>
                 <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
                   <div className="space-y-1.5">
@@ -210,19 +202,24 @@ export default function JanmashtamiPage() {
                         {item.price}
                       </span>
                     </div>
-                    <Link
-                      href="/contact"
-                      className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-emerald-600 transition shadow flex items-center space-x-1"
-                    >
-                      <span>Book</span>
-                      <ArrowRight size={14} />
-                    </Link>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        type="button"
+                        onClick={(e) => handleAddToCart(item, e)}
+                        title="Add to Cart"
+                        className="bg-emerald-100 hover:bg-emerald-200 text-emerald-900 p-2.5 rounded-full transition-colors cursor-pointer border border-emerald-200 shadow-sm"
+                      >
+                        <ShoppingBag size={16} />
+                      </button>
+                      <Link
+                        href={`/Festivals/janmasthmi/${item.id}`}
+                        className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-emerald-600 transition shadow flex items-center space-x-1"
+                      >
+                        <span>Explore</span>
+                        <ArrowRight size={14} />
+                      </Link>
+                    </div>
                   </div>
-                  {/* Correct routing to dynamic detail page */}
-                  <Link href={`/Festivals/janmasthmi/${item.id}`} className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-emerald-600 transition shadow flex items-center space-x-1">
-                    <span>Explore</span>
-                    <ArrowRight size={14} />
-                  </Link>
                 </div>
               </div>
             );
@@ -255,10 +252,6 @@ export default function JanmashtamiPage() {
               </span>
             </h2>
             <p className="text-neutral-200 text-xs sm:text-sm leading-relaxed font-light">
-              Immerse your family and society in the divine ecstasy of Lord
-              Krishna's birth. Our professional decorators weave traditional
-              Pichwai art, fresh fragrant florals, and majestic lighting into an
-              unforgettable celebration.
               Immerse your family and society in the divine ecstasy of Lord Krishna&apos;s birth. Our professional decorators weave traditional Pichwai art, fresh fragrant florals, and majestic lighting into an unforgettable celebration.
             </p>
             <div className="space-y-2.5 pt-1">
@@ -277,11 +270,6 @@ export default function JanmashtamiPage() {
             </div>
 
             <div className="pt-3">
-              <Link
-                href="/contact"
-                className="bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
-              >
-                <span>Book Grand Janmashtami Package</span>
               <Link href="/Festivals/janmasthmi/8" className="bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2">
                 <span>View Grand Package</span>
                 <ArrowRight size={16} />
@@ -315,53 +303,79 @@ export default function JanmashtamiPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {templeDecor.map((item) => (
-            <div
-              key={item.id}
-              className="bg-white border border-emerald-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-            >
-              <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                />
-                <span className="absolute top-3 left-3 bg-emerald-700 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">
-                  Mandir Special
-                </span>
-              </div>
-              <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                <div className="space-y-1.5">
-                  <h3 className="font-serif text-base font-bold text-neutral-900">
-                    {item.name}
-                  </h3>
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light">
-                    {item.desc}
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">
-                      Starts At
-                    </span>
-                    <span className="text-neutral-900 font-bold text-base">
-                      {item.price}
-                    </span>
-                  </div>
-                  <Link
-                    href="/contact"
-                    className="bg-emerald-700 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-emerald-600 transition shadow flex items-center space-x-1"
+          {templeDecor.map((item) => {
+            const isLiked = isInWishlist(item.id);
+            return (
+              <div
+                key={item.id}
+                className="bg-white border border-emerald-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+              >
+                <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                  />
+                  <span className="absolute top-3 left-3 bg-emerald-700 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">
+                    Mandir Special
+                  </span>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleWishlist(item);
+                    }}
+                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-500 shadow transition cursor-pointer"
                   >
-                    <span>Book</span>
-                  <Link href={`/Festivals/janmasthmi/${item.id}`} className="bg-emerald-700 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-emerald-600 transition shadow flex items-center space-x-1">
-                    <span>Explore</span>
-                    <ArrowRight size={14} />
-                  </Link>
+                    <Heart
+                      size={18}
+                      className={
+                        isLiked
+                          ? "fill-rose-500 text-rose-500"
+                          : "text-gray-700"
+                      }
+                    />
+                  </button>
+                </div>
+                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
+                  <div className="space-y-1.5">
+                    <h3 className="font-serif text-base font-bold text-neutral-900">
+                      {item.name}
+                    </h3>
+                    <p className="text-neutral-500 text-xs leading-relaxed font-light">
+                      {item.desc}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">
+                        Starts At
+                      </span>
+                      <span className="text-neutral-900 font-bold text-base">
+                        {item.price}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        type="button"
+                        onClick={(e) => handleAddToCart(item, e)}
+                        title="Add to Cart"
+                        className="bg-emerald-100 hover:bg-emerald-200 text-emerald-900 p-2.5 rounded-full transition-colors cursor-pointer border border-emerald-200 shadow-sm"
+                      >
+                        <ShoppingBag size={16} />
+                      </button>
+                      <Link href={`/Festivals/janmasthmi/${item.id}`} className="bg-emerald-700 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-emerald-600 transition shadow flex items-center space-x-1">
+                        <span>Explore</span>
+                        <ArrowRight size={14} />
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -424,3 +438,4 @@ export default function JanmashtamiPage() {
     </div>
   );
 }
+

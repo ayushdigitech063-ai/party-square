@@ -9,13 +9,15 @@ import {
   Star,
   ShieldCheck,
   Heart,
+  ShoppingBag,
 } from "lucide-react";
 import { useWishlist } from "../../context/wishlistcontext";
-
+import { useCart } from "@/app/context/CartContext";
 
 export default function GaneshChaturthiPage() {
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
   const [isMounted, setIsMounted] = useState(false);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     setIsMounted(true);
@@ -24,6 +26,19 @@ export default function GaneshChaturthiPage() {
   if (!isMounted) {
     return null;
   }
+
+  const handleAddToCart = (product: any, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart({
+      id: String(product.id),
+      name: product.name,
+      price: String(product.price),
+      image: product.image,
+      desc: product.desc || "",
+      category: "Ganesh Chaturthi Decoration",
+    });
+  };
 
   const bestLovedDecor = [
     {
@@ -157,7 +172,7 @@ export default function GaneshChaturthiPage() {
         </div>
       </section>
 
-      {/* Best Loved Decorations (3 Cards Grid) */}
+      {/* Best Loved Decorations Grid */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
           <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
@@ -186,7 +201,10 @@ export default function GaneshChaturthiPage() {
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                   />
                   <button
-                    onClick={() => {
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
                       toggleWishlist(item);
                     }}
                     aria-label={
@@ -203,20 +221,8 @@ export default function GaneshChaturthiPage() {
                       }
                     />
                   </button>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {bestLovedDecor.slice(0, 3).map((item) => (
-            <div key={item.id} className="bg-white border border-amber-100 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-              <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                <button className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-500 shadow transition">
-                  <Heart size={18} />
-                </button>
-              </div>
-              <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                <div className="space-y-1.5">
-                  <h3 className="font-serif text-base font-bold text-neutral-900">{item.name}</h3>
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light">{item.desc}</p>
                 </div>
+
                 <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
                   <div className="space-y-1.5">
                     <h3 className="font-serif text-base font-bold text-neutral-900">
@@ -236,13 +242,23 @@ export default function GaneshChaturthiPage() {
                         {item.price}
                       </span>
                     </div>
-                    <Link
-                      href="/contact"
-                      className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1"
-                    >
-                      <span>Book</span>
-                      <ArrowRight size={14} />
-                    </Link>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        type="button"
+                        onClick={(e) => handleAddToCart(item, e)}
+                        title="Add to Cart"
+                        className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-full transition-colors cursor-pointer border border-amber-200 shadow-sm"
+                      >
+                        <ShoppingBag size={16} />
+                      </button>
+                      <Link
+                        href="/contact"
+                        className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1"
+                      >
+                        <span>Book</span>
+                        <ArrowRight size={14} />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -291,7 +307,10 @@ export default function GaneshChaturthiPage() {
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                   />
                   <button
-                    onClick={() => {
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
                       toggleWishlist(item);
                     }}
                     aria-label={
@@ -328,13 +347,23 @@ export default function GaneshChaturthiPage() {
                         {item.price}
                       </span>
                     </div>
-                    <Link
-                      href="/contact"
-                      className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1"
-                    >
-                      <span>Book</span>
-                      <ArrowRight size={14} />
-                    </Link>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        type="button"
+                        onClick={(e) => handleAddToCart(item, e)}
+                        title="Add to Cart"
+                        className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-full transition-colors cursor-pointer border border-amber-200 shadow-sm"
+                      >
+                        <ShoppingBag size={16} />
+                      </button>
+                      <Link
+                        href="/contact"
+                        className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1"
+                      >
+                        <span>Book</span>
+                        <ArrowRight size={14} />
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -364,9 +393,6 @@ export default function GaneshChaturthiPage() {
               key={card.id}
               className={`rounded-[32px] overflow-hidden shadow-2xl border border-white/20 bg-gradient-to-r ${card.gradientBg} text-white flex flex-col lg:flex-row items-stretch group`}
             >
-              {/* Content: mobile me neeche (order-2), desktop me left (lg:order-1) */}
-            <div key={card.id} className={`rounded-[32px] overflow-hidden shadow-2xl border border-white/20 bg-gradient-to-r ${card.gradientBg} text-white flex flex-col lg:flex-row items-stretch group`}>
-              
               <div className="p-6 sm:p-8 flex flex-col justify-between flex-1 space-y-4 order-2 lg:order-1">
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
@@ -420,8 +446,6 @@ export default function GaneshChaturthiPage() {
       {/* Masterpiece Showcase Section */}
       <section className="py-16 px-6 max-w-7xl mx-auto mb-10">
         <div className="bg-gradient-to-r from-amber-950 via-amber-900 to-neutral-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-amber-500/40 grid grid-cols-1 lg:grid-cols-2 items-stretch">
-          {/* Content: mobile me neeche (order-2), desktop me left (lg:order-1) */}
-          
           <div className="p-8 sm:p-12 flex flex-col justify-between space-y-6 order-2 lg:order-1">
             <div className="space-y-4">
               <div className="inline-flex items-center space-x-2 bg-amber-500/20 border border-amber-500/40 px-3.5 py-1.5 rounded-full text-amber-300 text-xs font-bold uppercase tracking-widest">
@@ -476,3 +500,4 @@ export default function GaneshChaturthiPage() {
     </div>
   );
 }
+
