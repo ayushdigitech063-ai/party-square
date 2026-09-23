@@ -7,7 +7,7 @@ export interface Product {
   slug?: string;
   name: string;
   price: string;
-  numericPrice?: number; // Added to support clean numeric calculation
+  numericPrice?: number;
   image: string;
   desc: string;
   category?: string;
@@ -23,6 +23,7 @@ interface CartContextType {
   isLiked: (id: string) => boolean;
   notification: { product: Product; message: string } | null;
   closeNotification: () => void;
+  cartCount: number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -101,31 +102,32 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     return likes.some((item) => item.id === id);
   };
 
+  // ✅ total items count for the navbar badge
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
     <CartContext.Provider
-      value={{ cart, likes, addToCart, removeFromCart, toggleLike, isLiked, notification, closeNotification }}
+      value={{ cart, likes, addToCart, removeFromCart, toggleLike, isLiked, notification, closeNotification, cartCount }}
     >
-      {/* Image Toast Notification Popup */}
-      {notification && (
-        <div className="fixed bottom-6 left-6 sm:left-10 z-50 bg-[#1A1A1A] text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 border border-amber-500/30 animate-slide-up max-w-md">
-          <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-amber-50 border border-amber-200">
-            <img src={notification.product.image} alt={notification.product.name} className="w-full h-full object-cover" />
-          </div>
-          <div className="flex-1 pr-2">
-            <p className="text-xs sm:text-sm font-medium text-gray-100 leading-tight">
-              <span className="font-bold text-amber-300">{notification.product.name}</span> ({notification.product.quantity} Units) {notification.message}
-            </p>
-          </div>
-          <button
-            onClick={closeNotification}
-            className="text-gray-400 hover:text-white p-1 transition cursor-pointer"
-            aria-label="Close"
-          >
-            ✕
-          </button>
-        </div>
-      )}
-
+{notification && (
+  <div className="fixed bottom-6 left-6 sm:left-10 z-50 bg-[#1A1A1A] text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 border border-red-500/30 animate-slide-up max-w-md">
+    <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-red-50 border border-red-200">
+      <img src={notification.product.image} alt={notification.product.name} className="w-full h-full object-cover" />
+    </div>
+    <div className="flex-1 pr-2">
+      <p className="text-xs sm:text-sm font-medium text-gray-100 leading-tight">
+        <span className="font-bold text-red-400">{notification.product.name}</span> ({notification.product.quantity} Units) {notification.message}
+      </p>
+    </div>
+    <button
+      onClick={closeNotification}
+      className="text-gray-400 hover:text-white p-1 transition cursor-pointer"
+      aria-label="Close"
+    >
+      ✕
+    </button>
+  </div>
+)}
       {children}
     </CartContext.Provider>
   );

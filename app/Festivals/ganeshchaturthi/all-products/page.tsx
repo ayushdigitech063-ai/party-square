@@ -1,7 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import { ganeshProducts } from "@/app/data/ganeshProducts";
+import { ShoppingBag } from "lucide-react";
+import { useCart } from "@/app/context/CartContext";
 
 export default function GaneshAllProductsPage() {
+  const { addToCart } = useCart();
+
   return (
     <div className="min-h-screen bg-[#FAF7F2] px-6 py-10">
       <div className="max-w-7xl mx-auto">
@@ -31,7 +37,7 @@ export default function GaneshAllProductsPage() {
 
               <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
                 <div className="space-y-1.5">
-                  <h2 className="text-neutral-900 text-base font-serif font-bold group-hover:text-amber-600 transition-colors">
+                  <h2 className="text-neutral-900 text-base font-serif font-bold transition-colors">
                     {product.name}
                   </h2>
                   <p className="text-neutral-500 text-xs leading-relaxed font-light">
@@ -42,15 +48,27 @@ export default function GaneshAllProductsPage() {
                 <div className="flex items-center justify-between pt-3 border-t border-neutral-100">
                   <div>
                     <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
-                    <span className="text-neutral-900 font-bold text-base">₹{product.price.toLocaleString()}</span>
+                    <span className="text-neutral-900 font-bold text-base">{product.price}</span>
                   </div>
                   
-                  <Link
-                    href={`/Festivals/ganeshchaturthi/${product.id}`}
-                    className="bg-neutral-950 hover:bg-amber-500 hover:text-neutral-950 text-white font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition-colors shadow inline-block text-center"
-                  >
-                    Book Now
-                  </Link>
+                  <div className="flex items-center gap-2">
+                    {/* Add to Cart Button using Context */}
+                    <button 
+                      onClick={() => addToCart(product, 1)}
+                      title="Add to Cart"
+                      className="w-10 h-10 rounded-full bg-[#FFF5DC] border border-amber-200 text-amber-900 flex items-center justify-center hover:bg-amber-500 hover:text-neutral-950 transition-colors shadow-sm cursor-pointer"
+                    >
+                      <ShoppingBag className="w-4 h-4" />
+                    </button>
+
+                    {/* Book Now Button */}
+                    <Link
+                      href={`/Festivals/ganeshchaturthi/${product.id}`}
+                      className="bg-[#D97706] hover:bg-[#B45309] text-white font-bold px-4 py-2.5 rounded-full text-xs uppercase tracking-wider transition-colors shadow inline-flex items-center gap-1 text-center"
+                    >
+                      Book &rarr;
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>

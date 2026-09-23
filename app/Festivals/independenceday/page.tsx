@@ -24,30 +24,31 @@ export default function IndependenceDayPage() {
     return null;
   }
 
+  // IMPORTANT: id values yahan independencedayProducts.ts ke id se EXACT match hone chahiye (string)
   const independenceDecor = [
     {
-      id: 1,
+      id: "8",
       name: "Tiranga Floral & Balloon Stage Arch",
       price: "₹5,499",
       image: "/pic1.png",
       desc: "Vibrant saffron, white, and green floral and balloon decorations for patriotic flag hoisting ceremonies.",
     },
     {
-      id: 2,
+      id: "9",
       name: "Freedom Fighter & National Hero Backdrop",
       price: "₹7,899",
       image: "/pic2.png",
       desc: "Inspiring thematic stage backdrop celebrating India's freedom struggle and national pride.",
     },
     {
-      id: 3,
+      id: "10",
       name: "Society & Office Tricolor Gate Styling",
       price: "₹4,299",
       image: "/pic3.png",
       desc: "Grand entrance decoration with tricolor ribbons, drapes, and welcoming patriotic banners.",
     },
     {
-      id: 4,
+      id: "11",
       name: "Patriotic Lighting & Canopy Setup",
       price: "₹9,499",
       image: "/pic4.png",
@@ -84,77 +85,78 @@ export default function IndependenceDayPage() {
           </p>
         </div>
       </section>
+
       {/* Naya Section: Featured Patriotic Collections (Aapke diye hue 3 products) */}
-<section className="py-16 px-6 max-w-7xl mx-auto">
-  <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-    <span className="text-xs uppercase tracking-[0.3em] text-orange-700 font-bold bg-orange-100 px-4 py-1.5 rounded-full inline-block">Featured Collections</span>
-    <h2 className="font-serif text-4xl sm:text-5xl font-bold text-neutral-900">Patriotic Decoration Specials</h2>
-    <p className="text-neutral-600 text-sm sm:text-base font-light">
-      Explore our handpicked tricolor decoration specials for grand national celebrations and events.
-    </p>
-  </div>
-
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-    {[
-      {
-        id: "feat-1",
-        name: "Tricolor Grand Event Decoration",
-        price: "₹3,499",
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrgUvPtNG6jzL9lLdNi44C8Jvvkk7DY9CocPlxrPqUaQ&s",
-        desc: "Magnificent national flag theme setup designed to bring vibrant patriotic energy to venues."
-      },
-      {
-        id: "feat-2",
-        name: "Tiranga Flag Theme Balloon Arch",
-        price: "₹2,499",
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-hqSdiwUDOh0l_Gv56QJXZnARPXBvHdpT_JCCH0WOxw&s=10",
-        desc: "Vibrant saffron, white, and green balloon decoration for national celebrations."
-      },
-      {
-        id: "feat-3",
-        name: "Patriotic Stage & Venue Setup",
-        price: "₹5,999",
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFYZTogAP-T3kYusVBTmfC3YX4_r4w5H4cIiQZNU5G7A&s=10",
-        desc: "Complete ceremonial decoration kit curated for official flag hoisting and community gatherings."
-      }
-    ].map((item) => (
-      <div key={item.id} className="bg-white border border-orange-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-        <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-          <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-          <span className="absolute top-3 left-3 bg-orange-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">Featured</span>
+      <section className="py-16 px-6 max-w-7xl mx-auto">
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+          <span className="text-xs uppercase tracking-[0.3em] text-orange-700 font-bold bg-orange-100 px-4 py-1.5 rounded-full inline-block">Featured Collections</span>
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-neutral-900">Patriotic Decoration Specials</h2>
+          <p className="text-neutral-600 text-sm sm:text-base font-light">
+            Explore our handpicked tricolor decoration specials for grand national celebrations and events.
+          </p>
         </div>
-        <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-          <div className="space-y-1.5">
-            <h3 className="font-serif text-base font-bold text-neutral-900">{item.name}</h3>
-            <p className="text-neutral-500 text-xs leading-relaxed font-light">{item.desc}</p>
-          </div>
-          
-          <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-            <div>
-              <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
-              <span className="text-neutral-900 font-bold text-base">{item.price}</span>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {[
+            {
+              id: "2",
+              name: "Tricolor Grand Event Decoration",
+              price: "₹3,499",
+              image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrgUvPtNG6jzL9lLdNi44C8Jvvkk7DY9CocPlxrPqUaQ&s",
+              desc: "Magnificent national flag theme setup designed to bring vibrant patriotic energy to venues."
+            },
+            {
+              id: "1",
+              name: "Tiranga Flag Theme Balloon Arch",
+              price: "₹2,499",
+              image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-hqSdiwUDOh0l_Gv56QJXZnARPXBvHdpT_JCCH0WOxw&s=10",
+              desc: "Vibrant saffron, white, and green balloon decoration for national celebrations."
+            },
+            {
+              id: "3",
+              name: "Patriotic Stage & Venue Setup",
+              price: "₹5,999",
+              image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFYZTogAP-T3kYusVBTmfC3YX4_r4w5H4cIiQZNU5G7A&s=10",
+              desc: "Complete ceremonial decoration kit curated for official flag hoisting and community gatherings."
+            }
+          ].map((item) => (
+            <div key={item.id} className="bg-white border border-orange-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+              <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
+                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                <span className="absolute top-3 left-3 bg-orange-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">Featured</span>
+              </div>
+              <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
+                <div className="space-y-1.5">
+                  <h3 className="font-serif text-base font-bold text-neutral-900">{item.name}</h3>
+                  <p className="text-neutral-500 text-xs leading-relaxed font-light">{item.desc}</p>
+                </div>
+
+                <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                  <div>
+                    <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
+                    <span className="text-neutral-900 font-bold text-base">{item.price}</span>
+                  </div>
+                  <Link href={`/Festivals/independenceday/${item.id}`} className="bg-orange-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-orange-500 transition shadow flex items-center space-x-1">
+                    <span>Book</span>
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
+              </div>
             </div>
-            <Link href="/contact" className="bg-orange-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-orange-500 transition shadow flex items-center space-x-1">
-              <span>Book</span>
-              <ArrowRight size={14} />
-            </Link>
-          </div>
+          ))}
         </div>
-      </div>
-    ))}
-  </div>
 
-  {/* View More Products Button linked to all-products */}
-  <div className="text-center mt-12">
-    <Link 
-      href="/Festivals/independenceday/all-products" 
-      className="inline-flex items-center space-x-2 bg-white hover:bg-neutral-950 hover:text-white text-neutral-950 font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-wider transition shadow-sm border border-orange-200"
-    >
-      <span>View More Products</span>
-      <ArrowRight size={14} />
-    </Link>
-  </div>
-</section>
+        {/* View More Products Button linked to all-products */}
+        <div className="text-center mt-12">
+          <Link
+            href="/Festivals/independenceday/all-products"
+            className="inline-flex items-center space-x-2 bg-white hover:bg-neutral-950 hover:text-white text-neutral-950 font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-wider transition shadow-sm border border-orange-200"
+          >
+            <span>View More Products</span>
+            <ArrowRight size={14} />
+          </Link>
+        </div>
+      </section>
 
       {/* Cards Section (pic1.png to pic4.png) */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
@@ -227,7 +229,7 @@ export default function IndependenceDayPage() {
                       </span>
                     </div>
                     <Link
-                      href="/contact"
+                      href={`/Festivals/independenceday/${item.id}`}
                       className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-orange-600 transition shadow flex items-center space-x-1"
                     >
                       <span>Book</span>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { galleryCategories, GalleryItem } from "@/app/data/galleryData";
 import { ArrowLeft, Heart, Minus, Plus, ShoppingBag, Sparkles, ArrowRight, AlertCircle, CheckCircle2 } from "lucide-react";
@@ -10,28 +10,45 @@ import Link from "next/link";
 export default function GalleryItemDetail() {
   const params = useParams();
   const router = useRouter();
-  const id = params?.id;
   const { addToCart } = useCart();
 
-  let foundItem: GalleryItem | null = null;
-  for (const cat of galleryCategories) {
-    const item = cat.items.find((i) => i.id === id);
-    if (item) {
-      foundItem = item;
-      break;
-    }
-  }
-
+  const [foundItem, setFoundItem] = useState<GalleryItem | null>(null);
+  const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [isLiked, setIsLiked] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
+  useEffect(() => {
+    if (params?.id) {
+      const resolvedId = Array.isArray(params.id) ? params.id[0] : params.id;
+      let matchedItem: GalleryItem | null = null;
+      
+      for (const cat of galleryCategories) {
+        const item = cat.items.find((i) => i.id === resolvedId);
+        if (item) {
+          matchedItem = item;
+          break;
+        }
+      }
+      setFoundItem(matchedItem);
+      setLoading(false);
+    }
+  }, [params]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center text-center">
+        <p className="text-amber-900 font-serif text-lg">Loading...</p>
+      </div>
+    );
+  }
+
   if (!foundItem) {
     return (
-      <div className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center text-center px-4">
+      <div className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center text-center px-4 font-sans">
         <h2 className="text-2xl font-serif font-bold text-gray-900 mb-2">Item Not Found</h2>
-        <Link href="/" className="bg-amber-900 text-white px-6 py-2.5 rounded-full text-xs uppercase font-bold">
+        <Link href="/" className="bg-amber-900 text-white px-6 py-2.5 rounded-full text-xs uppercase font-bold transition">
           Back to Home
         </Link>
       </div>
@@ -150,7 +167,6 @@ export default function GalleryItemDetail() {
 
       </div>
 
-      {/* Confirmation Popup Modal (English Text) */}
       {showConfirmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
           <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-amber-200 space-y-6 text-center">
@@ -183,7 +199,6 @@ export default function GalleryItemDetail() {
         </div>
       )}
 
-      {/* Success Confirmation Modal (English Text) */}
       {showSuccessModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
           <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-emerald-200 space-y-6 text-center">

@@ -4,6 +4,7 @@ export interface Product {
   desc: string;
   fullDesc: string;
   price: number;
+  numericPrice?: number;
   image: string;
   features: string[];
 }
@@ -92,5 +93,68 @@ export const christmasProducts: Product[] = [
       "Beautifully gift-wrapped festive box",
       "Ideal for gifting friends and family"
     ]
+  },
+  {
+    id: "7",
+    name: "Grand Christmas Tree & Lighting Setup",
+    desc: "Exquisitely decorated giant Christmas tree adorned with glittering baubles, stars, and fairy lights.",
+    fullDesc: "Exquisitely decorated giant Christmas tree adorned with glittering baubles, stars, and fairy lights for grand celebrations.",
+    price: 6499,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBGNDDxdate3wKiX02hMXWRLTVGaun1kQpFGELKfORzOTZF-mVOHUWG9hs&s=10",
+    features: ["Giant decorative tree", "Glittering baubles & stars", "Fairy lights included", "Professional setup"]
+  },
+  {
+    id: "8",
+    name: "Snowy Winter Wonderland Theme",
+    desc: "Magical artificial snow sprays, white faux fur accents, and frosty winter decor elements.",
+    fullDesc: "Magical artificial snow sprays, white faux fur accents, and frosty winter decor elements to give a real snowy feel.",
+    price: 8999,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwBYs6LfDeJ58ZmW5HwEZNKn_qpAjwdWdzCnVcbiJhLg&s=10",
+    features: ["Artificial snow sprays", "Faux fur accents", "Frosty elements", "Winter wonderland vibe"]
+  },
+  {
+    id: "9",
+    name: "Santa's Grotto & Gift Corner",
+    desc: "Festive corner setup with Santa props, gift boxes, stockings, and warm festive backdrops.",
+    fullDesc: "Festive corner setup with Santa props, gift boxes, stockings, and warm festive backdrops for kids and family photos.",
+    price: 5899,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxK90e4AlKRqbOnIp93VEWcG9F1JeDc4Bx74lFVstsyw&s=10",
+    features: ["Santa props", "Wrapped gift boxes", "Stockings & backdrops", "Perfect photo corner"]
+  },
+  {
+    id: "10",
+    name: "Merry & Bright Entrance Archway",
+    desc: "Grand holiday entrance arch decorated with red-gold ornaments, pine cones, and green garlands.",
+    fullDesc: "Grand holiday entrance arch decorated with red-gold ornaments, pine cones, and green garlands to welcome guests.",
+    price: 7499,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9B2yevJe49MW_IGD1rIyizOIXX7aKGfcqTaOY9nEDLg&s=10",
+    features: ["Holiday entrance arch", "Red-gold ornaments", "Pine cones & green garlands", "Sturdy structure"]
+  },
+  {
+    id: "11",
+    name: "Classic Christmas Tree Setup",
+    desc: "Beautifully styled festive Christmas tree adorned with ornaments and glowing fairy lights.",
+    fullDesc: "Beautifully styled festive Christmas tree adorned with ornaments and glowing fairy lights for your living room.",
+    price: 2999,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJNpF-N-ORl2VSyHFlkFw0hadAloYxEr1HaV88lzHaiA&s=10",
+    features: ["Festive Christmas tree", "Ornaments included", "Glowing fairy lights", "Compact & elegant"]
+  },
+  {
+    id: "12",
+    name: "Festive Gift Box Hamper",
+    desc: "Exquisitely wrapped holiday gift boxes filled with seasonal surprises and festive treats.",
+    fullDesc: "Exquisitely wrapped holiday gift boxes filled with seasonal surprises and festive treats for your loved ones.",
+    price: 1499,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7rtYWF8eVTmkemyLGUIVHYl6Y9v4zqSq0BIFfw-w9rA&s=10",
+    features: ["Wrapped gift boxes", "Seasonal surprises", "Festive treats", "Beautiful packaging"]
+  },
+  {
+    id: "13",
+    name: "Premium Christmas Decoration Pack",
+    desc: "Complete winter decoration collection featuring hanging baubles, ribbons, and star accents.",
+    fullDesc: "Complete winter decoration collection featuring hanging baubles, ribbons, and star accents for complete room decoration.",
+    price: 1999,
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT20nDAak0Bp07QwjqSoWK5U8M-CXEQlkx7zRgOdM2mNA&s=10",
+    features: ["Complete decoration pack", "Hanging baubles & ribbons", "Star accents", "Easy to setup"]
   }
 ];

@@ -106,5 +106,61 @@ export const independencedayProducts: Product[] = [
       "Standard quality equipment",
       "Essential for official ceremonies"
     ]
+  },
+  {
+    id: "8",
+    name: "Tiranga Floral & Balloon Stage Arch",
+    desc: "Vibrant saffron, white, and green floral and balloon decorations for patriotic flag hoisting ceremonies.",
+    fullDesc: "A stunning stage arch combining fresh tricolor florals with balloon styling, perfectly suited for official flag hoisting ceremonies and grand national events.",
+    price: 5499,
+    image: "/pic1.png",
+    features: [
+      "Tricolor floral and balloon combination",
+      "Ideal for flag hoisting stages",
+      "Sturdy arch structure with elegant finish",
+      "Professional on-site setup"
+    ]
+  },
+  {
+    id: "9",
+    name: "Freedom Fighter & National Hero Backdrop",
+    desc: "Inspiring thematic stage backdrop celebrating India's freedom struggle and national pride.",
+    fullDesc: "A powerful backdrop design honoring India's freedom fighters, crafted to inspire patriotism at school and community stage events.",
+    price: 7899,
+    image: "/pic2.png",
+    features: [
+      "Freedom fighter themed thematic design",
+      "High-impact stage backdrop styling",
+      "Great for school and cultural events",
+      "Durable print with vivid colors"
+    ]
+  },
+  {
+    id: "10",
+    name: "Society & Office Tricolor Gate Styling",
+    desc: "Grand entrance decoration with tricolor ribbons, drapes, and welcoming patriotic banners.",
+    fullDesc: "Welcome guests and residents with a grand tricolor-themed gate setup, complete with ribbons, drapes, and patriotic banners for societies and offices.",
+    price: 4299,
+    image: "/pic3.png",
+    features: [
+      "Tricolor ribbon and drape styling",
+      "Perfect for society and office entrances",
+      "Welcoming patriotic banner included",
+      "Quick and clean installation"
+    ]
+  },
+  {
+    id: "11",
+    name: "Patriotic Lighting & Canopy Setup",
+    desc: "Special saffron-white-green ambient lighting and canopy setup for community celebrations.",
+    fullDesc: "Set the mood with an ambient saffron-white-green lighting and canopy arrangement, designed for evening community celebrations and gatherings.",
+    price: 9499,
+    image: "/pic4.png",
+    features: [
+      "Tricolor ambient lighting effects",
+      "Elegant canopy setup",
+      "Best suited for evening events",
+      "Enhances overall celebration atmosphere"
+    ]
   }
 ];

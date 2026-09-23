@@ -1,20 +1,57 @@
 "use client";
 
-import React, { useState } from "react";
-import { useCart } from "@/app/context/CartContext";
+import React, { useState, useEffect } from "react";
 import { Trash2, ShoppingBag, ArrowRight, Sparkles, Eye, X, Calendar } from "lucide-react";
 import Link from "next/link";
 
 export default function BasketPage() {
-  const { cart, removeFromCart, clearCart } = useCart();
+  const [cart, setCart] = useState<any[]>([]);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
+
+  // Component load hone par aur localStorage change hone par cart load karna
+  useEffect(() => {
+    const fetchCart = () => {
+      try {
+        const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+        setCart(storedCart);
+      } catch (error) {
+        console.error("Error reading cart from localStorage:", error);
+      }
+    };
+
+    fetchCart();
+
+    // Event listeners taaki real-time sync ho jaye
+    window.addEventListener("storage", fetchCart);
+    window.addEventListener("cartUpdated", fetchCart);
+
+    return () => {
+      window.removeEventListener("storage", fetchCart);
+      window.removeEventListener("cartUpdated", fetchCart);
+    };
+  }, []);
+
+  // Item remove karne ka function
+  const handleRemoveFromCart = (id: any) => {
+    try {
+      const updatedCart = cart.filter((item) => item.id !== id);
+      setCart(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+      // Events dispatch karna taaki header aur baaki components update ho jayein
+      window.dispatchEvent(new Event("storage"));
+      window.dispatchEvent(new CustomEvent("cartUpdated"));
+    } catch (error) {
+      console.error("Error removing item:", error);
+    }
+  };
 
   // Calculate Overall Summary safely
   const totalItemsCount = cart.reduce((acc, item) => acc + (Number(item.quantity) || 1), 0);
   const grandTotalPrice = cart.reduce((acc, item) => {
-    const price = Number(item.numericPrice) || Number(item.price?.replace(/[^0-9]/g, "")) || 0;
+    const price = Number(item.numericPrice) || Number(item.price?.toString().replace(/[^0-9]/g, "")) || item.price || 0;
     const qty = Number(item.quantity) || 1;
-    return acc + (price * qty);
+    return acc + (Number(price) * qty);
   }, 0);
   const formattedGrandTotal = `₹${grandTotalPrice.toLocaleString("en-IN")}`;
 
@@ -43,20 +80,20 @@ export default function BasketPage() {
             <h1 className="text-3xl font-serif font-bold text-gray-900">Your Basket</h1>
             <p className="text-xs text-gray-500 uppercase tracking-wider mt-1">Review your selected decoration packages</p>
           </div>
-          <button
-            onClick={clearCart}
+          <Link
+            href="/"
             className="text-xs font-bold text-rose-600 hover:text-rose-800 uppercase tracking-wider bg-rose-50 hover:bg-rose-100 px-4 py-2 rounded-full transition cursor-pointer"
           >
-            Clear Basket
-          </button>
+            Back Home 
+          </Link>
         </div>
 
         {/* Cart Items List */}
         <div className="space-y-4">
           {cart.map((item) => {
-            const unitNumeric = Number(item.numericPrice) || Number(item.price?.replace(/[^0-9]/g, "")) || 0;
+            const unitNumeric = Number(item.numericPrice) || Number(item.price?.toString().replace(/[^0-9]/g, "")) || item.price || 0;
             const quantity = Number(item.quantity) || 1;
-            const itemTotal = unitNumeric * quantity;
+            const itemTotal = Number(unitNumeric) * quantity;
             const formattedItemTotal = `₹${itemTotal.toLocaleString("en-IN")}`;
 
             return (
@@ -70,7 +107,7 @@ export default function BasketPage() {
                   </div>
                   <div className="space-y-1">
                     <h3 className="text-lg font-serif font-bold text-gray-900">{item.name}</h3>
-                    <p className="text-xs text-gray-500">Unit Price: {item.price}</p>
+                    <p className="text-xs text-gray-500">Unit Price: ₹{Number(unitNumeric).toLocaleString("en-IN")}</p>
                     <div className="inline-flex items-center space-x-1 bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full text-xs font-semibold">
                       <span>Quantity: {quantity} Unit{quantity > 1 ? "s" : ""}</span>
                     </div>
@@ -94,7 +131,7 @@ export default function BasketPage() {
                   </button>
 
                   <button
-                    onClick={() => removeFromCart(item.id)}
+                    onClick={() => handleRemoveFromCart(item.id)}
                     className="w-10 h-10 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 flex items-center justify-center transition cursor-pointer shadow-sm"
                     title="Remove Item"
                   >
@@ -162,7 +199,7 @@ export default function BasketPage() {
             <div className="space-y-3 text-sm text-gray-700">
               <div className="flex justify-between bg-amber-50 px-4 py-2.5 rounded-xl">
                 <span className="text-gray-500">Unit Price:</span>
-                <span className="font-bold text-gray-900">{selectedItem.price}</span>
+                <span className="font-bold text-gray-900">₹{Number(selectedItem.unitNumeric).toLocaleString("en-IN")}</span>
               </div>
               <div className="flex justify-between bg-amber-50 px-4 py-2.5 rounded-xl">
                 <span className="text-gray-500">Selected Quantity:</span>
