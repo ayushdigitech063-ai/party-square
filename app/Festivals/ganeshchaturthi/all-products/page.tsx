@@ -1,38 +1,19 @@
-"use client";
-
 import Link from "next/link";
-import { diwaliProducts } from "@/app/data/diwaliProducts";
-import { useCart } from "@/app/context/CartContext";
-import { ShoppingBag } from "lucide-react";
+import { ganeshProducts } from "@/app/data/ganeshProducts";
 
-export default function AllProductsPage() {
-  const { addToCart } = useCart();
-
-  const handleAddToCart = (product: any, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: String(product.price),
-      image: product.image,
-      desc: product.desc || "",
-      category: "Diwali Decoration",
-    });
-  };
-
+export default function GaneshAllProductsPage() {
   return (
     <div className="min-h-screen bg-[#FAF7F2] px-6 py-10">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-neutral-900 text-3xl font-serif font-bold mb-2">
-          Diwali - All Products Catalogue
+          Ganesh Chaturthi - All Products Catalogue
         </h1>
         <p className="text-neutral-600 text-sm mb-8 font-light">
-          Explore our complete collection of home and society festive decoration packages.
+          Explore our complete collection of divine decoration and puja packages for Bappa.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {diwaliProducts.map((product) => (
+          {ganeshProducts.map((product) => (
             <div
               key={product.id}
               className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-amber-200/60 flex flex-col justify-between group"
@@ -44,7 +25,7 @@ export default function AllProductsPage() {
                   className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500"
                 />
                 <span className="absolute top-5 left-5 bg-amber-500 text-neutral-950 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">
-                  Diwali Special
+                  Ganpati Special
                 </span>
               </div>
 
@@ -64,23 +45,12 @@ export default function AllProductsPage() {
                     <span className="text-neutral-900 font-bold text-base">₹{product.price.toLocaleString()}</span>
                   </div>
                   
-                  <div className="flex items-center space-x-2">
-                    {/* Add to Cart Icon Button placed at bottom */}
-                    <button
-                      onClick={(e) => handleAddToCart(product, e)}
-                      title="Add to Cart"
-                      className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-full transition-colors cursor-pointer border border-amber-200 shadow-sm"
-                    >
-                      <ShoppingBag size={16} />
-                    </button>
-
-                    <Link
-                      href={`/Festivals/diwali/${product.id}`}
-                      className="bg-neutral-950 hover:bg-amber-500 hover:text-neutral-950 text-white font-bold px-4 py-2.5 rounded-full text-xs uppercase tracking-wider transition-colors shadow inline-block text-center"
-                    >
-                      Book Now
-                    </Link>
-                  </div>
+                  <Link
+                    href={`/Festivals/ganeshchaturthi/${product.id}`}
+                    className="bg-neutral-950 hover:bg-amber-500 hover:text-neutral-950 text-white font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wider transition-colors shadow inline-block text-center"
+                  >
+                    Book Now
+                  </Link>
                 </div>
               </div>
             </div>

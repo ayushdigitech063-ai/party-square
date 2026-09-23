@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Sparkles, X, ArrowRight } from "lucide-react";
 
 const decorationItems = [
@@ -64,40 +64,6 @@ const decorationItems = [
 
 export default function MostLovedDecor() {
   const [selectedItem, setSelectedItem] = useState<typeof decorationItems[0] | null>(null);
-  
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeft = useRef(0);
-  const dragDistance = useRef(0); // Track actual movement to support smooth clicking
-
-  // Mouse Drag to Scroll Handlers
-  const handleMouseDown = (e: React.MouseEvent) => {
-    isDragging.current = true;
-    dragDistance.current = 0;
-    startX.current = e.pageX - (scrollContainerRef.current?.offsetLeft || 0);
-    scrollLeft.current = scrollContainerRef.current?.scrollLeft || 0;
-  };
-
-  const handleMouseLeave = () => {
-    isDragging.current = false;
-  };
-
-  const handleMouseUp = () => {
-    isDragging.current = false;
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current) return;
-    const x = e.pageX - (scrollContainerRef.current?.offsetLeft || 0);
-    const walk = (x - startX.current) * 1.5;
-    
-    dragDistance.current += Math.abs(walk); // Accumulate distance moved
-
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollLeft = scrollLeft.current - walk;
-    }
-  };
 
   return (
     <section className="relative bg-[#FBF8F2] text-[#1A1A1A] py-24 px-6 md:px-16 overflow-hidden font-sans border-t border-[#E6DEC9]">
@@ -119,68 +85,69 @@ export default function MostLovedDecor() {
               Most Loved <span className="italic font-normal text-[#8C6D24]">Decorations</span>
             </h2>
             <p className="text-[#5A5A5A] text-sm max-w-xl font-light">
-              Explore our curated themes. Click and drag your mouse horizontally, or click on any picture to view full decoration details.
+              Explore our curated themes. Click on any circular picture to view full decoration details.
             </p>
           </div>
         </div>
 
-        {/* Drag-to-Scroll Cards Container */}
-        <div 
-          ref={scrollContainerRef}
-          onMouseDown={handleMouseDown}
-          onMouseLeave={handleMouseLeave}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
-          className="flex gap-6 overflow-x-auto pb-6 pt-2 select-none cursor-grab active:cursor-grabbing snap-x snap-mandatory"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          <style jsx>{`
-            div::-webkit-scrollbar {
-              display: none;
-            }
-          `}</style>
+        {/* Infinite Auto-Sliding Circular Track */}
+        <div className="relative w-full overflow-hidden py-4">
+          <div className="flex w-max animate-infinite-scroll hover:[animation-play-state:paused] gap-10">
+            {/* Render items twice to create seamless infinite loop effect */}
+            {[...decorationItems, ...decorationItems].map((item, index) => (
+              <div 
+                key={`${item.id}-${index}`}
+                onClick={() => setSelectedItem(item)}
+                className="flex flex-col items-center group cursor-pointer"
+              >
+                {/* Circular Image Card */}
+                <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-full overflow-hidden border-4 border-[#E2D2B0] group-hover:border-[#8C6D24] shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 relative bg-white shrink-0">
+                  <img 
+                    src={item.image} 
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" 
+                  />
+                  {/* Subtle hover overlay */}
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <span className="w-10 h-10 rounded-full bg-white/90 text-neutral-900 flex items-center justify-center shadow-md">
+                      <ArrowRight size={18} />
+                    </span>
+                  </div>
+                </div>
 
-          {decorationItems.map((item) => (
-            <div 
-              key={item.id}
-              onClick={() => {
-                // Only open modal if user clicked without dragging
-                if (dragDistance.current < 5) {
-                  setSelectedItem(item);
-                }
-              }}
-              className="min-w-[280px] sm:min-w-[320px] max-w-[340px] h-[400px] snap-start relative rounded-3xl overflow-hidden border border-[#EAE2CE] hover:border-[#C5A059] transition-all duration-300 group shadow-[0_10px_30px_rgba(0,0,0,0.06)] bg-white flex flex-col justify-end shrink-0 cursor-pointer"
-            >
-              {/* Card Background Image */}
-              <div className="absolute inset-0 z-0 pointer-events-none">
-                <img 
-                  src={item.image} 
-                  alt={item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
-                />
-                {/* Subtle bottom gradient for title readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              </div>
-
-              {/* Minimal Card Title Overlay */}
-              <div className="relative z-10 p-6 space-y-1 text-white pointer-events-none">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#E5C575] font-medium">
-                  {item.subtitle}
-                </span>
-                <h3 className="text-xl font-serif font-normal text-white flex items-center justify-between">
-                  <span>{item.title}</span>
-                  <span className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-xs group-hover:bg-[#C5A059] group-hover:text-black transition-colors">
-                    <ArrowRight size={14} />
+                {/* Title Below Circle */}
+                <div className="mt-4 text-center space-y-0.5">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#8C6D24] font-semibold block">
+                    {item.subtitle}
                   </span>
-                </h3>
+                  <h3 className="text-base font-serif text-[#1A1A1A] group-hover:text-[#8C6D24] transition-colors">
+                    {item.title}
+                  </h3>
+                </div>
               </div>
-
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
       </div>
-{/* Interactive Detail Modal */}
+
+      {/* Tailwind Custom Animation Style */}
+      <style jsx global>{`
+        @keyframes infiniteScroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        .animate-infinite-scroll {
+          display: flex;
+          animation: infiniteScroll 35s linear infinite;
+        }
+      `}</style>
+
+      {/* Interactive Detail Modal */}
       {selectedItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
           <div className="relative bg-[#FFFDF9] border border-[#E2D2B0] rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl text-[#1A1A1A] p-6 sm:p-8 pt-14 space-y-6">

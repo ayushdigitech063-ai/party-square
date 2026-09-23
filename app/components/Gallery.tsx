@@ -173,7 +173,14 @@ const categories = [
 
 export default function Gallery() {
   // const [liked, setLiked] = useState(new Set());
+import Link from "next/link";
+import { Heart, ArrowRight, Sparkles, ShoppingBag } from "lucide-react";
+import { galleryCategories } from "@/app/data/galleryData";
+import { useCart } from "@/app/context/CartContext";
+
+export default function Gallery() {
   const [activeTab, setActiveTab] = useState("All");
+  const { addToCart, toggleLike, isLiked } = useCart();
 
   // const toggleLike = (key) => {
   //   setLiked((prev) => {
@@ -188,50 +195,64 @@ export default function Gallery() {
     activeTab === "All"
       ? categories
       : categories.filter((c) => c.title === activeTab);
+  const handleDirectAdd = (item: any, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Mapping format to match Product interface with default quantity 1
+    addToCart({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      image: item.src,
+      desc: item.desc,
+      category: item.categoryTitle,
+    }, 1);
+  };
+
+  const filteredCategories = activeTab === "All" 
+    ? galleryCategories 
+    : galleryCategories.filter((c) => c.title === activeTab);
 
   return (
-    <section className="bg-[#FAF7F2] py-16 sm:py-24 px-4 sm:px-8 md:px-16 text-[#1A1A1A] relative overflow-hidden font-sans">
-      {/* Soft Golden Background Glows */}
-      <div className="absolute top-20 right-10 w-72 sm:w-96 h-72 sm:h-96 bg-amber-200/40 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-10 left-10 w-72 sm:w-96 h-72 sm:h-96 bg-amber-300/30 rounded-full blur-[120px] pointer-events-none" />
-
+    <section className="bg-[#FAF7F2] py-16 px-4 sm:px-8 md:px-16 text-[#1A1A1A] relative font-sans">
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
           <div className="inline-flex items-center space-x-2 bg-amber-100/80 border border-amber-300/60 px-4 py-1.5 rounded-full shadow-sm mb-4">
+        
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <div className="inline-flex items-center space-x-2 bg-amber-100 px-4 py-1.5 rounded-full mb-4">
             <Sparkles size={14} className="text-amber-700" />
-            <span className="text-[10px] sm:text-xs uppercase tracking-[0.25em] font-semibold text-amber-900">
-              OUR EXCLUSIVE PORTFOLIO
-            </span>
+            <span className="text-xs uppercase tracking-widest font-semibold text-amber-900">OUR EXCLUSIVE PORTFOLIO</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-serif font-normal leading-[1.15] text-gray-900">
             A closer look at <br />
             <span className="italic font-light text-amber-800">
               every celebration
             </span>
+          <h2 className="text-3xl sm:text-5xl font-serif text-gray-900">
+            A closer look at <span className="italic font-light text-amber-800">every celebration</span>
           </h2>
         </div>
 
-        {/* Category Filter Tabs (Scrollable on mobile) */}
-        <div className="flex items-center justify-start sm:justify-center overflow-x-auto pb-3 sm:pb-0 gap-2 sm:gap-3 mb-12 sm:mb-16 scrollbar-none">
+        {/* Tabs */}
+        <div className="flex items-center justify-start sm:justify-center overflow-x-auto pb-3 gap-2 mb-12 scrollbar-none">
           <button
             onClick={() => setActiveTab("All")}
-            className={`whitespace-nowrap px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all shadow-sm shrink-0 cursor-pointer ${
-              activeTab === "All"
-                ? "bg-amber-900 text-white shadow-amber-900/20"
-                : "bg-white text-gray-700 border border-amber-200 hover:border-amber-400 hover:bg-amber-50/50"
+            className={`whitespace-nowrap px-6 py-2.5 rounded-full text-sm font-medium transition cursor-pointer ${
+              activeTab === "All" ? "bg-amber-900 text-white" : "bg-white text-gray-700 border border-amber-200"
             }`}
           >
             All Collections
           </button>
-          {categories.map((cat, idx) => (
+          {galleryCategories.map((cat, idx) => (
             <button
               key={idx}
               onClick={() => setActiveTab(cat.title)}
-              className={`whitespace-nowrap px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all shadow-sm shrink-0 cursor-pointer ${
-                activeTab === cat.title
-                  ? "bg-amber-900 text-white shadow-amber-900/20"
-                  : "bg-white text-gray-700 border border-amber-200 hover:border-amber-400 hover:bg-amber-50/50"
+              className={`whitespace-nowrap px-6 py-2.5 rounded-full text-sm font-medium transition cursor-pointer ${
+                activeTab === cat.title ? "bg-amber-900 text-white" : "bg-white text-gray-700 border border-amber-200"
               }`}
             >
               {cat.title}
@@ -239,8 +260,8 @@ export default function Gallery() {
           ))}
         </div>
 
-        {/* Categories & Items Listing */}
-        <div className="space-y-16 sm:space-y-20">
+        {/* Items Grid */}
+        <div className="space-y-16">
           {filteredCategories.map((category, ci) => (
             <div key={ci} className="space-y-6">
               {/* Category Title Bar */}
@@ -252,16 +273,20 @@ export default function Gallery() {
                 <p className="text-xs sm:text-sm text-amber-800/80 font-light italic">
                   {category.note}
                 </p>
+              <div className="border-b border-amber-200 pb-4 flex justify-between items-baseline">
+                <h3 className="text-2xl font-serif text-gray-900">{category.title}</h3>
+                <span className="text-sm text-amber-800 italic">{category.note}</span>
               </div>
 
-              {/* Items Grid (1 col on mobile, 2 on sm, 3 on md/lg, 5 on xl) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6">
                 {category.items.map((item, idx) => {
                   const isLiked = isInWishlist(item.id);
+                {category.items.map((item) => {
+                  const likedStatus = isLiked(item.id);
                   return (
                     <div
-                      key={idx}
-                      className="group bg-white rounded-2xl overflow-hidden border border-amber-200/75 hover:border-amber-400 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_10px_30px_rgba(217,119,6,0.12)] transition-all duration-300 flex flex-col"
+                      key={item.id}
+                      className="group bg-white rounded-2xl overflow-hidden border border-amber-200 hover:border-amber-400 shadow-sm hover:shadow-xl transition flex flex-col"
                     >
                       {/* Image Container */}
                       <div className="relative aspect-[4/5] bg-amber-50 overflow-hidden">
@@ -288,22 +313,38 @@ export default function Gallery() {
                                 : "text-gray-700"
                             }
                           />
+                      {/* Image & Like Button Container (Clickable to Details) */}
+                      <Link href={`/gallery/${item.id}`} className="relative aspect-[4/5] bg-amber-50 overflow-hidden block">
+                        <img src={item.src} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleLike({
+                              id: item.id,
+                              name: item.name,
+                              price: item.price,
+                              image: item.src,
+                              desc: item.desc,
+                              category: item.categoryTitle,
+                              quantity: 1,
+                            });
+                          }}
+                          className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center shadow hover:scale-110 transition cursor-pointer z-10"
+                        >
+                          <Heart size={16} className={likedStatus ? "fill-rose-500 text-rose-500" : "text-gray-700"} />
                         </button>
-                      </div>
+                      </Link>
 
-                      {/* Content Box */}
+                      {/* Content Section */}
                       <div className="p-4 flex flex-col justify-between flex-1 space-y-3">
-                        <div className="space-y-1">
-                          <h4 className="font-serif text-base font-medium text-gray-900 group-hover:text-amber-900 transition-colors">
-                            {item.name}
-                          </h4>
-                          <p className="text-xs text-gray-500 font-light leading-relaxed line-clamp-2">
-                            {item.desc}
-                          </p>
-                        </div>
+                        <Link href={`/gallery/${item.id}`} className="block">
+                          <h4 className="font-serif text-base font-medium text-gray-900 hover:text-amber-800 transition">{item.name}</h4>
+                          <p className="text-xs text-gray-500 line-clamp-2 mt-1">{item.desc}</p>
+                        </Link>
 
-                        {/* Price & Action Button */}
-                        <div className="flex items-center justify-between pt-3 border-t border-amber-100 mt-auto">
+                        <div className="flex items-center justify-between pt-3 border-t border-amber-100 gap-2">
                           <div>
                             <span className="text-[10px] uppercase tracking-wider text-gray-400 block font-medium">
                               Starts at
@@ -319,6 +360,29 @@ export default function Gallery() {
                               className="group-hover/btn:translate-x-0.5 transition-transform"
                             />
                           </button>
+                            <span className="text-[10px] uppercase text-gray-400 block">Starts at</span>
+                            <span className="text-sm font-semibold text-amber-900">{item.price}</span>
+                          </div>
+                          
+                          {/* Actions: Add to Cart Icon + BOOK Button */}
+                          <div className="flex items-center space-x-2">
+                            <button
+                              type="button"
+                              onClick={(e) => handleDirectAdd(item, e)}
+                              title="Add to Basket"
+                              className="w-9 h-9 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 flex items-center justify-center shadow-sm transition cursor-pointer shrink-0"
+                            >
+                              <ShoppingBag size={15} />
+                            </button>
+
+                            <Link 
+                              href={`/gallery/${item.id}`}
+                              className="bg-amber-900 hover:bg-black text-white text-[11px] font-bold uppercase px-3.5 py-2 rounded-full transition shadow-sm inline-flex items-center gap-1"
+                            >
+                              <span>Book</span>
+                              <ArrowRight size={11} />
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </div>

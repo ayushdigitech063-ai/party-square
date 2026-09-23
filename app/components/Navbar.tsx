@@ -1264,25 +1264,6 @@ function WhatsAppIcon({
 
 const CLOSE_DELAY = 220; // ms grace period so the mouse can travel from pill to panel
 
-/**
- * Dropdown pill — now a FULL-WIDTH mega menu.
- *
- * Layout of the open panel (desktop):
- *
- *   | HEADING (pill label)  |   [ image card ] [ image card ] [ image card ] [ image card ] |
- *   | link                  |   [ image card ] [ image card ] ...                            |
- *   | link                  |
- *
- *  - Panel spans the full viewport width and sits directly under the whole
- *    navbar (not under the pill), so it never overlaps the pill row or gets
- *    cut off at the screen edge.
- *  - Left: text links. Right: the same items as image cards.
- *    Hovering a link or a card highlights its twin.
- *  - Mobile: links become a 2-column grid on top, image cards below,
- *    and the whole panel scrolls if it is taller than the screen.
- *
- * Data (labels, hrefs, images) is unchanged — only the presentation differs.
- */
 function DropdownPill({
   label,
   icon: Icon,
@@ -1329,8 +1310,7 @@ function DropdownPill({
     clearCloseTimer();
     const anchor = containerRef.current ?? buttonRef.current;
     if (anchor) {
-      // Anchor the panel to the bottom edge of the whole <nav>, so it opens
-      // as a full-width bar right under the pill row.
+  
       const navEl = anchor.closest("nav");
       const top = navEl
         ? navEl.getBoundingClientRect().bottom
