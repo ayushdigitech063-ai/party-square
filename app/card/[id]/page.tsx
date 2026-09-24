@@ -102,153 +102,614 @@ export default function ProductDetailPage() {
   const totalPrice = rawPrice * quantity;
 
   return (
-    <div className="bg-[#FAF7F2] text-[#1A1A1A] font-sans min-h-screen py-10 px-4 sm:px-8 md:px-16 relative">
-      <div className="max-w-6xl mx-auto space-y-6">
-        
-        {/* Back Button */}
-        <Link href="/card" className="inline-flex items-center space-x-2 text-amber-900 hover:text-amber-950 transition text-sm font-medium bg-amber-100/60 px-4 py-2 rounded-full border border-amber-200/60 shadow-sm">
-          <ArrowLeft size={16} />
-          <span>Back to Collections</span>
+         <div className="min-h-screen bg-[#FAF7F2] text-[#1A1A1A] font-sans">
+
+
+    {/* =====================================================
+        PAGE CONTENT
+    ====================================================== */}
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8">
+
+      {/* Breadcrumb */}
+      <div className="flex items-center gap-2 text-xs sm:text-sm text-neutral-500 mb-6">
+        <Link
+          href="/"
+          className="hover:text-amber-800 transition"
+        >
+          Home
         </Link>
 
-        {/* Product Details Card Container */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 bg-white p-6 sm:p-10 rounded-3xl border border-amber-200/80 shadow-2xl">
-          
-          {/* Left: Product Image & Badges */}
-          <div className="lg:col-span-6 flex flex-col justify-start space-y-6">
-            <div className="relative w-full h-[380px] sm:h-[480px] rounded-2xl overflow-hidden shadow-inner border border-amber-100 bg-neutral-100 group">
-              <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-              <div className="absolute top-4 left-4 bg-amber-900/90 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider shadow">
-                {product.category}
+        <span>›</span>
+
+        <Link
+          href="/card"
+          className="hover:text-amber-800 transition"
+        >
+          Decorations
+        </Link>
+
+        <span>›</span>
+
+        <span className="text-neutral-900 font-medium truncate">
+          {product.name}
+        </span>
+      </div>
+
+
+      {/* =====================================================
+          MAIN PRODUCT SECTION
+      ====================================================== */}
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-start">
+
+        {/* =================================================
+            LEFT - IMAGE
+        ================================================== */}
+        <div className="lg:col-span-7">
+
+          <div className="grid grid-cols-12 gap-4">
+
+            {/* Thumbnail Column */}
+            <div className="col-span-2 flex flex-col gap-3">
+
+              {[1, 2, 3, 4].map((item) => (
+                <div
+                  key={item}
+                  className={`
+                    h-16 sm:h-[72px]
+                    rounded-xl
+                    overflow-hidden
+                    border
+                    bg-white
+                    cursor-pointer
+                    transition
+                    ${
+                      item === 1
+                        ? "border-amber-500 ring-2 ring-amber-100"
+                        : "border-amber-100 hover:border-amber-300"
+                    }
+                  `}
+                >
+                  <img
+                    src={product.image}
+                    alt={`${product.name} preview ${item}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ))}
+
+              <div className="h-16 sm:h-[72px] rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-xs font-semibold text-amber-800">
+                +5
               </div>
+
             </div>
 
-            {/* Trust Badges */}
-            <div className="flex items-center justify-around bg-amber-50/70 border border-amber-200/60 p-3 rounded-2xl text-xs font-medium text-amber-900">
-              <span className="flex items-center space-x-1">✨ <span>100% Verified</span></span>
-              <span className="flex items-center space-x-1">📸 <span>Real Photos</span></span>
-              <span className="flex items-center space-x-1">👥 <span>Real Buyers</span></span>
+
+            {/* Main Image */}
+            <div className="col-span-10">
+
+              <div className="relative aspect-[16/16] rounded-3xl overflow-hidden bg-neutral-100 border border-amber-100 shadow-sm">
+
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover transition duration-700 hover:scale-[1.03]"
+                />
+
+                {/* Product Category */}
+                <div className="absolute top-5 left-5">
+                  <span className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm text-amber-900 px-4 py-2 rounded-full text-xs font-bold shadow-sm">
+                    <Sparkles size={13} />
+                    {product.category}
+                  </span>
+                </div>
+
+                {/* Image Counter */}
+                <div className="absolute bottom-5 right-5 bg-black/65 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-xs font-medium">
+                  1 / 5
+                </div>
+
+                {/* Left Arrow */}
+                <button
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-md flex items-center justify-center text-neutral-800 transition"
+                >
+                  ‹
+                </button>
+
+                {/* Right Arrow */}
+                <button
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-md flex items-center justify-center text-neutral-800 transition"
+                >
+                  ›
+                </button>
+
+              </div>
+
+
+              {/* Trust Strip */}
+              <div className="mt-4 bg-white border border-amber-100 rounded-2xl px-4 py-4">
+                <div className="grid grid-cols-3 gap-3 text-center">
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 text-xs text-neutral-700">
+                    <span className="text-amber-600">✦</span>
+                    <span>100% Verified</span>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 text-xs text-neutral-700">
+                    <span className="text-amber-600">▣</span>
+                    <span>Real Photos</span>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 text-xs text-neutral-700">
+                    <span className="text-amber-600">♟</span>
+                    <span>Real Buyers</span>
+                  </div>
+
+                </div>
+              </div>
+
             </div>
           </div>
+        </div>
 
-          {/* Right: Info, Ratings & Action Bar */}
-          <div className="lg:col-span-6 flex flex-col justify-between space-y-6">
-            <div className="space-y-4">
-              
-              <div className="inline-flex items-center space-x-1.5 text-amber-800 bg-amber-100 px-3.5 py-1 rounded-full text-xs font-bold tracking-wide">
+
+        {/* =================================================
+            RIGHT - PRODUCT INFORMATION
+        ================================================== */}
+        <div className="lg:col-span-5">
+
+          <div className="lg:sticky lg:top-24 space-y-4">
+
+            {/* Product Information */}
+            <div className="bg-white rounded-3xl border border-amber-100 p-5 shadow-sm">
+
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 px-3.5 py-1.5 rounded-full text-xs font-bold mb-4">
                 <Sparkles size={12} />
-                <span>Verified Quality Product</span>
+                Verified Quality Product
               </div>
 
-              <h1 className="text-2xl sm:text-4xl font-serif font-bold text-neutral-900 leading-tight">
+
+              {/* Title */}
+              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-neutral-900 leading-tight">
                 {product.name}
               </h1>
 
-              {/* Customer Feedback & Ratings Section */}
-              <div className="bg-neutral-50 border border-neutral-200/80 p-4 rounded-2xl space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-2xl font-bold text-neutral-900">{product.rating}</span>
-                    <div className="flex text-amber-500">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={16} className="fill-amber-500" />
-                      ))}
-                    </div>
-                  </div>
-                  <span className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">{product.reviewsCount} reviews</span>
+
+              {/* Rating */}
+              <div className="flex items-center gap-3 mt-4">
+
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      size={17}
+                      className="fill-amber-500 text-amber-500"
+                    />
+                  ))}
                 </div>
 
-                {/* Rating Breakdown Bars */}
-                <div className="space-y-1.5 pt-1 border-t border-neutral-200/60 text-xs text-neutral-600">
-                  <div className="flex items-center space-x-2"><span className="w-3">5</span><div className="flex-1 h-2 bg-neutral-200 rounded-full overflow-hidden"><div className="w-[71%] h-full bg-amber-500 rounded-full"></div></div><span className="w-8 text-right font-medium">71%</span></div>
-                  <div className="flex items-center space-x-2"><span className="w-3">4</span><div className="flex-1 h-2 bg-neutral-200 rounded-full overflow-hidden"><div className="w-[29%] h-full bg-amber-500 rounded-full"></div></div><span className="w-8 text-right font-medium">29%</span></div>
-                  <div className="flex items-center space-x-2"><span className="w-3">3</span><div className="flex-1 h-2 bg-neutral-200 rounded-full overflow-hidden"><div className="w-[0%] h-full bg-amber-500 rounded-full"></div></div><span className="w-8 text-right font-medium">0%</span></div>
-                  <div className="flex items-center space-x-2"><span className="w-3">2</span><div className="flex-1 h-2 bg-neutral-200 rounded-full overflow-hidden"><div className="w-[0%] h-full bg-amber-500 rounded-full"></div></div><span className="w-8 text-right font-medium">0%</span></div>
-                  <div className="flex items-center space-x-2"><span className="w-3">1</span><div className="flex-1 h-2 bg-neutral-200 rounded-full overflow-hidden"><div className="w-[0%] h-full bg-amber-500 rounded-full"></div></div><span className="w-8 text-right font-medium">0%</span></div>
-                </div>
+                <span className="font-bold text-neutral-900">
+                  {product.rating}
+                </span>
+
+                <span className="text-sm text-neutral-500">
+                  ({product.reviewsCount} reviews)
+                </span>
+
               </div>
 
-              <p className="text-neutral-600 text-sm sm:text-base leading-relaxed font-light">
+
+              {/* Price */}
+              <div className="flex flex-wrap items-center gap-3 mt-5">
+
+                <span className="text-3xl font-extrabold text-neutral-900">
+                  ₹{totalPrice.toLocaleString()}
+                </span>
+
+                <span className="text-sm text-neutral-400 line-through">
+                  ₹{(product.rawPrice * 1.25).toFixed(0)}
+                </span>
+
+                <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-bold">
+                  25% OFF
+                </span>
+
+              </div>
+
+
+              {/* Description */}
+              <p className="mt-4 text-sm leading-6 text-neutral-600">
                 {product.desc}
               </p>
 
-              {/* Quantity Selector */}
-              <div className="flex items-center justify-between pt-2">
-                <span className="text-sm font-semibold text-neutral-700">Quantity:</span>
-                <div className="flex items-center border border-amber-300 rounded-xl overflow-hidden bg-amber-50/50">
-                  <button 
-                    onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
-                    className="px-3 py-1.5 hover:bg-amber-200 text-amber-900 transition cursor-pointer"
+
+              {/* Feature Pills */}
+              <div className="grid grid-cols-3 gap-2 mt-4">
+
+                <div className="text-center">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-amber-50 flex items-center justify-center">
+                    <CheckCircle2 size={17} className="text-amber-700" />
+                  </div>
+                  <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
+                    Customizable
+                  </p>
+                </div>
+
+                <div className="text-center">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-amber-50 flex items-center justify-center">
+                    <Truck size={17} className="text-amber-700" />
+                  </div>
+                  <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
+                    On-Time Setup
+                  </p>
+                </div>
+
+                <div className="text-center">
+                  <div className="w-9 h-9 mx-auto rounded-full bg-amber-50 flex items-center justify-center">
+                    <Sparkles size={17} className="text-amber-700" />
+                  </div>
+                  <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
+                    Premium Quality
+                  </p>
+                </div>
+
+              </div>
+
+
+              {/* Availability */}
+              <div className="mt-4 rounded-2xl bg-amber-50/70 border border-amber-100 px-4 py-3">
+
+                <div className="flex items-center gap-2 text-sm font-medium text-green-700">
+                  <CheckCircle2 size={16} />
+                  Service available in your area
+                </div>
+
+              </div>
+
+
+              {/* Quantity */}
+              <div className="flex items-center justify-between mt-4">
+
+                <span className="text-sm font-semibold text-neutral-700">
+                  Quantity
+                </span>
+
+                <div className="flex items-center border border-amber-300 rounded-xl overflow-hidden bg-white">
+
+                  <button
+                    onClick={() =>
+                      setQuantity((prev) => Math.max(1, prev - 1))
+                    }
+                    className="w-10 h-10 flex items-center justify-center text-amber-800 hover:bg-amber-50 transition"
                   >
-                    <Minus size={14} />
+                    <Minus size={15} />
                   </button>
-                  <span className="px-4 text-sm font-bold text-neutral-900">{quantity}</span>
-                  <button 
-                    onClick={() => setQuantity((prev) => prev + 1)}
-                    className="px-3 py-1.5 hover:bg-amber-200 text-amber-900 transition cursor-pointer"
+
+                  <span className="w-10 text-center text-sm font-bold">
+                    {quantity}
+                  </span>
+
+                  <button
+                    onClick={() =>
+                      setQuantity((prev) => prev + 1)
+                    }
+                    className="w-10 h-10 flex items-center justify-center text-amber-800 hover:bg-amber-50 transition"
                   >
-                    <Plus size={14} />
+                    <Plus size={15} />
                   </button>
+
                 </div>
+
               </div>
 
-              {/* Trust Features */}
-              <div className="space-y-2 pt-2 text-xs sm:text-sm text-neutral-700">
-                <div className="flex items-center space-x-3">
-                  <CheckCircle2 size={16} className="text-amber-700 flex-shrink-0" />
-                  <span>100% Handcrafted & Premium Quality Assured</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Truck size={16} className="text-amber-700 flex-shrink-0" />
-                  <span>Safe & Timely Delivery Right to Your Doorstep</span>
-                </div>
-              </div>
-            </div>
 
-            {/* Pricing and Action Buttons */}
-            <div className="space-y-4 pt-4 border-t border-amber-100">
-              <div className="flex items-center justify-between">
-                <span className="text-xs uppercase tracking-widest text-neutral-500 font-semibold">Total Price</span>
-                <span className="text-3xl font-extrabold text-amber-900 font-mono tracking-tight">₹{totalPrice.toLocaleString()}</span>
-              </div>
+              {/* Buttons */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button 
+                <button
                   onClick={handleAddToCart}
-                  className="w-full bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300 py-3.5 px-6 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center space-x-2 transition shadow-sm text-center cursor-pointer"
+                  className="h-12 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-sm flex items-center justify-center gap-2 transition"
                 >
+
                   {added ? (
                     <>
-                      <Check size={16} className="text-green-700" />
-                      <span className="text-green-800">Added to Cart!</span>
+                      <Check size={17} className="text-green-700" />
+                      <span className="text-green-800">
+                        Added to Cart!
+                      </span>
                     </>
                   ) : (
                     <>
-                      <ShoppingBag size={16} className="text-amber-800" />
-                      <span>Add to cart</span>
+                      <ShoppingBag size={17} />
+                      <span>Add to Cart</span>
                     </>
                   )}
+
                 </button>
 
-                <button 
+
+                <button
                   onClick={handleBookNowClick}
-                  className="w-full bg-amber-900 hover:bg-amber-950 text-white py-3.5 px-6 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center space-x-2 transition shadow-lg transform hover:-translate-y-0.5 text-center cursor-pointer"
+                  className="h-12 rounded-xl bg-[#8B3F05] hover:bg-[#713200] text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-md hover:shadow-lg"
                 >
-                  <Calendar size={16} className="text-amber-200" />
-                  <span>Book now</span>
+                  <Calendar size={17} />
+                  <span>Book Now</span>
                 </button>
+
               </div>
 
-              <p className="text-center text-[11px] text-neutral-400 font-light">
-                Secure checkout. Guaranteed satisfaction on all bookings.
+
+              <p className="text-center text-xs text-neutral-400 mt-4">
+                Secure checkout · Guaranteed satisfaction
               </p>
+
+            </div>
+
+
+            {/* =================================================
+                BOOKING INFORMATION CARD
+            ================================================== */}
+          
+          </div>
+        </div>
+
+      </section>
+
+
+      {/* =====================================================
+          LOWER INFORMATION SECTION
+      ====================================================== */}
+      <section className="mt-5 bg-white rounded-3xl border border-amber-100 shadow-sm overflow-hidden">
+
+        {/* Tabs */}
+        <div className="border-b border-neutral-100 overflow-x-auto">
+
+          <div className="flex min-w-max">
+
+            {[
+              "Overview",
+              "What's Included",
+              "What's Not Included",
+              "Cancellation Policy",
+              "Reviews",
+              "FAQ",
+            ].map((tab, index) => (
+              <button
+                key={tab}
+                className={`
+                  px-5 sm:px-7 py-5 text-sm font-medium transition
+                  ${
+                    index === 0
+                      ? "text-amber-800 border-b-2 border-amber-500"
+                      : "text-neutral-500 hover:text-amber-800"
+                  }
+                `}
+              >
+                {tab}
+              </button>
+            ))}
+
+          </div>
+
+        </div>
+
+
+        {/* Overview Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-5 sm:p-6">
+
+          {/* Description */}
+          <div className="lg:col-span-7">
+
+            <h2 className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 leading-tight">
+              Turn Your Special Moments Into Magical Memories
+            </h2>
+
+            <p className="mt-4 text-sm sm:text-base leading-7 text-neutral-600">
+              {product.desc}
+            </p>
+
+
+            {/* Feature Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-7">
+
+              <div className="rounded-2xl bg-amber-50 p-4">
+                <Sparkles size={19} className="text-amber-700" />
+                <p className="mt-3 text-xs font-semibold text-neutral-800">
+                  Premium Decor
+                </p>
+                <p className="text-[11px] text-neutral-500 mt-1">
+                  & Setup
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-amber-50 p-4">
+                <CheckCircle2 size={19} className="text-amber-700" />
+                <p className="mt-3 text-xs font-semibold text-neutral-800">
+                  Verified
+                </p>
+                <p className="text-[11px] text-neutral-500 mt-1">
+                  Quality
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-amber-50 p-4">
+                <Truck size={19} className="text-amber-700" />
+                <p className="mt-3 text-xs font-semibold text-neutral-800">
+                  On-Time
+                </p>
+                <p className="text-[11px] text-neutral-500 mt-1">
+                  Setup
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-amber-50 p-4">
+                <Calendar size={19} className="text-amber-700" />
+                <p className="mt-3 text-xs font-semibold text-neutral-800">
+                  Easy
+                </p>
+                <p className="text-[11px] text-neutral-500 mt-1">
+                  Booking
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* Included Card */}
+          <div className="lg:col-span-5">
+
+            <div className="rounded-2xl bg-[#FFF9E8] border border-amber-100 p-6">
+
+              <h3 className="font-serif font-bold text-lg text-neutral-900">
+                What's Included
+              </h3>
+
+              <div className="mt-5 space-y-3">
+
+                {[
+                  "Premium decoration setup",
+                  "Professional setup team",
+                  "Quality decoration materials",
+                  "On-time service",
+                  "Post-event cleanup",
+                ].map((item) => (
+
+                  <div
+                    key={item}
+                    className="flex items-center gap-3 text-sm text-neutral-700"
+                  >
+                    <CheckCircle2
+                      size={17}
+                      className="text-amber-700 shrink-0"
+                    />
+
+                    <span>{item}</span>
+                  </div>
+
+                ))}
+
+              </div>
+
             </div>
 
           </div>
 
         </div>
 
-      </div>
+      </section>
+
+
+      {/* =====================================================
+          REVIEW SECTION
+      ====================================================== */}
+      <section className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        {/* Rating Summary */}
+        <div className="bg-white border border-amber-100 rounded-3xl p-6 sm:p-8">
+
+          <div className="flex items-center justify-between">
+
+            <div>
+
+              <h3 className="text-xl font-serif font-bold text-neutral-900">
+                Customer Reviews
+              </h3>
+
+              <div className="flex items-center gap-3 mt-3">
+
+                <span className="text-3xl font-bold">
+                  {product.rating}
+                </span>
+
+                <div>
+                  <div className="flex">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        size={16}
+                        className="fill-amber-500 text-amber-500"
+                      />
+                    ))}
+                  </div>
+
+                  <p className="text-xs text-neutral-500 mt-1">
+                    {product.reviewsCount} verified reviews
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          {/* Rating Bars */}
+          <div className="mt-6 space-y-3">
+
+            {[
+              ["5", "71%"],
+              ["4", "29%"],
+              ["3", "0%"],
+              ["2", "0%"],
+              ["1", "0%"],
+            ].map(([rating, percentage]) => (
+
+              <div
+                key={rating}
+                className="flex items-center gap-3 text-xs"
+              >
+
+                <span className="w-4 text-neutral-600">
+                  {rating}
+                </span>
+
+                <div className="flex-1 h-2 bg-neutral-100 rounded-full overflow-hidden">
+
+                  <div
+                    className="h-full bg-amber-500 rounded-full"
+                    style={{ width: percentage }}
+                  />
+
+                </div>
+
+                <span className="w-10 text-right text-neutral-500">
+                  {percentage}
+                </span>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
+
+        {/* Quote Card */}
+        <div className="bg-[#FFF9E8] border border-amber-100 rounded-3xl p-8 flex flex-col justify-center">
+
+          <Sparkles
+            size={24}
+            className="text-amber-600"
+          />
+
+          <h3 className="mt-4 text-2xl font-serif font-bold text-neutral-900">
+            Because the little moments matter.
+          </h3>
+
+          <p className="mt-3 text-sm leading-6 text-neutral-600">
+            Create beautiful celebrations with thoughtfully designed
+            decorations and memorable experiences.
+          </p>
+
+        </div>
+
+      </section>
+
+    </main>
 
       {/* Confirmation Modal Popup */}
       {showModal && (

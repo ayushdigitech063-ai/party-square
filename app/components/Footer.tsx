@@ -13,6 +13,7 @@ import {
   MapPin,
 } from "lucide-react";
 
+
 export default function Footer() {
   const [email, setEmail] = React.useState("");
   const [error, setError] = React.useState("");
@@ -267,19 +268,19 @@ export default function Footer() {
           </p>
           <div className="flex space-x-6">
             <Link
-              href="#"
+              href="/privacy-Policy"
               className="hover:text-amber-950 hover:underline transition"
             >
               Privacy Policy
             </Link>
             <Link
-              href="#"
+              href="/terms-and-condition"
               className="hover:text-amber-950 hover:underline transition"
             >
               Terms of Service
             </Link>
             <Link
-              href="#"
+              href="/cookie"
               className="hover:text-amber-950 hover:underline transition"
             >
               Cookie Settings

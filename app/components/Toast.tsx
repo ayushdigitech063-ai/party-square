@@ -1,7 +1,7 @@
 import React from "react";
 import { CheckCircle2, X } from "lucide-react";
 
-export default function Toast({ show, message, image, onClose }) {
+export default function Toast({ show, message, image, onClose }: any) {
   if (!show) return null;
 
   return (

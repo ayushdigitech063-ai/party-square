@@ -7,7 +7,9 @@ import {
   ArrowRight,
   ShieldCheck,
   Sparkles,
+  LoaderCircle,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -20,6 +22,8 @@ export default function LoginModal({
 }: LoginModalProps) {
   const [mobile, setMobile] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
 
   if (!isOpen) return null;
 
@@ -31,7 +35,11 @@ export default function LoginModal({
     // Your OTP API logic will go here
     setTimeout(() => {
       setIsLoading(false);
-      alert("OTP sent successfully!");
+      alert("Login successfully!");
+      if(isOpen){
+        onClose();
+        setMobile("");
+      }
     }, 1000);
   };
 
@@ -158,10 +166,11 @@ export default function LoginModal({
           >
 
             {isLoading ? (
-              "Sending OTP..."
+              <LoaderCircle  size={18}
+               className="animate-spin"/>
             ) : (
               <>
-                Get OTP
+                Login
                 <ArrowRight
                   size={16}
                   className="transition-transform group-hover:translate-x-1"
@@ -267,13 +276,13 @@ export default function LoginModal({
 
             By continuing, you agree to our{" "}
 
-            <button className="font-semibold text-[#A66A00] hover:underline">
+            <button onClick={()=>{router.push('/terms-and-condition');onClose()}} className="font-semibold text-[#A66A00] hover:underline">
               Terms
             </button>
 
             {" "} & {" "}
 
-            <button className="font-semibold text-[#A66A00] hover:underline">
+            <button onClick={()=>{router.push('/privacy-Policy');onClose()}} className="font-semibold text-[#A66A00] hover:underline">
               Privacy Policy
             </button>
 
