@@ -8,28 +8,23 @@ export default function Wishlist() {
     removeFromWishlist,
   } = useWishlist();
   return (
-      <section className="min-h-screen bg-[#fbf8f2] px-6 py-12">
+       <section className="min-h-screen bg-[#FAF7F2] px-6 py-12">
 
       <div className="mx-auto max-w-6xl">
 
         {/* HEADER */}
 
-        <div className="mb-10">
+        <div className="flex items-center justify-between border-b border-amber-200 pb-6 mb-8">
 
-          <p className="mb-3 text-[10px] font-bold tracking-[2.5px] text-[#8b5b17]">
-            YOUR COLLECTION
-          </p>
+          <div>
+            <h1 className="text-3xl font-serif font-bold text-gray-900">
+              My Wishlist
+            </h1>
 
-          <h1 className="font-serif text-5xl text-[#302823]">
-            My{" "}
-            <span className="italic text-[#8a1717]">
-              Wishlist
-            </span>
-          </h1>
-
-          <p className="mt-3 text-sm text-[#756d66]">
-            Keep your favorite decorations close.
-          </p>
+            <p className="text-xs text-gray-500 uppercase tracking-wider mt-1">
+              Keep your favorite decorations close
+            </p>
+          </div>
 
         </div>
 
@@ -69,78 +64,93 @@ export default function Wishlist() {
 
           /* PRODUCTS */
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="space-y-4">
 
             {wishlist.map((product) => (
 
               <div
                 key={product.id}
-                className="overflow-hidden rounded-[22px] border border-[#eadfd5] bg-white shadow-[0_8px_25px_rgba(66,37,22,0.06)]"
+                className="bg-white rounded-2xl border border-amber-200 shadow-sm p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 transition hover:shadow-md"
               >
 
-                {/* IMAGE */}
+                {/* IMAGE + PRODUCT INFORMATION */}
 
-                <div className="relative h-[260px]">
+                <div className="flex items-center space-x-4 w-full sm:w-auto">
 
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="h-full w-full object-cover"
-                  />
+                  <div className="w-20 h-20 rounded-xl overflow-hidden bg-amber-50 border border-amber-100 flex-shrink-0">
 
-                  {/* REMOVE HEART */}
-
-                  <button
-                    onClick={() =>
-                      removeFromWishlist(product.id)
-                    }
-                    className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#741616] shadow-md"
-                  >
-                    <Heart
-                      size={18}
-                      fill="currentColor"
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover"
                     />
-                  </button>
+
+                  </div>
+
+                  <div className="space-y-1">
+
+                    <p className="text-[10px] uppercase tracking-wider text-amber-700 font-bold">
+                      {product.category}
+                    </p>
+
+                    <h3 className="text-lg font-serif font-bold text-gray-900">
+                      {product.name}
+                    </h3>
+
+                    <p className="text-xs text-gray-500 line-clamp-1">
+                      {product.desc}
+                    </p>
+
+                    <div className="inline-flex items-center bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full text-xs font-semibold">
+                      Starting Price: {product.price}
+                    </div>
+
+                  </div>
 
                 </div>
 
 
-                {/* CONTENT */}
+                {/* RIGHT SIDE */}
 
-                <div className="p-5">
+                <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-3 border-t sm:border-t-0 pt-3 sm:pt-0 border-amber-100">
 
-                  <p className="mb-1 text-[10px] font-bold uppercase tracking-[1.5px] text-[#a02a22]">
-                    {product.category}
-                  </p>
+                  <div className="text-right">
 
-                  <h2 className="font-serif text-[24px] text-[#302823]">
-                    {product.name}
-                  </h2>
+                    <p className="text-xs text-gray-400 uppercase tracking-wider">
+                      Starting From
+                    </p>
 
-                  <p className="mt-2 text-[13px] leading-5 text-[#776e66]">
-                    {product.desc}
-                  </p>
-
-                  <div className="my-5 h-px bg-[#eee4dc]" />
-
-                  <div className="flex items-center justify-between">
-
-                    <div>
-                      <p className="text-[10px] text-[#968b82]">
-                        Starting from
-                      </p>
-
-                      <p className="font-serif text-lg font-semibold text-[#302823]">
-                        {product.price}
-                      </p>
-                    </div>
-
-                    <button className="flex items-center gap-2 rounded-full bg-[#741616] px-5 py-2.5 text-xs font-semibold text-white">
-                      Book
-                      <ArrowRight size={15} />
-                    </button>
+                    <p className="text-lg font-bold text-amber-900">
+                      {product.price}
+                    </p>
 
                   </div>
+
+
+                  {/* BOOK */}
+
+                  <button
+                    className="px-4 py-2 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5 transition cursor-pointer"
+                  >
+                    <span>Book</span>
+                    <ArrowRight size={15} />
+                  </button>
+
+
+                  {/* REMOVE */}
+
+                  <button
+                    onClick={() => removeFromWishlist(product.id)}
+                    className="w-10 h-10 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 flex items-center justify-center transition cursor-pointer shadow-sm"
+                    title="Remove from wishlist"
+                  >
+
+                    <Heart
+                      size={18}
+                      fill="currentColor"
+                    />
+
+                  </button>
 
                 </div>
 
@@ -156,4 +166,5 @@ export default function Wishlist() {
 
     </section>
   );
+
 }

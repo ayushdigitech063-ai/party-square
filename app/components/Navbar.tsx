@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import CityModal from "./CityModal"; // <-- CityModal import kiya hai (apne folder path ke hisaab se adjust kar lein)
 import { useWishlist } from "../context/wishlistcontext";
+import LoginModal from "./LoginModal";
 import { useCart } from "../context/CartContext"; // path apne folder ke hisaab se adjust karein
 
 const CITIES = [
@@ -477,6 +478,7 @@ export default function Navbar() {
   const { cartCount } = useCart(); // 👈 naya
   const [locationOpen, setLocationOpen] = useState(false);
   const [selectedCity, setSelectedCity] = useState("Delhi");
+  const [loginopen, setLoginOpen] = useState(false);
 
   // State for controlling the popup automatically on website load
   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
@@ -629,8 +631,8 @@ export default function Navbar() {
               <WhatsAppIcon size={18} />
             </a>
 
-            <button className="h-9 sm:h-11 px-3 sm:px-6 shrink-0 rounded-full bg-amber-200 text-black text-sm sm:text-[15px] font-semibold flex items-center gap-1.5 sm:gap-2 whitespace-nowrap hover:bg-amber-300 transition shadow-sm">
-              <span className="hidden sm:inline">Book Now</span>
+            <button onClick={()=> setLoginOpen(true)} className="h-9 sm:h-11 px-3 sm:px-6 shrink-0 rounded-full bg-amber-200 text-black text-sm sm:text-[15px] font-semibold flex items-center gap-1.5 sm:gap-2 whitespace-nowrap hover:bg-amber-300 transition shadow-sm">
+              <span className="hidden sm:inline">Login</span>
               <ArrowRight size={16} />
             </button>
           </div>
@@ -701,6 +703,7 @@ export default function Navbar() {
           <div className="pointer-events-none absolute right-0 top-0 h-full w-6 sm:w-10 bg-gradient-to-l from-white to-transparent z-10" />
         </div>
       </nav>
+       <LoginModal isOpen={loginopen} onClose={() => setLoginOpen(false)} />
     </>
   );
 }
