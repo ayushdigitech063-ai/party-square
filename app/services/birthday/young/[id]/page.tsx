@@ -3,19 +3,19 @@
 import Link from "next/link";
 import { use } from "react";
 import { useRouter } from "next/navigation";
-import {fatherCards} from "../page";
+import {newYearCards,  hotelCards,  outdoorCards } from "../page";
 import { ArrowLeft, Check } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export default function FatherBookingPage({ params }: PageProps) {
+export default function YoungBirthdayPage({ params }: PageProps) {
     const router = useRouter();
   const resolvedParams = use(params);
 
   const productId = Number(resolvedParams.id);
-   const product = fatherCards.find((item) => item.id == productId);
+   const product = newYearCards.find((item) => item.id == productId) || hotelCards.find((item) => item.id == productId) || outdoorCards.find((item) => item.id == productId);
 
   
    if (!product) {
@@ -69,7 +69,7 @@ export default function FatherBookingPage({ params }: PageProps) {
 
             <div className="absolute bottom-6 left-6">
               <span className="bg-[#C5A059] text-neutral-950 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest">
-                Father's Collection
+                New Year's Collection
               </span>
             </div>
           </div>

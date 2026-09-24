@@ -41,7 +41,7 @@ export const bannerData = [
 
 export const weddingGifts = [
   { 
-    id: "1", 
+    id: 5, 
     slug: "royal-wedding-gift-hamper", 
     name: "Royal Wedding Gift Hamper", 
     price: "₹2,499", 
@@ -51,7 +51,7 @@ export const weddingGifts = [
     reviewsCount: 262 
   },
   { 
-    id: "2", 
+    id: 6, 
     slug: "bridal-couple-keepsake-box", 
     name: "Bridal Couple Keepsake Box", 
     price: "₹1,899", 
@@ -61,7 +61,7 @@ export const weddingGifts = [
     reviewsCount: 184 
   },
   { 
-    id: "3", 
+    id: 7, 
     slug: "traditional-wedding-present-set", 
     name: "Traditional Wedding Present Set", 
     price: "₹3,199", 
@@ -71,7 +71,7 @@ export const weddingGifts = [
     reviewsCount: 210 
   },
   { 
-    id: "4", 
+    id: 8, 
     slug: "luxury-celebration-gift-basket", 
     name: "Luxury Celebration Gift Basket", 
     price: "₹2,999", 
@@ -82,7 +82,7 @@ export const weddingGifts = [
   },
   // Extra Wedding Gifts / Hampers from previous list
   { 
-    id: "30", 
+    id: 9, 
     slug: "handcrafted-luxury-wedding-hamper-one", 
     name: "Royal Wedding Present Hamper", 
     price: "₹2,899", 
@@ -92,7 +92,7 @@ export const weddingGifts = [
     reviewsCount: 190 
   },
   { 
-    id: "31", 
+    id: 10, 
     slug: "handcrafted-luxury-wedding-hamper-two", 
     name: "Grand Couple Celebration Box", 
     price: "₹3,499", 
@@ -102,7 +102,7 @@ export const weddingGifts = [
     reviewsCount: 245 
   },
   { 
-    id: "32", 
+    id: 11, 
     slug: "handcrafted-luxury-wedding-hamper-three", 
     name: "Traditional Bridal Gift Tray", 
     price: "₹2,299", 
@@ -112,7 +112,7 @@ export const weddingGifts = [
     reviewsCount: 160 
   },
   { 
-    id: "33", 
+    id: 12, 
     slug: "handcrafted-luxury-wedding-hamper-four", 
     name: "Opulent Wedding Gift Basket", 
     price: "₹3,199", 
@@ -125,7 +125,7 @@ export const weddingGifts = [
 
 export const festivalsProducts = [
   { 
-    id: "5", 
+    id: 13, 
     slug: "grand-festive-celebration-kit", 
     name: "Grand Festive Celebration Kit", 
     price: "₹1,599", 
@@ -135,7 +135,7 @@ export const festivalsProducts = [
     reviewsCount: 142 
   },
   { 
-    id: "6", 
+    id: 14, 
     slug: "traditional-festival-decoratives", 
     name: "Traditional Festival Decoratives", 
     price: "₹1,299", 
@@ -145,7 +145,7 @@ export const festivalsProducts = [
     reviewsCount: 98 
   },
   { 
-    id: "7", 
+    id: 15, 
     slug: "auspicous-celebration-package", 
     name: "Auspicous Celebration Package", 
     price: "₹2,199", 
@@ -155,7 +155,7 @@ export const festivalsProducts = [
     reviewsCount: 176 
   },
   { 
-    id: "8", 
+    id: 16, 
     slug: "festive-special-decor-one", 
     name: "Festive Celebration Ornament", 
     price: "₹1,499", 
@@ -165,7 +165,7 @@ export const festivalsProducts = [
     reviewsCount: 115 
   },
   { 
-    id: "9", 
+    id: 17, 
     slug: "festive-special-decor-two", 
     name: "Traditional Festive Hamper", 
     price: "₹1,899", 
@@ -175,7 +175,7 @@ export const festivalsProducts = [
     reviewsCount: 130 
   },
   { 
-    id: "10", 
+    id: 18, 
     slug: "festive-special-decor-three", 
     name: "Auspicious Celebration Kit", 
     price: "₹2,399", 
@@ -185,7 +185,7 @@ export const festivalsProducts = [
     reviewsCount: 160 
   },
   { 
-    id: "11", 
+    id: 19, 
     slug: "festive-special-decor-four", 
     name: "Cultural Festival Accent", 
     price: "₹1,199", 
@@ -195,7 +195,7 @@ export const festivalsProducts = [
     reviewsCount: 95 
   },
   { 
-    id: "12", 
+    id: 20, 
     slug: "festive-special-decor-five", 
     name: "Grand Festive Package", 
     price: "₹2,799", 
@@ -208,7 +208,7 @@ export const festivalsProducts = [
 
 export const pujaSection = [
   { 
-    id: "13", 
+    id: 21, 
     slug: "divine-puja-thali-essentials", 
     name: "Divine Puja Thali & Essentials", 
     price: "₹999", 
@@ -218,7 +218,7 @@ export const pujaSection = [
     reviewsCount: 420 
   },
   { 
-    id: "14", 
+    id: 22, 
     slug: "blessed-mandap-floral-setup", 
     name: "Blessed Mandap Floral Setup", 
     price: "₹3,499", 
@@ -228,7 +228,7 @@ export const pujaSection = [
     reviewsCount: 289 
   },
   { 
-    id: "15", 
+    id: 23, 
     slug: "spiritual-home-temple-decor", 
     name: "Spiritual Home Temple Decor", 
     price: "₹1,799", 
@@ -238,7 +238,7 @@ export const pujaSection = [
     reviewsCount: 154 
   },
   { 
-    id: "16", 
+    id: 24, 
     slug: "traditional-ceremonial-aarti-set", 
     name: "Traditional Ceremonial Aarti Set", 
     price: "₹1,499", 
@@ -248,7 +248,7 @@ export const pujaSection = [
     reviewsCount: 112 
   },
   { 
-    id: "17", 
+    id: 25, 
     slug: "sacred-puja-essentials-kit", 
     name: "Sacred Puja Essentials Kit", 
     price: "₹1,299", 
@@ -258,7 +258,7 @@ export const pujaSection = [
     reviewsCount: 135 
   },
   { 
-    id: "18", 
+    id: 26, 
     slug: "divine-mandap-decor-item", 
     name: "Divine Mandap Decor Item", 
     price: "₹3,899", 
@@ -268,7 +268,7 @@ export const pujaSection = [
     reviewsCount: 180 
   },
   { 
-    id: "19", 
+    id: 27, 
     slug: "traditional-devotional-thali", 
     name: "Traditional Devotional Thali Set", 
     price: "₹1,199", 
@@ -278,7 +278,7 @@ export const pujaSection = [
     reviewsCount: 150 
   },
   { 
-    id: "20", 
+    id: 28, 
     slug: "serene-temple-decor-piece", 
     name: "Serene Temple Decor Piece", 
     price: "₹1,599", 
@@ -291,7 +291,7 @@ export const pujaSection = [
 
 export const estheticProducts = [
   { 
-    id: "21", 
+    id: 29, 
     slug: "modern-minimalist-aesthetic-decor", 
     name: "Modern Minimalist Aesthetic Decor", 
     price: "₹2,299", 
@@ -301,7 +301,7 @@ export const estheticProducts = [
     reviewsCount: 225 
   },
   { 
-    id: "22", 
+    id: 30, 
     slug: "boho-chic-elegance-arrangement", 
     name: "Boho-Chic Elegance Arrangement", 
     price: "₹1,899", 
@@ -311,7 +311,7 @@ export const estheticProducts = [
     reviewsCount: 165 
   },
   { 
-    id: "23", 
+    id: 31, 
     slug: "luxurious-designer-centerpiece", 
     name: "Luxurious Designer Centerpiece", 
     price: "₹2,799", 
@@ -321,7 +321,7 @@ export const estheticProducts = [
     reviewsCount: 380 
   },
   { 
-    id: "24", 
+    id: 32, 
     slug: "contemporary-artful-home-accent", 
     name: "Contemporary Artful Home Accent", 
     price: "₹1,699", 
@@ -331,7 +331,7 @@ export const estheticProducts = [
     reviewsCount: 88 
   },
   { 
-    id: "25", 
+    id: 33, 
     slug: "aesthetic-decor-piece-one", 
     name: "Modern Artistic Accent", 
     price: "₹1,899", 
@@ -341,7 +341,7 @@ export const estheticProducts = [
     reviewsCount: 140 
   },
   { 
-    id: "26", 
+    id: 34, 
     slug: "aesthetic-decor-piece-two", 
     name: "Contemporary Design Centerpiece", 
     price: "₹2,499", 
@@ -351,7 +351,7 @@ export const estheticProducts = [
     reviewsCount: 195 
   },
   { 
-    id: "27", 
+    id: 35, 
     slug: "aesthetic-decor-piece-three", 
     name: "Artful Interior Styling Element", 
     price: "₹1,699", 
@@ -361,7 +361,7 @@ export const estheticProducts = [
     reviewsCount: 110 
   },
   { 
-    id: "28", 
+    id: 36, 
     slug: "aesthetic-decor-piece-four", 
     name: "Minimalist Aesthetic Ornament", 
     price: "₹2,199", 
@@ -371,7 +371,7 @@ export const estheticProducts = [
     reviewsCount: 165 
   },
   { 
-    id: "29", 
+    id: 37, 
     slug: "aesthetic-decor-piece-five", 
     name: "Luxurious Artistic Accent", 
     price: "₹2,999", 
