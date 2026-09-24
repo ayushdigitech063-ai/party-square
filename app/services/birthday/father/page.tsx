@@ -12,11 +12,7 @@ import {
 } from "lucide-react";
 import { useWishlist } from "../../../context/wishlistcontext";
 
-export default function FatherBirthdayPage() {
-  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
-
-  // Father's special decor images for the 4-column cards layout
-  const fatherCards = [
+ export const fatherCards = [
     {
       id: 1,
       image: "/dad.png",
@@ -47,6 +43,10 @@ export default function FatherBirthdayPage() {
     },
   ];
 
+export default function FatherBirthdayPage() {
+  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
+
+  
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-neutral-900 font-sans selection:bg-[#C5A059] selection:text-white">
       {/* ================= HERO SECTION WITH badbackgroundimage.png ================= */}

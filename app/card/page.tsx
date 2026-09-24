@@ -1,13 +1,16 @@
 "use client";
 
 import React, { useRef } from "react";
-import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { bannerData, weddingGifts, festivalsProducts, pujaSection, estheticProducts } from "./productDetails";
 import { useCart } from "@/app/context/CartContext";
+import { useWishlist } from "../context/wishlistcontext";
+
 
 export default function CardPage() {
   const { addToCart } = useCart();
+   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
 
   // Refs for horizontal scrolling containers
   const weddingRef = useRef<HTMLDivElement>(null);
@@ -43,9 +46,27 @@ export default function CardPage() {
         <div ref={weddingRef} className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory">
           {weddingGifts.map((item) => (
             <div key={item.id} className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start">
-              <Link href={`/card/${item.slug}`} className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
+              <div className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-              </Link>
+                <button
+                    onClick={() => {
+                      toggleWishlist(item);
+                    }}
+                    aria-label={
+                      isInWishlist(item.id) ? "Remove from wishlist" : "Add to wishlist"
+                    }
+                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
+                  >
+                    <Heart
+                      size={16}
+                      className={
+                        isInWishlist(item.id)
+                          ? "fill-rose-500 text-rose-500"
+                          : "text-gray-700"
+                      }
+                    />
+                  </button>
+              </div>
               <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
                 <div className="space-y-1">
                   <Link href={`/card/${item.slug}`}>
@@ -95,9 +116,27 @@ export default function CardPage() {
         <div ref={festivalRef} className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory">
           {festivalsProducts.map((item) => (
             <div key={item.id} className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start">
-              <Link href={`/card/${item.slug}`} className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
+              <div  className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-              </Link>
+                <button
+                    onClick={() => {
+                      toggleWishlist(item);
+                    }}
+                    aria-label={
+                      isInWishlist(item.id) ? "Remove from wishlist" : "Add to wishlist"
+                    }
+                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
+                  >
+                    <Heart
+                      size={16}
+                      className={
+                        isInWishlist(item.id)
+                          ? "fill-rose-500 text-rose-500"
+                          : "text-gray-700"
+                      }
+                    />
+                  </button>
+              </div>
               <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
                 <div className="space-y-1">
                   <Link href={`/card/${item.slug}`}>
@@ -147,9 +186,27 @@ export default function CardPage() {
         <div ref={pujaRef} className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory">
           {pujaSection.map((item) => (
             <div key={item.id} className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start">
-              <Link href={`/card/${item.slug}`} className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
+              <div className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-              </Link>
+                <button
+                    onClick={() => {
+                      toggleWishlist(item);
+                    }}
+                    aria-label={
+                      isInWishlist(item.id) ? "Remove from wishlist" : "Add to wishlist"
+                    }
+                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
+                  >
+                    <Heart
+                      size={16}
+                      className={
+                        isInWishlist(item.id)
+                          ? "fill-rose-500 text-rose-500"
+                          : "text-gray-700"
+                      }
+                    />
+                  </button>
+              </div>
               <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
                 <div className="space-y-1">
                   <Link href={`/card/${item.slug}`}>
@@ -199,9 +256,27 @@ export default function CardPage() {
         <div ref={estheticRef} className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory">
           {estheticProducts.map((item) => (
             <div key={item.id} className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start">
-              <Link href={`/card/${item.slug}`} className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
+              <div className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-              </Link>
+                <button
+                    onClick={() => {
+                      toggleWishlist(item);
+                    }}
+                    aria-label={
+                      isInWishlist(item.id) ? "Remove from wishlist" : "Add to wishlist"
+                    }
+                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
+                  >
+                    <Heart
+                      size={16}
+                      className={
+                        isInWishlist(item.id)
+                          ? "fill-rose-500 text-rose-500"
+                          : "text-gray-700"
+                      }
+                    />
+                  </button>
+              </div>
               <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
                 <div className="space-y-1">
                   <Link href={`/card/${item.slug}`}>

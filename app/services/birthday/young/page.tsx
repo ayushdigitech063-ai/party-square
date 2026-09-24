@@ -13,11 +13,7 @@ import {
 } from "lucide-react";
 import { useWishlist } from "../../../context/wishlistcontext";
 
-export default function HomePage() {
-  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
-
-  // 1. New Year Party Cards
-  const newYearCards = [
+export  const newYearCards = [
     {
       id: 1,
       image: "/party.png",
@@ -48,45 +44,44 @@ export default function HomePage() {
     },
   ];
 
-  // 2. Hotel Decoration Cards
-  const hotelCards = [
+  export const hotelCards = [
     {
-      id: 1,
+      id: 5,
       image: "/hoteldecoration.png",
       name: "Luxury Suite Romance",
       desc: "Rose petal pathways, candlelit room styling & swan towel decor.",
       price: "₹4,499",
     },
     {
-      id: 2,
+      id: 6,
       image: "/hoteldecoration1.png",
       name: "Royal Banquet Styling",
       desc: "Grand floral pillars, crystal chandeliers & stage draping.",
       price: "₹24,999",
     },
     {
-      id: 3,
+      id: 7,
       image: "/hoteldecoration2.png",
       name: "Boutique Anniversary Room",
       desc: "Customized balloon ceiling, glowing numbers & memory frames.",
       price: "₹5,999",
     },
     {
-      id: 4,
+      id: 8,
       image: "/hoteldecoration3.png",
       name: "Executive Birthday Setup",
       desc: "Sophisticated backdrop with thematic balloons and cake table.",
       price: "₹7,999",
     },
     {
-      id: 5,
+      id: 9,
       image: "/hoteldecoration4.png",
       name: "Grand Ballroom Gala",
       desc: "Full-scale ceiling draping, royal seating & entrance archway.",
       price: "₹34,999",
     },
     {
-      id: 6,
+      id: 10,
       image: "/hoteldecoration5.png",
       name: "Imperial Suite Experience",
       desc: "Premium thematic setup with special lighting and floral curation.",
@@ -94,51 +89,54 @@ export default function HomePage() {
     },
   ];
 
-  // 3. Outside Looking / Outdoor Decor Cards
-  const outdoorCards = [
+  export  const outdoorCards = [
     {
-      id: 1,
+      id: 11,
       image: "/outsidelooking.png",
       name: "Garden Canopy Lights",
       desc: "Stunning fairy light canopy stretching across outdoor trees.",
       price: "₹12,999",
     },
     {
-      id: 2,
+      id: 12,
       image: "/outsidelooking1.png",
       name: "Open-Air Lawn Stage",
       desc: "Floral gateway, open-air seating decor & warm ambient glow.",
       price: "₹18,999",
     },
     {
-      id: 3,
+      id: 13,
       image: "/outsidelooking2.png",
       name: "Terrace Sunset Setup",
       desc: "Boho-chic outdoor cabana with cozy cushions and lanterns.",
       price: "₹8,999",
     },
     {
-      id: 4,
+      id: 14,
       image: "/outsidelooking3.png",
       name: "Path of Lights Entrance",
       desc: "Illuminated floral pathway welcoming guests in style.",
       price: "₹6,499",
     },
     {
-      id: 5,
+      id: 15,
       image: "/outsidelooking4.png",
       name: "Grand Farmhouse Open Lawn",
       desc: "Complete perimeter ambient lighting & royal outdoor Mandap.",
       price: "₹29,999",
     },
     {
-      id: 6,
+      id: 16,
       image: "/outsidelooking5.png",
       name: "Starlit Garden Terrace",
       desc: "Exquisite string lighting and open-air luxury seating arrangement.",
       price: "₹21,999",
     },
   ];
+
+export default function HomePage() {
+  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
+
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-neutral-900 font-sans selection:bg-[#C5A059] selection:text-white">
@@ -274,7 +272,7 @@ export default function HomePage() {
                       </span>
                     </div>
                     <Link
-                      href="/contact"
+                      href={`young/${item.id}`}
                       className="bg-neutral-950 text-white hover:bg-[#C5A059] hover:text-neutral-950 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center space-x-1.5 shadow-sm"
                     >
                       <span>Book</span> <ArrowRight size={14} />
@@ -355,7 +353,7 @@ export default function HomePage() {
                       </span>
                     </div>
                     <Link
-                      href="/contact"
+                      href={`young/${item.id}`}
                       className="bg-neutral-950 text-white hover:bg-[#C5A059] hover:text-neutral-950 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center space-x-1.5 shadow-sm"
                     >
                       <span>Book</span> <ArrowRight size={14} />
@@ -433,7 +431,7 @@ export default function HomePage() {
                     </span>
                   </div>
                   <Link
-                    href="/contact"
+                    href={`young/${item.id}`}
                     className="bg-neutral-950 text-white hover:bg-[#C5A059] hover:text-neutral-950 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center space-x-1.5 shadow-sm"
                   >
                     <span>Book</span> <ArrowRight size={14} />

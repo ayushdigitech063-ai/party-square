@@ -5,19 +5,7 @@ import Link from "next/link";
 import { Sparkles, ArrowRight, Heart, ShieldCheck, Smile } from "lucide-react";
 import { useWishlist } from "../../../context/wishlistcontext";
 
-export default function BabyWelcomePage() {
-  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
-
-  const babyWelcomeDecor = [
+export const babyWelcomeDecor = [
     {
       id: 1,
       name: "Cradle Floral Welcome",
@@ -48,44 +36,44 @@ export default function BabyWelcomePage() {
     },
   ];
 
-  const cartoonAndToyDecor = [
+  export const cartoonAndToyDecor = [
     {
-      id: 101,
+      id: 5,
       name: "Classic Toyland Setup",
       price: "₹6,999",
       image: "/mytoyes.png",
       desc: "Vibrant play-zone elements and joyful toy props to give a cheerful vibe.",
     },
     {
-      id: 102,
+      id: 6,
       name: "Tom & Jerry Fun Theme",
       price: "₹7,499",
       image: "/tomandjery.png",
       desc: "Playful cartoon-themed backdrops featuring classic mischief and laughter.",
     },
     {
-      id: 103,
+      id: 7,
       name: "Oggy & The Cockroaches Magic",
       price: "₹7,299",
       image: "/ogy.png",
       desc: "Fun-filled lively cartoon setup specially loved by kids and family guests.",
     },
     {
-      id: 104,
+      id: 8,
       name: "Doraemon Dream Gadgets",
       price: "₹7,999",
       image: "/dorempn.png",
       desc: "Magical futuristic blue & white balloon decor with classic Doraemon themes.",
     },
     {
-      id: 105,
+      id: 9,
       name: "Ultimate Toy Wonderland",
       price: "₹8,499",
       image: "/toyes.png",
       desc: "Grand interactive toy-inspired backdrop setup designed for high visual appeal.",
     },
     {
-      id: 106,
+      id: 10,
       name: "SchineChain The Best Cartoon",
       price: "₹8,499",
       image: "/schinechain.png",
@@ -93,7 +81,7 @@ export default function BabyWelcomePage() {
     },
   ];
 
-  const toyThemeDecor = [
+  export const toyThemeDecor = [
     {
       id: 5,
       name: "Toyland Wonderland Setup",
@@ -105,6 +93,17 @@ export default function BabyWelcomePage() {
     },
   ];
 
+export default function BabyWelcomePage() {
+  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
   return (
     <div className="min-h-screen text-neutral-900 font-sans bg-[#FAF7F2] selection:bg-amber-500 selection:text-white overflow-x-hidden pb-20">
       {/* Hero Section with backgroundbacbypic.png */}
@@ -204,7 +203,7 @@ export default function BabyWelcomePage() {
                       </span>
                     </div>
                     <Link
-                      href="/contact"
+                      href={`babaywelcom/${item.id}`}
                       className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1"
                     >
                       <span>Book</span>
@@ -319,7 +318,7 @@ export default function BabyWelcomePage() {
                     </span>
                   </div>
                   <Link
-                    href="/contact"
+                    href={`babaywelcom/${item.id}`}
                     className="bg-neutral-950 text-white px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1.5"
                   >
                     <span>Book Now</span>
