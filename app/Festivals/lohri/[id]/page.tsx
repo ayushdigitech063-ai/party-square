@@ -12,7 +12,7 @@ interface PageProps {
 
 export default function LohriProductDetail({ params }: PageProps) {
   const resolvedParams = use(params);
-  const productId = resolvedParams.id;
+  const productId = Number(resolvedParams.id);
   const { addToCart } = useCart();
 
   const [quantity, setQuantity] = useState(1);
@@ -49,7 +49,7 @@ export default function LohriProductDetail({ params }: PageProps) {
       addToCart({
         id: String(product.id),
         name: product.name,
-        price: String(product.price),
+        price: product.price,
         image: product.image,
         desc: product.desc || "",
         category: "Lohri Celebration",
@@ -139,7 +139,7 @@ export default function LohriProductDetail({ params }: PageProps) {
                   Total Price
                 </span>
                 <span className="text-neutral-900 font-bold text-2xl">
-                  ₹{(product.price * quantity).toLocaleString()}
+                  ₹{(Number(product.price) * quantity).toLocaleString()}
                 </span>
               </div>
 
@@ -216,7 +216,7 @@ export default function LohriProductDetail({ params }: PageProps) {
                     </h4>
                     <p className="text-xs text-neutral-500 mt-0.5">Qty: {quantity}</p>
                     <p className="text-sm font-extrabold text-neutral-900 mt-1">
-                      ₹{(product.price * quantity).toLocaleString()}
+                      ₹{(Number(product.price) * quantity).toLocaleString()}
                     </p>
                   </div>
                 </div>

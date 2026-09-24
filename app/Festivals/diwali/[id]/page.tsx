@@ -1,3 +1,4 @@
+
 "use client"; 
 "use client";
 
@@ -13,7 +14,7 @@ interface PageProps {
 
 export default function DiwaliProductDetail({ params }: PageProps) {
   const resolvedParams = use(params);
-  const productId = resolvedParams.id;
+  const productId = Number(resolvedParams.id);
   const { addToCart } = useCart();
 
   const [quantity, setQuantity] = useState<number>(1);
@@ -42,7 +43,7 @@ export default function DiwaliProductDetail({ params }: PageProps) {
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
       addToCart({
-        id: product.id,
+        id: String(product.id),
         name: product.name,
         price: String(product.price),
         image: product.image,

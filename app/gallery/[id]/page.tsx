@@ -1,37 +1,80 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { galleryCategories, GalleryItem } from "@/app/data/galleryData";
-import { ArrowLeft, Heart, Minus, Plus, ShoppingBag, Sparkles, ArrowRight, AlertCircle, CheckCircle2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Heart,
+  Minus,
+  Plus,
+  ShoppingBag,
+  Sparkles,
+  ArrowRight,
+  AlertCircle,
+  CheckCircle2,
+  Star,
+  Truck,
+  Calendar,
+} from "lucide-react";
 import { useCart } from "@/app/context/CartContext";
 import Link from "next/link";
 
 export default function GalleryItemDetail() {
   const params = useParams();
   const router = useRouter();
-  const id = params?.id;
   const { addToCart } = useCart();
 
-  let foundItem: GalleryItem | null = null;
-  for (const cat of galleryCategories) {
-    const item = cat.items.find((i) => i.id === id);
-    if (item) {
-      foundItem = item;
-      break;
-    }
-  }
-
+  const [foundItem, setFoundItem] = useState<GalleryItem | null>(null);
+  const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [isLiked, setIsLiked] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
+  useEffect(() => {
+    if (params?.id) {
+      const resolvedId = Array.isArray(params.id)
+        ? params.id[0]
+        : params.id;
+
+      let matchedItem: GalleryItem | null = null;
+
+      for (const cat of galleryCategories) {
+        const item = cat.items.find((i) => i.id === resolvedId);
+
+        if (item) {
+          matchedItem = item;
+          break;
+        }
+      }
+
+      setFoundItem(matchedItem);
+      setLoading(false);
+    }
+  }, [params]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center text-center">
+        <p className="text-amber-900 font-serif text-lg">
+          Loading...
+        </p>
+      </div>
+    );
+  }
+
   if (!foundItem) {
     return (
-      <div className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center text-center px-4">
-        <h2 className="text-2xl font-serif font-bold text-gray-900 mb-2">Item Not Found</h2>
-        <Link href="/" className="bg-amber-900 text-white px-6 py-2.5 rounded-full text-xs uppercase font-bold">
+      <div className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center text-center px-4 font-sans">
+        <h2 className="text-2xl font-serif font-bold text-gray-900 mb-2">
+          Item Not Found
+        </h2>
+
+        <Link
+          href="/"
+          className="bg-amber-900 text-white px-6 py-2.5 rounded-full text-xs uppercase font-bold transition"
+        >
           Back to Home
         </Link>
       </div>
@@ -39,12 +82,20 @@ export default function GalleryItemDetail() {
   }
 
   const handleQuantityChange = (type: "inc" | "dec") => {
-    if (type === "inc") setQuantity((prev) => prev + 1);
-    if (type === "dec" && quantity > 1) setQuantity((prev) => prev - 1);
+    if (type === "inc") {
+      setQuantity((prev) => prev + 1);
+    }
+
+    if (type === "dec" && quantity > 1) {
+      setQuantity((prev) => prev - 1);
+    }
   };
 
   const totalPrice = foundItem.numericPrice * quantity;
-  const formattedTotalPrice = `₹${totalPrice.toLocaleString("en-IN")}`;
+
+  const formattedTotalPrice = `₹${totalPrice.toLocaleString(
+    "en-IN"
+  )}`;
 
   const handleAddToCart = () => {
     if (foundItem) {
@@ -68,78 +119,348 @@ export default function GalleryItemDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] py-12 px-4 sm:px-8 md:px-16 text-gray-900 font-sans relative">
-      <div className="max-w-6xl mx-auto space-y-8">
-        
-        <button 
-          onClick={() => router.back()}
-          className="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-amber-900 bg-amber-100 hover:bg-amber-200 px-4 py-2 rounded-full transition cursor-pointer"
-        >
-          <ArrowLeft size={14} />
-          <span>Back</span>
-        </button>
+     <div className="min-h-screen bg-[#FAF7F2] text-[#1A1A1A] font-sans">
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 bg-white rounded-3xl border border-amber-200 shadow-xl p-6 sm:p-10">
-          
-          <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-amber-50 border border-amber-100">
-            <img src={foundItem.src} alt={foundItem.name} className="w-full h-full object-cover" />
-            <button
-              onClick={() => setIsLiked(!isLiked)}
-              className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow hover:scale-110 transition cursor-pointer"
+  {/* =====================================================
+      PAGE CONTENT
+  ====================================================== */}
+  <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8">
+
+    {/* =====================================================
+        BREADCRUMB
+    ====================================================== */}
+    <div className="flex items-center gap-2 text-xs sm:text-sm text-neutral-500 mb-6">
+
+      <button
+        onClick={() => router.back()}
+        className="hover:text-amber-800 transition"
+      >
+        Back
+      </button>
+
+      <span>›</span>
+
+      <span className="hover:text-amber-800 transition">
+        Decorations
+      </span>
+
+      <span>›</span>
+
+      <span className="text-neutral-900 font-medium truncate">
+        {foundItem.name}
+      </span>
+
+    </div>
+
+
+    {/* =====================================================
+        MAIN PRODUCT SECTION
+    ====================================================== */}
+    <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-start">
+
+      {/* =================================================
+          LEFT - IMAGE
+      ================================================== */}
+      <div className="lg:col-span-7">
+
+        <div className="grid grid-cols-12 gap-4">
+
+          {/* =================================================
+              THUMBNAIL COLUMN
+          ================================================== */}
+          <div className="col-span-2 flex flex-col gap-3">
+
+            {[1, 2, 3, 4].map((item) => (
+              <div
+                key={item}
+                className={`
+                  h-16 sm:h-[72px]
+                  rounded-xl
+                  overflow-hidden
+                  border
+                  bg-white
+                  cursor-pointer
+                  transition
+                  ${
+                    item === 1
+                      ? "border-amber-500 ring-2 ring-amber-100"
+                      : "border-amber-100 hover:border-amber-300"
+                  }
+                `}
+              >
+                <img
+                  src={foundItem.src}
+                  alt={`${foundItem.name} preview ${item}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+
+            <div
+              className="
+                h-16
+                sm:h-[72px]
+                rounded-xl
+                bg-amber-50
+                border
+                border-amber-100
+                flex
+                items-center
+                justify-center
+                text-xs
+                font-semibold
+                text-amber-800
+              "
             >
-              <Heart size={18} className={isLiked ? "fill-rose-500 text-rose-500" : "text-gray-700"} />
-            </button>
-          </div>
-
-          <div className="flex flex-col justify-between space-y-6">
-            <div className="space-y-4">
-              <div className="inline-flex items-center space-x-1.5 bg-amber-100 px-3 py-1 rounded-full text-amber-900 text-xs font-semibold uppercase">
-                <Sparkles size={13} className="text-amber-700" />
-                <span>{foundItem.categoryTitle}</span>
-              </div>
-
-              <h1 className="text-3xl sm:text-4xl font-serif font-bold text-gray-900">{foundItem.name}</h1>
-
-              <div className="space-y-1">
-                <p className="text-2xl font-bold text-amber-900">
-                  {formattedTotalPrice} <span className="text-xs font-light text-gray-500">({quantity} Unit{quantity > 1 ? "s" : ""})</span>
-                </p>
-                <p className="text-xs text-gray-400">Unit Price: {foundItem.price}</p>
-              </div>
-
-              <p className="text-gray-600 text-sm leading-relaxed font-light">{foundItem.desc}. Crafted professionally for your event.</p>
+              +5
             </div>
 
-            <div className="space-y-4 pt-4 border-t border-amber-100">
-              <div className="flex items-center justify-between">
-                <span className="text-xs uppercase font-bold text-gray-700">Select Quantity:</span>
-                <div className="flex items-center space-x-3 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full">
-                  <button onClick={() => handleQuantityChange("dec")} className="w-7 h-7 rounded-full bg-white flex items-center justify-center shadow hover:bg-amber-100 transition cursor-pointer">
-                    <Minus size={14} />
-                  </button>
-                  <span className="font-bold text-sm w-6 text-center">{quantity}</span>
-                  <button onClick={() => handleQuantityChange("inc")} className="w-7 h-7 rounded-full bg-white flex items-center justify-center shadow hover:bg-amber-100 transition cursor-pointer">
-                    <Plus size={14} />
-                  </button>
-                </div>
+          </div>
+
+
+          {/* =================================================
+              MAIN IMAGE
+          ================================================== */}
+          <div className="col-span-10">
+
+            <div
+              className="
+                relative
+                aspect-[16/16]
+                rounded-3xl
+                overflow-hidden
+                bg-neutral-100
+                border
+                border-amber-100
+                shadow-sm
+              "
+            >
+
+              <img
+                src={foundItem.src}
+                alt={foundItem.name}
+                className="
+                  w-full
+                  h-full
+                  object-cover
+                  transition
+                  duration-700
+                  hover:scale-[1.03]
+                "
+              />
+
+
+              {/* PRODUCT CATEGORY */}
+              <div className="absolute top-5 left-5">
+
+                <span
+                  className="
+                    inline-flex
+                    items-center
+                    gap-2
+                    bg-white/95
+                    backdrop-blur-sm
+                    text-amber-900
+                    px-4
+                    py-2
+                    rounded-full
+                    text-xs
+                    font-bold
+                    shadow-sm
+                  "
+                >
+                  <Sparkles size={13} />
+
+                  {foundItem.categoryTitle}
+                </span>
+
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <button
-                  onClick={handleAddToCart}
-                  className="w-full bg-black hover:bg-gray-800 text-white font-bold py-3.5 rounded-full text-xs uppercase tracking-widest transition shadow-lg flex items-center justify-center space-x-2 cursor-pointer"
-                >
-                  <ShoppingBag size={16} />
-                  <span>Add to Basket</span>
-                </button>
 
-                <button
-                  onClick={() => setShowConfirmModal(true)}
-                  className="w-full bg-[#A0522D] hover:bg-amber-900 text-white font-bold py-3.5 rounded-full text-xs uppercase tracking-widest transition shadow-lg flex items-center justify-center space-x-2 text-center cursor-pointer"
+              {/* WISHLIST */}
+              <button
+                onClick={() => setIsLiked(!isLiked)}
+                className="
+                  absolute
+                  top-5
+                  right-5
+                  w-11
+                  h-11
+                  rounded-full
+                  bg-white/95
+                  backdrop-blur-sm
+                  flex
+                  items-center
+                  justify-center
+                  shadow-md
+                  hover:scale-110
+                  transition
+                  cursor-pointer
+                "
+              >
+                <Heart
+                  size={19}
+                  className={
+                    isLiked
+                      ? "fill-rose-500 text-rose-500"
+                      : "text-neutral-700"
+                  }
+                />
+              </button>
+
+
+              {/* IMAGE COUNTER */}
+              <div
+                className="
+                  absolute
+                  bottom-5
+                  right-5
+                  bg-black/65
+                  backdrop-blur-sm
+                  text-white
+                  px-3
+                  py-1.5
+                  rounded-full
+                  text-xs
+                  font-medium
+                "
+              >
+                1 / 5
+              </div>
+
+
+              {/* LEFT ARROW */}
+              <button
+                className="
+                  absolute
+                  left-4
+                  top-1/2
+                  -translate-y-1/2
+                  w-10
+                  h-10
+                  rounded-full
+                  bg-white/90
+                  hover:bg-white
+                  shadow-md
+                  flex
+                  items-center
+                  justify-center
+                  text-neutral-800
+                  transition
+                "
+              >
+                ‹
+              </button>
+
+
+              {/* RIGHT ARROW */}
+              <button
+                className="
+                  absolute
+                  right-4
+                  top-1/2
+                  -translate-y-1/2
+                  w-10
+                  h-10
+                  rounded-full
+                  bg-white/90
+                  hover:bg-white
+                  shadow-md
+                  flex
+                  items-center
+                  justify-center
+                  text-neutral-800
+                  transition
+                "
+              >
+                ›
+              </button>
+
+            </div>
+
+
+            {/* =================================================
+                TRUST STRIP
+            ================================================== */}
+            <div
+              className="
+                mt-4
+                bg-white
+                border
+                border-amber-100
+                rounded-2xl
+                px-4
+                py-4
+              "
+            >
+
+              <div className="grid grid-cols-3 gap-3 text-center">
+
+                <div
+                  className="
+                    flex
+                    flex-col
+                    sm:flex-row
+                    items-center
+                    justify-center
+                    gap-1.5
+                    text-xs
+                    text-neutral-700
+                  "
                 >
-                  <span>Book Now</span>
-                  <ArrowRight size={14} />
-                </button>
+                  <span className="text-amber-600">
+                    ✦
+                  </span>
+
+                  <span>
+                    100% Verified
+                  </span>
+                </div>
+
+
+                <div
+                  className="
+                    flex
+                    flex-col
+                    sm:flex-row
+                    items-center
+                    justify-center
+                    gap-1.5
+                    text-xs
+                    text-neutral-700
+                  "
+                >
+                  <span className="text-amber-600">
+                    ▣
+                  </span>
+
+                  <span>
+                    Real Photos
+                  </span>
+                </div>
+
+
+                <div
+                  className="
+                    flex
+                    flex-col
+                    sm:flex-row
+                    items-center
+                    justify-center
+                    gap-1.5
+                    text-xs
+                    text-neutral-700
+                  "
+                >
+                  <span className="text-amber-600">
+                    ♟
+                  </span>
+
+                  <span>
+                    Real Buyers
+                  </span>
+                </div>
+
               </div>
 
             </div>
@@ -150,66 +471,1201 @@ export default function GalleryItemDetail() {
 
       </div>
 
-      {/* Confirmation Popup Modal (English Text) */}
-      {showConfirmModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-amber-200 space-y-6 text-center">
-            <div className="w-16 h-16 bg-amber-100 text-amber-900 rounded-full flex items-center justify-center mx-auto shadow-inner">
-              <AlertCircle size={32} />
+
+      {/* =================================================
+          RIGHT - PRODUCT INFORMATION
+      ================================================== */}
+      <div className="lg:col-span-5">
+
+        <div className="lg:sticky lg:top-24 space-y-4">
+
+          {/* =================================================
+              PRODUCT INFORMATION CARD
+          ================================================== */}
+          <div
+            className="
+              bg-white
+              rounded-3xl
+              border
+              border-amber-100
+              p-5
+              shadow-sm
+            "
+          >
+
+            {/* BADGE */}
+            <div
+              className="
+                inline-flex
+                items-center
+                gap-2
+                bg-amber-100
+                text-amber-800
+                px-3.5
+                py-1.5
+                rounded-full
+                text-xs
+                font-bold
+                mb-4
+              "
+            >
+              <Sparkles size={12} />
+
+              Verified Quality Product
             </div>
 
-            <div className="space-y-2">
-              <h3 className="text-2xl font-serif font-bold text-gray-900">Are you sure?</h3>
-              <p className="text-sm text-gray-600">
-                Do you want to confirm the booking for <span className="font-semibold text-amber-900">{foundItem.name}</span> ({quantity} unit{quantity > 1 ? "s" : ""} - {formattedTotalPrice})?
-              </p>
+
+            {/* CATEGORY */}
+            <p className="text-xs text-amber-700 font-semibold uppercase tracking-wide">
+              {foundItem.categoryTitle}
+            </p>
+
+
+            {/* TITLE */}
+            <h1
+              className="
+                mt-2
+                text-2xl
+                sm:text-3xl
+                font-serif
+                font-bold
+                text-neutral-900
+                leading-tight
+              "
+            >
+              {foundItem.name}
+            </h1>
+
+
+            {/* RATING */}
+            <div className="flex items-center gap-3 mt-4">
+
+              <div className="flex items-center gap-1">
+
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    size={17}
+                    className="fill-amber-500 text-amber-500"
+                  />
+                ))}
+
+              </div>
+
+              <span className="font-bold text-neutral-900">
+                4.8
+              </span>
+
+              <span className="text-sm text-neutral-500">
+                (128 reviews)
+              </span>
+
             </div>
 
-            <div className="grid grid-cols-2 gap-3 pt-2">
-              <button
-                onClick={() => setShowConfirmModal(false)}
-                className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 rounded-full text-xs uppercase tracking-wider transition cursor-pointer"
+
+            {/* PRICE */}
+            <div className="flex flex-wrap items-center gap-3 mt-5">
+
+              <span
+                className="
+                  text-3xl
+                  font-extrabold
+                  text-neutral-900
+                "
               >
-                Cancel
-              </button>
-              <button
-                onClick={handleConfirmBooking}
-                className="w-full bg-amber-900 hover:bg-black text-white font-bold py-3 rounded-full text-xs uppercase tracking-wider transition shadow-md cursor-pointer"
+                {formattedTotalPrice}
+              </span>
+
+              <span
+                className="
+                  text-sm
+                  text-neutral-400
+                  line-through
+                "
               >
-                Yes, Confirm
-              </button>
+                ₹{(
+                  Number(foundItem.price) * quantity * 1.25
+                ).toFixed(0)}
+              </span>
+
+              <span
+                className="
+                  bg-amber-100
+                  text-amber-800
+                  px-3
+                  py-1
+                  rounded-full
+                  text-xs
+                  font-bold
+                "
+              >
+                25% OFF
+              </span>
+
             </div>
+
+
+            {/* UNIT PRICE */}
+            <p className="mt-2 text-xs text-neutral-400">
+              Unit Price: {foundItem.price}
+            </p>
+
+
+            {/* DESCRIPTION */}
+            <p
+              className="
+                mt-4
+                text-sm
+                leading-6
+                text-neutral-600
+              "
+            >
+              {foundItem.desc}
+            </p>
+
+
+            {/* =================================================
+                FEATURE PILLS
+            ================================================== */}
+            <div className="grid grid-cols-3 gap-2 mt-5">
+
+              {/* CUSTOMIZABLE */}
+              <div className="text-center">
+
+                <div
+                  className="
+                    w-9
+                    h-9
+                    mx-auto
+                    rounded-full
+                    bg-amber-50
+                    flex
+                    items-center
+                    justify-center
+                    border
+                    border-amber-100
+                  "
+                >
+                  <CheckCircle2
+                    size={17}
+                    className="text-amber-700"
+                  />
+                </div>
+
+                <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
+                  Customizable
+                </p>
+
+              </div>
+
+
+              {/* ON TIME */}
+              <div className="text-center">
+
+                <div
+                  className="
+                    w-9
+                    h-9
+                    mx-auto
+                    rounded-full
+                    bg-amber-50
+                    flex
+                    items-center
+                    justify-center
+                    border
+                    border-amber-100
+                  "
+                >
+                  <Truck
+                    size={17}
+                    className="text-amber-700"
+                  />
+                </div>
+
+                <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
+                  On-Time Setup
+                </p>
+
+              </div>
+
+
+              {/* PREMIUM */}
+              <div className="text-center">
+
+                <div
+                  className="
+                    w-9
+                    h-9
+                    mx-auto
+                    rounded-full
+                    bg-amber-50
+                    flex
+                    items-center
+                    justify-center
+                    border
+                    border-amber-100
+                  "
+                >
+                  <Sparkles
+                    size={17}
+                    className="text-amber-700"
+                  />
+                </div>
+
+                <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
+                  Premium Quality
+                </p>
+
+              </div>
+
+            </div>
+
+
+            {/* =================================================
+                SERVICE AVAILABLE
+            ================================================== */}
+            <div
+              className="
+                mt-5
+                rounded-2xl
+                bg-amber-50/70
+                border
+                border-amber-100
+                px-4
+                py-3
+              "
+            >
+
+              <div
+                className="
+                  flex
+                  items-center
+                  gap-2
+                  text-sm
+                  font-medium
+                  text-green-700
+                "
+              >
+
+                <CheckCircle2 size={16} />
+
+                Service available in your area
+
+              </div>
+
+            </div>
+
+
+            {/* =================================================
+                QUANTITY
+            ================================================== */}
+            <div className="flex items-center justify-between mt-5">
+
+              <span className="text-sm font-semibold text-neutral-700">
+                Quantity
+              </span>
+
+
+              <div
+                className="
+                  flex
+                  items-center
+                  border
+                  border-amber-300
+                  rounded-xl
+                  overflow-hidden
+                  bg-white
+                "
+              >
+
+                <button
+                  onClick={() => handleQuantityChange("dec")}
+                  className="
+                    w-10
+                    h-10
+                    flex
+                    items-center
+                    justify-center
+                    text-amber-800
+                    hover:bg-amber-50
+                    transition
+                    cursor-pointer
+                  "
+                >
+                  <Minus size={15} />
+                </button>
+
+
+                <span
+                  className="
+                    w-10
+                    text-center
+                    text-sm
+                    font-bold
+                  "
+                >
+                  {quantity}
+                </span>
+
+
+                <button
+                  onClick={() => handleQuantityChange("inc")}
+                  className="
+                    w-10
+                    h-10
+                    flex
+                    items-center
+                    justify-center
+                    text-amber-800
+                    hover:bg-amber-50
+                    transition
+                    cursor-pointer
+                  "
+                >
+                  <Plus size={15} />
+                </button>
+
+              </div>
+
+            </div>
+
+
+            {/* =================================================
+                ACTION BUTTONS
+            ================================================== */}
+            <div
+              className="
+                grid
+                grid-cols-1
+                sm:grid-cols-2
+                gap-3
+                mt-5
+              "
+            >
+
+              {/* ADD TO BASKET */}
+              <button
+                onClick={handleAddToCart}
+                className="
+                  h-12
+                  rounded-xl
+                  border
+                  border-amber-300
+                  bg-amber-50
+                  hover:bg-amber-100
+                  text-amber-900
+                  font-bold
+                  text-sm
+                  flex
+                  items-center
+                  justify-center
+                  gap-2
+                  transition
+                  cursor-pointer
+                "
+              >
+
+                <ShoppingBag size={17} />
+
+                <span>
+                  Add to Basket
+                </span>
+
+              </button>
+
+
+              {/* BOOK NOW */}
+              <button
+                onClick={() => setShowConfirmModal(true)}
+                className="
+                  h-12
+                  rounded-xl
+                  bg-[#8B3F05]
+                  hover:bg-[#713200]
+                  text-white
+                  font-bold
+                  text-sm
+                  flex
+                  items-center
+                  justify-center
+                  gap-2
+                  transition
+                  shadow-md
+                  hover:shadow-lg
+                  cursor-pointer
+                "
+              >
+
+                <Calendar size={17} />
+
+                <span>
+                  Book Now
+                </span>
+
+              </button>
+
+            </div>
+
+
+            {/* CHECKOUT MESSAGE */}
+            <p className="text-center text-xs text-neutral-400 mt-4">
+              Secure checkout · Guaranteed satisfaction
+            </p>
+
           </div>
+
         </div>
-      )}
 
-      {/* Success Confirmation Modal (English Text) */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-emerald-200 space-y-6 text-center">
-            <div className="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto shadow-inner">
-              <CheckCircle2 size={36} />
-            </div>
+      </div>
 
-            <div className="space-y-2">
-              <h3 className="text-2xl font-serif font-bold text-gray-900">Booking Successful!</h3>
-              <p className="text-sm text-gray-600">
-                Your booking for <span className="font-semibold text-amber-900">{foundItem.name}</span> has been successfully placed. Our team will contact you soon!
-              </p>
-            </div>
+    </section>
+
+
+    {/* =====================================================
+        LOWER INFORMATION SECTION
+    ====================================================== */}
+    <section
+      className="
+        mt-5
+        bg-white
+        rounded-3xl
+        border
+        border-amber-100
+        shadow-sm
+        overflow-hidden
+      "
+    >
+
+      {/* =================================================
+          TABS
+      ================================================== */}
+      <div className="border-b border-neutral-100 overflow-x-auto">
+
+        <div className="flex min-w-max">
+
+          {[
+            "Overview",
+            "What's Included",
+            "What's Not Included",
+            "Cancellation Policy",
+            "Reviews",
+            "FAQ",
+          ].map((tab, index) => (
 
             <button
-              onClick={() => {
-                setShowSuccessModal(false);
-                router.push("/");
-              }}
-              className="w-full bg-amber-900 hover:bg-black text-white font-bold py-3.5 rounded-full text-xs uppercase tracking-widest transition shadow-md cursor-pointer"
+              key={tab}
+              className={`
+                px-5
+                sm:px-7
+                py-5
+                text-sm
+                font-medium
+                transition
+                ${
+                  index === 0
+                    ? "text-amber-800 border-b-2 border-amber-500"
+                    : "text-neutral-500 hover:text-amber-800"
+                }
+              `}
             >
-              Back to Home
+              {tab}
             </button>
-          </div>
+
+          ))}
+
         </div>
-      )}
+
+      </div>
+
+
+      {/* =================================================
+          OVERVIEW CONTENT
+      ================================================== */}
+      <div
+        className="
+          grid
+          grid-cols-1
+          lg:grid-cols-12
+          gap-6
+          p-5
+          sm:p-6
+        "
+      >
+
+        {/* DESCRIPTION */}
+        <div className="lg:col-span-7">
+
+          <h2
+            className="
+              text-xl
+              sm:text-2xl
+              font-serif
+              font-bold
+              text-neutral-900
+              leading-tight
+            "
+          >
+            Turn Your Special Moments Into Magical Memories
+          </h2>
+
+
+          <p
+            className="
+              mt-4
+              text-sm
+              sm:text-base
+              leading-7
+              text-neutral-600
+            "
+          >
+            {foundItem.desc}
+          </p>
+
+
+          {/* FEATURE CARDS */}
+          <div
+            className="
+              grid
+              grid-cols-2
+              sm:grid-cols-4
+              gap-3
+              mt-7
+            "
+          >
+
+            <div className="rounded-2xl bg-amber-50 p-4">
+
+              <Sparkles
+                size={19}
+                className="text-amber-700"
+              />
+
+              <p className="mt-3 text-xs font-semibold text-neutral-800">
+                Premium Decor
+              </p>
+
+              <p className="text-[11px] text-neutral-500 mt-1">
+                & Setup
+              </p>
+
+            </div>
+
+
+            <div className="rounded-2xl bg-amber-50 p-4">
+
+              <CheckCircle2
+                size={19}
+                className="text-amber-700"
+              />
+
+              <p className="mt-3 text-xs font-semibold text-neutral-800">
+                Verified
+              </p>
+
+              <p className="text-[11px] text-neutral-500 mt-1">
+                Quality
+              </p>
+
+            </div>
+
+
+            <div className="rounded-2xl bg-amber-50 p-4">
+
+              <Truck
+                size={19}
+                className="text-amber-700"
+              />
+
+              <p className="mt-3 text-xs font-semibold text-neutral-800">
+                On-Time
+              </p>
+
+              <p className="text-[11px] text-neutral-500 mt-1">
+                Setup
+              </p>
+
+            </div>
+
+
+            <div className="rounded-2xl bg-amber-50 p-4">
+
+              <Calendar
+                size={19}
+                className="text-amber-700"
+              />
+
+              <p className="mt-3 text-xs font-semibold text-neutral-800">
+                Easy
+              </p>
+
+              <p className="text-[11px] text-neutral-500 mt-1">
+                Booking
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        {/* =================================================
+            INCLUDED CARD
+        ================================================== */}
+        <div className="lg:col-span-5">
+
+          <div
+            className="
+              rounded-2xl
+              bg-[#FFF9E8]
+              border
+              border-amber-100
+              p-6
+            "
+          >
+
+            <h3 className="font-serif font-bold text-lg text-neutral-900">
+              What's Included
+            </h3>
+
+
+            <div className="mt-5 space-y-3">
+
+              {[
+                "Premium decoration setup",
+                "Professional setup team",
+                "Quality decoration materials",
+                "On-time service",
+                "Post-event cleanup",
+              ].map((item) => (
+
+                <div
+                  key={item}
+                  className="
+                    flex
+                    items-center
+                    gap-3
+                    text-sm
+                    text-neutral-700
+                  "
+                >
+
+                  <CheckCircle2
+                    size={17}
+                    className="text-amber-700 shrink-0"
+                  />
+
+                  <span>
+                    {item}
+                  </span>
+
+                </div>
+
+              ))}
+
+            </div>
+
+          </div>
+
+
+          {/* NOT INCLUDED */}
+          <div
+            className="
+              mt-4
+              rounded-2xl
+              bg-white
+              border
+              border-amber-100
+              p-6
+            "
+          >
+
+            <h3 className="font-serif font-bold text-lg text-neutral-900">
+              What's Not Included
+            </h3>
+
+            <div className="mt-4 space-y-3">
+
+              {[
+                "Food and beverages",
+                "Venue charges",
+                "Additional custom requirements",
+              ].map((item) => (
+
+                <div
+                  key={item}
+                  className="
+                    flex
+                    items-center
+                    gap-3
+                    text-sm
+                    text-neutral-600
+                  "
+                >
+
+                  <span
+                    className="
+                      w-5
+                      h-5
+                      rounded-full
+                      bg-neutral-100
+                      flex
+                      items-center
+                      justify-center
+                      text-xs
+                      text-neutral-500
+                    "
+                  >
+                    –
+                  </span>
+
+                  <span>
+                    {item}
+                  </span>
+
+                </div>
+
+              ))}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    {/* =====================================================
+        REVIEW SECTION
+    ====================================================== */}
+    <section
+      className="
+        mt-6
+        grid
+        grid-cols-1
+        lg:grid-cols-2
+        gap-6
+      "
+    >
+
+      {/* =================================================
+          RATING SUMMARY
+      ================================================== */}
+      <div
+        className="
+          bg-white
+          border
+          border-amber-100
+          rounded-3xl
+          p-6
+          sm:p-8
+        "
+      >
+
+        <h3
+          className="
+            text-xl
+            font-serif
+            font-bold
+            text-neutral-900
+          "
+        >
+          Customer Reviews
+        </h3>
+
+
+        <div className="flex items-center gap-3 mt-3">
+
+          <span className="text-3xl font-bold">
+            4.8
+          </span>
+
+          <div>
+
+            <div className="flex">
+
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  size={16}
+                  className="fill-amber-500 text-amber-500"
+                />
+              ))}
+
+            </div>
+
+            <p className="text-xs text-neutral-500 mt-1">
+              128 verified reviews
+            </p>
+
+          </div>
+
+        </div>
+
+
+        {/* RATING BARS */}
+        <div className="mt-6 space-y-3">
+
+          {[
+            ["5", "71%"],
+            ["4", "29%"],
+            ["3", "0%"],
+            ["2", "0%"],
+            ["1", "0%"],
+          ].map(([rating, percentage]) => (
+
+            <div
+              key={rating}
+              className="flex items-center gap-3 text-xs"
+            >
+
+              <span className="w-4 text-neutral-600">
+                {rating}
+              </span>
+
+              <div
+                className="
+                  flex-1
+                  h-2
+                  bg-neutral-100
+                  rounded-full
+                  overflow-hidden
+                "
+              >
+
+                <div
+                  className="
+                    h-full
+                    bg-amber-500
+                    rounded-full
+                  "
+                  style={{
+                    width: percentage,
+                  }}
+                />
+
+              </div>
+
+              <span className="w-10 text-right text-neutral-500">
+                {percentage}
+              </span>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      </div>
+
+
+      {/* =================================================
+          QUOTE CARD
+      ================================================== */}
+      <div
+        className="
+          bg-[#FFF9E8]
+          border
+          border-amber-100
+          rounded-3xl
+          p-8
+          flex
+          flex-col
+          justify-center
+        "
+      >
+
+        <Sparkles
+          size={24}
+          className="text-amber-600"
+        />
+
+        <h3
+          className="
+            mt-4
+            text-2xl
+            font-serif
+            font-bold
+            text-neutral-900
+          "
+        >
+          Because the little moments matter.
+        </h3>
+
+        <p
+          className="
+            mt-3
+            text-sm
+            leading-6
+            text-neutral-600
+          "
+        >
+          Create beautiful celebrations with thoughtfully
+          designed decorations and memorable experiences.
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  {/* =====================================================
+      CONFIRM BOOKING MODAL
+      FUNCTIONALITY UNCHANGED
+  ====================================================== */}
+  {showConfirmModal && (
+
+    <div
+      className="
+        fixed
+        inset-0
+        z-50
+        flex
+        items-center
+        justify-center
+        bg-black/60
+        backdrop-blur-sm
+        p-4
+      "
+    >
+
+      <div
+        className="
+          bg-white
+          rounded-3xl
+          max-w-md
+          w-full
+          p-6
+          sm:p-8
+          shadow-2xl
+          border
+          border-amber-200
+          space-y-6
+          text-center
+        "
+      >
+
+        <div
+          className="
+            w-16
+            h-16
+            bg-amber-100
+            text-amber-900
+            rounded-full
+            flex
+            items-center
+            justify-center
+            mx-auto
+            shadow-inner
+          "
+        >
+          <AlertCircle size={32} />
+        </div>
+
+
+        <div className="space-y-2">
+
+          <h3
+            className="
+              text-2xl
+              font-serif
+              font-bold
+              text-gray-900
+            "
+          >
+            Are you sure?
+          </h3>
+
+          <p className="text-sm text-gray-600">
+
+            Do you want to confirm the booking for{" "}
+
+            <span className="font-semibold text-amber-900">
+              {foundItem.name}
+            </span>
+
+            {" "}(
+            {quantity} unit
+            {quantity > 1 ? "s" : ""} -{" "}
+            {formattedTotalPrice}
+            )?
+
+          </p>
+
+        </div>
+
+
+        <div className="grid grid-cols-2 gap-3 pt-2">
+
+          <button
+            onClick={() => setShowConfirmModal(false)}
+            className="
+              w-full
+              bg-gray-100
+              hover:bg-gray-200
+              text-gray-800
+              font-bold
+              py-3
+              rounded-full
+              text-xs
+              uppercase
+              tracking-wider
+              transition
+              cursor-pointer
+            "
+          >
+            Cancel
+          </button>
+
+
+          <button
+            onClick={handleConfirmBooking}
+            className="
+              w-full
+              bg-amber-900
+              hover:bg-black
+              text-white
+              font-bold
+              py-3
+              rounded-full
+              text-xs
+              uppercase
+              tracking-wider
+              transition
+              shadow-md
+              cursor-pointer
+            "
+          >
+            Yes, Confirm
+          </button>
+
+        </div>
+
+      </div>
+
     </div>
+
+  )}
+
+
+  {/* =====================================================
+      SUCCESS MODAL
+      FUNCTIONALITY UNCHANGED
+  ====================================================== */}
+  {showSuccessModal && (
+
+    <div
+      className="
+        fixed
+        inset-0
+        z-50
+        flex
+        items-center
+        justify-center
+        bg-black/60
+        backdrop-blur-sm
+        p-4
+      "
+    >
+
+      <div
+        className="
+          bg-white
+          rounded-3xl
+          max-w-md
+          w-full
+          p-6
+          sm:p-8
+          shadow-2xl
+          border
+          border-emerald-200
+          space-y-6
+          text-center
+        "
+      >
+
+        <div
+          className="
+            w-16
+            h-16
+            bg-emerald-100
+            text-emerald-700
+            rounded-full
+            flex
+            items-center
+            justify-center
+            mx-auto
+            shadow-inner
+          "
+        >
+          <CheckCircle2 size={36} />
+        </div>
+
+
+        <div className="space-y-2">
+
+          <h3
+            className="
+              text-2xl
+              font-serif
+              font-bold
+              text-gray-900
+            "
+          >
+            Booking Successful!
+          </h3>
+
+          <p className="text-sm text-gray-600">
+
+            Your booking for{" "}
+
+            <span className="font-semibold text-amber-900">
+              {foundItem.name}
+            </span>
+
+            {" "}has been successfully placed. Our team
+            will contact you soon!
+
+          </p>
+
+        </div>
+
+
+        <button
+          onClick={() => {
+            setShowSuccessModal(false);
+            router.push("/");
+          }}
+          className="
+            w-full
+            bg-amber-900
+            hover:bg-black
+            text-white
+            font-bold
+            py-3.5
+            rounded-full
+            text-xs
+            uppercase
+            tracking-widest
+            transition
+            shadow-md
+            cursor-pointer
+          "
+        >
+          Back to Home
+        </button>
+
+      </div>
+
+    </div>
+
+  )}
+
+</div>
   );
 }

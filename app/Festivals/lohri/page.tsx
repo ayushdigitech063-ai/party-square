@@ -13,6 +13,28 @@ import {
 } from "lucide-react";
 import { useWishlist } from "../../context/wishlistcontext";
 import { useCart } from "@/app/context/CartContext";
+import { lohriProducts, Product } from "@/app/data/lohriProducts";
+
+// Home page par jo products dikhane hain unki sirf IDs (number) yahan hain.
+// Poora data app/data/lohriProducts.ts se aata hai.
+const TRADITIONAL_IDS: number[] = [100, 102, 103, 104];
+const SPECIAL_PUNJABI_IDS: number[] = [105, 106, 107, 108];
+
+const getProductsByIds = (ids: number[]): Product[] =>
+  ids
+    .map((id) => lohriProducts.find((p) => p.id === id))
+    .filter((p): p is Product => Boolean(p));
+
+const formatPrice = (price: string) => `₹${Number(price).toLocaleString("en-IN")}`;
+
+// Wishlist ko pehle ki tarah hi same shape milti hai (price "₹6,499" format me)
+const toWishlistItem = (product: Product) => ({
+  id: product.id,
+  name: product.name,
+  price: formatPrice(product.price),
+  image: product.image,
+  desc: product.desc,
+});
 
 export default function LohriPage() {
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
@@ -27,80 +49,21 @@ export default function LohriPage() {
     return null;
   }
 
-  const handleAddToCart = (product: any, e: React.MouseEvent) => {
+  const handleAddToCart = (product: Product, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart({
       id: String(product.id),
       name: product.name,
-      price: String(product.price),
+      price: product.price,
       image: product.image,
       desc: product.desc || "",
       category: "Lohri Decoration",
     });
   };
 
-  const traditionalLohriDecor = [
-    {
-      id: 1,
-      name: "Traditional Bonfire & Seating Setup",
-      price: "₹6,499",
-      image: "/loripic1.png",
-      desc: "Authentic traditional bonfire arrangement with comfortable ethnic floor seating for family.",
-    },
-    {
-      id: 2,
-      name: "Peanuts, Popcorn & Revri Station",
-      price: "₹3,999",
-      image: "/loripic2.png",
-      desc: "Traditional festive snacking station decorated with rustic Punjabi elements and bells.",
-    },
-    {
-      id: 3,
-      name: "Dhol & Folk Music Corner",
-      price: "₹8,499",
-      image: "/loripic3.png",
-      desc: "Vibrant cultural corner styling featuring traditional Dhol, phulkari props, and folk elements.",
-    },
-    {
-      id: 4,
-      name: "Warm Marigold & Sugarcane Arch",
-      price: "₹5,899",
-      image: "/loripic4.png",
-      desc: "Fresh sugarcane stalks intertwined with bright marigold flowers for auspicious welcomes.",
-    },
-  ];
-
-  const specialPunjabiLohri = [
-    {
-      id: 5,
-      name: "Royal Phulkari Backdrop & Mandap",
-      price: "₹12,499",
-      image: "/loripic5.png",
-      desc: "Exquisite handmade colorful phulkari cloth backdrop curated for grand Lohri celebrations.",
-    },
-    {
-      id: 6,
-      name: "Bhangra & Folk Dance Stage Decor",
-      price: "₹16,999",
-      image: "/loripic6.png",
-      desc: "High-energy stage decoration with traditional Punjabi props, lights, and vibrant drapes.",
-    },
-    {
-      id: 7,
-      name: "Desi Ghee & Til Sweets Station",
-      price: "₹4,999",
-      image: "/loripic7.png",
-      desc: "Traditional winter festive counter highlighting sesame sweets, jaggery, and festive treats.",
-    },
-    {
-      id: 8,
-      name: "Grand Bonfire & Lighting Canopy",
-      price: "₹19,999",
-      image: "/loripic8.png",
-      desc: "Spectacular overhead canopy lights and bonfire enclosure for community and family feasts.",
-    },
-  ];
+  const traditionalLohriDecor = getProductsByIds(TRADITIONAL_IDS);
+  const specialPunjabiLohri = getProductsByIds(SPECIAL_PUNJABI_IDS);
 
   return (
     <div className="min-h-screen text-neutral-900 font-sans bg-[#FFF9F5] selection:bg-orange-600 selection:text-white overflow-x-hidden pb-20">
@@ -165,7 +128,7 @@ export default function LohriPage() {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      toggleWishlist(item);
+                      toggleWishlist(toWishlistItem(item));
                     }}
                     aria-label={
                       isLiked ? "Remove from wishlist" : "Add to wishlist"
@@ -200,7 +163,7 @@ export default function LohriPage() {
                         Starts At
                       </span>
                       <span className="text-neutral-900 font-bold text-base">
-                        {item.price}
+                        {formatPrice(item.price)}
                       </span>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -323,7 +286,7 @@ export default function LohriPage() {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      toggleWishlist(item);
+                      toggleWishlist(toWishlistItem(item));
                     }}
                     className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-500 shadow transition cursor-pointer"
                   >
@@ -355,7 +318,7 @@ export default function LohriPage() {
                         Starts At
                       </span>
                       <span className="text-neutral-900 font-bold text-base">
-                        {item.price}
+                        {formatPrice(item.price)}
                       </span>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -382,4 +345,3 @@ export default function LohriPage() {
     </div>
   );
 }
-

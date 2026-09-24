@@ -4,18 +4,37 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Sparkles,
-  CheckCircle,
   ArrowRight,
-  Star,
   Heart,
-  Flame,
   ShoppingBag,
 } from "lucide-react";
 import { useWishlist } from "../../context/wishlistcontext";
 import { useCart } from "@/app/context/CartContext";
+import { navratriProducts, Product } from "@/app/data/navratriProducts";
+
+// Home page par dikhne wale products ki sirf IDs (number). Data navratriProducts.ts me hai.
+const ESSENTIAL_IDS: number[] = [8, 9, 10];
+const MATA_JI_IDS: number[] = [11, 12, 13, 14];
+const GARBA_IDS: number[] = [15, 16, 17, 18];
+
+const getProductsByIds = (ids: number[]): Product[] =>
+  ids
+    .map((id) => navratriProducts.find((p) => p.id === id))
+    .filter((p): p is Product => Boolean(p));
+
+const formatPrice = (price: string) => `₹${Number(price).toLocaleString("en-IN")}`;
+
+// Wishlist ko pehle jaisi hi shape milti hai (price "₹1,299" format me)
+const toWishlistItem = (product: Product) => ({
+  id: product.id,
+  name: product.name,
+  price: formatPrice(product.price),
+  image: product.image,
+  desc: product.desc,
+});
 
 export default function NavratriPage() {
-  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
+  const { toggleWishlist, isInWishlist } = useWishlist();
   const [isMounted, setIsMounted] = useState(false);
   const { addToCart } = useCart();
 
@@ -27,86 +46,22 @@ export default function NavratriPage() {
     return null;
   }
 
-  const handleAddToCart = (product: any, e: React.MouseEvent) => {
+  const handleAddToCart = (product: Product, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart({
       id: String(product.id),
       name: product.name,
-      price: String(product.price),
+      price: product.price,
       image: product.image,
-      desc: product.desc || "",
+      desc: product.desc,
       category: "Navratri Decoration",
     });
   };
 
-  const divineEssentials = [
-    { id: 8, name: "Divine Festive Flower Decoration", price: "₹1,299", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJaZ1rs3P1NjRNAHiBEB7mDIa-vYBsdT6osygPyiU0yA&s=10", desc: "Fresh-look ornamental floral arrangements and decorative strings for temple sanctum." },
-    { id: 9, name: "Mata Ji Heavy Zari Poshak", price: "₹1,899", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZPiEhDgiTwnUG61tRbvZ76NvWeotRitwJclxG7hNEgg&s=10", desc: "Exquisite designer attire and vastra set adorned with rich gold embroidery for Goddess Durga." },
-    { id: 10, name: "Sacred Navratri Prasad Hamper", price: "₹599", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTanhSePMZJEwsmiFFf7T-eCYKewx84kaSKKSWVD-Q83A&s=10", desc: "Pure traditional sweets and bhog essentials hygienically packaged for daily offerings." }
-  ];
-
-  const mataJiPandalDecor = [
-    {
-      id: 1,
-      name: "Divine Mata Ji Royal Darbar Setup",
-      price: "₹8,499",
-      image: "/mata.png",
-      desc: "Auspicious flower backdrops and traditional chowki setup for divine Mata Ji worship.",
-    },
-    {
-      id: 2,
-      name: "Grand Navdurga Floral Mandap",
-      price: "₹12,999",
-      image: "/mata1.png",
-      desc: "Exquisite floral decorations and lighting dedicated to the nine forms of Goddess Durga.",
-    },
-    {
-      id: 3,
-      name: "Akhand Jyoti & Prasad Station",
-      price: "₹4,599",
-      image: "/mata2.png",
-      desc: "Sacred corner arrangement for sacred flames, traditional offerings, and bhog.",
-    },
-    {
-      id: 4,
-      name: "Traditional Ghatasthapana Decor",
-      price: "₹6,299",
-      image: "/mata3.png",
-      desc: "Authentic ritualistic setup for Kalash sthapana with fresh mango leaves and holy coconuts.",
-    },
-  ];
-
-  const specialGarbaPandal = [
-    {
-      id: 5,
-      name: "Vibrant Garba Night Stage & Backdrop",
-      price: "₹18,999",
-      image: "/garba.png",
-      desc: "High-energy colorful stage styling with traditional hangings and ethnic motifs for dandiya nights.",
-    },
-    {
-      id: 6,
-      name: "Society Dandiya Ground Illumination",
-      price: "₹24,999",
-      image: "/garba1.png",
-      desc: "Complete ground fairy lighting, colorful umbrellas, and traditional dandiya event setup.",
-    },
-    {
-      id: 7,
-      name: "Traditional Chaniya Choli Photo Booth",
-      price: "₹9,499",
-      image: "/garba2.png",
-      desc: "Stunning ethnic photo corner styled with traditional props and colourful Gujarati prints.",
-    },
-    {
-      id: 8,
-      name: "Dhol & Folk Beats Pandal Canopy",
-      price: "₹15,499",
-      image: "/garba3.png",
-      desc: "Overhead canopy drapes and vibrant cultural elements for community Garba celebrations.",
-    },
-  ];
+  const divineEssentials = getProductsByIds(ESSENTIAL_IDS);
+  const mataJiPandalDecor = getProductsByIds(MATA_JI_IDS);
+  const specialGarbaPandal = getProductsByIds(GARBA_IDS);
 
   return (
     <div className="min-h-screen text-neutral-900 font-sans bg-[#FFFDF9] selection:bg-rose-600 selection:text-white overflow-x-hidden pb-20">
@@ -159,7 +114,7 @@ export default function NavratriPage() {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      toggleWishlist(item);
+                      toggleWishlist(toWishlistItem(item));
                     }}
                     className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-500 shadow transition cursor-pointer"
                   >
@@ -182,7 +137,7 @@ export default function NavratriPage() {
                   <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
                     <div>
                       <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
-                      <span className="text-neutral-900 font-bold text-base">{item.price}</span>
+                      <span className="text-neutral-900 font-bold text-base">{formatPrice(item.price)}</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <button
@@ -250,7 +205,7 @@ export default function NavratriPage() {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      toggleWishlist(item);
+                      toggleWishlist(toWishlistItem(item));
                     }}
                     aria-label={
                       isLiked ? "Remove from wishlist" : "Add to wishlist"
@@ -283,7 +238,7 @@ export default function NavratriPage() {
                         Starts At
                       </span>
                       <span className="text-neutral-900 font-bold text-base">
-                        {item.price}
+                        {formatPrice(item.price)}
                       </span>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -342,7 +297,7 @@ export default function NavratriPage() {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      toggleWishlist(item);
+                      toggleWishlist(toWishlistItem(item));
                     }}
                     aria-label={
                       isLiked ? "Remove from wishlist" : "Add to wishlist"
@@ -378,7 +333,7 @@ export default function NavratriPage() {
                         Starts At
                       </span>
                       <span className="text-neutral-900 font-bold text-base">
-                        {item.price}
+                        {formatPrice(item.price)}
                       </span>
                     </div>
                     <div className="flex items-center space-x-2">

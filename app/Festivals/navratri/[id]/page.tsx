@@ -3,8 +3,9 @@
 import React, { use, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, CheckCircle, ArrowRight, ShoppingCart, X, ShieldCheck, Plus, Minus, Check } from "lucide-react";
+import { ArrowLeft, CheckCircle, ShoppingCart, X, Plus, Minus, Check } from "lucide-react";
 import { navratriProducts } from "@/app/data/navratriProducts";
+import { useCart } from "@/app/context/CartContext";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -12,8 +13,9 @@ interface PageProps {
 
 export default function NavratriProductDetail({ params }: PageProps) {
   const resolvedParams = use(params);
-  const productId = resolvedParams.id;
+  const productId = Number(resolvedParams.id);
   const router = useRouter();
+  const { addToCart } = useCart();
 
   const product = navratriProducts.find((p) => p.id === productId);
 
@@ -38,30 +40,21 @@ export default function NavratriProductDetail({ params }: PageProps) {
     );
   }
 
+  const totalPrice = Number(product.price) * quantity;
+
   const handleIncrement = () => setQuantity((prev) => prev + 1);
   const handleDecrement = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
-  // Updated to store product and quantity in localStorage basket
   const handleAddToCart = () => {
-    try {
-      const existingCart = JSON.parse(localStorage.getItem("dreamDecoCart") || "[]");
-      const itemIndex = existingCart.findIndex((item: any) => item.id === product.id);
-
-      if (itemIndex > -1) {
-        existingCart[itemIndex].quantity += quantity;
-      } else {
-        existingCart.push({
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          image: product.image,
-          quantity: quantity,
-        });
-      }
-
-      localStorage.setItem("dreamDecoCart", JSON.stringify(existingCart));
-    } catch (error) {
-      console.error("Cart storage error:", error);
+    for (let i = 0; i < quantity; i++) {
+      addToCart({
+        id: String(product.id),
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        desc: product.desc,
+        category: "Navratri Decoration",
+      });
     }
 
     setIsCartAdded(true);
@@ -78,8 +71,6 @@ export default function NavratriProductDetail({ params }: PageProps) {
       router.push("/");
     }, 2500);
   };
-
-  const totalPrice = product.price * quantity;
 
   return (
     <div className="min-h-screen bg-[#FBF9F4] px-4 sm:px-6 py-10 relative">
