@@ -8,14 +8,34 @@ import {
   ArrowRight,
   Star,
   Heart,
-  Flame,
   ShoppingBag,
 } from "lucide-react";
 import { useWishlist } from "../../context/wishlistcontext";
 import { useCart } from "@/app/context/CartContext";
+import { janmashtamiProducts, Product } from "@/app/data/janmashtamiProducts";
+
+// Home page par dikhne wale products ki sirf IDs (number). Data janmashtamiProducts.ts me hai.
+const CELEBRATION_IDS: number[] = [8, 9, 10, 11];
+const TEMPLE_IDS: number[] = [12, 13, 14, 15];
+
+const getProductsByIds = (ids: number[]): Product[] =>
+  ids
+    .map((id) => janmashtamiProducts.find((p) => p.id === id))
+    .filter((p): p is Product => Boolean(p));
+
+const formatPrice = (price: string) => `₹${Number(price).toLocaleString("en-IN")}`;
+
+// Wishlist ko pehle jaisi hi shape milti hai (price "₹5,499" format me)
+const toWishlistItem = (product: Product) => ({
+  id: product.id,
+  name: product.name,
+  price: formatPrice(product.price),
+  image: product.image,
+  desc: product.desc,
+});
 
 export default function JanmashtamiPage() {
-  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
+  const { toggleWishlist, isInWishlist } = useWishlist();
   const [isMounted, setIsMounted] = useState(false);
   const { addToCart } = useCart();
 
@@ -27,80 +47,21 @@ export default function JanmashtamiPage() {
     return null;
   }
 
-  const handleAddToCart = (product: any, e: React.MouseEvent) => {
+  const handleAddToCart = (product: Product, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart({
       id: String(product.id),
       name: product.name,
-      price: String(product.price),
+      price: product.price,
       image: product.image,
-      desc: product.desc || "",
+      desc: product.desc,
       category: "Janmashtami Decoration",
     });
   };
 
-  const celebrationDecor = [
-    {
-      id: 1,
-      name: "Divine Jhulan & Laddu Gopal Swing",
-      price: "₹5,499",
-      image: "/janmasthmmi.png",
-      desc: "Exquisitely decorated floral swings (jhula) adorned with fragrant flowers and golden bells.",
-    },
-    {
-      id: 2,
-      name: "Makhan Handi & Ethnic Decor Setup",
-      price: "₹4,299",
-      image: "/janmasthmmi1.png",
-      desc: "Traditional hanging handis, peacock feathers, and vibrant butter pot arrangements.",
-    },
-    {
-      id: 3,
-      name: "Vibrant Raas Leela Backdrop",
-      price: "₹7,899",
-      image: "/janmasthmmi2.png",
-      desc: "Colorful traditional backdrop depicting Lord Krishna's divine leelas and pastimes.",
-    },
-    {
-      id: 4,
-      name: "Peacock Motif Festive Arch",
-      price: "₹6,499",
-      image: "/janmasthmmi4.png",
-      desc: "Grand entrance arch styled with peacock feathers, blue drapes, and glowing fairy lights.",
-    },
-  ];
-
-  const templeDecor = [
-    {
-      id: 5,
-      name: "Grand Mandir Floral Sanctum",
-      price: "₹14,999",
-      image: "/janmasthmmi6.png",
-      desc: "Heavy marigold and orchid flower decorations transforming your home mandir into Gokul.",
-    },
-    {
-      id: 6,
-      name: "Janmotsav Midnight Glow Illumination",
-      price: "₹11,599",
-      image: "/janmasthmmi7.png",
-      desc: "Special midnight celebration lighting setup with serial lights, diyas, and spotlights.",
-    },
-    {
-      id: 7,
-      name: "Radha-Krishna Phoolon ki Holi Setup",
-      price: "₹9,299",
-      image: "/janmasthmmi8.png",
-      desc: "Auspicious flower petal arrangements and divine deity chowki decoration.",
-    },
-    {
-      id: 8,
-      name: "Braj Style Vrindavan Street Theme",
-      price: "₹18,499",
-      image: "/janmasthmmi9.png",
-      desc: "Complete thematic temple compound decoration recreating the magical lanes of Vrindavan.",
-    },
-  ];
+  const celebrationDecor = getProductsByIds(CELEBRATION_IDS);
+  const templeDecor = getProductsByIds(TEMPLE_IDS);
 
   return (
     <div className="min-h-screen text-neutral-900 font-sans bg-[#FBF9F4] selection:bg-emerald-600 selection:text-white overflow-x-hidden pb-20">
@@ -166,7 +127,7 @@ export default function JanmashtamiPage() {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      toggleWishlist(item);
+                      toggleWishlist(toWishlistItem(item));
                     }}
                     aria-label={
                       isLiked ? "Remove from wishlist" : "Add to wishlist"
@@ -199,7 +160,7 @@ export default function JanmashtamiPage() {
                         Starts At
                       </span>
                       <span className="text-neutral-900 font-bold text-base">
-                        {item.price}
+                        {formatPrice(item.price)}
                       </span>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -324,7 +285,7 @@ export default function JanmashtamiPage() {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      toggleWishlist(item);
+                      toggleWishlist(toWishlistItem(item));
                     }}
                     className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-500 shadow transition cursor-pointer"
                   >
@@ -354,7 +315,7 @@ export default function JanmashtamiPage() {
                         Starts At
                       </span>
                       <span className="text-neutral-900 font-bold text-base">
-                        {item.price}
+                        {formatPrice(item.price)}
                       </span>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -438,4 +399,3 @@ export default function JanmashtamiPage() {
     </div>
   );
 }
-

@@ -12,7 +12,7 @@ interface PageProps {
 
 export default function JanmashtamiProductDetail({ params }: PageProps) {
   const resolvedParams = use(params);
-  const productId = resolvedParams.id;
+  const productId = Number(resolvedParams.id);
   const { addToCart } = useCart();
 
   const [quantity, setQuantity] = useState(1);
@@ -36,6 +36,8 @@ export default function JanmashtamiProductDetail({ params }: PageProps) {
     );
   }
 
+  const totalPrice = Number(product.price) * quantity;
+
   const handleIncrease = () => {
     setQuantity((prev) => prev + 1);
   };
@@ -49,9 +51,9 @@ export default function JanmashtamiProductDetail({ params }: PageProps) {
       addToCart({
         id: String(product.id),
         name: product.name,
-        price: String(product.price),
+        price: product.price,
         image: product.image,
-        desc: product.desc || "",
+        desc: product.desc,
         category: "Janmashtami Celebration",
       });
     }
@@ -145,7 +147,7 @@ export default function JanmashtamiProductDetail({ params }: PageProps) {
                   Total Price
                 </span>
                 <span className="text-neutral-900 font-bold text-2xl">
-                  ₹{(product.price * quantity).toLocaleString()}
+                  ₹{totalPrice.toLocaleString()}
                 </span>
               </div>
 
@@ -219,7 +221,7 @@ export default function JanmashtamiProductDetail({ params }: PageProps) {
                     </h4>
                     <p className="text-xs text-neutral-500 mt-0.5">Qty: {quantity}</p>
                     <p className="text-sm font-extrabold text-neutral-900 mt-1">
-                      ₹{(product.price * quantity).toLocaleString()}
+                      ₹{totalPrice.toLocaleString()}
                     </p>
                   </div>
                 </div>

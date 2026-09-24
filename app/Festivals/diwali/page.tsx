@@ -1,3 +1,5 @@
+
+
 "use client";
 import SlidingProducts from "@/app/components/SlidingProducts";
 import DiwaliSection from "@/app/Festivals/diwali/DiwaliSection";
@@ -15,13 +17,36 @@ import {
 } from "lucide-react";
 import { useWishlist } from "../../context/wishlistcontext";
 import { useCart } from "@/app/context/CartContext";
-import { diwaliProducts } from "@/app/data/diwaliProducts";
+import { diwaliProducts, Product } from "@/app/data/diwaliProducts";
+
+// Home page par jo products dikhane hain unki sirf IDs (number) yahan hain.
+// Poora data app/data/diwaliProducts.ts se aata hai.
+const TRENDING_IDS: number[] = [111, 112, 113];
+const BEST_LOVED_IDS: number[] = [111, 112, 113, 114];
+const SOCIETY_IDS: number[] = [115, 116, 117, 118];
+
+const getProductsByIds = (ids: number[]): Product[] =>
+  ids
+    .map((id) => diwaliProducts.find((p) => p.id === id))
+    .filter((p): p is Product => Boolean(p));
+
+const formatPrice = (price: number) => `₹${price.toLocaleString("en-IN")}`;
+
+// Wishlist ko pehle ki tarah hi same shape milti hai (price string me)
+const toWishlistItem = (product: Product) => ({
+  id: product.id,
+  name: product.name,
+  price: formatPrice(product.price),
+  image: product.image,
+  desc: product.desc,
+});
 
 export default function DiwaliPage() {
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
   const [isMounted, setIsMounted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { addToCart } = useCart();
+  
 
   useEffect(() => {
     setIsMounted(true);
@@ -36,7 +61,7 @@ export default function DiwaliPage() {
     return null;
   }
 
-  const handleAddToCart = (product: any, e: React.MouseEvent) => {
+  const handleAddToCart = (product: Product, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart({
@@ -49,67 +74,9 @@ export default function DiwaliPage() {
     });
   };
 
-  const bestLovedDecor = [
-    {
-      id: 1,
-      name: "Royal Marigold & Diya Mandap",
-      price: "₹5,499",
-      image: "/diwali1.png",
-      desc: "Auspicious marigold strings combined with traditional clay diyas.",
-    },
-    {
-      id: 2,
-      name: "Grand Floral Laxmi Pujan Setup",
-      price: "₹7,999",
-      image: "/diwali2.png",
-      desc: "Exquisite backdrop styling specially curated for auspicious Laxmi Pujan.",
-    },
-    {
-      id: 3,
-      name: "Golden Fairy Light Arch",
-      price: "₹6,299",
-      image: "/diwali3.png",
-      desc: "Dazzling warm fairy lights creating a magical festive aura for your home.",
-    },
-    {
-      id: 4,
-      name: "Traditional Lotus & Toran Decor",
-      price: "₹4,899",
-      image: "/diwali4.png",
-      desc: "Handcrafted torans and fresh lotus motifs to welcome Goddess Lakshmi.",
-    },
-  ];
-
-  const societyDecor = [
-    {
-      id: 5,
-      name: "Grand Gate & Entrance Arch",
-      price: "₹18,499",
-      image: "/socity.png",
-      desc: "Massive welcoming entrance gate styling with heavy lights and floral pillars for housing societies.",
-    },
-    {
-      id: 6,
-      name: "Society Compound Lighting & Stage",
-      price: "₹24,999",
-      image: "/socity2.png",
-      desc: "Complete community area illumination, stage decoration, and festive photo booths.",
-    },
-    {
-      id: 7,
-      name: "Community Center Floral Mandap",
-      price: "₹15,499",
-      image: "/socity1.png",
-      desc: "Vibrant traditional decor setup for grand community celebrations and gatherings.",
-    },
-    {
-      id: 8,
-      name: "Festive Pathway & Tree Wrapping",
-      price: "₹12,999",
-      image: "/socity4.png",
-      desc: "Stunning fairy light tree wraps and illuminated pathways across the society complex.",
-    },
-  ];
+  const trendingProducts = getProductsByIds(TRENDING_IDS);
+  const bestLovedDecor = getProductsByIds(BEST_LOVED_IDS);
+  const societyDecor = getProductsByIds(SOCIETY_IDS);
 
   return (
     <div className="min-h-screen text-neutral-900 font-sans bg-[#FAF7F2] selection:bg-amber-500 selection:text-white overflow-x-hidden pb-20">
@@ -158,60 +125,97 @@ export default function DiwaliPage() {
         </div>
       </section>
 
-      {/* Signature Dipak Section linked with product id "111" */}
-      <section className="py-12 px-6 max-w-7xl mx-auto">
-        <div className="bg-gradient-to-r from-amber-950 via-amber-900 to-neutral-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-amber-500/40 grid grid-cols-1 lg:grid-cols-2 items-stretch">
-          <div className="p-8 sm:p-12 flex flex-col justify-between space-y-6">
-            <div className="space-y-4">
-              <div className="inline-flex items-center space-x-2 bg-amber-500/20 border border-amber-500/40 px-3.5 py-1.5 rounded-full text-amber-300 text-xs font-bold uppercase tracking-widest">
-                <Flame size={14} className="text-amber-400" />
-                <span>Signature Diwali Special</span>
-              </div>
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white leading-tight">
-                The Auspicious Glow of{" "}
-                <span className="text-amber-400 italic">Divine Diyas</span>
-              </h2>
-              <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed font-light">
-                Welcome Goddess Lakshmi with our magnificent traditional
-                lighting and handcrafted decorative oil lamps. Designed to bring
-                prosperity, warmth, and divine radiance to your home during
-                Deepawali.
-              </p>
-              <div className="space-y-3 pt-2">
-                <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                  <CheckCircle size={16} className="text-amber-400 shrink-0" />
-                  <span>Handcrafted terracotta and brass designer diyas</span>
-                </div>
-                <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                  <CheckCircle size={16} className="text-amber-400 shrink-0" />
-                  <span>
-                    Synchronized warm lighting & floral corner styling
-                  </span>
-                </div>
-              </div>
-            </div>
+ {/* Signature Diwali Special Section */}
+<section className="py-14 px-4 sm:px-6 max-w-7xl mx-auto">
+  <div className="relative overflow-hidden rounded-[28px] border border-amber-500/30 bg-gradient-to-r from-[#4a1702] via-[#702500] to-[#1a0b05] shadow-[0_25px_70px_rgba(70,25,0,0.25)]">
+    
+    {/* Decorative Glow */}
+    <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
 
-            <div className="pt-4">
-              <Link 
-                href="/Festivals/diwali/111" 
-                className="bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
-              >
-                <span>Book Diwali Special</span>
-                <ArrowRight size={16} />
-              </Link>
-            </div>
-          </div>
-
-          <div className="relative h-72 sm:h-auto w-full overflow-hidden bg-neutral-950">
-            <img
-              src="/dipak.png"
-              alt="Diwali Dipak Setup"
-              className="w-full h-full object-cover hover:scale-105 transition duration-700"
-            />
+    <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] items-stretch">
+      
+      {/* Left Content */}
+      <div className="relative z-10 flex flex-col justify-center p-7 sm:p-10 lg:p-12 xl:p-14">
+        
+        {/* Badge */}
+        <div className="mb-5">
+          <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.16em] text-amber-300">
+            <Flame size={14} className="text-amber-400" />
+            <span>Signature Diwali Special</span>
           </div>
         </div>
-      </section>
 
+        {/* Heading */}
+        <h2 className="max-w-xl font-serif text-3xl sm:text-4xl lg:text-[42px] font-bold leading-[1.12] text-white">
+          The Auspicious Glow of{" "}
+          <span className="italic text-amber-400">
+            Divine Diyas
+          </span>
+        </h2>
+
+        {/* Description */}
+        <p className="mt-5 max-w-xl text-sm leading-7 text-neutral-300">
+          Welcome Goddess Lakshmi with our magnificent traditional lighting and
+          handcrafted decorative oil lamps. Designed to bring prosperity,
+          warmth, and divine radiance to your home during Deepawali.
+        </p>
+
+        {/* Features */}
+        <div className="mt-7 space-y-4">
+          <div className="flex items-start gap-3 text-sm text-neutral-200">
+            <CheckCircle
+              size={18}
+              className="mt-0.5 shrink-0 text-amber-400"
+            />
+            <span>
+              Handcrafted terracotta and brass designer diyas
+            </span>
+          </div>
+
+          <div className="flex items-start gap-3 text-sm text-neutral-200">
+            <CheckCircle
+              size={18}
+              className="mt-0.5 shrink-0 text-amber-400"
+            />
+            <span>
+              Synchronized warm lighting & floral corner styling
+            </span>
+          </div>
+        </div>
+
+        {/* Button */}
+        <div className="mt-9">
+          <button
+            type="button"
+            className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 px-7 py-3.5 text-xs font-extrabold uppercase tracking-[0.13em] text-neutral-950 shadow-[0_10px_30px_rgba(251,191,36,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_35px_rgba(251,191,36,0.35)] cursor-pointer"
+          >
+            <span>Book Diwali Special</span>
+
+            <ArrowRight
+              size={16}
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </button>
+        </div>
+      </div>
+
+      {/* Right Image */}
+      <div className="relative min-h-[320px] sm:min-h-[400px] lg:min-h-[520px] overflow-hidden">
+        <img
+          src="/dipak.png"
+          alt="Diwali Dipak Setup"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+        />
+
+        {/* Image Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#5a1c03]/45 via-transparent to-transparent lg:block hidden" />
+
+        {/* Mobile Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#4a1702]/40 via-transparent to-transparent lg:hidden" />
+      </div>
+    </div>
+  </div>
+</section>
       {/* Trending Picks Section */}
       <section className="py-16 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
@@ -227,7 +231,7 @@ export default function DiwaliPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {bestLovedDecor.slice(0, 3).map((item) => {
+          {trendingProducts.map((item) => {
             const isLiked = isInWishlist(item.id);
             return (
               <div
@@ -245,7 +249,7 @@ export default function DiwaliPage() {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      toggleWishlist(item);
+                      toggleWishlist(toWishlistItem(item));
                     }}
                     aria-label={
                       isLiked ? "Remove from wishlist" : "Add to wishlist"
@@ -278,7 +282,7 @@ export default function DiwaliPage() {
                         Starts At
                       </span>
                       <span className="text-neutral-900 font-bold text-lg">
-                        {item.price}
+                        {formatPrice(item.price)}
                       </span>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -291,7 +295,7 @@ export default function DiwaliPage() {
                         <ShoppingBag size={16} />
                       </button>
                       <Link
-                        href="/contact"
+                        href={`/Festivals/diwali/${item.id}`}
                         className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1"
                       >
                         <span>Book</span>
@@ -350,7 +354,7 @@ export default function DiwaliPage() {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      toggleWishlist(item);
+                      toggleWishlist(toWishlistItem(item));
                     }}
                     className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-500 shadow transition cursor-pointer"
                   >
@@ -380,7 +384,7 @@ export default function DiwaliPage() {
                         Starts At
                       </span>
                       <span className="text-neutral-900 font-bold text-base">
-                        {item.price}
+                        {formatPrice(item.price)}
                       </span>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -393,7 +397,7 @@ export default function DiwaliPage() {
                         <ShoppingBag size={16} />
                       </button>
                       <Link
-                        href="/contact"
+                        href={`/Festivals/diwali/${item.id}`}
                         className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1"
                       >
                         <span>Book</span>
@@ -445,7 +449,7 @@ export default function DiwaliPage() {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      toggleWishlist(item);
+                      toggleWishlist(toWishlistItem(item));
                     }}
                     className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-500 shadow transition cursor-pointer"
                   >
@@ -475,7 +479,7 @@ export default function DiwaliPage() {
                         Starts At
                       </span>
                       <span className="text-neutral-900 font-bold text-base">
-                        {item.price}
+                        {formatPrice(item.price)}
                       </span>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -488,7 +492,7 @@ export default function DiwaliPage() {
                         <ShoppingBag size={16} />
                       </button>
                       <Link
-                        href="/contact"
+                        href={`/Festivals/diwali/${item.id}`}
                         className="bg-amber-500 text-neutral-950 px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-400 transition shadow flex items-center space-x-1"
                       >
                         <span>Book</span>
@@ -541,15 +545,14 @@ export default function DiwaliPage() {
                 </div>
               </div>
             </div>
-
-            <div className="pt-4">
-              <Link 
-                href="/Festivals/diwali/114" 
-                className="bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
+<div className="pt-4">
+              <button 
+                type="button"
+                className="bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2 cursor-pointer"
               >
                 <span>Book Rangoli Styling</span>
                 <ArrowRight size={16} />
-              </Link>
+              </button>
             </div>
           </div>
 
@@ -565,4 +568,3 @@ export default function DiwaliPage() {
     </div>
   );
 }
-

@@ -11,9 +11,30 @@ import {
   Gift,
 } from "lucide-react";
 import { useWishlist } from "../../context/wishlistcontext";
+import { christmasProducts, Product } from "@/app/data/christmasProducts";
+
+// Home page par dikhne wale products ki sirf IDs (number). Data christmasProducts.ts me hai.
+const HIGHLIGHT_IDS: number[] = [11, 12, 13];
+const PACKAGE_IDS: number[] = [7, 8, 9, 10];
+
+const getProductsByIds = (ids: number[]): Product[] =>
+  ids
+    .map((id) => christmasProducts.find((p) => p.id === id))
+    .filter((p): p is Product => Boolean(p));
+
+const formatPrice = (price: string) => `₹${Number(price).toLocaleString("en-IN")}`;
+
+// Wishlist ko pehle jaisi hi shape milti hai (price "₹6,499" format me)
+const toWishlistItem = (product: Product) => ({
+  id: product.id,
+  name: product.name,
+  price: formatPrice(product.price),
+  image: product.image,
+  desc: product.desc,
+});
 
 export default function ChristmasPage() {
-  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
+  const { toggleWishlist, isInWishlist } = useWishlist();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -24,41 +45,8 @@ export default function ChristmasPage() {
     return null;
   }
 
-  // IMPORTANT: ids yahan christmasProducts.ts ke id se EXACT match hone chahiye (string)
-  const christmasDecor = [
-    {
-      id: "7",
-      name: "Grand Christmas Tree & Lighting Setup",
-      price: "₹6,499",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBGNDDxdate3wKiX02hMXWRLTVGaun1kQpFGELKfORzOTZF-mVOHUWG9hs&s=10",
-      desc: "Exquisitely decorated giant Christmas tree adorned with glittering baubles, stars, and fairy lights.",
-    },
-    {
-      id: "8",
-      name: "Snowy Winter Wonderland Theme",
-      price: "₹8,999",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwBYs6LfDeJ58ZmW5HwEZNKn_qpAjwdWdzCnVcbiJhLg&s=10",
-      desc: "Magical artificial snow sprays, white faux fur accents, and frosty winter decor elements.",
-    },
-    {
-      id: "9",
-      name: "Santa's Grotto & Gift Corner",
-      price: "₹5,899",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxK90e4AlKRqbOnIp93VEWcG9F1JeDc4Bx74lFVstsyw&s=10",
-      desc: "Festive corner setup with Santa props, gift boxes, stockings, and warm festive backdrops.",
-    },
-    {
-      id: "10",
-      name: "Merry & Bright Entrance Archway",
-      price: "₹7,499",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9B2yevJe49MW_IGD1rIyizOIXX7aKGfcqTaOY9nEDLg&s=10",
-      desc: "Grand holiday entrance arch decorated with red-gold ornaments, pine cones, and green garlands.",
-    },
-  ];
+  const christmasHighlights = getProductsByIds(HIGHLIGHT_IDS);
+  const christmasDecor = getProductsByIds(PACKAGE_IDS);
 
   return (
     
@@ -102,29 +90,7 @@ export default function ChristmasPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {[
-            {
-              id: "11",
-              name: "Classic Christmas Tree Setup",
-              price: "₹2,999",
-              image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJNpF-N-ORl2VSyHFlkFw0hadAloYxEr1HaV88lzHaiA&s=10",
-              desc: "Beautifully styled festive Christmas tree adorned with ornaments and glowing fairy lights."
-            },
-            {
-              id: "12",
-              name: "Festive Gift Box Hamper",
-              price: "₹1,499",
-              image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7rtYWF8eVTmkemyLGUIVHYl6Y9v4zqSq0BIFfw-w9rA&s=10",
-              desc: "Exquisitely wrapped holiday gift boxes filled with seasonal surprises and festive treats."
-            },
-            {
-              id: "13",
-              name: "Premium Christmas Decoration Pack",
-              price: "₹1,999",
-              image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT20nDAak0Bp07QwjqSoWK5U8M-CXEQlkx7zRgOdM2mNA&s=10",
-              desc: "Complete winter decoration collection featuring hanging baubles, ribbons, and star accents."
-            }
-          ].map((item) => (
+          {christmasHighlights.map((item) => (
             <div key={item.id} className="bg-white border border-red-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
               <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
@@ -139,7 +105,7 @@ export default function ChristmasPage() {
                 <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
                   <div>
                     <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
-                    <span className="text-neutral-900 font-bold text-base">{item.price}</span>
+                    <span className="text-neutral-900 font-bold text-base">{formatPrice(item.price)}</span>
                   </div>
                   <Link href={`/Festivals/christmas/${item.id}`} className="bg-red-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-red-500 transition shadow flex items-center space-x-1">
                     <span>Book</span>
@@ -195,7 +161,7 @@ export default function ChristmasPage() {
                   />
                   <button
                     onClick={() => {
-                      toggleWishlist(item);
+                      toggleWishlist(toWishlistItem(item));
                     }}
                     aria-label={
                       isLiked ? "Remove from wishlist" : "Add to wishlist"
@@ -231,7 +197,7 @@ export default function ChristmasPage() {
                         Starts At
                       </span>
                       <span className="text-neutral-900 font-bold text-base">
-                        {item.price}
+                        {formatPrice(item.price)}
                       </span>
                     </div>
                     <Link
@@ -334,7 +300,7 @@ export default function ChristmasPage() {
                 href="/contact"
                 className="bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
               >
-                <span>Book Candle Setup</span>
+                <span>Your Order  is confirm</span>
                 <ArrowRight size={16} />
               </Link>
             </div>

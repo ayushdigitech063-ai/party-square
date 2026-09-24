@@ -102,8 +102,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     return likes.some((item) => item.id === id);
   };
 
-  // ✅ total items count for the navbar badge
-  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+const cartCount = cart.length;
 
   return (
     <CartContext.Provider

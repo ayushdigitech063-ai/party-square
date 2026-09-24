@@ -8,11 +8,11 @@ export default function BasketPage() {
   const [cart, setCart] = useState<any[]>([]);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
 
-  // Component load hone par aur localStorage change hone par cart load karna
+  // Component load hone par aur localStorage change hone par dreamdeco_cart load karna
   useEffect(() => {
     const fetchCart = () => {
       try {
-        const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+        const storedCart = JSON.parse(localStorage.getItem("dreamdeco_cart") || "[]");
         setCart(storedCart);
       } catch (error) {
         console.error("Error reading cart from localStorage:", error);
@@ -36,7 +36,7 @@ export default function BasketPage() {
     try {
       const updatedCart = cart.filter((item) => item.id !== id);
       setCart(updatedCart);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      localStorage.setItem("dreamdeco_cart", JSON.stringify(updatedCart));
 
       // Events dispatch karna taaki header aur baaki components update ho jayein
       window.dispatchEvent(new Event("storage"));

@@ -12,7 +12,7 @@ interface PageProps {
 
 export default function ChristmasProductDetail({ params }: PageProps) {
   const resolvedParams = use(params);
-  const productId = resolvedParams.id;
+  const productId = Number(resolvedParams.id);
 
   const product = christmasProducts.find((p) => p.id === productId);
   const { addToCart } = useCart();
@@ -35,21 +35,22 @@ export default function ChristmasProductDetail({ params }: PageProps) {
     );
   }
 
+  const totalPrice = Number(product.price) * quantity;
+
   const handleIncrement = () => setQuantity((prev) => prev + 1);
   const handleDecrement = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
   const handleAddToCart = () => {
-    addToCart(
-      {
-        id: product.id,
+    for (let i = 0; i < quantity; i++) {
+      addToCart({
+        id: String(product.id),
         name: product.name,
-        price: `₹${product.price.toLocaleString("en-IN")}`,
-        numericPrice: product.numericPrice || product.price,
+        price: product.price,
         image: product.image,
         desc: product.desc,
-      },
-      quantity
-    );
+        category: "Christmas Decoration",
+      });
+    }
   };
 
   return (
@@ -122,7 +123,7 @@ export default function ChristmasProductDetail({ params }: PageProps) {
                   Price
                 </span>
                 <span className="text-neutral-900 font-bold text-2xl">
-                  ₹{(product.price * quantity).toLocaleString()}
+                  ₹{totalPrice.toLocaleString()}
                 </span>
               </div>
 
@@ -166,7 +167,7 @@ export default function ChristmasProductDetail({ params }: PageProps) {
             </div>
             <h3 className="text-lg font-serif font-bold text-neutral-900">Booking Confirmed!</h3>
             <p className="text-xs text-neutral-600 font-light">
-              Aapka order (<span className="font-semibold">{product.name}</span>) quantity <span className="font-semibold">{quantity}</span> ke sath successfully book ho gaya hai.
+           Your order (<span className="font-semibold">{product.name}</span>) quantity <span className="font-semibold">{quantity}</span> with  successfully Book.
             </p>
             <div className="pt-4 flex space-x-3">
               <button
@@ -179,7 +180,7 @@ export default function ChristmasProductDetail({ params }: PageProps) {
                 href="/Festivals/christmas/all-products"
                 className="flex-1 bg-neutral-950 hover:bg-red-600 text-white text-xs uppercase font-bold py-3 rounded-full transition flex items-center justify-center cursor-pointer"
               >
-                Back to Catalogue
+               Your Order is confirm
               </Link>
             </div>
           </div>

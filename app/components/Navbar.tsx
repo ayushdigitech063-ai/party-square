@@ -562,38 +562,18 @@ export default function Navbar() {
 
             {/* Location selector trigger on navbar */}
             <div className="relative hidden sm:block" ref={locationRef}>
-              <button
-                onClick={() => setLocationOpen((v) => !v)}
-                className="flex items-center gap-1.5 h-10 px-3.5 rounded-full border border-neutral-200 text-[15px] font-medium text-neutral-700 hover:border-amber-400 hover:text-amber-600 transition-colors"
-              >
-                <MapPin size={16} className="text-amber-500 shrink-0" />
-                <span className="whitespace-nowrap">{selectedCity}</span>
-                <ChevronDown
-                  size={15}
-                  className={`transition-transform shrink-0 ${locationOpen ? "rotate-180" : ""}`}
-                />
-              </button>
+           <button
+  onClick={() => setIsCityModalOpen(true)}
+  className="flex items-center gap-1.5 h-10 px-3.5 rounded-full border border-neutral-200 text-[15px] font-medium text-neutral-700 hover:border-amber-400 hover:text-amber-600 transition-colors"
+>
+  <MapPin size={16} className="text-amber-500 shrink-0" />
+  <span className="whitespace-nowrap">{selectedCity}</span>
+  <ChevronDown
+    size={15}
+    className={`transition-transform shrink-0 ${locationOpen ? "rotate-180" : ""}`}
+  />
+</button>
 
-              {locationOpen && (
-                <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-neutral-100 py-1.5 z-40">
-                  {CITIES.slice(0, 5).map((city) => (
-                    <button
-                      key={city}
-                      onClick={() => {
-                        setSelectedCity(city);
-                        setLocationOpen(false);
-                      }}
-                      className={`w-full text-left px-4 py-2 text-sm transition-colors ${
-                        selectedCity === city
-                          ? "text-amber-600 font-semibold bg-amber-50"
-                          : "text-neutral-700 hover:bg-amber-50 hover:text-amber-600"
-                      }`}
-                    >
-                      {city}
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
 <Link
   href="/basket"

@@ -1,6 +1,7 @@
 
+
 export interface Product {
-  id: string;
+  id: number;
   name: string;
   desc: string;
   fullDesc: string;
@@ -12,7 +13,7 @@ export interface Product {
 export const diwaliProducts: Product[] = [
   // --- Regular Products (ID 1 to 12) ---
   {
-    id: "1",
+    id: 1,
     name: "Royal Diwali Jhumar Decor",
     desc: "Beautiful hanging light decoration for perfect festive ambience.",
     fullDesc: "Bring home the ethereal glow of traditional festivities with our Royal Diwali Jhumar Decor. Handcrafted with precision, this stunning hanging piece combines warm LED lighting with rich traditional motifs to instantly elevate your living room or balcony decor.",
@@ -26,7 +27,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "2",
+    id: 2,
     name: "Traditional Marigold Toran",
     desc: "Auspicious artificial marigold door hanging for welcoming guests.",
     fullDesc: "Welcome Goddess Lakshmi and your guests with vibrant, everlasting artificial marigold torans. Designed to replicate fresh flowers without the hassle of wilting, it adds an authentic festive charm to your main entrance.",
@@ -40,7 +41,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "3",
+    id: 3,
     name: "Designer Clay Diya Set",
     desc: "Hand-painted colorful earthen diyas for a glowing festival night.",
     fullDesc: "Light up every corner of your home with our exclusive set of hand-painted terracotta diyas. Each piece is uniquely crafted and painted by traditional artisans to add a colorful, ethnic touch to your Diwali celebrations.",
@@ -54,7 +55,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "4",
+    id: 4,
     name: "Golden Fairy Light Curtain",
     desc: "Dazzling warm LED string lights to create a magical background.",
     fullDesc: "Transform your walls and backdrops into a cascading waterfall of golden lights. This fairy light curtain is ideal for creating stunning backdrops for puja spaces, living rooms, or festive photography.",
@@ -68,7 +69,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "5",
+    id: 5,
     name: "Luxury Laxmi Pujan Mandap",
     desc: "Exquisite floral and fabric backdrop styling for auspicious prayers.",
     fullDesc: "Create a divine sanctum for Goddess Lakshmi with our Luxury Laxmi Pujan Mandap setup. Featuring rich fabrics, floral garlands, and subtle lighting, it provides a majestic setting for your family prayers.",
@@ -82,7 +83,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "6",
+    id: 6,
     name: "Crystal Tea Light Holders",
     desc: "Elegant glass candle holders reflecting sparkling golden lights.",
     fullDesc: "Add a touch of modern elegance to your traditional decor with these crystal-cut glass tea light holders. They catch the candle flame and refract mesmerizing patterns across your tables and corners.",
@@ -96,7 +97,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "7",
+    id: 7,
     name: "Festive Rangoli LED Mat",
     desc: "Ready-to-place reusable decorative mat with embedded warm lights.",
     fullDesc: "Skip the hassle of elaborate powder rangolis with our ready-to-use illuminated rangoli mat. Simply place it at your doorstep or mandap entrance for an instant festive greeting.",
@@ -110,7 +111,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "8",
+    id: 8,
     name: "Royal Velvet Pujaasan",
     desc: "Premium velvet seating cloth with golden borders for idols.",
     fullDesc: "Give your idols a royal throne with our plush velvet pujaasan. Embellished with intricate golden lace borders, it adds dignity and reverence to your deity installations.",
@@ -124,7 +125,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "9",
+    id: 9,
     name: "Deepawali Gift Hamper",
     desc: "Curated gift box filled with scented candles, idols, and treats.",
     fullDesc: "Express your love and gratitude to family, friends, and colleagues with our luxury Deepawali gift hamper. Thoughtfully packed with aromatic candles, divine idols, and festive delights.",
@@ -138,7 +139,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "10",
+    id: 10,
     name: "Society Entrance Arch Light",
     desc: "Massive welcoming entrance gate styling with heavy festive lights.",
     fullDesc: "Make your residential society or commercial complex stand out this festive season with our grand entrance arch lighting package, complete with heavy illumination and structural decorations.",
@@ -152,7 +153,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "11",
+    id: 11,
     name: "Hanging Star Lanterns",
     desc: "Paper and foil geometric star lamps for balcony and ceiling decor.",
     fullDesc: "Create a starry night right on your balcony with our geometric paper and foil star lanterns. When lit from inside, they cast a warm, breathtaking celestial glow across your outdoor spaces.",
@@ -166,7 +167,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "12",
+    id: 12,
     name: "Premium Ethnic Flower Setup",
     desc: "Fresh-looking artistic floral arrangements for grand celebrations.",
     fullDesc: "Enhance your venue aesthetics with our premium ethnic floral setup. Expertly arranged floral strings and centerpieces designed to breathe life and elegance into your festive venue.",
@@ -182,7 +183,7 @@ export const diwaliProducts: Product[] = [
 
   // --- Home Page Highlighted Products (ID 111 to 118) ---
   {
-    id: "111",
+    id: 111,
     name: "Royal Marigold & Diya Mandap",
     desc: "Auspicious marigold strings combined with traditional clay diyas.",
     fullDesc: "Bring home the ethereal glow of traditional festivities with our Royal Marigold & Diya Mandap. Handcrafted with precision, this stunning arrangement combines warm LED lighting and fresh-look marigold strings with rich traditional motifs to instantly elevate your festive mandap or living room decor.",
@@ -196,7 +197,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "112",
+    id: 112,
     name: "Grand Floral Laxmi Pujan Setup",
     desc: "Exquisite backdrop styling specially curated for auspicious Laxmi Pujan.",
     fullDesc: "Create a divine sanctum for Goddess Lakshmi with our Grand Floral Laxmi Pujan Setup. Featuring rich fabrics, designer floral garlands, and subtle warm lighting, it provides a majestic setting for your family prayers and festive celebrations.",
@@ -210,7 +211,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "113",
+    id: 113,
     name: "Golden Fairy Light Arch",
     desc: "Dazzling warm fairy lights creating a magical festive aura for your home.",
     fullDesc: "Transform your walls, arches, and backdrops into a cascading waterfall of golden lights. This fairy light setup is ideal for creating stunning backdrops for puja spaces, living rooms, or festive photography.",
@@ -224,7 +225,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "114",
+    id: 114,
     name: "Traditional Lotus & Toran Decor",
     desc: "Handcrafted torans and fresh lotus motifs to welcome Goddess Lakshmi.",
     fullDesc: "Welcome Goddess Lakshmi and your guests with vibrant, everlasting artificial marigold torans and lotus motifs. Designed to replicate fresh flowers without the hassle of wilting, it adds an authentic festive charm to your main entrance.",
@@ -238,7 +239,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "115",
+    id: 115,
     name: "Grand Gate & Entrance Arch",
     desc: "Massive welcoming entrance gate styling with heavy lights and floral pillars for housing societies.",
     fullDesc: "Make your residential society or commercial complex stand out this festive season with our grand entrance arch lighting package, complete with heavy illumination and structural decorations.",
@@ -252,7 +253,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "116",
+    id: 116,
     name: "Society Compound Lighting & Stage",
     desc: "Complete community area illumination, stage decoration, and festive photo booths.",
     fullDesc: "Illuminate your entire society compound and community stage with synchronized festive lights, grand decorative structures, and specialized photo booths for residents.",
@@ -266,7 +267,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "117",
+    id: 117,
     name: "Community Center Floral Mandap",
     desc: "Vibrant traditional decor setup for grand community celebrations and gatherings.",
     fullDesc: "Vibrant traditional decor setup specially crafted for large community gatherings, society functions, and grand Diwali events.",
@@ -280,7 +281,7 @@ export const diwaliProducts: Product[] = [
     ]
   },
   {
-    id: "118",
+    id: 118,
     name: "Festive Pathway & Tree Wrapping",
     desc: "Stunning fairy light tree wraps and illuminated pathways across the society complex.",
     fullDesc: "Enhance your campus walkways and trees with mesmerizing fairy light wraps, guiding residents through a brilliantly illuminated pathway.",
