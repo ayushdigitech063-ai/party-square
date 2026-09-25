@@ -443,7 +443,7 @@ export default function ProductDetailPage() {
 
 
                 <button
-                  onClick={handleBookNowClick}
+                  onClick={()=>router.push('/payment-detail')}
                   className="h-12 rounded-xl bg-[#8B3F05] hover:bg-[#713200] text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-md hover:shadow-lg"
                 >
                   <Calendar size={17} />
@@ -514,61 +514,61 @@ export default function ProductDetailPage() {
           {/* Description */}
           <div className="lg:col-span-7">
 
-            <h2 className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 leading-tight">
-              Turn Your Special Moments Into Magical Memories
-            </h2>
+          <h2 className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 leading-tight">
+            Turn Your Special Moments Into Magical Memories
+          </h2>
 
-            <p className="mt-4 text-sm sm:text-base leading-7 text-neutral-600">
+          <p className="mt-4 text-sm sm:text-base leading-7 text-neutral-600">
               {product.desc}
-            </p>
+          </p>
 
 
-            {/* Feature Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-7">
+          {/* Feature Cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-7">
 
-              <div className="rounded-2xl bg-amber-50 p-4">
-                <Sparkles size={19} className="text-amber-700" />
-                <p className="mt-3 text-xs font-semibold text-neutral-800">
-                  Premium Decor
-                </p>
-                <p className="text-[11px] text-neutral-500 mt-1">
-                  & Setup
-                </p>
-              </div>
+            <div className="rounded-2xl bg-amber-50 p-4">
+              <Sparkles size={19} className="text-amber-700" />
+              <p className="mt-3 text-xs font-semibold text-neutral-800">
+                Premium Decor
+              </p>
+              <p className="text-[11px] text-neutral-500 mt-1">
+                & Setup
+              </p>
+            </div>
 
-              <div className="rounded-2xl bg-amber-50 p-4">
-                <CheckCircle2 size={19} className="text-amber-700" />
-                <p className="mt-3 text-xs font-semibold text-neutral-800">
-                  Verified
-                </p>
-                <p className="text-[11px] text-neutral-500 mt-1">
-                  Quality
-                </p>
-              </div>
+            <div className="rounded-2xl bg-amber-50 p-4">
+              <CheckCircle2 size={19} className="text-amber-700" />
+              <p className="mt-3 text-xs font-semibold text-neutral-800">
+                Verified
+              </p>
+              <p className="text-[11px] text-neutral-500 mt-1">
+                Quality
+              </p>
+            </div>
 
-              <div className="rounded-2xl bg-amber-50 p-4">
-                <Truck size={19} className="text-amber-700" />
-                <p className="mt-3 text-xs font-semibold text-neutral-800">
-                  On-Time
-                </p>
-                <p className="text-[11px] text-neutral-500 mt-1">
-                  Setup
-                </p>
-              </div>
+            <div className="rounded-2xl bg-amber-50 p-4">
+              <Truck size={19} className="text-amber-700" />
+              <p className="mt-3 text-xs font-semibold text-neutral-800">
+                On-Time
+              </p>
+              <p className="text-[11px] text-neutral-500 mt-1">
+                Setup
+              </p>
+            </div>
 
-              <div className="rounded-2xl bg-amber-50 p-4">
-                <Calendar size={19} className="text-amber-700" />
-                <p className="mt-3 text-xs font-semibold text-neutral-800">
-                  Easy
-                </p>
-                <p className="text-[11px] text-neutral-500 mt-1">
-                  Booking
-                </p>
-              </div>
-
+            <div className="rounded-2xl bg-amber-50 p-4">
+              <Calendar size={19} className="text-amber-700" />
+              <p className="mt-3 text-xs font-semibold text-neutral-800">
+                Easy
+              </p>
+              <p className="text-[11px] text-neutral-500 mt-1">
+                Booking
+              </p>
             </div>
 
           </div>
+
+        </div>
 
 
           {/* Included Card */}
@@ -577,10 +577,10 @@ export default function ProductDetailPage() {
             <div className="rounded-2xl bg-[#FFF9E8] border border-amber-100 p-6">
 
               <h3 className="font-serif font-bold text-lg text-neutral-900">
-                What's Included
-              </h3>
+              What's Included
+            </h3>
 
-              <div className="mt-5 space-y-3">
+            <div className="mt-5 space-y-3">
 
                 {[
                   "Premium decoration setup",
@@ -599,16 +599,16 @@ export default function ProductDetailPage() {
                       className="text-amber-700 shrink-0"
                     />
 
-                    <span>{item}</span>
-                  </div>
+                  <span>{item}</span>
+                </div>
 
-                ))}
-
-              </div>
+              ))}
 
             </div>
 
-          </div>
+        </div>
+
+        </div>
 
         </div>
 

@@ -771,7 +771,7 @@ export default function GalleryItemDetail() {
 
                   {/* BOOK NOW */}
                   <button
-                    onClick={() => setShowConfirmModal(true)}
+                    onClick={()=>router.push("/payment-detail")}
                     className="
                   h-12
                   rounded-xl
@@ -807,10 +807,12 @@ export default function GalleryItemDetail() {
 
         {/* =====================================================
         LOWER INFORMATION SECTION
+        STRUCTURE ALIGNED WITH PRODUCT DETAIL PAGE
+        FUNCTIONALITY / EXISTING PRODUCT DATA UNCHANGED
     ====================================================== */}
         <section
           className="
-        mt-5
+        mt-8
         bg-white
         rounded-3xl
         border
@@ -822,11 +824,12 @@ export default function GalleryItemDetail() {
           {/* =================================================
           TABS
       ================================================== */}
-          <div className="border-b border-neutral-100 overflow-x-auto">
+          <div className="border-b border-neutral-100 overflow-x-auto sticky top-0 bg-white/95 backdrop-blur-md z-20">
             <div className="flex min-w-max">
               {[
                 "Overview",
                 "What's Included",
+                "What's Not Included",
                 "Cancellation Policy",
                 "Reviews",
                 "FAQ",
@@ -836,7 +839,7 @@ export default function GalleryItemDetail() {
                   className={`
                 px-5
                 sm:px-7
-                py-5
+                py-4
                 text-sm
                 font-medium
                 transition
@@ -854,7 +857,105 @@ export default function GalleryItemDetail() {
           </div>
 
           {/* =================================================
-          OVERVIEW CONTENT
+          OVERVIEW
+      ================================================== */}
+          <div
+            id="overview"
+            className="
+          scroll-mt-28
+          p-5
+          sm:p-8
+          border-b
+          border-neutral-100
+        "
+          >
+            <h2
+              className="
+            text-xl
+            sm:text-2xl
+            font-serif
+            font-bold
+            text-neutral-900
+            leading-tight
+          "
+            >
+              Turn Your Special Moments Into Magical Memories
+            </h2>
+
+            <p
+              className="
+            mt-4
+            text-sm
+            sm:text-base
+            leading-7
+            text-neutral-600
+          "
+            >
+              {foundItem.desc}
+            </p>
+
+            {/* FEATURE CARDS */}
+            <div
+              className="
+            grid
+            grid-cols-2
+            sm:grid-cols-4
+            gap-3
+            mt-7
+          "
+            >
+              <div className="rounded-2xl bg-amber-50 p-4">
+                <Sparkles size={19} className="text-amber-700" />
+
+                <p className="mt-3 text-xs font-semibold text-neutral-800">
+                  Premium Decor
+                </p>
+
+                <p className="text-[11px] text-neutral-500 mt-1">
+                  & Setup
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-amber-50 p-4">
+                <CheckCircle2 size={19} className="text-amber-700" />
+
+                <p className="mt-3 text-xs font-semibold text-neutral-800">
+                  Verified
+                </p>
+
+                <p className="text-[11px] text-neutral-500 mt-1">
+                  Quality
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-amber-50 p-4">
+                <Truck size={19} className="text-amber-700" />
+
+                <p className="mt-3 text-xs font-semibold text-neutral-800">
+                  On-Time
+                </p>
+
+                <p className="text-[11px] text-neutral-500 mt-1">
+                  Setup
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-amber-50 p-4">
+                <Calendar size={19} className="text-amber-700" />
+
+                <p className="mt-3 text-xs font-semibold text-neutral-800">
+                  Easy
+                </p>
+
+                <p className="text-[11px] text-neutral-500 mt-1">
+                  Booking
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* =================================================
+          INCLUDED / NOT INCLUDED
       ================================================== */}
           <div
             className="
@@ -863,132 +964,232 @@ export default function GalleryItemDetail() {
           lg:grid-cols-12
           gap-6
           p-5
-          sm:p-6
+          sm:p-8
+          border-b
+          border-neutral-100
         "
           >
-            {/* DESCRIPTION */}
-            <div className="lg:col-span-7">
-              <h2
+            {/* WHAT'S INCLUDED */}
+            <div
+              id="included"
+              className="
+            scroll-mt-28
+            lg:col-span-6
+            rounded-2xl
+            bg-[#FFF9E8]
+            border
+            border-amber-100
+            p-6
+          "
+            >
+              <h3
                 className="
-              text-xl
-              sm:text-2xl
               font-serif
               font-bold
+              text-lg
               text-neutral-900
-              leading-tight
+              flex
+              items-center
+              gap-2
             "
               >
-                Turn Your Special Moments Into Magical Memories
-              </h2>
+                <CheckCircle2 size={20} className="text-emerald-700" />
+                What's Included
+              </h3>
 
-              <p
-                className="
-              mt-4
-              text-sm
-              sm:text-base
-              leading-7
-              text-neutral-600
-            "
-              >
-                {foundItem.desc}
-              </p>
+              <div className="mt-5 space-y-3">
+                {[
+                  "Premium decoration setup",
+                  "Professional setup team",
+                  "Quality decoration materials",
+                  "On-time service",
+                  "Post-event cleanup",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="
+                  flex
+                  items-center
+                  gap-3
+                  text-sm
+                  text-neutral-700
+                "
+                  >
+                    <CheckCircle2
+                      size={16}
+                      className="text-emerald-600 shrink-0"
+                    />
 
-              {/* FEATURE CARDS */}
-              <div
-                className="
-              grid
-              grid-cols-2
-              sm:grid-cols-4
-              gap-3
-              mt-7
-            "
-              >
-                <div className="rounded-2xl bg-amber-50 p-4">
-                  <Sparkles size={19} className="text-amber-700" />
-
-                  <p className="mt-3 text-xs font-semibold text-neutral-800">
-                    Premium Decor
-                  </p>
-
-                  <p className="text-[11px] text-neutral-500 mt-1">& Setup</p>
-                </div>
-
-                <div className="rounded-2xl bg-amber-50 p-4">
-                  <CheckCircle2 size={19} className="text-amber-700" />
-
-                  <p className="mt-3 text-xs font-semibold text-neutral-800">
-                    Verified
-                  </p>
-
-                  <p className="text-[11px] text-neutral-500 mt-1">Quality</p>
-                </div>
-
-                <div className="rounded-2xl bg-amber-50 p-4">
-                  <Truck size={19} className="text-amber-700" />
-
-                  <p className="mt-3 text-xs font-semibold text-neutral-800">
-                    On-Time
-                  </p>
-
-                  <p className="text-[11px] text-neutral-500 mt-1">Setup</p>
-                </div>
-
-                <div className="rounded-2xl bg-amber-50 p-4">
-                  <Calendar size={19} className="text-amber-700" />
-
-                  <p className="mt-3 text-xs font-semibold text-neutral-800">
-                    Easy
-                  </p>
-
-                  <p className="text-[11px] text-neutral-500 mt-1">Booking</p>
-                </div>
+                    <span>{item}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* =================================================
-            INCLUDED CARD
-        ================================================== */}
-            <div className="lg:col-span-5">
-              <div
+            {/* WHAT'S NOT INCLUDED */}
+            <div
+              id="not-included"
+              className="
+            scroll-mt-28
+            lg:col-span-6
+            rounded-2xl
+            bg-rose-50/50
+            border
+            border-rose-100
+            p-6
+          "
+            >
+              <h3
                 className="
-              rounded-2xl
-              bg-[#FFF9E8]
-              border
-              border-amber-100
-              p-6
+              font-serif
+              font-bold
+              text-lg
+              text-neutral-900
+              flex
+              items-center
+              gap-2
             "
               >
-                <h3 className="font-serif font-bold text-lg text-neutral-900">
-                  What's Included
-                </h3>
+                <AlertCircle size={20} className="text-rose-600" />
+                What's Not Included
+              </h3>
 
-                <div className="mt-5 space-y-3">
-                  {[
-                    "Premium decoration setup",
-                    "Professional setup team",
-                    "Quality decoration materials",
-                    "On-time service",
-                    "Post-event cleanup",
-                  ].map((item) => (
-                    <div
-                      key={item}
-                      className="
-                    flex
-                    items-center
-                    gap-3
-                    text-sm
-                    text-neutral-700
-                  "
-                    >
-                      <CheckCircle2
-                        size={17}
-                        className="text-amber-700 shrink-0"
-                      />
+              <div className="mt-5 space-y-3">
+                {[
+                  "Venue booking charges and venue permissions",
+                  "Custom catering, cake and food items",
+                  "Dedicated heavy generator / power backup",
+                  "Repairs for physical damage caused by venue guests",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="
+                  flex
+                  items-center
+                  gap-3
+                  text-sm
+                  text-neutral-700
+                "
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-400 shrink-0" />
 
-                      <span>{item}</span>
-                    </div>
-                  ))}
-                </div>
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* =================================================
+          CANCELLATION POLICY
+      ================================================== */}
+          <div
+            id="cancellation"
+            className="
+          scroll-mt-28
+          p-5
+          sm:p-8
+          border-b
+          border-neutral-100
+          bg-[#FAF7F2]/40
+        "
+          >
+            <div className="max-w-3xl">
+              <h3
+                className="
+              font-serif
+              font-bold
+              text-lg
+              text-neutral-900
+              mb-2
+            "
+              >
+                Cancellation & Rescheduling Policy
+              </h3>
+
+              <p
+                className="
+              text-sm
+              text-neutral-600
+              leading-relaxed
+            "
+              >
+                Please contact our team as early as possible if you need to
+                cancel or reschedule your booking. Cancellation and
+                rescheduling availability may depend on the booking status,
+                event date, and preparation already completed.
+              </p>
+            </div>
+          </div>
+
+          {/* =================================================
+          FAQ
+      ================================================== */}
+          <div
+            id="faq"
+            className="
+          scroll-mt-28
+          p-5
+          sm:p-8
+          border-b
+          border-neutral-100
+        "
+          >
+            <h3
+              className="
+            font-serif
+            font-bold
+            text-xl
+            text-neutral-900
+            mb-6
+          "
+            >
+              Frequently Asked Questions
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="rounded-2xl border border-neutral-100 bg-white p-5">
+                <h4 className="font-semibold text-sm text-neutral-900">
+                  Can I customize the decoration?
+                </h4>
+
+                <p className="mt-2 text-sm leading-6 text-neutral-600">
+                  Yes. Customization can be discussed with the team according
+                  to your event requirements and selected service.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-neutral-100 bg-white p-5">
+                <h4 className="font-semibold text-sm text-neutral-900">
+                  How early should I book?
+                </h4>
+
+                <p className="mt-2 text-sm leading-6 text-neutral-600">
+                  Booking in advance is recommended so the required date,
+                  materials, and setup team can be arranged.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-neutral-100 bg-white p-5">
+                <h4 className="font-semibold text-sm text-neutral-900">
+                  Is setup included?
+                </h4>
+
+                <p className="mt-2 text-sm leading-6 text-neutral-600">
+                  The listed decoration service includes the setup items
+                  described in the What's Included section.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-neutral-100 bg-white p-5">
+                <h4 className="font-semibold text-sm text-neutral-900">
+                  How do I confirm my booking?
+                </h4>
+
+                <p className="mt-2 text-sm leading-6 text-neutral-600">
+                  Use the Book Now button to continue to the existing booking
+                  flow for this product.
+                </p>
               </div>
             </div>
           </div>
@@ -998,7 +1199,9 @@ export default function GalleryItemDetail() {
         REVIEW SECTION
     ====================================================== */}
         <section
+          id="reviews"
           className="
+        scroll-mt-28
         mt-6
         grid
         grid-cols-1
