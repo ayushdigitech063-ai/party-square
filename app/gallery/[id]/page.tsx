@@ -19,12 +19,14 @@ import {
 } from "lucide-react";
 import { useCart } from "@/app/context/CartContext";
 import Link from "next/link";
+import { useWishlist } from "@/app/context/wishlistcontext";
 
 export default function GalleryItemDetail() {
   const params = useParams();
   const router = useRouter();
   const { addToCart } = useCart();
 
+   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
   const [foundItem, setFoundItem] = useState<GalleryItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
@@ -34,9 +36,7 @@ export default function GalleryItemDetail() {
 
   useEffect(() => {
     if (params?.id) {
-      const resolvedId = Array.isArray(params.id)
-        ? params.id[0]
-        : params.id;
+      const resolvedId = Array.isArray(params.id) ? params.id[0] : params.id;
 
       let matchedItem: GalleryItem | null = null;
 
@@ -57,9 +57,7 @@ export default function GalleryItemDetail() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center text-center">
-        <p className="text-amber-900 font-serif text-lg">
-          Loading...
-        </p>
+        <p className="text-amber-900 font-serif text-lg">Loading...</p>
       </div>
     );
   }
@@ -93,9 +91,13 @@ export default function GalleryItemDetail() {
 
   const totalPrice = foundItem.numericPrice * quantity;
 
-  const formattedTotalPrice = `₹${totalPrice.toLocaleString(
-    "en-IN"
-  )}`;
+  const formattedTotalPrice = `₹${totalPrice.toLocaleString("en-IN")}`;
+
+   const relatedProducts = galleryCategories
+  .find((category) =>
+    category.items.some((item) => item.id === foundItem.id)
+  )
+  ?.items.filter((item) => item.id !== foundItem.id) || [];
 
   const handleAddToCart = () => {
     if (foundItem) {
@@ -108,7 +110,7 @@ export default function GalleryItemDetail() {
           image: foundItem.src,
           desc: foundItem.desc,
         },
-        quantity
+        quantity,
       );
     }
   };
@@ -119,61 +121,50 @@ export default function GalleryItemDetail() {
   };
 
   return (
-     <div className="min-h-screen bg-[#FAF7F2] text-[#1A1A1A] font-sans">
-
-  {/* =====================================================
+    <div className="min-h-screen bg-[#FAF7F2] text-[#1A1A1A] font-sans">
+      {/* =====================================================
       PAGE CONTENT
   ====================================================== */}
-  <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8">
-
-    {/* =====================================================
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8">
+        {/* =====================================================
         BREADCRUMB
     ====================================================== */}
-    <div className="flex items-center gap-2 text-xs sm:text-sm text-neutral-500 mb-6">
+        <div className="flex items-center gap-2 text-xs sm:text-sm text-neutral-500 mb-6">
+          <button
+            onClick={() => router.back()}
+            className="hover:text-amber-800 transition"
+          >
+            Back
+          </button>
 
-      <button
-        onClick={() => router.back()}
-        className="hover:text-amber-800 transition"
-      >
-        Back
-      </button>
+          <span>›</span>
 
-      <span>›</span>
+          <span className="hover:text-amber-800 transition">Decorations</span>
 
-      <span className="hover:text-amber-800 transition">
-        Decorations
-      </span>
+          <span>›</span>
 
-      <span>›</span>
+          <span className="text-neutral-900 font-medium truncate">
+            {foundItem.name}
+          </span>
+        </div>
 
-      <span className="text-neutral-900 font-medium truncate">
-        {foundItem.name}
-      </span>
-
-    </div>
-
-
-    {/* =====================================================
+        {/* =====================================================
         MAIN PRODUCT SECTION
     ====================================================== */}
-    <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-start">
-
-      {/* =================================================
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-start">
+          {/* =================================================
           LEFT - IMAGE
       ================================================== */}
-      <div className="lg:col-span-7">
-
-        <div className="grid grid-cols-12 gap-4">
-
-          {/* =================================================
+          <div className="lg:col-span-7">
+            <div className="grid grid-cols-12 gap-4">
+              {/* =================================================
               THUMBNAIL COLUMN
           ================================================== */}
-          <div className="col-span-2 flex flex-col gap-3">
-
-            {[1, 2, 3, 4].map((item) => (
-              <div
-                key={item}
-                className={`
+              <div className="col-span-2 flex flex-col gap-3">
+                {[1, 2, 3, 4].map((item) => (
+                  <div
+                    key={item}
+                    className={`
                   h-16 sm:h-[72px]
                   rounded-xl
                   overflow-hidden
@@ -187,17 +178,17 @@ export default function GalleryItemDetail() {
                       : "border-amber-100 hover:border-amber-300"
                   }
                 `}
-              >
-                <img
-                  src={foundItem.src}
-                  alt={`${foundItem.name} preview ${item}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
+                  >
+                    <img
+                      src={foundItem.src}
+                      alt={`${foundItem.name} preview ${item}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
 
-            <div
-              className="
+                <div
+                  className="
                 h-16
                 sm:h-[72px]
                 rounded-xl
@@ -211,20 +202,17 @@ export default function GalleryItemDetail() {
                 font-semibold
                 text-amber-800
               "
-            >
-              +5
-            </div>
+                >
+                  +5
+                </div>
+              </div>
 
-          </div>
-
-
-          {/* =================================================
+              {/* =================================================
               MAIN IMAGE
           ================================================== */}
-          <div className="col-span-10">
-
-            <div
-              className="
+              <div className="col-span-10">
+                <div
+                  className="
                 relative
                 aspect-[16/16]
                 rounded-3xl
@@ -234,12 +222,11 @@ export default function GalleryItemDetail() {
                 border-amber-100
                 shadow-sm
               "
-            >
-
-              <img
-                src={foundItem.src}
-                alt={foundItem.name}
-                className="
+                >
+                  <img
+                    src={foundItem.src}
+                    alt={foundItem.name}
+                    className="
                   w-full
                   h-full
                   object-cover
@@ -247,14 +234,12 @@ export default function GalleryItemDetail() {
                   duration-700
                   hover:scale-[1.03]
                 "
-              />
+                  />
 
-
-              {/* PRODUCT CATEGORY */}
-              <div className="absolute top-5 left-5">
-
-                <span
-                  className="
+                  {/* PRODUCT CATEGORY */}
+                  <div className="absolute top-5 left-5">
+                    <span
+                      className="
                     inline-flex
                     items-center
                     gap-2
@@ -268,19 +253,17 @@ export default function GalleryItemDetail() {
                     font-bold
                     shadow-sm
                   "
-                >
-                  <Sparkles size={13} />
+                    >
+                      <Sparkles size={13} />
 
-                  {foundItem.categoryTitle}
-                </span>
+                      {foundItem.categoryTitle}
+                    </span>
+                  </div>
 
-              </div>
-
-
-              {/* WISHLIST */}
-              <button
-                onClick={() => setIsLiked(!isLiked)}
-                className="
+                  {/* WISHLIST */}
+                  <button
+                    onClick={() => setIsLiked(!isLiked)}
+                    className="
                   absolute
                   top-5
                   right-5
@@ -297,21 +280,20 @@ export default function GalleryItemDetail() {
                   transition
                   cursor-pointer
                 "
-              >
-                <Heart
-                  size={19}
-                  className={
-                    isLiked
-                      ? "fill-rose-500 text-rose-500"
-                      : "text-neutral-700"
-                  }
-                />
-              </button>
+                  >
+                    <Heart
+                      size={19}
+                      className={
+                        isLiked
+                          ? "fill-rose-500 text-rose-500"
+                          : "text-neutral-700"
+                      }
+                    />
+                  </button>
 
-
-              {/* IMAGE COUNTER */}
-              <div
-                className="
+                  {/* IMAGE COUNTER */}
+                  <div
+                    className="
                   absolute
                   bottom-5
                   right-5
@@ -324,14 +306,13 @@ export default function GalleryItemDetail() {
                   text-xs
                   font-medium
                 "
-              >
-                1 / 5
-              </div>
+                  >
+                    1 / 5
+                  </div>
 
-
-              {/* LEFT ARROW */}
-              <button
-                className="
+                  {/* LEFT ARROW */}
+                  <button
+                    className="
                   absolute
                   left-4
                   top-1/2
@@ -348,14 +329,13 @@ export default function GalleryItemDetail() {
                   text-neutral-800
                   transition
                 "
-              >
-                ‹
-              </button>
+                  >
+                    ‹
+                  </button>
 
-
-              {/* RIGHT ARROW */}
-              <button
-                className="
+                  {/* RIGHT ARROW */}
+                  <button
+                    className="
                   absolute
                   right-4
                   top-1/2
@@ -372,18 +352,16 @@ export default function GalleryItemDetail() {
                   text-neutral-800
                   transition
                 "
-              >
-                ›
-              </button>
+                  >
+                    ›
+                  </button>
+                </div>
 
-            </div>
-
-
-            {/* =================================================
+                {/* =================================================
                 TRUST STRIP
             ================================================== */}
-            <div
-              className="
+                <div
+                  className="
                 mt-4
                 bg-white
                 border
@@ -392,12 +370,10 @@ export default function GalleryItemDetail() {
                 px-4
                 py-4
               "
-            >
-
-              <div className="grid grid-cols-3 gap-3 text-center">
-
-                <div
-                  className="
+                >
+                  <div className="grid grid-cols-3 gap-3 text-center">
+                    <div
+                      className="
                     flex
                     flex-col
                     sm:flex-row
@@ -407,19 +383,14 @@ export default function GalleryItemDetail() {
                     text-xs
                     text-neutral-700
                   "
-                >
-                  <span className="text-amber-600">
-                    ✦
-                  </span>
+                    >
+                      <span className="text-amber-600">✦</span>
 
-                  <span>
-                    100% Verified
-                  </span>
-                </div>
+                      <span>100% Verified</span>
+                    </div>
 
-
-                <div
-                  className="
+                    <div
+                      className="
                     flex
                     flex-col
                     sm:flex-row
@@ -429,19 +400,14 @@ export default function GalleryItemDetail() {
                     text-xs
                     text-neutral-700
                   "
-                >
-                  <span className="text-amber-600">
-                    ▣
-                  </span>
+                    >
+                      <span className="text-amber-600">▣</span>
 
-                  <span>
-                    Real Photos
-                  </span>
-                </div>
+                      <span>Real Photos</span>
+                    </div>
 
-
-                <div
-                  className="
+                    <div
+                      className="
                     flex
                     flex-col
                     sm:flex-row
@@ -451,39 +417,27 @@ export default function GalleryItemDetail() {
                     text-xs
                     text-neutral-700
                   "
-                >
-                  <span className="text-amber-600">
-                    ♟
-                  </span>
+                    >
+                      <span className="text-amber-600">♟</span>
 
-                  <span>
-                    Real Buyers
-                  </span>
+                      <span>Real Buyers</span>
+                    </div>
+                  </div>
                 </div>
-
               </div>
-
             </div>
-
           </div>
 
-        </div>
-
-      </div>
-
-
-      {/* =================================================
+          {/* =================================================
           RIGHT - PRODUCT INFORMATION
       ================================================== */}
-      <div className="lg:col-span-5">
-
-        <div className="lg:sticky lg:top-24 space-y-4">
-
-          {/* =================================================
+          <div className="lg:col-span-5">
+            <div className="lg:sticky lg:top-24 space-y-4">
+              {/* =================================================
               PRODUCT INFORMATION CARD
           ================================================== */}
-          <div
-            className="
+              <div
+                className="
               bg-white
               rounded-3xl
               border
@@ -491,11 +445,10 @@ export default function GalleryItemDetail() {
               p-5
               shadow-sm
             "
-          >
-
-            {/* BADGE */}
-            <div
-              className="
+              >
+                {/* BADGE */}
+                <div
+                  className="
                 inline-flex
                 items-center
                 gap-2
@@ -508,22 +461,19 @@ export default function GalleryItemDetail() {
                 font-bold
                 mb-4
               "
-            >
-              <Sparkles size={12} />
+                >
+                  <Sparkles size={12} />
+                  Verified Quality Product
+                </div>
 
-              Verified Quality Product
-            </div>
+                {/* CATEGORY */}
+                <p className="text-xs text-amber-700 font-semibold uppercase tracking-wide">
+                  {foundItem.categoryTitle}
+                </p>
 
-
-            {/* CATEGORY */}
-            <p className="text-xs text-amber-700 font-semibold uppercase tracking-wide">
-              {foundItem.categoryTitle}
-            </p>
-
-
-            {/* TITLE */}
-            <h1
-              className="
+                {/* TITLE */}
+                <h1
+                  className="
                 mt-2
                 text-2xl
                 sm:text-3xl
@@ -532,64 +482,53 @@ export default function GalleryItemDetail() {
                 text-neutral-900
                 leading-tight
               "
-            >
-              {foundItem.name}
-            </h1>
+                >
+                  {foundItem.name}
+                </h1>
 
+                {/* RATING */}
+                <div className="flex items-center gap-3 mt-4">
+                  <div className="flex items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        size={17}
+                        className="fill-amber-500 text-amber-500"
+                      />
+                    ))}
+                  </div>
 
-            {/* RATING */}
-            <div className="flex items-center gap-3 mt-4">
+                  <span className="font-bold text-neutral-900">4.8</span>
 
-              <div className="flex items-center gap-1">
+                  <span className="text-sm text-neutral-500">
+                    (128 reviews)
+                  </span>
+                </div>
 
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    size={17}
-                    className="fill-amber-500 text-amber-500"
-                  />
-                ))}
-
-              </div>
-
-              <span className="font-bold text-neutral-900">
-                4.8
-              </span>
-
-              <span className="text-sm text-neutral-500">
-                (128 reviews)
-              </span>
-
-            </div>
-
-
-            {/* PRICE */}
-            <div className="flex flex-wrap items-center gap-3 mt-5">
-
-              <span
-                className="
+                {/* PRICE */}
+                <div className="flex flex-wrap items-center gap-3 mt-5">
+                  <span
+                    className="
                   text-3xl
                   font-extrabold
                   text-neutral-900
                 "
-              >
-                {formattedTotalPrice}
-              </span>
+                  >
+                    {formattedTotalPrice}
+                  </span>
 
-              <span
-                className="
+                  <span
+                    className="
                   text-sm
                   text-neutral-400
                   line-through
                 "
-              >
-                ₹{(
-                  Number(foundItem.price) * quantity * 1.25
-                ).toFixed(0)}
-              </span>
+                  >
+                    ₹{(Number(foundItem.price) * quantity * 1.25).toFixed(0)}
+                  </span>
 
-              <span
-                className="
+                  <span
+                    className="
                   bg-amber-100
                   text-amber-800
                   px-3
@@ -598,42 +537,36 @@ export default function GalleryItemDetail() {
                   text-xs
                   font-bold
                 "
-              >
-                25% OFF
-              </span>
+                  >
+                    25% OFF
+                  </span>
+                </div>
 
-            </div>
+                {/* UNIT PRICE */}
+                <p className="mt-2 text-xs text-neutral-400">
+                  Unit Price: {foundItem.price}
+                </p>
 
-
-            {/* UNIT PRICE */}
-            <p className="mt-2 text-xs text-neutral-400">
-              Unit Price: {foundItem.price}
-            </p>
-
-
-            {/* DESCRIPTION */}
-            <p
-              className="
+                {/* DESCRIPTION */}
+                <p
+                  className="
                 mt-4
                 text-sm
                 leading-6
                 text-neutral-600
               "
-            >
-              {foundItem.desc}
-            </p>
+                >
+                  {foundItem.desc}
+                </p>
 
-
-            {/* =================================================
+                {/* =================================================
                 FEATURE PILLS
             ================================================== */}
-            <div className="grid grid-cols-3 gap-2 mt-5">
-
-              {/* CUSTOMIZABLE */}
-              <div className="text-center">
-
-                <div
-                  className="
+                <div className="grid grid-cols-3 gap-2 mt-5">
+                  {/* CUSTOMIZABLE */}
+                  <div className="text-center">
+                    <div
+                      className="
                     w-9
                     h-9
                     mx-auto
@@ -645,25 +578,19 @@ export default function GalleryItemDetail() {
                     border
                     border-amber-100
                   "
-                >
-                  <CheckCircle2
-                    size={17}
-                    className="text-amber-700"
-                  />
-                </div>
+                    >
+                      <CheckCircle2 size={17} className="text-amber-700" />
+                    </div>
 
-                <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
-                  Customizable
-                </p>
+                    <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
+                      Customizable
+                    </p>
+                  </div>
 
-              </div>
-
-
-              {/* ON TIME */}
-              <div className="text-center">
-
-                <div
-                  className="
+                  {/* ON TIME */}
+                  <div className="text-center">
+                    <div
+                      className="
                     w-9
                     h-9
                     mx-auto
@@ -675,25 +602,19 @@ export default function GalleryItemDetail() {
                     border
                     border-amber-100
                   "
-                >
-                  <Truck
-                    size={17}
-                    className="text-amber-700"
-                  />
-                </div>
+                    >
+                      <Truck size={17} className="text-amber-700" />
+                    </div>
 
-                <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
-                  On-Time Setup
-                </p>
+                    <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
+                      On-Time Setup
+                    </p>
+                  </div>
 
-              </div>
-
-
-              {/* PREMIUM */}
-              <div className="text-center">
-
-                <div
-                  className="
+                  {/* PREMIUM */}
+                  <div className="text-center">
+                    <div
+                      className="
                     w-9
                     h-9
                     mx-auto
@@ -705,27 +626,21 @@ export default function GalleryItemDetail() {
                     border
                     border-amber-100
                   "
-                >
-                  <Sparkles
-                    size={17}
-                    className="text-amber-700"
-                  />
+                    >
+                      <Sparkles size={17} className="text-amber-700" />
+                    </div>
+
+                    <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
+                      Premium Quality
+                    </p>
+                  </div>
                 </div>
 
-                <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
-                  Premium Quality
-                </p>
-
-              </div>
-
-            </div>
-
-
-            {/* =================================================
+                {/* =================================================
                 SERVICE AVAILABLE
             ================================================== */}
-            <div
-              className="
+                <div
+                  className="
                 mt-5
                 rounded-2xl
                 bg-amber-50/70
@@ -734,10 +649,9 @@ export default function GalleryItemDetail() {
                 px-4
                 py-3
               "
-            >
-
-              <div
-                className="
+                >
+                  <div
+                    className="
                   flex
                   items-center
                   gap-2
@@ -745,29 +659,22 @@ export default function GalleryItemDetail() {
                   font-medium
                   text-green-700
                 "
-              >
+                  >
+                    <CheckCircle2 size={16} />
+                    Service available in your area
+                  </div>
+                </div>
 
-                <CheckCircle2 size={16} />
-
-                Service available in your area
-
-              </div>
-
-            </div>
-
-
-            {/* =================================================
+                {/* =================================================
                 QUANTITY
             ================================================== */}
-            <div className="flex items-center justify-between mt-5">
+                <div className="flex items-center justify-between mt-5">
+                  <span className="text-sm font-semibold text-neutral-700">
+                    Quantity
+                  </span>
 
-              <span className="text-sm font-semibold text-neutral-700">
-                Quantity
-              </span>
-
-
-              <div
-                className="
+                  <div
+                    className="
                   flex
                   items-center
                   border
@@ -776,11 +683,10 @@ export default function GalleryItemDetail() {
                   overflow-hidden
                   bg-white
                 "
-              >
-
-                <button
-                  onClick={() => handleQuantityChange("dec")}
-                  className="
+                  >
+                    <button
+                      onClick={() => handleQuantityChange("dec")}
+                      className="
                     w-10
                     h-10
                     flex
@@ -791,26 +697,24 @@ export default function GalleryItemDetail() {
                     transition
                     cursor-pointer
                   "
-                >
-                  <Minus size={15} />
-                </button>
+                    >
+                      <Minus size={15} />
+                    </button>
 
-
-                <span
-                  className="
+                    <span
+                      className="
                     w-10
                     text-center
                     text-sm
                     font-bold
                   "
-                >
-                  {quantity}
-                </span>
+                    >
+                      {quantity}
+                    </span>
 
-
-                <button
-                  onClick={() => handleQuantityChange("inc")}
-                  className="
+                    <button
+                      onClick={() => handleQuantityChange("inc")}
+                      className="
                     w-10
                     h-10
                     flex
@@ -821,32 +725,28 @@ export default function GalleryItemDetail() {
                     transition
                     cursor-pointer
                   "
-                >
-                  <Plus size={15} />
-                </button>
+                    >
+                      <Plus size={15} />
+                    </button>
+                  </div>
+                </div>
 
-              </div>
-
-            </div>
-
-
-            {/* =================================================
+                {/* =================================================
                 ACTION BUTTONS
             ================================================== */}
-            <div
-              className="
+                <div
+                  className="
                 grid
                 grid-cols-1
                 sm:grid-cols-2
                 gap-3
                 mt-5
               "
-            >
-
-              {/* ADD TO BASKET */}
-              <button
-                onClick={handleAddToCart}
-                className="
+                >
+                  {/* ADD TO BASKET */}
+                  <button
+                    onClick={handleAddToCart}
+                    className="
                   h-12
                   rounded-xl
                   border
@@ -863,21 +763,16 @@ export default function GalleryItemDetail() {
                   transition
                   cursor-pointer
                 "
-              >
+                  >
+                    <ShoppingBag size={17} />
 
-                <ShoppingBag size={17} />
+                    <span>Add to Basket</span>
+                  </button>
 
-                <span>
-                  Add to Basket
-                </span>
-
-              </button>
-
-
-              {/* BOOK NOW */}
-              <button
-                onClick={() => setShowConfirmModal(true)}
-                className="
+                  {/* BOOK NOW */}
+                  <button
+                    onClick={() => setShowConfirmModal(true)}
+                    className="
                   h-12
                   rounded-xl
                   bg-[#8B3F05]
@@ -894,38 +789,27 @@ export default function GalleryItemDetail() {
                   hover:shadow-lg
                   cursor-pointer
                 "
-              >
+                  >
+                    <Calendar size={17} />
 
-                <Calendar size={17} />
+                    <span>Book Now</span>
+                  </button>
+                </div>
 
-                <span>
-                  Book Now
-                </span>
-
-              </button>
-
+                {/* CHECKOUT MESSAGE */}
+                <p className="text-center text-xs text-neutral-400 mt-4">
+                  Secure checkout · Guaranteed satisfaction
+                </p>
+              </div>
             </div>
-
-
-            {/* CHECKOUT MESSAGE */}
-            <p className="text-center text-xs text-neutral-400 mt-4">
-              Secure checkout · Guaranteed satisfaction
-            </p>
-
           </div>
+        </section>
 
-        </div>
-
-      </div>
-
-    </section>
-
-
-    {/* =====================================================
+        {/* =====================================================
         LOWER INFORMATION SECTION
     ====================================================== */}
-    <section
-      className="
+        <section
+          className="
         mt-5
         bg-white
         rounded-3xl
@@ -934,27 +818,22 @@ export default function GalleryItemDetail() {
         shadow-sm
         overflow-hidden
       "
-    >
-
-      {/* =================================================
+        >
+          {/* =================================================
           TABS
       ================================================== */}
-      <div className="border-b border-neutral-100 overflow-x-auto">
-
-        <div className="flex min-w-max">
-
-          {[
-            "Overview",
-            "What's Included",
-            "What's Not Included",
-            "Cancellation Policy",
-            "Reviews",
-            "FAQ",
-          ].map((tab, index) => (
-
-            <button
-              key={tab}
-              className={`
+          <div className="border-b border-neutral-100 overflow-x-auto">
+            <div className="flex min-w-max">
+              {[
+                "Overview",
+                "What's Included",
+                "Cancellation Policy",
+                "Reviews",
+                "FAQ",
+              ].map((tab, index) => (
+                <button
+                  key={tab}
+                  className={`
                 px-5
                 sm:px-7
                 py-5
@@ -967,22 +846,18 @@ export default function GalleryItemDetail() {
                     : "text-neutral-500 hover:text-amber-800"
                 }
               `}
-            >
-              {tab}
-            </button>
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+          </div>
 
-          ))}
-
-        </div>
-
-      </div>
-
-
-      {/* =================================================
+          {/* =================================================
           OVERVIEW CONTENT
       ================================================== */}
-      <div
-        className="
+          <div
+            className="
           grid
           grid-cols-1
           lg:grid-cols-12
@@ -990,13 +865,11 @@ export default function GalleryItemDetail() {
           p-5
           sm:p-6
         "
-      >
-
-        {/* DESCRIPTION */}
-        <div className="lg:col-span-7">
-
-          <h2
-            className="
+          >
+            {/* DESCRIPTION */}
+            <div className="lg:col-span-7">
+              <h2
+                className="
               text-xl
               sm:text-2xl
               font-serif
@@ -1004,258 +877,140 @@ export default function GalleryItemDetail() {
               text-neutral-900
               leading-tight
             "
-          >
-            Turn Your Special Moments Into Magical Memories
-          </h2>
+              >
+                Turn Your Special Moments Into Magical Memories
+              </h2>
 
-
-          <p
-            className="
+              <p
+                className="
               mt-4
               text-sm
               sm:text-base
               leading-7
               text-neutral-600
             "
-          >
-            {foundItem.desc}
-          </p>
+              >
+                {foundItem.desc}
+              </p>
 
-
-          {/* FEATURE CARDS */}
-          <div
-            className="
+              {/* FEATURE CARDS */}
+              <div
+                className="
               grid
               grid-cols-2
               sm:grid-cols-4
               gap-3
               mt-7
             "
-          >
+              >
+                <div className="rounded-2xl bg-amber-50 p-4">
+                  <Sparkles size={19} className="text-amber-700" />
 
-            <div className="rounded-2xl bg-amber-50 p-4">
+                  <p className="mt-3 text-xs font-semibold text-neutral-800">
+                    Premium Decor
+                  </p>
 
-              <Sparkles
-                size={19}
-                className="text-amber-700"
-              />
+                  <p className="text-[11px] text-neutral-500 mt-1">& Setup</p>
+                </div>
 
-              <p className="mt-3 text-xs font-semibold text-neutral-800">
-                Premium Decor
-              </p>
+                <div className="rounded-2xl bg-amber-50 p-4">
+                  <CheckCircle2 size={19} className="text-amber-700" />
 
-              <p className="text-[11px] text-neutral-500 mt-1">
-                & Setup
-              </p>
+                  <p className="mt-3 text-xs font-semibold text-neutral-800">
+                    Verified
+                  </p>
 
+                  <p className="text-[11px] text-neutral-500 mt-1">Quality</p>
+                </div>
+
+                <div className="rounded-2xl bg-amber-50 p-4">
+                  <Truck size={19} className="text-amber-700" />
+
+                  <p className="mt-3 text-xs font-semibold text-neutral-800">
+                    On-Time
+                  </p>
+
+                  <p className="text-[11px] text-neutral-500 mt-1">Setup</p>
+                </div>
+
+                <div className="rounded-2xl bg-amber-50 p-4">
+                  <Calendar size={19} className="text-amber-700" />
+
+                  <p className="mt-3 text-xs font-semibold text-neutral-800">
+                    Easy
+                  </p>
+
+                  <p className="text-[11px] text-neutral-500 mt-1">Booking</p>
+                </div>
+              </div>
             </div>
 
-
-            <div className="rounded-2xl bg-amber-50 p-4">
-
-              <CheckCircle2
-                size={19}
-                className="text-amber-700"
-              />
-
-              <p className="mt-3 text-xs font-semibold text-neutral-800">
-                Verified
-              </p>
-
-              <p className="text-[11px] text-neutral-500 mt-1">
-                Quality
-              </p>
-
-            </div>
-
-
-            <div className="rounded-2xl bg-amber-50 p-4">
-
-              <Truck
-                size={19}
-                className="text-amber-700"
-              />
-
-              <p className="mt-3 text-xs font-semibold text-neutral-800">
-                On-Time
-              </p>
-
-              <p className="text-[11px] text-neutral-500 mt-1">
-                Setup
-              </p>
-
-            </div>
-
-
-            <div className="rounded-2xl bg-amber-50 p-4">
-
-              <Calendar
-                size={19}
-                className="text-amber-700"
-              />
-
-              <p className="mt-3 text-xs font-semibold text-neutral-800">
-                Easy
-              </p>
-
-              <p className="text-[11px] text-neutral-500 mt-1">
-                Booking
-              </p>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        {/* =================================================
+            {/* =================================================
             INCLUDED CARD
         ================================================== */}
-        <div className="lg:col-span-5">
-
-          <div
-            className="
+            <div className="lg:col-span-5">
+              <div
+                className="
               rounded-2xl
               bg-[#FFF9E8]
               border
               border-amber-100
               p-6
             "
-          >
+              >
+                <h3 className="font-serif font-bold text-lg text-neutral-900">
+                  What's Included
+                </h3>
 
-            <h3 className="font-serif font-bold text-lg text-neutral-900">
-              What's Included
-            </h3>
-
-
-            <div className="mt-5 space-y-3">
-
-              {[
-                "Premium decoration setup",
-                "Professional setup team",
-                "Quality decoration materials",
-                "On-time service",
-                "Post-event cleanup",
-              ].map((item) => (
-
-                <div
-                  key={item}
-                  className="
+                <div className="mt-5 space-y-3">
+                  {[
+                    "Premium decoration setup",
+                    "Professional setup team",
+                    "Quality decoration materials",
+                    "On-time service",
+                    "Post-event cleanup",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="
                     flex
                     items-center
                     gap-3
                     text-sm
                     text-neutral-700
                   "
-                >
+                    >
+                      <CheckCircle2
+                        size={17}
+                        className="text-amber-700 shrink-0"
+                      />
 
-                  <CheckCircle2
-                    size={17}
-                    className="text-amber-700 shrink-0"
-                  />
-
-                  <span>
-                    {item}
-                  </span>
-
+                      <span>{item}</span>
+                    </div>
+                  ))}
                 </div>
-
-              ))}
-
+              </div>
             </div>
-
           </div>
+        </section>
 
-
-          {/* NOT INCLUDED */}
-          <div
-            className="
-              mt-4
-              rounded-2xl
-              bg-white
-              border
-              border-amber-100
-              p-6
-            "
-          >
-
-            <h3 className="font-serif font-bold text-lg text-neutral-900">
-              What's Not Included
-            </h3>
-
-            <div className="mt-4 space-y-3">
-
-              {[
-                "Food and beverages",
-                "Venue charges",
-                "Additional custom requirements",
-              ].map((item) => (
-
-                <div
-                  key={item}
-                  className="
-                    flex
-                    items-center
-                    gap-3
-                    text-sm
-                    text-neutral-600
-                  "
-                >
-
-                  <span
-                    className="
-                      w-5
-                      h-5
-                      rounded-full
-                      bg-neutral-100
-                      flex
-                      items-center
-                      justify-center
-                      text-xs
-                      text-neutral-500
-                    "
-                  >
-                    –
-                  </span>
-
-                  <span>
-                    {item}
-                  </span>
-
-                </div>
-
-              ))}
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    {/* =====================================================
+        {/* =====================================================
         REVIEW SECTION
     ====================================================== */}
-    <section
-      className="
+        <section
+          className="
         mt-6
         grid
         grid-cols-1
         lg:grid-cols-2
         gap-6
       "
-    >
-
-      {/* =================================================
+        >
+          {/* =================================================
           RATING SUMMARY
       ================================================== */}
-      <div
-        className="
+          <div
+            className="
           bg-white
           border
           border-amber-100
@@ -1263,110 +1018,84 @@ export default function GalleryItemDetail() {
           p-6
           sm:p-8
         "
-      >
-
-        <h3
-          className="
+          >
+            <h3
+              className="
             text-xl
             font-serif
             font-bold
             text-neutral-900
           "
-        >
-          Customer Reviews
-        </h3>
+            >
+              Customer Reviews
+            </h3>
 
+            <div className="flex items-center gap-3 mt-3">
+              <span className="text-3xl font-bold">4.8</span>
 
-        <div className="flex items-center gap-3 mt-3">
+              <div>
+                <div className="flex">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      size={16}
+                      className="fill-amber-500 text-amber-500"
+                    />
+                  ))}
+                </div>
 
-          <span className="text-3xl font-bold">
-            4.8
-          </span>
-
-          <div>
-
-            <div className="flex">
-
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  size={16}
-                  className="fill-amber-500 text-amber-500"
-                />
-              ))}
-
+                <p className="text-xs text-neutral-500 mt-1">
+                  128 verified reviews
+                </p>
+              </div>
             </div>
 
-            <p className="text-xs text-neutral-500 mt-1">
-              128 verified reviews
-            </p>
+            {/* RATING BARS */}
+            <div className="mt-6 space-y-3">
+              {[
+                ["5", "71%"],
+                ["4", "29%"],
+                ["3", "0%"],
+                ["2", "0%"],
+                ["1", "0%"],
+              ].map(([rating, percentage]) => (
+                <div key={rating} className="flex items-center gap-3 text-xs">
+                  <span className="w-4 text-neutral-600">{rating}</span>
 
-          </div>
-
-        </div>
-
-
-        {/* RATING BARS */}
-        <div className="mt-6 space-y-3">
-
-          {[
-            ["5", "71%"],
-            ["4", "29%"],
-            ["3", "0%"],
-            ["2", "0%"],
-            ["1", "0%"],
-          ].map(([rating, percentage]) => (
-
-            <div
-              key={rating}
-              className="flex items-center gap-3 text-xs"
-            >
-
-              <span className="w-4 text-neutral-600">
-                {rating}
-              </span>
-
-              <div
-                className="
+                  <div
+                    className="
                   flex-1
                   h-2
                   bg-neutral-100
                   rounded-full
                   overflow-hidden
                 "
-              >
-
-                <div
-                  className="
+                  >
+                    <div
+                      className="
                     h-full
                     bg-amber-500
                     rounded-full
                   "
-                  style={{
-                    width: percentage,
-                  }}
-                />
+                      style={{
+                        width: percentage,
+                      }}
+                    />
+                  </div>
 
-              </div>
-
-              <span className="w-10 text-right text-neutral-500">
-                {percentage}
-              </span>
-
+                  <span className="w-10 text-right text-neutral-500">
+                    {percentage}
+                  </span>
+                </div>
+              ))}
             </div>
+          </div>
 
-          ))}
-
-        </div>
-
-      </div>
-
-
-      {/* =================================================
+          {/* =================================================
           QUOTE CARD
       ================================================== */}
-      <div
-        className="
+          <div
+            className="
           bg-[#FFF9E8]
           border
           border-amber-100
@@ -1376,52 +1105,202 @@ export default function GalleryItemDetail() {
           flex-col
           justify-center
         "
-      >
+          >
+            <Sparkles size={24} className="text-amber-600" />
 
-        <Sparkles
-          size={24}
-          className="text-amber-600"
-        />
-
-        <h3
-          className="
+            <h3
+              className="
             mt-4
             text-2xl
             font-serif
             font-bold
             text-neutral-900
           "
-        >
-          Because the little moments matter.
-        </h3>
+            >
+              Because the little moments matter.
+            </h3>
 
-        <p
-          className="
+            <p
+              className="
             mt-3
             text-sm
             leading-6
             text-neutral-600
           "
-        >
-          Create beautiful celebrations with thoughtfully
-          designed decorations and memorable experiences.
-        </p>
+            >
+              Create beautiful celebrations with thoughtfully designed
+              decorations and memorable experiences.
+            </p>
+          </div>
+        </section>
+                {/* =====================================================
+        RELATED PRODUCTS SECTION
+    ====================================================== */}
+        {relatedProducts.length > 0 && (
+          <section className="mt-10 border-t border-amber-200/50 pt-12 pb-10">
+            {/* SECTION HEADING */}
+            <div className="text-center mb-8">
+              <span
+                className="
+                inline-flex
+                items-center
+                justify-center
+                bg-amber-100
+                text-amber-800
+                px-4
+                py-1.5
+                rounded-full
+                text-[10px]
+                font-bold
+                uppercase
+                tracking-[0.3em]
+              "
+              >
+                Related Products
+              </span>
 
-      </div>
+              <h2
+                className="
+                mt-3
+                text-2xl
+                sm:text-3xl
+                font-serif
+                font-bold
+                text-neutral-900
+              "
+              >
+                {galleryCategories.find((category) =>
+                  category.items.some((item) => item.id === foundItem.id)
+                )?.title || "Related Products"}
+              </h2>
 
-    </section>
+              <p className="mt-2 text-sm text-neutral-500">
+                Explore more products from this collection.
+              </p>
+            </div>
 
-  </main>
+            {/* PRODUCT CARDS */}
+            <div className="flex gap-5 overflow-x-auto pb-4 scrollbar-hide">
+              {relatedProducts.map((item) => (
+                <div
+                  key={item.id}
+                  className="
+                    min-w-[215px]
+                    sm:min-w-[230px]
+                    bg-white
+                    rounded-2xl
+                    border
+                    border-amber-200
+                    overflow-hidden
+                    shadow-sm
+                    hover:shadow-md
+                    transition
+                    shrink-0
+                  "
+                >
+                  {/* IMAGE */}
+                  <div className="relative h-44 overflow-hidden">
+                    <img
+                      src={item.src}
+                      alt={item.name}
+                      className="
+                        w-full
+                        h-full
+                        object-cover
+                        transition
+                        duration-500
+                        hover:scale-105
+                      "
+                    />
 
+                    {/* WISHLIST */}
+                    <button
+                      className="
+                        absolute
+                        top-3
+                        right-3
+                        w-9
+                        h-9
+                        rounded-full
+                        bg-white/95
+                        flex
+                        items-center
+                        justify-center
+                        shadow-sm
+                        hover:scale-110
+                        transition
+                      "
+                    >
+                      <Heart size={17} className="text-neutral-700" />
+                    </button>
+                  </div>
 
-  {/* =====================================================
+                  {/* PRODUCT INFO */}
+                  <div className="p-4">
+                    <h3
+                      className="
+                        text-lg
+                        font-serif
+                        font-bold
+                        text-neutral-900
+                        truncate
+                      "
+                    >
+                      {item.name}
+                    </h3>
+
+                    <p
+                      className="
+                        mt-1
+                        text-xs
+                        text-neutral-500
+                        line-clamp-2
+                        min-h-[32px]
+                      "
+                    >
+                      {item.desc}
+                    </p>
+
+                    {/* PRICE + BOOK */}
+                    <div className="flex items-center justify-between mt-4">
+                      <span className="text-sm font-bold text-neutral-900">
+                        {item.price}
+                      </span>
+
+                      <Link
+                        href={`/gallery/${item.id}`}
+                        className="
+                          bg-[#8B3F05]
+                          hover:bg-[#713200]
+                          text-white
+                          px-4
+                          py-2
+                          rounded-full
+                          text-[11px]
+                          font-bold
+                          uppercase
+                          tracking-wide
+                          transition
+                        "
+                      >
+                        Book
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+      </main>
+
+      {/* =====================================================
       CONFIRM BOOKING MODAL
       FUNCTIONALITY UNCHANGED
   ====================================================== */}
-  {showConfirmModal && (
-
-    <div
-      className="
+      {showConfirmModal && (
+        <div
+          className="
         fixed
         inset-0
         z-50
@@ -1432,10 +1311,9 @@ export default function GalleryItemDetail() {
         backdrop-blur-sm
         p-4
       "
-    >
-
-      <div
-        className="
+        >
+          <div
+            className="
           bg-white
           rounded-3xl
           max-w-md
@@ -1448,10 +1326,9 @@ export default function GalleryItemDetail() {
           space-y-6
           text-center
         "
-      >
-
-        <div
-          className="
+          >
+            <div
+              className="
             w-16
             h-16
             bg-amber-100
@@ -1463,48 +1340,37 @@ export default function GalleryItemDetail() {
             mx-auto
             shadow-inner
           "
-        >
-          <AlertCircle size={32} />
-        </div>
+            >
+              <AlertCircle size={32} />
+            </div>
 
-
-        <div className="space-y-2">
-
-          <h3
-            className="
+            <div className="space-y-2">
+              <h3
+                className="
               text-2xl
               font-serif
               font-bold
               text-gray-900
             "
-          >
-            Are you sure?
-          </h3>
+              >
+                Are you sure?
+              </h3>
 
-          <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600">
+                Do you want to confirm the booking for{" "}
+                <span className="font-semibold text-amber-900">
+                  {foundItem.name}
+                </span>{" "}
+                ({quantity} unit
+                {quantity > 1 ? "s" : ""} - {formattedTotalPrice}
+                )?
+              </p>
+            </div>
 
-            Do you want to confirm the booking for{" "}
-
-            <span className="font-semibold text-amber-900">
-              {foundItem.name}
-            </span>
-
-            {" "}(
-            {quantity} unit
-            {quantity > 1 ? "s" : ""} -{" "}
-            {formattedTotalPrice}
-            )?
-
-          </p>
-
-        </div>
-
-
-        <div className="grid grid-cols-2 gap-3 pt-2">
-
-          <button
-            onClick={() => setShowConfirmModal(false)}
-            className="
+            <div className="grid grid-cols-2 gap-3 pt-2">
+              <button
+                onClick={() => setShowConfirmModal(false)}
+                className="
               w-full
               bg-gray-100
               hover:bg-gray-200
@@ -1518,14 +1384,13 @@ export default function GalleryItemDetail() {
               transition
               cursor-pointer
             "
-          >
-            Cancel
-          </button>
+              >
+                Cancel
+              </button>
 
-
-          <button
-            onClick={handleConfirmBooking}
-            className="
+              <button
+                onClick={handleConfirmBooking}
+                className="
               w-full
               bg-amber-900
               hover:bg-black
@@ -1540,27 +1405,21 @@ export default function GalleryItemDetail() {
               shadow-md
               cursor-pointer
             "
-          >
-            Yes, Confirm
-          </button>
-
+              >
+                Yes, Confirm
+              </button>
+            </div>
+          </div>
         </div>
+      )}
 
-      </div>
-
-    </div>
-
-  )}
-
-
-  {/* =====================================================
+      {/* =====================================================
       SUCCESS MODAL
       FUNCTIONALITY UNCHANGED
   ====================================================== */}
-  {showSuccessModal && (
-
-    <div
-      className="
+      {showSuccessModal && (
+        <div
+          className="
         fixed
         inset-0
         z-50
@@ -1571,10 +1430,9 @@ export default function GalleryItemDetail() {
         backdrop-blur-sm
         p-4
       "
-    >
-
-      <div
-        className="
+        >
+          <div
+            className="
           bg-white
           rounded-3xl
           max-w-md
@@ -1587,10 +1445,9 @@ export default function GalleryItemDetail() {
           space-y-6
           text-center
         "
-      >
-
-        <div
-          className="
+          >
+            <div
+              className="
             w-16
             h-16
             bg-emerald-100
@@ -1602,46 +1459,37 @@ export default function GalleryItemDetail() {
             mx-auto
             shadow-inner
           "
-        >
-          <CheckCircle2 size={36} />
-        </div>
+            >
+              <CheckCircle2 size={36} />
+            </div>
 
-
-        <div className="space-y-2">
-
-          <h3
-            className="
+            <div className="space-y-2">
+              <h3
+                className="
               text-2xl
               font-serif
               font-bold
               text-gray-900
             "
-          >
-            Booking Successful!
-          </h3>
+              >
+                Booking Successful!
+              </h3>
 
-          <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600">
+                Your booking for{" "}
+                <span className="font-semibold text-amber-900">
+                  {foundItem.name}
+                </span>{" "}
+                has been successfully placed. Our team will contact you soon!
+              </p>
+            </div>
 
-            Your booking for{" "}
-
-            <span className="font-semibold text-amber-900">
-              {foundItem.name}
-            </span>
-
-            {" "}has been successfully placed. Our team
-            will contact you soon!
-
-          </p>
-
-        </div>
-
-
-        <button
-          onClick={() => {
-            setShowSuccessModal(false);
-            router.push("/");
-          }}
-          className="
+            <button
+              onClick={() => {
+                setShowSuccessModal(false);
+                router.push("/");
+              }}
+              className="
             w-full
             bg-amber-900
             hover:bg-black
@@ -1656,16 +1504,12 @@ export default function GalleryItemDetail() {
             shadow-md
             cursor-pointer
           "
-        >
-          Back to Home
-        </button>
-
-      </div>
-
+            >
+              Back to Home
+            </button>
+          </div>
+        </div>
+      )}
     </div>
-
-  )}
-
-</div>
   );
 }
