@@ -42,6 +42,34 @@ export  const newYearCards = [
       desc: "Complete party transformation with entrance arch & cold pyros.",
       price: "₹19,999",
     },
+     {
+      id: 40,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFvpY3diWUPEHZ1ELDtkbNWmxv4xbgK0ZnQCgnY3jfng&s=10",
+      name: "VIP Celebration Bundle",
+      desc: "Complete party transformation with entrance arch & cold pyros.",
+      price: "₹19,999",
+    },
+     {
+      id: 41,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRs-zm4uSZR_d9Vd-96IeniCZU8-yPK0zZSrK9E4WMDpA&s=10",
+      name: "VIP Celebration Bundle",
+      desc: "Complete party transformation with entrance arch & cold pyros.",
+      price: "₹29,999",
+    },
+     {
+      id: 42,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlSw0QSU2Oo5hLF4wz_38zLSsdTkjlaDdxryBhUKmhzg&s=10",
+      name: "VIP Celebration Bundle",
+      desc: "Complete party transformation with entrance arch & cold pyros.",
+      price: "₹12,999",
+    },
+      {
+      id: 43,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8U60uCEx_aiDW60yk9ceQH3rLVj1quN9B1n1Qba90Vg&s=10",
+      name: "VIP Celebration Bundle",
+      desc: "Complete party transformation with entrance arch & cold pyros.",
+      price: "₹19,989",
+    },
   ];
 
   export const hotelCards = [
