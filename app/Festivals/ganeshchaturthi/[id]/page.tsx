@@ -117,9 +117,7 @@ const [relatedStart, setRelatedStart] = useState(0);
 
   const whatsNotIncluded: string[] =
     (product as any).whatsNotIncluded ?? [
-      "Food and beverages",
-      "Venue charges",
-      "Additional custom requirements",
+      
     ];
 
   const ratingBreakdown: {
@@ -801,7 +799,7 @@ const handleRelatedNext = () => {
                   />
                 </div>
 
-                <span className="flex items-center gap-4 text-[18px] text-neutral-800">
+                <span className="flex items-center gap-4 text-[14px] text-neutral-800">
                   {item}
                 </span>
 
@@ -813,35 +811,6 @@ const handleRelatedNext = () => {
         </div>
 
 
-        {/* WHAT'S NOT INCLUDED */}
-
-        <div className="bg-white border border-[#e1ddd7] rounded-[13px] p-5">
-
-          <h3 className="font-serif font-bold text-[18px] text-[#18100c] mb-3">
-            What&apos;s Not Included
-          </h3>
-
-          <div className="space-y-2">
-
-            {whatsNotIncluded.map((item, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-2 text-[10px] text-neutral-400"
-              >
-
-                <X
-                  size={11}
-                  className="text-neutral-300 flex-shrink-0"
-                />
-
-                <span>{item}</span>
-
-              </div>
-            ))}
-
-          </div>
-
-        </div>
 
       </div>
 

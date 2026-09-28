@@ -860,17 +860,17 @@
 
 //                 <div className="space-y-3">
 
-//                   {whatsIncluded.map(
-//                     (item, index) => (
-//                       <div
-//                         key={index}
-//                         className="flex items-center gap-2 text-[10px] text-neutral-600"
-//                       >
-//                         <Check
-//                           size={12}
-//                           strokeWidth={2.5}
-//                           className="text-[#d45f00] flex-shrink-0"
-//                         />
+                  {whatsIncluded.map(
+                    (item, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 text-[14px] text-neutral-600"
+                      >
+                        <Check
+                          size={12}
+                          strokeWidth={2.5}
+                          className="text-[#d45f00] flex-shrink-0"
+                        />
 
 //                         <span>
 //                           {item}
