@@ -41,6 +41,39 @@ import { useWishlist } from "../../../context/wishlistcontext";
       desc: "Warm fairy lights, floral arches and beautiful memory wall integration for dad.",
       price: "₹6,499",
     },
+       {
+      id: 5,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUAve16FiNjdS0UdleZDzxHuNZ8o3EWxK8F3ONCb3Ozg&s=10",
+      name: "New  Classic Theam based  Setup",
+      desc: "Warm fairy lights, floral arches and beautiful memory wall integration for dad.",
+      price: "₹6,499",
+    },
+    
+       {
+      id: 6,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbSm4nXTEa6pgaBEZuJqDvelRxrK_z8gcfgth9Ktyz7Q&s=10",
+      name: "New  Classic Theam based  Setup",
+      desc: "Warm fairy lights, floral arches and beautiful memory wall integration for dad.",
+      price: "₹6,499",
+    },
+
+
+     {
+      id: 7,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKvZH95VzqbnOmFVIno7nL-qrox-USU3DmbJk5txfR5Q&s=10",
+      name: "New  Classic Theam based  Setup",
+      desc: "Warm fairy lights, floral arches and beautiful memory wall integration for dad.",
+      price: "₹6,499",
+    },
+
+      {
+      id: 8,
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnoqkh5QurgO6HPbUjc0SstZYr4bpuCUwaR4tWFnfoMA&s=10",
+      name: "New  Classic Theam based  Setup",
+      desc: "Warm fairy lights, floral arches and beautiful memory wall integration for dad.",
+      price: "₹6,499",
+    },
+
   ];
 
 export default function FatherBirthdayPage() {
