@@ -39,12 +39,7 @@ type TabKey =
   | "reviews"
   | "faq";
 
-/**
- * Safely converts a price value (number OR string like "₹1,499", "1,499", "1499")
- * into a clean number. This is what fixes the ₹NaN issue — Number("₹1,499")
- * returns NaN because of the currency symbol/comma, so we strip everything
- * except digits and a decimal point before converting.
- */
+
 function parsePrice(value: unknown): number {
   if (typeof value === "number" && !Number.isNaN(value)) {
     return value;
@@ -867,7 +862,7 @@ const handleRelatedNext = () => {
                     (item, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-2 text-[10px] text-neutral-800"
+                        className="flex items-center gap-2 text-[14px] text-neutral-800"
                       >
                         <Check
                           size={13}
