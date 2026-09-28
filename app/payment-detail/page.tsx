@@ -2,17 +2,15 @@
 
 import React, { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { getProductById } from "@/app/data/productResolver";
 
 function PaymentContent() {
   const searchParams = useSearchParams();
   const productId = searchParams.get("productId") || "";
-  const product = getProductById(productId);
-
-  const productName = product?.name || "Grand Floral Welcome Gate";
-  const productImage = product?.image || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80";
-  const productCategory = product?.category || "Event Decoration";
-  const baseTotal = product?.rawPrice || 18000;
+ 
+  const productName = "Grand Floral Welcome Gate";
+  const productImage = "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80";
+  const productCategory ="Event Decoration";
+  const baseTotal = 18000;
 
   const [selectedMethod, setSelectedMethod] = useState<"upi" | "card" | "netbanking" | "wallet">("upi");
   const [upiId, setUpiId] = useState("");

@@ -1,44 +1,5 @@
 // app/card/productDetails.ts
 
-export const bannerData = [
-  {
-    id: 1,
-    title: "Romantic Anniversary",
-    highlight: "Milestones",
-    subtitle: "TIMELESS ROMANCE",
-    description: "Celebrate years of togetherness with our enchanting setup. Featuring soft lighting, custom floral arrangements, and breathtaking aesthetics.",
-    image: "/aniversarry4.png",
-    tag: "Special Couple Offer",
-  },
-  {
-    id: 2,
-    title: "Joyful Kids Birthday",
-    highlight: "Celebrations",
-    subtitle: "MAGICAL MOMENTS",
-    description: "Bring endless smiles to your little ones with whimsical balloon arches, cartoon themes, and vibrant party decorations.",
-    image: "/childbirthday3.png",
-    tag: "Most Popular for Kids",
-  },
-  {
-    id: 3,
-    title: "Grand New Year",
-    highlight: "Party Bash",
-    subtitle: "WELCOME THE FUTURE",
-    description: "Ring in the new year with glittering golden decor, ambient lighting, and luxurious party setups designed to amaze your guests.",
-    image: "/newyearcelebrate.png",
-    tag: "Festive Exclusive",
-  },
-  {
-    id: 4,
-    title: "Intimate Candlelight",
-    highlight: "Dinner Setup",
-    subtitle: "COZY & DREAMY",
-    description: "Create unforgettable romantic memories with a private setup surrounded by hundreds of candles, rose petals, and soulful ambiance.",
-    image: "/candellightdinnerdecoration.png",
-    tag: "Romantic Date Night",
-  },
-];
-
 export const weddingGifts = [
   { 
     id: 5, 

@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import { ChevronLeft, ChevronRight, Heart, ShoppingBag } from "lucide-react";
 import Link from "next/link";
-import { bannerData, weddingGifts, festivalsProducts, pujaSection, estheticProducts } from "./productDetails";
+import { weddingGifts, festivalsProducts, pujaSection, estheticProducts } from "../data/specialCollections";
 import { useCart } from "@/app/context/CartContext";
 import { useWishlist } from "../context/wishlistcontext";
 
@@ -72,7 +72,7 @@ export default function CardPage() {
                   <Link href={`/card/${item.slug}`}>
                     <h3 className="font-serif text-sm font-bold text-neutral-900 line-clamp-1 hover:text-amber-800 transition">{item.name}</h3>
                   </Link>
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">{item.desc}</p>
+                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">{item.description}</p>
                 </div>
                 <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
                   <span className="text-neutral-900 font-bold text-sm">{item.price}</span>
@@ -142,7 +142,7 @@ export default function CardPage() {
                   <Link href={`/card/${item.slug}`}>
                     <h3 className="font-serif text-sm font-bold text-neutral-900 line-clamp-1 hover:text-amber-800 transition">{item.name}</h3>
                   </Link>
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">{item.desc}</p>
+                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">{item.description}</p>
                 </div>
                 <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
                   <span className="text-neutral-900 font-bold text-sm">{item.price}</span>
@@ -212,7 +212,7 @@ export default function CardPage() {
                   <Link href={`/card/${item.slug}`}>
                     <h3 className="font-serif text-sm font-bold text-neutral-900 line-clamp-1 hover:text-amber-800 transition">{item.name}</h3>
                   </Link>
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">{item.desc}</p>
+                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">{item.description}</p>
                 </div>
                 <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
                   <span className="text-neutral-900 font-bold text-sm">{item.price}</span>
@@ -282,7 +282,7 @@ export default function CardPage() {
                   <Link href={`/card/${item.slug}`}>
                     <h3 className="font-serif text-sm font-bold text-neutral-900 line-clamp-1 hover:text-amber-800 transition">{item.name}</h3>
                   </Link>
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">{item.desc}</p>
+                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">{item.description}</p>
                 </div>
                 <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
                   <span className="text-neutral-900 font-bold text-sm">{item.price}</span>
