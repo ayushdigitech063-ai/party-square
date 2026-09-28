@@ -6,10 +6,10 @@ export interface Product {
   id: string;
   slug?: string;
   name: string;
-  price: string;
+  price: number;
   numericPrice?: number;
   image: string;
-  desc: string;
+  description: string;
   category?: string;
   quantity: number;
 }

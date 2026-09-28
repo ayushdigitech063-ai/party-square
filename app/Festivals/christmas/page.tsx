@@ -11,27 +11,17 @@ import {
   Gift,
 } from "lucide-react";
 import { useWishlist } from "../../context/wishlistcontext";
-import { christmasProducts, Product } from "@/app/data/christmasProducts";
+import { christmasProducts } from "@/app/data/christmasProducts";
+import { Product } from "@/app/types/product";
+import ProductCard from "@/app/components/ProductCard";
 
-// Home page par dikhne wale products ki sirf IDs (number). Data christmasProducts.ts me hai.
-const HIGHLIGHT_IDS: number[] = [11, 12, 13];
-const PACKAGE_IDS: number[] = [7, 8, 9, 10];
 
-const getProductsByIds = (ids: number[]): Product[] =>
+const getProductsByIds = (ids: string[]): Product[] =>
   ids
     .map((id) => christmasProducts.find((p) => p.id === id))
     .filter((p): p is Product => Boolean(p));
 
-const formatPrice = (price: string) => `₹${Number(price).toLocaleString("en-IN")}`;
-
 // Wishlist ko pehle jaisi hi shape milti hai (price "₹6,499" format me)
-const toWishlistItem = (product: Product) => ({
-  id: product.id,
-  name: product.name,
-  price: formatPrice(product.price),
-  image: product.image,
-  desc: product.desc,
-});
 
 export default function ChristmasPage() {
   const { toggleWishlist, isInWishlist } = useWishlist();
@@ -45,9 +35,21 @@ export default function ChristmasPage() {
     return null;
   }
 
-  const christmasHighlights = getProductsByIds(HIGHLIGHT_IDS);
-  const christmasDecor = getProductsByIds(PACKAGE_IDS);
+    const HIGHLIGHT_IDS: string[] = [
+  "christmas-11",
+  "christmas-12",
+  "christmas-13",
+];
 
+const PACKAGE_IDS: string[] = [
+  "christmas-7",
+  "christmas-8",
+  "christmas-9",
+  "christmas-10",
+];
+
+const christmasHighlights = getProductsByIds(HIGHLIGHT_IDS);
+const christmasDecor = getProductsByIds(PACKAGE_IDS);
   return (
     
     <div className="min-h-screen text-neutral-900 font-sans bg-[#F3EFE9] selection:bg-amber-400 selection:text-black overflow-x-hidden pb-20">
@@ -91,31 +93,13 @@ export default function ChristmasPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {christmasHighlights.map((item) => (
-            <div key={item.id} className="bg-white border border-red-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-              <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                <span className="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">Xmas Special</span>
-              </div>
-              <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                <div className="space-y-1.5">
-                  <h3 className="font-serif text-base font-bold text-neutral-900">{item.name}</h3>
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light">{item.desc}</p>
-                </div>
-                
-                <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
-                    <span className="text-neutral-900 font-bold text-base">{formatPrice(item.price)}</span>
-                  </div>
-                  <Link href={`/Festivals/christmas/${item.id}`} className="bg-red-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-red-500 transition shadow flex items-center space-x-1">
-                    <span>Book</span>
-                    <ArrowRight size={14} />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+            <ProductCard  key={item.id}
+                           product={item}
+                           isInWishlist={isInWishlist}
+                            toggleWishlist={toggleWishlist}
+                            />
+                        ))}
+                    </div>
 
         {/* View More Products Button linked to all-products */}
         <div className="text-center mt-12">
@@ -147,69 +131,12 @@ export default function ChristmasPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {christmasDecor.map((item) => {
-            const isLiked = isInWishlist(item.id);
             return (
-              <div
-                key={item.id}
-                className="bg-white border border-amber-100 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-              >
-                <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                  />
-                  <button
-                    onClick={() => {
-                      toggleWishlist(toWishlistItem(item));
-                    }}
-                    aria-label={
-                      isLiked ? "Remove from wishlist" : "Add to wishlist"
-                    }
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
-                  >
-                    <Heart
-                      size={16}
-                      className={
-                        isLiked
-                          ? "fill-rose-500 text-rose-500"
-                          : "text-gray-700"
-                      }
-                    />
-                  </button>
-                  <span className="absolute top-3 left-3 bg-amber-500 text-neutral-950 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">
-                    Christmas Special
-                  </span>
-                </div>
-                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                  <div className="space-y-1.5">
-                    <h3 className="font-serif text-base font-bold text-neutral-900">
-                      {item.name}
-                    </h3>
-                    <p className="text-neutral-500 text-xs leading-relaxed font-light">
-                      {item.desc}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">
-                        Starts At
-                      </span>
-                      <span className="text-neutral-900 font-bold text-base">
-                        {formatPrice(item.price)}
-                      </span>
-                    </div>
-                    <Link
-                      href={`/Festivals/christmas/${item.id}`}
-                      className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-400 hover:text-black transition shadow flex items-center space-x-1"
-                    >
-                      <span>Book</span>
-                      <ArrowRight size={14} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
+                <ProductCard  key={item.id}
+                           product={item}
+                           isInWishlist={isInWishlist}
+                            toggleWishlist={toggleWishlist}
+                            />  
             );
           })}
         </div>

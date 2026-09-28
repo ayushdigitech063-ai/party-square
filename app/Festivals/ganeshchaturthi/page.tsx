@@ -11,14 +11,13 @@ import {
   Heart,
   ShoppingBag,
 } from "lucide-react";
+
 import { useWishlist } from "../../context/wishlistcontext";
 import { useCart } from "@/app/context/CartContext";
 import { ganeshProducts } from "@/app/data/ganeshProducts";
+import ProductCard from "@/app/components/ProductCard";
 
-const LOVED_IDS = [6, 7, 8, 9];
-const EXQUISITE_IDS = [10, 11, 12, 13];
-
-export default function GaneshChaturthiPage() {
+export default function GaneshChaturthi() {
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
   const [isMounted, setIsMounted] = useState(false);
   const { addToCart } = useCart();
@@ -31,29 +30,49 @@ export default function GaneshChaturthiPage() {
     return null;
   }
 
-  const handleAddToCart = (product: any, e: React.MouseEvent) => {
+  /*
+   * Product IDs are now strings because the common Product type
+   * uses id: string.
+   */
+  const LOVED_IDS = ["6", "7", "8", "9"];
+  const EXQUISITE_IDS = ["10", "11", "12", "13"];
+
+  const handleAddToCart = (
+    product: (typeof ganeshProducts)[number],
+    e: React.MouseEvent
+  ) => {
     e.preventDefault();
     e.stopPropagation();
+
     addToCart({
-      id: String(product.id),
+      id: product.id,
       name: product.name,
-      price: String(product.price),
+      price: product.price,
       image: product.image,
-      desc: product.desc || "",
-      category: "Ganesh Chaturthi Decoration",
+      description: product.description,
+      category: product.category,
     });
   };
 
   const bestLovedDecor = LOVED_IDS.map((id) =>
-    ganeshProducts.find((p) => p.id === id)
-  ).filter((p): p is NonNullable<typeof p> => Boolean(p));
+    ganeshProducts.find((product) => product.id === id)
+  ).filter(
+    (product): product is NonNullable<typeof product> => Boolean(product)
+  );
 
   const exquisiteDecor = EXQUISITE_IDS.map((id) =>
-    ganeshProducts.find((p) => p.id === id)
-  ).filter((p): p is NonNullable<typeof p> => Boolean(p));
+    ganeshProducts.find((product) => product.id === id)
+  ).filter(
+    (product): product is NonNullable<typeof product> => Boolean(product)
+  );
 
-  // Fetching Mumbai Cha Raja special cards directly from ganeshProducts array
-  const mumbaiChaRajaCards = ganeshProducts.filter((p) => p.isSpecialCard);
+  /*
+   * Mumbai Cha Raja special cards are still coming
+   * directly from ganeshProducts.
+   */
+  const mumbaiChaRajaCards = ganeshProducts.filter(
+    (product) => product.isSpecialCard
+  );
 
   return (
     <div className="min-h-screen text-neutral-900 font-sans bg-[#FAF7F2] selection:bg-amber-500 selection:text-white overflow-x-hidden pb-20">
@@ -71,11 +90,15 @@ export default function GaneshChaturthiPage() {
             <Sparkles size={15} className="text-amber-400" />
             <span>Ganpati Bappa Morya • Festive Special 2026</span>
           </div>
+
           <h1 className="font-serif text-4xl sm:text-7xl font-bold tracking-tight text-white drop-shadow-2xl">
             Divine{" "}
-            <span className="text-amber-400 italic font-normal">Ganesh Chaturthi</span>{" "}
+            <span className="text-amber-400 italic font-normal">
+              Ganesh Chaturthi
+            </span>{" "}
             Decorations
           </h1>
+
           <p className="text-neutral-200 text-sm sm:text-lg max-w-2xl mx-auto leading-relaxed font-light">
             Welcome Lord Ganesha into your home with our breathtaking,
             handcrafted mandap and festive decoration setups. Pure devotion
@@ -87,60 +110,29 @@ export default function GaneshChaturthiPage() {
       {/* Best Loved Decorations Grid */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-          <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">Most Loved</span>
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">Best Loved Decorations</h2>
-          <p className="text-neutral-600 text-sm font-light">Our most sought-after traditional and modern mandap designs.</p>
+          <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
+            Most Loved
+          </span>
+
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">
+            Best Loved Decorations
+          </h2>
+
+          <p className="text-neutral-600 text-sm font-light">
+            Our most sought-after traditional and modern mandap designs.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {bestLovedDecor.map((item) => {
-            const isLiked = isInWishlist(item.id);
+          
+
             return (
-              <div key={item.id} className="bg-white border border-amber-100 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-                <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                  <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                 toggleWishlist({ ...item, price: String(item.price) });
-                    }}
-                    aria-label={isLiked ? "Remove from wishlist" : "Add to wishlist"}
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
-                  >
-                    <Heart size={16} className={isLiked ? "fill-rose-500 text-rose-500" : "text-gray-700"} />
-                  </button>
-                </div>
-
-                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                  <div className="space-y-1.5">
-                    <h3 className="font-serif text-base font-bold text-neutral-900">{item.name}</h3>
-                    <p className="text-neutral-500 text-xs leading-relaxed font-light">{item.desc}</p>
-                  </div>
-
-                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
-                      <span className="text-neutral-900 font-bold text-base">₹{item.price.toLocaleString()}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <button
-                        type="button"
-                        onClick={(e) => handleAddToCart(item, e)}
-                        title="Add to Cart"
-                        className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-full transition-colors cursor-pointer border border-amber-200 shadow-sm"
-                      >
-                        <ShoppingBag size={16} />
-                      </button>
-                      <Link href={`/Festivals/ganeshchaturthi/${item.id}`} className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1">
-                        <span>Book</span>
-                        <ArrowRight size={14} />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProductCard 
+                key={item.id}
+                           product={item}
+                           isInWishlist={isInWishlist}
+                            toggleWishlist={toggleWishlist}/>
             );
           })}
         </div>
@@ -159,59 +151,27 @@ export default function GaneshChaturthiPage() {
       {/* Exquisite Themes */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-          <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">Exclusive Styles</span>
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">More Exquisite Themes</h2>
-          <p className="text-neutral-600 text-sm font-light">Explore alternative vibrant designs curated for your celebrations.</p>
+          <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
+            Exclusive Styles
+          </span>
+
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">
+            More Exquisite Themes
+          </h2>
+
+          <p className="text-neutral-600 text-sm font-light">
+            Explore alternative vibrant designs curated for your celebrations.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {exquisiteDecor.map((item) => {
-            const isLiked = isInWishlist(item.id);
             return (
-              <div key={item.id} className="bg-white border border-amber-100 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-                <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                  <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                     toggleWishlist({ ...item, price: String(item.price) });
-                    }}
-                    aria-label={isLiked ? "Remove from wishlist" : "Add to wishlist"}
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
-                  >
-                    <Heart size={16} className={isLiked ? "fill-rose-500 text-rose-500" : "text-gray-700"} />
-                  </button>
-                </div>
-                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                  <div className="space-y-1.5">
-                    <h3 className="font-serif text-base font-bold text-neutral-900">{item.name}</h3>
-                    <p className="text-neutral-500 text-xs leading-relaxed font-light">{item.desc}</p>
-                  </div>
-
-                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
-                      <span className="text-neutral-900 font-bold text-base">₹{item.price.toLocaleString()}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <button
-                        type="button"
-                        onClick={(e) => handleAddToCart(item, e)}
-                        title="Add to Cart"
-                        className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-full transition-colors cursor-pointer border border-amber-200 shadow-sm"
-                      >
-                        <ShoppingBag size={16} />
-                      </button>
-                      <Link href={`/Festivals/ganeshchaturthi/${item.id}`} className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1">
-                        <span>Book</span>
-                        <ArrowRight size={14} />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProductCard 
+                key={item.id}
+                           product={item}
+                           isInWishlist={isInWishlist}
+                            toggleWishlist={toggleWishlist}/>
             );
           })}
         </div>
@@ -223,9 +183,14 @@ export default function GaneshChaturthiPage() {
           <span className="text-xs uppercase tracking-[0.3em] text-amber-700 font-bold bg-amber-100/70 px-4 py-1.5 rounded-full inline-block">
             Grand Special Collection
           </span>
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-neutral-900">Mumbai Cha Raja Special</h2>
+
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-neutral-900">
+            Mumbai Cha Raja Special
+          </h2>
+
           <p className="text-neutral-600 text-sm sm:text-base font-light">
-            Inspired by the grandeur of Mumbai's iconic pandals with crystal-clear picture highlights.
+            Inspired by the grandeur of Mumbai's iconic pandals with
+            crystal-clear picture highlights.
           </p>
         </div>
 
@@ -233,25 +198,45 @@ export default function GaneshChaturthiPage() {
           {mumbaiChaRajaCards.map((card) => (
             <div
               key={card.id}
-              className={`rounded-[32px] overflow-hidden shadow-2xl border border-white/20 bg-gradient-to-r ${card.gradientBg} text-white flex flex-col lg:flex-row items-stretch group`}
+              className={`rounded-[32px] overflow-hidden shadow-2xl border border-white/20 bg-gradient-to-r ${
+                card.gradientBg
+              } text-white flex flex-col lg:flex-row items-stretch group`}
             >
               <div className="p-6 sm:p-8 flex flex-col justify-between flex-1 space-y-4 order-2 lg:order-1">
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
-                    <span className={`text-[10px] font-bold uppercase tracking-wider px-3 py-0.5 rounded-full shadow ${card.badgeColor}`}>
+                    <span
+                      className={`text-[10px] font-bold uppercase tracking-wider px-3 py-0.5 rounded-full shadow ${
+                        card.badgeColor
+                      }`}
+                    >
                       {card.theme}
                     </span>
-                    <span className="text-[10px] text-amber-200/80 font-medium">Premium Large Scale</span>
+
+                    <span className="text-[10px] text-amber-200/80 font-medium">
+                      Premium Large Scale
+                    </span>
                   </div>
-                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">{card.name}</h3>
-                  <p className="text-xs text-neutral-300 leading-relaxed font-light">{card.desc}</p>
+
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-white">
+                    {card.name}
+                  </h3>
+
+                  <p className="text-xs text-neutral-300 leading-relaxed font-light">
+                    {card.description}
+                  </p>
                 </div>
 
                 <div className="space-y-3 pt-3 border-t border-white/10">
                   <div className="flex items-center space-x-1.5 text-[11px] text-amber-300 font-medium">
-                    <ShieldCheck size={14} className="text-amber-400 shrink-0" />
+                    <ShieldCheck
+                      size={14}
+                      className="text-amber-400 shrink-0"
+                    />
+
                     <span>Includes Professional Setup & Lighting</span>
                   </div>
+
                   <Link
                     href={`/Festivals/ganeshchaturthi/${card.id}`}
                     className="inline-flex items-center justify-center space-x-1.5 bg-amber-400 hover:bg-amber-300 text-neutral-950 px-5 py-2.5 rounded-full font-extrabold text-xs uppercase tracking-wider transition shadow-lg w-full sm:w-auto"
@@ -263,7 +248,11 @@ export default function GaneshChaturthiPage() {
               </div>
 
               <div className="relative w-full lg:w-64 h-64 lg:h-auto overflow-hidden bg-neutral-950 order-1 lg:order-2">
-                <img src={card.image} alt={card.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+                <img
+                  src={card.image}
+                  alt={card.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+                />
               </div>
             </div>
           ))}
@@ -279,24 +268,41 @@ export default function GaneshChaturthiPage() {
                 <Star size={14} className="text-amber-400" />
                 <span>Masterpiece Showcase</span>
               </div>
+
               <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white leading-tight">
                 The Ultimate Divine Experience with{" "}
-                <span className="text-amber-400 italic">CardGaneshJi</span>
+                <span className="text-amber-400 italic">
+                  CardGaneshJi
+                </span>
               </h2>
+
               <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed font-light">
                 Elevate your home pandal with our flagship masterpiece setup.
                 Featuring intricate detailing, premium flower garlands,
                 traditional backdrop panels, and synchronized warm lighting
-                designed to make your Ganesh Chaturthi celebrations unforgettable.
+                designed to make your Ganesh Chaturthi celebrations
+                unforgettable.
               </p>
+
               <div className="space-y-3 pt-2">
                 <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                  <CheckCircle size={16} className="text-amber-400 shrink-0" />
-                  <span>Custom structural mandap with traditional pillars</span>
+                  <CheckCircle
+                    size={16}
+                    className="text-amber-400 shrink-0"
+                  />
+                  <span>
+                    Custom structural mandap with traditional pillars
+                  </span>
                 </div>
+
                 <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                  <CheckCircle size={16} className="text-amber-400 shrink-0" />
-                  <span>Fresh marigold, rose, and exotic orchid decorations</span>
+                  <CheckCircle
+                    size={16}
+                    className="text-amber-400 shrink-0"
+                  />
+                  <span>
+                    Fresh marigold, rose, and exotic orchid decorations
+                  </span>
                 </div>
               </div>
             </div>
@@ -313,7 +319,11 @@ export default function GaneshChaturthiPage() {
           </div>
 
           <div className="relative h-72 sm:h-auto w-full overflow-hidden bg-neutral-950 order-1 lg:order-2">
-            <img src="/cardganeshji.png" alt="Card Ganesh Ji Masterpiece" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+            <img
+              src="/cardganeshji.png"
+              alt="Card Ganesh Ji Masterpiece"
+              className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+            />
           </div>
         </div>
       </section>

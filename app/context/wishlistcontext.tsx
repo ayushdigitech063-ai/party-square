@@ -9,20 +9,20 @@ import {
 } from "react";
 
 export type WishlistProduct = {
-  id: number;
+  id: string;
   name: string;
   image?: string;
   src?: string;
   desc?: string;
-  price?: string;
+  price?: number ;
   category?: string;
 };
 
 type WishlistContextType = {
   wishlist: WishlistProduct[];
   toggleWishlist: (product: WishlistProduct) => void;
-  isInWishlist: (productId: number) => boolean;
-  removeFromWishlist: (productId: number) => void;
+  isInWishlist: (productId: string) => boolean;
+  removeFromWishlist: (productId: string) => void;
 };
 
 const WishlistContext = createContext<WishlistContextType | null>(null);
@@ -72,13 +72,13 @@ export function WishlistProvider({
     });
   };
 
-  const isInWishlist = (productId: number) => {
+  const isInWishlist = (productId: string) => {
     return wishlist.some(
       (item) => item.id === productId
     );
   };
 
-  const removeFromWishlist = (productId: number) => {
+  const removeFromWishlist = (productId: string) => {
     setWishlist((current) =>
       current.filter(
         (item) => item.id !== productId
