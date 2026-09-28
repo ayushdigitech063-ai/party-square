@@ -134,9 +134,7 @@ export default function IndependenceDayProductDetail({
 
   const whatsNotIncluded: string[] =
     (product as any).whatsNotIncluded ?? [
-      "Food and beverages",
-      "Venue charges",
-      "Additional custom requirements",
+     
     ];
 
   const ratingBreakdown: {
@@ -914,70 +912,42 @@ const handleRelatedNext = () => {
 
       </div>
 
-      {/* =========================================================== */}
-      {/* RIGHT                                                       */}
-      {/* =========================================================== */}
+    {/* RIGHT */}
 
-      <div className="space-y-3">
+<div>
 
-        {/* INCLUDED */}
+  {/* INCLUDED */}
 
-        <div className="bg-[#fff9e9] border border-[#eadba7] rounded-[13px] p-5">
+  <div className="bg-[#fff9e9] border border-[#eadba7] rounded-[22px] px-6 py-7 sm:px-8 sm:py-9">
 
-          <h3 className="font-serif font-bold text-[18px] text-[#18100c] mb-3">
-            What&apos;s Included
-          </h3>
+    <h3 className="font-serif font-bold text-[26px] sm:text-[32px] leading-tight text-[#090909] mb-8">
+      What&apos;s Included
+    </h3>
 
-          <div className="space-y-2">
+    <div className="space-y-4">
 
-            {whatsIncluded.map((item, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-2 text-[10px] text-neutral-600"
-              >
-                <Check
-                  size={12}
-                  strokeWidth={2.5}
-                  className="text-[#49a562] flex-shrink-0"
-                />
-
-                <span>{item}</span>
-              </div>
-            ))}
-
+      {whatsIncluded.map((item, index) => (
+        <div
+          key={index}
+          className="flex items-center gap-4 text-[14px] text-neutral-900"
+        >
+          <div className="w-[21px] h-[21px] rounded-full border-[1.5px] border-[#e86611] flex items-center justify-center flex-shrink-0">
+            <Check
+              size={12}
+              strokeWidth={2}
+              className="text-[#e86611]"
+            />
           </div>
 
+          <span>{item}</span>
         </div>
+      ))}
 
-        {/* NOT INCLUDED */}
+    </div>
 
-        <div className="bg-white border border-[#e1ddd7] rounded-[13px] p-5">
+  </div>
 
-          <h3 className="font-serif font-bold text-[18px] text-[#18100c] mb-3">
-            What&apos;s Not Included
-          </h3>
-
-          <div className="space-y-2">
-
-            {whatsNotIncluded.map((item, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-2 text-[10px] text-neutral-400"
-              >
-                <X
-                  size={11}
-                  className="text-neutral-300 flex-shrink-0"
-                />
-
-                <span>{item}</span>
-              </div>
-            ))}
-
-          </div>
-
-        </div>
-
-      </div>
+</div>
 
     </section>
             {/* ============================================================= */}
@@ -1033,7 +1003,7 @@ const handleRelatedNext = () => {
                     (item) => (
                       <div
                         key={item.star}
-                        className="flex items-center gap-3 text-[9px] text-neutral-400"
+                        className="flex items-center gap-3 text-[14px] text-neutral-400"
                       >
 
                         <span className="w-2">
@@ -1087,75 +1057,38 @@ const handleRelatedNext = () => {
 
           </>
         )}
+{/* WHAT'S INCLUDED */}
 
-        {/* ================================================================= */}
-        {/* WHAT'S INCLUDED TAB                                               */}
-        {/* ================================================================= */}
+<div className="bg-[#fff9e9] border border-[#eadba7] rounded-[22px] px-6 py-7 sm:px-8 sm:py-9">
 
-        {activeTab === "included" && (
-          <section className="mt-5 bg-[#fff9e9] border border-[#eadba7] rounded-[13px] p-6">
+  <h3 className="font-serif font-bold text-[26px] sm:text-[32px] leading-tight text-[#090909] mb-8">
+    What&apos;s Included
+  </h3>
 
-            <h2 className="font-serif text-xl font-bold mb-5">
-              What&apos;s Included
-            </h2>
+  <div className="space-y-5">
 
-            <div className="space-y-3">
+    {whatsIncluded.map((item, index) => (
+      <div
+        key={index}
+        className="flex items-center gap-4 sm:gap-[18px] text-[16px] sm:text-[20px] text-neutral-900"
+      >
 
-              {whatsIncluded.map(
-                (item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3 text-sm text-neutral-600"
-                  >
-                    <Check
-                      size={15}
-                      className="text-green-600 flex-shrink-0"
-                    />
+        <div className="w-[21px] h-[21px] rounded-full border-[1.5px] border-[#e86611] flex items-center justify-center flex-shrink-0">
+          <Check
+            size={12}
+            strokeWidth={2}
+            className="text-[#e86611]"
+          />
+        </div>
 
-                    {item}
-                  </div>
-                )
-              )}
+        <span>{item}</span>
 
-            </div>
+      </div>
+    ))}
 
-          </section>
-        )}
+  </div>
 
-        {/* ================================================================= */}
-        {/* WHAT'S NOT INCLUDED TAB                                           */}
-        {/* ================================================================= */}
-
-        {activeTab ===
-          "notIncluded" && (
-          <section className="mt-5 bg-white border border-[#e1ddd7] rounded-[13px] p-6">
-
-            <h2 className="font-serif text-xl font-bold mb-5">
-              What&apos;s Not Included
-            </h2>
-
-            <div className="space-y-3">
-
-              {whatsNotIncluded.map(
-                (item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3 text-sm text-neutral-500"
-                  >
-                    <X
-                      size={14}
-                      className="text-neutral-300 flex-shrink-0"
-                    />
-
-                    {item}
-                  </div>
-                )
-              )}
-
-            </div>
-
-          </section>
-        )}
+</div>
 
         {/* ================================================================= */}
         {/* CANCELLATION TAB                                                  */}

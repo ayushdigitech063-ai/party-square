@@ -987,7 +987,7 @@ export default function DiwaliProductDetail({
                             />
                           </div>
 
-                          <span className="text-[10px] sm:text-[11px] text-neutral-800">
+                          <span className="text-[10px] sm:text-[14px] text-neutral-800">
                             {item}
                           </span>
                         </div>

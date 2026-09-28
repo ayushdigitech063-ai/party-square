@@ -865,47 +865,40 @@ const handleRelatedNext = () => {
                   </div>
                 </div>
 
-                {/* =========================================== */}
-                {/* WHAT'S INCLUDED                             */}
-                {/* =========================================== */}
+                {/* WHAT'S INCLUDED */}
 
-                <div className="bg-[#fff9e9] border border-[#f2dfa0] rounded-[22px] px-8 py-8">
+<div className="bg-[#fff9e9] border border-[#eadba7] rounded-[14px] px-[18px] sm:px-[20px] py-[18px]">
 
-                  <h3 className="font-serif font-bold text-[28px] sm:text-[30px] text-[#080808]">
-                    What&apos;s Included
-                  </h3>
+  <h3 className="font-serif font-bold text-[20px] sm:text-[22px] leading-tight text-[#090909]">
+    What&apos;s Included
+  </h3>
 
-                  <div className="mt-8 space-y-5">
+  <div className="mt-[15px] space-y-[10px]">
 
-                    {whatsIncluded.map(
-                      (item, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center gap-4"
-                        >
+    {whatsIncluded.map((item, index) => (
+      <div
+        key={index}
+        className="flex items-center gap-[9px]"
+      >
 
-                          <div className="w-[20px] h-[20px] rounded-full border-2 border-[#d55e00] flex items-center justify-center flex-shrink-0">
+        <div className="w-[18px] h-[18px] rounded-full border border-[#e86611] flex items-center justify-center flex-shrink-0">
+          <Check
+            size={11}
+            strokeWidth={2}
+            className="text-[#e86611]"
+          />
+        </div>
 
-                            <Check
-                              size={12}
-                              strokeWidth={2.5}
-                              className="text-[#d55e00]"
-                            />
+        <span className="text-[14px] sm:text-[16px] text-neutral-900">
+          {item}
+        </span>
 
-                          </div>
+      </div>
+    ))}
 
-                          <span className="text-[15px] sm:text-[16px] text-[#292929]">
-                            {item}
-                          </span>
+  </div>
 
-                        </div>
-                      )
-                    )}
-
-                  </div>
-
-                </div>
-
+</div>
               </div>
 
             </div>
