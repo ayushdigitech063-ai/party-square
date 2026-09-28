@@ -3,7 +3,7 @@
 import React from "react";
 import { Sparkles, Heart, Award, CheckCircle2, ArrowRight, ShieldCheck, Users, Compass } from "lucide-react";
 import Link from "next/link";
-
+// fjkdgdlkug
 export default function AboutPage() {
   return (
     <div className="w-full bg-[#F3EFE9] font-sans text-neutral-900 selection:bg-[#DFBC71] selection:text-neutral-900 overflow-hidden">
