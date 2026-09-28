@@ -829,7 +829,7 @@ const handleRelatedNext = () => {
                     (item, index) => (
                       <div
                         key={index}
-                        className="flex items-center gap-2 text-[10px] text-neutral-800"
+                        className="flex items-center gap-2 text-[14px] text-neutral-800"
                       >
                         <Check
                           size={13}
