@@ -3,9 +3,11 @@
 
 import React, { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, CheckCircle2, Truck, Sparkles, Star, ShoppingBag, Calendar, Check, Plus, Minus, X } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Truck, Sparkles, Star, ShoppingBag, Calendar, Check, Plus, Minus, X, Heart, ChevronRight, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useCart } from "@/app/context/CartContext";
+import { bannerData, weddingGifts, festivalsProducts, pujaSection, estheticProducts } from "../productDetails";
+import { useRef } from "react";
 
 const allProducts = [
   // Wedding Gifts (Updated with 7 new items & IDs 25 to 31)
@@ -52,7 +54,11 @@ export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { id } = params;
-  const { addToCart } = useCart(); 
+   const { addToCart } = useCart();
+       const weddingRef = useRef<HTMLDivElement>(null);
+       const festivalRef = useRef<HTMLDivElement>(null);
+         const pujaRef = useRef<HTMLDivElement>(null);
+         const estheticRef = useRef<HTMLDivElement>(null);
   
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -68,6 +74,14 @@ export default function ProductDetailPage() {
       setTimeout(() => setAdded(false), 2000);
     }
   };
+
+   const scrollContainer = (ref: React.RefObject<HTMLDivElement | null>, direction: "left" | "right") => {
+      if (ref.current) {
+        const scrollAmount = direction === "left" ? -300 : 300;
+        ref.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      }
+    };
+  
 
   const handleBookNowClick = () => {
     setShowModal(true);
@@ -429,7 +443,7 @@ export default function ProductDetailPage() {
 
 
                 <button
-                  onClick={handleBookNowClick}
+                  onClick={()=>router.push('/payment-detail')}
                   className="h-12 rounded-xl bg-[#8B3F05] hover:bg-[#713200] text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-md hover:shadow-lg"
                 >
                   <Calendar size={17} />
@@ -500,61 +514,61 @@ export default function ProductDetailPage() {
           {/* Description */}
           <div className="lg:col-span-7">
 
-            <h2 className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 leading-tight">
-              Turn Your Special Moments Into Magical Memories
-            </h2>
+          <h2 className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 leading-tight">
+            Turn Your Special Moments Into Magical Memories
+          </h2>
 
-            <p className="mt-4 text-sm sm:text-base leading-7 text-neutral-600">
+          <p className="mt-4 text-sm sm:text-base leading-7 text-neutral-600">
               {product.desc}
-            </p>
+          </p>
 
 
-            {/* Feature Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-7">
+          {/* Feature Cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-7">
 
-              <div className="rounded-2xl bg-amber-50 p-4">
-                <Sparkles size={19} className="text-amber-700" />
-                <p className="mt-3 text-xs font-semibold text-neutral-800">
-                  Premium Decor
-                </p>
-                <p className="text-[11px] text-neutral-500 mt-1">
-                  & Setup
-                </p>
-              </div>
+            <div className="rounded-2xl bg-amber-50 p-4">
+              <Sparkles size={19} className="text-amber-700" />
+              <p className="mt-3 text-xs font-semibold text-neutral-800">
+                Premium Decor
+              </p>
+              <p className="text-[11px] text-neutral-500 mt-1">
+                & Setup
+              </p>
+            </div>
 
-              <div className="rounded-2xl bg-amber-50 p-4">
-                <CheckCircle2 size={19} className="text-amber-700" />
-                <p className="mt-3 text-xs font-semibold text-neutral-800">
-                  Verified
-                </p>
-                <p className="text-[11px] text-neutral-500 mt-1">
-                  Quality
-                </p>
-              </div>
+            <div className="rounded-2xl bg-amber-50 p-4">
+              <CheckCircle2 size={19} className="text-amber-700" />
+              <p className="mt-3 text-xs font-semibold text-neutral-800">
+                Verified
+              </p>
+              <p className="text-[11px] text-neutral-500 mt-1">
+                Quality
+              </p>
+            </div>
 
-              <div className="rounded-2xl bg-amber-50 p-4">
-                <Truck size={19} className="text-amber-700" />
-                <p className="mt-3 text-xs font-semibold text-neutral-800">
-                  On-Time
-                </p>
-                <p className="text-[11px] text-neutral-500 mt-1">
-                  Setup
-                </p>
-              </div>
+            <div className="rounded-2xl bg-amber-50 p-4">
+              <Truck size={19} className="text-amber-700" />
+              <p className="mt-3 text-xs font-semibold text-neutral-800">
+                On-Time
+              </p>
+              <p className="text-[11px] text-neutral-500 mt-1">
+                Setup
+              </p>
+            </div>
 
-              <div className="rounded-2xl bg-amber-50 p-4">
-                <Calendar size={19} className="text-amber-700" />
-                <p className="mt-3 text-xs font-semibold text-neutral-800">
-                  Easy
-                </p>
-                <p className="text-[11px] text-neutral-500 mt-1">
-                  Booking
-                </p>
-              </div>
-
+            <div className="rounded-2xl bg-amber-50 p-4">
+              <Calendar size={19} className="text-amber-700" />
+              <p className="mt-3 text-xs font-semibold text-neutral-800">
+                Easy
+              </p>
+              <p className="text-[11px] text-neutral-500 mt-1">
+                Booking
+              </p>
             </div>
 
           </div>
+
+        </div>
 
 
           {/* Included Card */}
@@ -563,10 +577,10 @@ export default function ProductDetailPage() {
             <div className="rounded-2xl bg-[#FFF9E8] border border-amber-100 p-6">
 
               <h3 className="font-serif font-bold text-lg text-neutral-900">
-                What's Included
-              </h3>
+              What's Included
+            </h3>
 
-              <div className="mt-5 space-y-3">
+            <div className="mt-5 space-y-3">
 
                 {[
                   "Premium decoration setup",
@@ -585,16 +599,16 @@ export default function ProductDetailPage() {
                       className="text-amber-700 shrink-0"
                     />
 
-                    <span>{item}</span>
-                  </div>
+                  <span>{item}</span>
+                </div>
 
-                ))}
-
-              </div>
+              ))}
 
             </div>
 
-          </div>
+        </div>
+
+        </div>
 
         </div>
 
@@ -768,6 +782,273 @@ export default function ProductDetailPage() {
           </div>
         </div>
       )}
+
+      <div className="bg-[#FAF7F2] text-[#1A1A1A] font-sans min-h-screen relative">
+
+         {/* 1. Wedding Gift Products Section */}
+         {product.category === "Wedding Gift Products" && (
+      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-amber-200/50">
+        <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
+          <span className="text-xs uppercase tracking-[0.3em] text-amber-800 font-bold bg-amber-100 px-4 py-1.5 rounded-full inline-block">Related Products</span>
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">Wedding Gift Products</h2>
+          <p className="text-neutral-600 text-sm font-light">Handpicked luxury presents and hampers for grand weddings and couple milestones.</p>
+        </div>
+
+        <div ref={weddingRef} className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory">
+          {weddingGifts.map((item) => (
+            <div key={item.id} className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start">
+              <div className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
+                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                <button
+            
+                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
+                  >
+                    <Heart
+                      size={16}
+                      className={
+               "text-gray-700"
+                      }
+                    />
+                  </button>
+              </div>
+              <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
+                <div className="space-y-1">
+                  <Link href={`/card/${item.slug}`}>
+                    <h3 className="font-serif text-sm font-bold text-neutral-900 line-clamp-1 hover:text-amber-800 transition">{item.name}</h3>
+                  </Link>
+                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">{item.desc}</p>
+                </div>
+                <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                  <span className="text-neutral-900 font-bold text-sm">{item.price}</span>
+                  <div className="flex items-center space-x-1.5">
+                    <button 
+                      type="button"
+                      onClick={(e) => handleAddToCart()}
+                      title="Add to Cart"
+                      className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2 rounded-full transition shadow-sm cursor-pointer"
+                    >
+                      <ShoppingBag size={14} />
+                    </button>
+                    <Link href={`/card/${item.slug}`} className="bg-amber-800 text-white px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-900 transition shadow">
+                      Book
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex justify-center items-center gap-4 mt-8">
+          <button onClick={() => scrollContainer(weddingRef, "left")} className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer">
+            <ChevronRight size={22} />
+          </button>
+          <button onClick={() => scrollContainer(weddingRef, "right")} className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer">
+            <ChevronRight size={22} />
+          </button>
+        </div>
+      </section>
+    )}
+
+      {/* 2. Festivals Products Section */}
+      {product.category === "Festivals Products" && (
+      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-amber-200/50">
+        <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
+          <span className="text-xs uppercase tracking-[0.3em] text-amber-800 font-bold bg-amber-100 px-4 py-1.5 rounded-full inline-block">Festive Vibes</span>
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">Festivals Products</h2>
+          <p className="text-neutral-600 text-sm font-light">Brighten up seasonal celebrations with vibrant cultural and traditional decorations.</p>
+        </div>
+
+        <div ref={festivalRef} className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory">
+          {festivalsProducts.map((item) => (
+            <div key={item.id} className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start">
+              <div  className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
+                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                <button
+                   
+                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
+                  >
+                    <Heart
+                      size={16}
+                      className={
+                      
+                    "text-gray-700"
+                      }
+                    />
+                  </button>
+              </div>
+              <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
+                <div className="space-y-1">
+                  <Link href={`/card/${item.slug}`}>
+                    <h3 className="font-serif text-sm font-bold text-neutral-900 line-clamp-1 hover:text-amber-800 transition">{item.name}</h3>
+                  </Link>
+                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">{item.desc}</p>
+                </div>
+                <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                  <span className="text-neutral-900 font-bold text-sm">{item.price}</span>
+                  <div className="flex items-center space-x-1.5">
+                    <button 
+                      type="button"
+                      onClick={(e) => handleAddToCart()}
+                      title="Add to Cart"
+                      className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2 rounded-full transition shadow-sm cursor-pointer"
+                    >
+                      <ShoppingBag size={14} />
+                    </button>
+                    <Link href={`/card/${item.slug}`} className="bg-amber-800 text-white px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-900 transition shadow">
+                      Book
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex justify-center items-center gap-4 mt-8">
+          <button onClick={() => scrollContainer(festivalRef, "left")} className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer">
+            <ChevronLeft size={22} />
+          </button>
+          <button onClick={() => scrollContainer(festivalRef, "right")} className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer">
+            <ChevronRight size={22} />
+          </button>
+        </div>
+      </section>
+      )}
+
+      {/* 3. Puja Section */}
+      {product.category === "Puja Section" && (
+      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-amber-200/50">
+        <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
+          <span className="text-xs uppercase tracking-[0.3em] text-amber-800 font-bold bg-amber-100 px-4 py-1.5 rounded-full inline-block">Related Products</span>
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">Puja Section</h2>
+          <p className="text-neutral-600 text-sm font-light">Exquisite mandaps, sacred thalis, and serene decor elements for divine prayers.</p>
+        </div>
+
+        <div ref={pujaRef} className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory">
+          {pujaSection.map((item) => (
+            <div key={item.id} className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start">
+              <div className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
+                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                <button
+              
+                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
+                  >
+                    <Heart
+                      size={16}
+                      className={
+                        
+                        "text-gray-700"
+                      }
+                    />
+                  </button>
+              </div>
+              <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
+                <div className="space-y-1">
+                  <Link href={`/card/${item.slug}`}>
+                    <h3 className="font-serif text-sm font-bold text-neutral-900 line-clamp-1 hover:text-amber-800 transition">{item.name}</h3>
+                  </Link>
+                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">{item.desc}</p>
+                </div>
+                <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                  <span className="text-neutral-900 font-bold text-sm">{item.price}</span>
+                  <div className="flex items-center space-x-1.5">
+                    <button 
+                      type="button"
+                      onClick={(e) => handleAddToCart()}
+                      title="Add to Cart"
+                      className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2 rounded-full transition shadow-sm cursor-pointer"
+                    >
+                      <ShoppingBag size={14} />
+                    </button>
+                    <Link href={`/card/${item.slug}`} className="bg-amber-800 text-white px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-900 transition shadow">
+                      Book
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex justify-center items-center gap-4 mt-8">
+          <button onClick={() => scrollContainer(pujaRef, "left")} className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer">
+            <ChevronLeft size={22} />
+          </button>
+          <button onClick={() => scrollContainer(pujaRef, "right")} className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer">
+            <ChevronRight size={22} />
+          </button>
+        </div>
+      </section>
+      )}
+
+      {/* 4. Esthetic Products Section */}
+      {product.category === "Esthetic Products" && (
+      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-amber-200/50 pb-20">
+        <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
+          <span className="text-xs uppercase tracking-[0.3em] text-amber-800 font-bold bg-amber-100 px-4 py-1.5 rounded-full inline-block">Related Products</span>
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">Esthetic Products</h2>
+          <p className="text-neutral-600 text-sm font-light">Minimalist and trend-setting artistic home decor accents for modern aesthetics.</p>
+        </div>
+
+        <div ref={estheticRef} className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory">
+          {estheticProducts.map((item) => (
+            <div key={item.id} className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start">
+              <div className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
+                <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                <button
+                  
+                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
+                  >
+                    <Heart
+                      size={16}
+                      className={
+                        "text-gray-700"
+                      }
+                    />
+                  </button>
+              </div>
+              <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
+                <div className="space-y-1">
+                  <Link href={`/card/${item.slug}`}>
+                    <h3 className="font-serif text-sm font-bold text-neutral-900 line-clamp-1 hover:text-amber-800 transition">{item.name}</h3>
+                  </Link>
+                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">{item.desc}</p>
+                </div>
+                <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                  <span className="text-neutral-900 font-bold text-sm">{item.price}</span>
+                  <div className="flex items-center space-x-1.5">
+                    <button 
+                      type="button"
+                      onClick={(e) => handleAddToCart()}
+                      title="Add to Cart"
+                      className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2 rounded-full transition shadow-sm cursor-pointer"
+                    >
+                      <ShoppingBag size={14} />
+                    </button>
+                    <Link href={`/card/${item.slug}`} className="bg-amber-800 text-white px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-900 transition shadow">
+                      Book
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex justify-center items-center gap-4 mt-8">
+          <button onClick={() => scrollContainer(estheticRef, "left")} className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer">
+            <ChevronLeft size={22} />
+          </button>
+          <button onClick={() => scrollContainer(estheticRef, "right")} className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer">
+            <ChevronRight size={22} />
+          </button>
+        </div>
+      </section>
+      )}
+
+
+      </div>
 
     </div>
   );
