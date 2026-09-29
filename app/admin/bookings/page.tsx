@@ -6,7 +6,7 @@ import { CalendarCheck, Search, Plus, Filter, CheckCircle2, Clock, XCircle, Tras
 export default function AdminBookings() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
-  
+  // kjawFGASDKLJG
   const [bookings, setBookings] = useState([
     { id: "BK-9021", customer: "Rahul Sharma", theme: "Christmas Magic", date: "Dec 24, 2026", amount: "₹6,499", status: "CONFIRMED" },
     { id: "BK-9022", customer: "Priya Verma", theme: "Ganpati Mandap", date: "Sep 07, 2026", amount: "₹12,499", status: "PENDING" },
