@@ -11,71 +11,8 @@ import {
   Award,
 } from "lucide-react";
 import { useWishlist } from "../../../context/wishlistcontext";
-
- export const fatherCards = [
-    {
-      id: 1,
-      image: "/dad.png",
-      name: "The Gentleman's Milestone",
-      desc: "Sophisticated navy & gold backdrop styling with elegant metallic balloon clusters.",
-      price: "₹5,499",
-    },
-    {
-      id: 2,
-      image: "/dad1.png",
-      name: "Royal King Father Setup",
-      desc: "Grand royal drapes, custom marquee number/name highlights, and premium cake pedestal.",
-      price: "₹8,499",
-    },
-    {
-      id: 3,
-      image: "/dad2.png",
-      name: "Legacy Celebration Bundle",
-      desc: "Complete elite transformation featuring entrance pathway decor, cold pyros & LED ambiance.",
-      price: "₹12,999",
-    },
-    {
-      id: 4,
-      image: "/dad3.png",
-      name: "Classic Tribute Setup",
-      desc: "Warm fairy lights, floral arches and beautiful memory wall integration for dad.",
-      price: "₹6,499",
-    },
-       {
-      id: 5,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUAve16FiNjdS0UdleZDzxHuNZ8o3EWxK8F3ONCb3Ozg&s=10",
-      name: "New  Classic Theam based  Setup",
-      desc: "Warm fairy lights, floral arches and beautiful memory wall integration for dad.",
-      price: "₹6,499",
-    },
-    
-       {
-      id: 6,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbSm4nXTEa6pgaBEZuJqDvelRxrK_z8gcfgth9Ktyz7Q&s=10",
-      name: "New  Classic Theam based  Setup",
-      desc: "Warm fairy lights, floral arches and beautiful memory wall integration for dad.",
-      price: "₹6,499",
-    },
-
-
-     {
-      id: 7,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKvZH95VzqbnOmFVIno7nL-qrox-USU3DmbJk5txfR5Q&s=10",
-      name: "New  Classic Theam based  Setup",
-      desc: "Warm fairy lights, floral arches and beautiful memory wall integration for dad.",
-      price: "₹6,499",
-    },
-
-      {
-      id: 8,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnoqkh5QurgO6HPbUjc0SstZYr4bpuCUwaR4tWFnfoMA&s=10",
-      name: "New  Classic Theam based  Setup",
-      desc: "Warm fairy lights, floral arches and beautiful memory wall integration for dad.",
-      price: "₹6,499",
-    },
-
-  ];
-
+import { fatherbirthdayproduct } from "@/app/data/fatherBirthdayProduct";
+import ProductCard from "@/app/components/ProductCard";
 export default function FatherBirthdayPage() {
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
 
@@ -161,70 +98,14 @@ export default function FatherBirthdayPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {fatherCards.map((item) => {
-            const isLiked = isInWishlist(item.id);
+          {fatherbirthdayproduct.map((item) => {
             return (
-              <div
-                key={item.id}
-                className="bg-white rounded-2xl overflow-hidden border border-[#E2D2B0]/50 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-              >
-                {/* Card Image Wrapper with Wishlist Icon */}
-                <div className="relative h-72 w-full overflow-hidden bg-neutral-100">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <button
-                    onClick={() => {
-                      toggleWishlist(item);
-                    }}
-                    aria-label={
-                      isLiked ? "Remove from wishlist" : "Add to wishlist"
-                    }
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
-                  >
-                    <Heart
-                      size={16}
-                      className={
-                        isLiked
-                          ? "fill-rose-500 text-rose-500"
-                          : "text-gray-700"
-                      }
-                    />
-                  </button>
-                </div>
-
-                {/* Card Content */}
-                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                  <div>
-                    <h3 className="font-serif text-lg font-bold text-neutral-900 mb-1.5 group-hover:text-[#C5A059] transition-colors">
-                      {item.name}
-                    </h3>
-                    <p className="text-neutral-500 text-xs leading-relaxed line-clamp-2">
-                      {item.desc}
-                    </p>
-                  </div>
-
-                  <div className="border-t border-neutral-100 pt-4 flex items-center justify-between">
-                    <div>
-                      <span className="block text-[10px] uppercase tracking-wider text-neutral-400 font-semibold">
-                        Starts At
-                      </span>
-                      <span className="font-bold text-neutral-900 text-base">
-                        {item.price}
-                      </span>
-                    </div>
-                    <Link
-                      href={`father/${item.id}`}
-                      className="bg-neutral-950 text-white hover:bg-[#C5A059] hover:text-neutral-950 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center space-x-1.5 shadow-sm"
-                    >
-                      <span>Book</span>
-                      <ArrowRight size={14} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
+             <ProductCard
+                             key={item.id}
+                             product={item}
+                             isInWishlist={isInWishlist}
+                             toggleWishlist={toggleWishlist}
+                           />
             );
           })}
         </div>
