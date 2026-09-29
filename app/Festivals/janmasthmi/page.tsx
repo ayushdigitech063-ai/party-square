@@ -12,13 +12,16 @@ import {
 } from "lucide-react";
 import { useWishlist } from "../../context/wishlistcontext";
 import { useCart } from "@/app/context/CartContext";
-import { janmashtamiProducts, Product } from "@/app/data/janmashtamiProducts";
+import { janmashtamiProducts } from "@/app/data/janmashtamiProducts";
+import type { Product } from "@/app/types/product";
+import ProductCard from "@/app/components/ProductCard";
+
 
 // Home page par dikhne wale products ki sirf IDs (number). Data janmashtamiProducts.ts me hai.
-const CELEBRATION_IDS: number[] = [8, 9, 10, 11];
-const TEMPLE_IDS: number[] = [12, 13, 14, 15];
+const CELEBRATION_IDS: string[] = ['4', '9', '10', '11'];
+const TEMPLE_IDS: string[] = ['12', '13', '14', '15'];
 
-const getProductsByIds = (ids: number[]): Product[] =>
+const getProductsByIds = (ids: string[]): Product[] =>
   ids
     .map((id) => janmashtamiProducts.find((p) => p.id === id))
     .filter((p): p is Product => Boolean(p));
@@ -29,9 +32,9 @@ const formatPrice = (price: string) => `₹${Number(price).toLocaleString("en-IN
 const toWishlistItem = (product: Product) => ({
   id: product.id,
   name: product.name,
-  price: formatPrice(product.price),
+  price: product.price,
   image: product.image,
-  desc: product.desc,
+  desc: product.description,
 });
 
 export default function JanmashtamiPage() {
@@ -55,7 +58,7 @@ export default function JanmashtamiPage() {
       name: product.name,
       price: product.price,
       image: product.image,
-      desc: product.desc,
+      description: product.description,
       category: "Janmashtami Decoration",
     });
   };
@@ -110,79 +113,11 @@ export default function JanmashtamiPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {celebrationDecor.map((item) => {
-            const isLiked = isInWishlist(item.id);
             return (
-              <div
-                key={item.id}
-                className="bg-white border border-emerald-100 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-              >
-                <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                  />
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleWishlist(toWishlistItem(item));
-                    }}
-                    aria-label={
-                      isLiked ? "Remove from wishlist" : "Add to wishlist"
-                    }
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
-                  >
-                    <Heart
-                      size={16}
-                      className={
-                        isLiked
-                          ? "fill-rose-500 text-rose-500"
-                          : "text-gray-700"
-                      }
-                    />
-                  </button>
-                </div>
-                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                  <div className="space-y-1.5">
-                    <h3 className="font-serif text-base font-bold text-neutral-900">
-                      {item.name}
-                    </h3>
-                    <p className="text-neutral-500 text-xs leading-relaxed font-light">
-                      {item.desc}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">
-                        Starts At
-                      </span>
-                      <span className="text-neutral-900 font-bold text-base">
-                        {formatPrice(item.price)}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <button
-                        type="button"
-                        onClick={(e) => handleAddToCart(item, e)}
-                        title="Add to Cart"
-                        className="bg-emerald-100 hover:bg-emerald-200 text-emerald-900 p-2.5 rounded-full transition-colors cursor-pointer border border-emerald-200 shadow-sm"
-                      >
-                        <ShoppingBag size={16} />
-                      </button>
-                      <Link
-                        href={`/Festivals/janmasthmi/${item.id}`}
-                        className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-emerald-600 transition shadow flex items-center space-x-1"
-                      >
-                        <span>Explore</span>
-                        <ArrowRight size={14} />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProductCard   key={item.id}
+                           product={item}
+                           isInWishlist={isInWishlist}
+                            toggleWishlist={toggleWishlist}/>
             );
           })}
         </div>
@@ -265,76 +200,11 @@ export default function JanmashtamiPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {templeDecor.map((item) => {
-            const isLiked = isInWishlist(item.id);
             return (
-              <div
-                key={item.id}
-                className="bg-white border border-emerald-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-              >
-                <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                  />
-                  <span className="absolute top-3 left-3 bg-emerald-700 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">
-                    Mandir Special
-                  </span>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleWishlist(toWishlistItem(item));
-                    }}
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-500 shadow transition cursor-pointer"
-                  >
-                    <Heart
-                      size={18}
-                      className={
-                        isLiked
-                          ? "fill-rose-500 text-rose-500"
-                          : "text-gray-700"
-                      }
-                    />
-                  </button>
-                </div>
-                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                  <div className="space-y-1.5">
-                    <h3 className="font-serif text-base font-bold text-neutral-900">
-                      {item.name}
-                    </h3>
-                    <p className="text-neutral-500 text-xs leading-relaxed font-light">
-                      {item.desc}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">
-                        Starts At
-                      </span>
-                      <span className="text-neutral-900 font-bold text-base">
-                        {formatPrice(item.price)}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <button
-                        type="button"
-                        onClick={(e) => handleAddToCart(item, e)}
-                        title="Add to Cart"
-                        className="bg-emerald-100 hover:bg-emerald-200 text-emerald-900 p-2.5 rounded-full transition-colors cursor-pointer border border-emerald-200 shadow-sm"
-                      >
-                        <ShoppingBag size={16} />
-                      </button>
-                      <Link href={`/Festivals/janmasthmi/${item.id}`} className="bg-emerald-700 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-emerald-600 transition shadow flex items-center space-x-1">
-                        <span>Explore</span>
-                        <ArrowRight size={14} />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProductCard   key={item.id}
+                           product={item}
+                           isInWishlist={isInWishlist}
+                            toggleWishlist={toggleWishlist}/>
             );
           })}
         </div>
