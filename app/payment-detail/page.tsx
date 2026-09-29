@@ -1,842 +1,1034 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
+import React, { Suspense, useState } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  CreditCard,
+  Lock,
+  Smartphone,
+  Wallet,
+  Building2,
+  ShieldCheck,
+  Tag,
+  Loader2,
+  AlertCircle,
+} from "lucide-react";
+
+import { getProductById } from "@/app/data/productResolver";
+
+type PaymentMethod = "upi" | "card" | "netbanking" | "wallet";
 
 function PaymentContent() {
   const searchParams = useSearchParams();
-  const productId = searchParams.get("productId") || "";
- 
-  const productName = "Grand Floral Welcome Gate";
-  const productImage = "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80";
-  const productCategory ="Event Decoration";
-  const baseTotal = 18000;
 
-  const [selectedMethod, setSelectedMethod] = useState<"upi" | "card" | "netbanking" | "wallet">("upi");
+  // Product ID received from:
+  // /payment-detail?productId=product-id
+  const productId = searchParams.get("productId") || "";
+
+  // Get the actual selected product
+  const product = getProductById(productId);
+
+
+  // PAYMENT STATES
+
+  const [selectedMethod, setSelectedMethod] =
+    useState<PaymentMethod>("upi");
+
   const [upiId, setUpiId] = useState("");
+
   const [cardNumber, setCardNumber] = useState("");
   const [cardHolder, setCardHolder] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvv, setCvv] = useState("");
   const [saveCard, setSaveCard] = useState(false);
+
+  const [selectedBank, setSelectedBank] = useState("");
+
+  const [selectedWallet, setSelectedWallet] = useState("");
+
   const [couponCode, setCouponCode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   const [couponDiscount, setCouponDiscount] = useState(0);
-  const [couponMsg, setCouponMsg] = useState<{ text: string; error?: boolean } | null>(null);
+  const [couponMsg, setCouponMsg] = useState<{
+    text: string;
+    error?: boolean;
+  } | null>(null);
+
+  const [paymentMsg, setPaymentMsg] = useState<string | null>(null);
+
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
 
-  const deliveryCharge = 500;
-  const finalTotal = Math.max(0, baseTotal + deliveryCharge - couponDiscount);
+  // Generate transaction ID only once.
+  const [transactionId] = useState(
+    () => `TXN_PS_${Math.floor(100000 + Math.random() * 900000)}`
+  );
 
-  const handleApplyCoupon = (e: React.FormEvent) => {
-    e.preventDefault();
+  // ============================================================
+  // PRODUCT NOT FOUND
+  // ============================================================
+
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center px-4">
+        <div className="max-w-md w-full bg-white rounded-3xl border border-amber-100 shadow-sm p-8 text-center">
+          <div className="w-16 h-16 mx-auto rounded-full bg-amber-50 flex items-center justify-center mb-5">
+            <AlertCircle size={30} className="text-amber-600" />
+          </div>
+
+          <h1 className="text-2xl font-bold text-[#17130B]">
+            Product Not Found
+          </h1>
+
+          <p className="text-sm text-[#766F65] mt-3 leading-relaxed">
+            The selected decoration package could not be found. Please return
+            to the products page and select a package again.
+          </p>
+
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center gap-2 mt-6 px-6 py-3 rounded-full bg-[#C5A059] text-white text-sm font-semibold bg-[#8B3F05]
+
+                      hover:bg-[#713200] transition"
+          >
+            <ArrowLeft size={16} />
+            Back to Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // ============================================================
+  // DYNAMIC PRODUCT INFORMATION
+  // ============================================================
+
+  const productName = product.name;
+  const productImage = product.image;
+
+  const productCategory =
+    product.subcategory || product.category || "Event Decoration";
+
+  const baseTotal = product.price;
+
+  // ============================================================
+  // CHARGES
+  // ============================================================
+
+  const deliveryCharge = 500;
+
+  const finalTotal = Math.max(
+    0,
+    baseTotal + deliveryCharge - couponDiscount
+  );
+
+  
+  const applyCoupon = () => {
     const code = couponCode.trim().toUpperCase();
+
+    setCouponMsg(null);
+
     if (!code) {
-      setCouponMsg({ text: "Please enter a valid code", error: true });
+      setCouponMsg({
+        text: "Please enter a coupon code.",
+        error: true,
+      });
       return;
     }
-    if (code === "WELCOME1000" || code === "FESTIVE1000") {
-      setAppliedCoupon(code);
-      setCouponDiscount(1000);
-      setCouponMsg({ text: `Coupon '${code}' applied! ₹1,000 saved.` });
-    } else if (code === "PARTY500" || code === "FLORAL500") {
-      setAppliedCoupon(code);
-      setCouponDiscount(500);
-      setCouponMsg({ text: `Coupon '${code}' applied! ₹500 saved.` });
-    } else {
-      setCouponMsg({ text: "Invalid or expired coupon code", error: true });
+
+    const coupons: Record<string, number> = {
+      WELCOME1000: 1000,
+      FESTIVE1000: 1000,
+      PARTY500: 500,
+      FLORAL500: 500,
+    };
+
+    const discount = coupons[code];
+
+    if (!discount) {
+      setAppliedCoupon(null);
+      setCouponDiscount(0);
+
+      setCouponMsg({
+        text: "Invalid coupon code.",
+        error: true,
+      });
+
+      return;
     }
+
+    setAppliedCoupon(code);
+    setCouponDiscount(discount);
+
+    setCouponMsg({
+      text: `Coupon applied successfully. You saved ₹${discount.toLocaleString(
+        "en-IN"
+      )}.`,
+    });
   };
 
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponDiscount(0);
+    setCouponCode("");
+
+    setCouponMsg(null);
+  };
+
+  // ============================================================
+  // PAYMENT VALIDATION
+  // ============================================================
+
+  const validatePayment = (): string | null => {
+    if (selectedMethod === "upi") {
+      if (!upiId.trim()) {
+        return "Please enter your UPI ID.";
+      }
+
+      if (!/^[\w.-]+@[\w.-]+$/.test(upiId.trim())) {
+        return "Please enter a valid UPI ID.";
+      }
+    }
+
+    if (selectedMethod === "card") {
+      const digits = cardNumber.replace(/\s/g, "");
+
+      if (!/^\d{12,19}$/.test(digits)) {
+        return "Please enter a valid card number.";
+      }
+
+      if (!cardHolder.trim()) {
+        return "Please enter the cardholder name.";
+      }
+
+      if (!/^(0[1-9]|1[0-2])\s*\/\s*\d{2}$/.test(expiry.trim())) {
+        return "Please enter expiry as MM / YY.";
+      }
+
+      if (!/^\d{3,4}$/.test(cvv)) {
+        return "Please enter a valid CVV.";
+      }
+    }
+
+    if (selectedMethod === "netbanking") {
+      if (!selectedBank) {
+        return "Please select your bank.";
+      }
+    }
+
+    if (selectedMethod === "wallet") {
+      if (!selectedWallet) {
+        return "Please select a wallet.";
+      }
+    }
+
+    return null;
+  };
+
+  // ============================================================
+  // PAY NOW
+  // ============================================================
+
   const handlePayNow = () => {
+    setPaymentMsg(null);
+
+    const validationError = validatePayment();
+
+    if (validationError) {
+      setPaymentMsg(validationError);
+      return;
+    }
+
     setIsProcessing(true);
+
+    // Demo payment processing.
+    // Replace this with your real payment gateway later.
     setTimeout(() => {
       setIsProcessing(false);
       setPaymentSuccess(true);
     }, 1200);
   };
 
-  return (
-    <div
-      style={{
-        backgroundColor: "#FAF7F2",
-        color: "#17130B",
-        minHeight: "100vh",
-        fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-      }}
-      className="w-full pb-16"
-    >
-      {/* HEADER */}
-      <header
-        style={{
-          backgroundColor: "#FFFFFF",
-          borderBottom: "1px solid #E8D8B5",
-        }}
-        className="w-full sticky top-0 z-30 shadow-xs"
-      >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span
-              style={{
-                backgroundColor: "#FFF8E7",
-                color: "#8B3F00",
-                borderColor: "#E8D8B5",
-              }}
-              className="w-9 h-9 rounded-full border flex items-center justify-center font-bold text-lg"
-            >
-              ✦
-            </span>
-            <div>
-              <h1 style={{ color: "#17130B" }} className="text-xl sm:text-2xl font-bold tracking-tight">
-                Payment Details
-              </h1>
-              <p style={{ color: "#766F65" }} className="text-xs">
-                Party Square Premium Event Decor
-              </p>
+  // ============================================================
+  // SUCCESS SCREEN
+  // ============================================================
+
+  if (paymentSuccess) {
+    return (
+      <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center px-4 py-10">
+        <div className="max-w-xl w-full bg-white rounded-3xl shadow-sm border border-amber-100 p-8 md:p-10 text-center">
+          <div className="w-20 h-20 mx-auto rounded-full bg-green-50 flex items-center justify-center mb-6">
+            <CheckCircle2
+              size={42}
+              className="text-green-600"
+            />
+          </div>
+
+          <p className="text-xs uppercase tracking-[0.2em] text-[#8B3F05] font-bold mb-2">
+            Payment Successful
+          </p>
+
+          <h1 className="text-3xl md:text-4xl font-bold text-[#17130B]">
+            Your Booking is Confirmed
+          </h1>
+
+          <p className="text-sm text-[#766F65] mt-4 leading-relaxed">
+            Thank you for choosing Party Square. Your payment has been
+            successfully processed.
+          </p>
+
+          <div className="mt-8 rounded-2xl bg-[#FAF7F2] border border-amber-100 p-5 text-left">
+            <div className="flex items-center justify-between gap-4 py-2">
+              <span className="text-sm text-[#766F65]">
+                Product
+              </span>
+
+              <strong className="text-sm text-[#17130B] text-right">
+                {productName}
+              </strong>
+            </div>
+
+            <div className="flex items-center justify-between gap-4 py-2">
+              <span className="text-sm text-[#766F65]">
+                Amount Paid
+              </span>
+
+              <strong className="text-sm text-[#17130B]">
+                ₹{finalTotal.toLocaleString("en-IN")}
+              </strong>
+            </div>
+
+            <div className="flex items-center justify-between gap-4 py-2">
+              <span className="text-sm text-[#766F65]">
+                Payment Method
+              </span>
+
+              <strong className="text-sm text-[#17130B] uppercase">
+                {selectedMethod}
+              </strong>
+            </div>
+
+            <div className="flex items-center justify-between gap-4 py-2">
+              <span className="text-sm text-[#766F65]">
+                Transaction ID
+              </span>
+
+              <span className="font-mono text-xs font-medium text-[#17130B]">
+                {transactionId}
+              </span>
             </div>
           </div>
 
-          <div
-            style={{
-              backgroundColor: "#FFF8E7",
-              color: "#8B3F00",
-              border: "1px solid #E8D8B5",
-            }}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium shadow-xs"
-          >
-            <span>🔒</span>
-            <span>Secure Checkout</span>
+          <div className="flex flex-col sm:flex-row gap-3 mt-7">
+            <Link
+              href="/"
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-white font-semibold text-sm bg-[#8B3F05]
+
+                      hover:bg-[#713200] transition"
+            >
+              Back to Home
+            </Link>
+
+            <Link
+              href="/services/birthday"
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border border-amber-200 text-[#17130B] font-semibold text-sm hover:bg-amber-50 transition"
+            >
+              Explore More
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ============================================================
+  // MAIN PAYMENT PAGE
+  // ============================================================
+
+  return (
+    <div className="min-h-screen bg-[#FAF7F2] text-[#17130B]">
+      {/* ========================================================
+          HEADER
+      ========================================================= */}
+
+      <header className="bg-white border-b border-amber-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="h-20 flex items-center justify-between">
+            <Link
+              href="/"
+              className="flex items-center gap-2 text-sm font-semibold text-[#8B3F05] hover:text-#713200 transition"
+            >
+              <ArrowLeft size={18} />
+              Back
+            </Link>
+
+            <div className="text-center">
+              <h1 className="text-xl sm:text-2xl font-bold text-[#8B3F05]">
+                Secure Checkout
+              </h1>
+
+              <p className="text-xs text-[#766F65] mt-1 text-[#8B3F05]">
+                Complete your booking securely
+              </p>
+            </div>
+
+            <div className="flex items-center gap-1.5 text-xs text-[#766F65]">
+              <Lock size={14} />
+              Secure
+            </div>
           </div>
         </div>
       </header>
 
-      {/* CHECKOUT PROGRESS */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-4">
-        <div
-          style={{
-            backgroundColor: "#FFFFFF",
-            border: "1px solid #E8D8B5",
-          }}
-          className="rounded-2xl p-4 sm:p-5 shadow-xs max-w-2xl mx-auto"
-        >
-          <div className="flex items-center justify-between text-xs sm:text-sm font-medium">
-            {/* Step 1 */}
-            <div className="flex items-center gap-2">
-              <span
-                style={{
-                  backgroundColor: "#FAF7F2",
-                  color: "#766F65",
-                  border: "1px solid #E8D8B5",
-                }}
-                className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold"
-              >
-                ✓
-              </span>
-              <span style={{ color: "#766F65" }} className="xs:inline">
-                Booking Details
-              </span>
-            </div>
+      {/* ========================================================
+          CONTENT
+      ========================================================= */}
 
-            <div style={{ color: "#E8D8B5" }} className="text-lg font-light px-1">
-              →
-            </div>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-7">
+          {/* ====================================================
+              LEFT SIDE
+          ==================================================== */}
 
-            {/* Step 2 - Active */}
-            <div className="flex items-center gap-2">
-              <span
-                style={{
-                  backgroundColor: "#8B3F00",
-                  color: "#FFFFFF",
-                }}
-                className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold shadow-xs"
-              >
-                2
-              </span>
-              <span style={{ color: "#8B3F00" }} className="font-bold underline decoration-2 underline-offset-4">
-                Payment
-              </span>
-            </div>
-
-            <div style={{ color: "#E8D8B5" }} className="text-lg font-light px-1">
-              →
-            </div>
-
-            {/* Step 3 */}
-            <div className="flex items-center gap-2">
-              <span
-                style={{
-                  backgroundColor: "#FAF7F2",
-                  color: "#766F65",
-                  border: "1px solid #E8D8B5",
-                }}
-                className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold"
-              >
-                3
-              </span>
-              <span style={{ color: "#766F65" }} className="xs:inline">
-                Confirmation
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* MAIN TWO-COLUMN CONTAINER */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-4">
-        {paymentSuccess ? (
-          <div
-            style={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #E8D8B5",
-            }}
-            className="rounded-3xl p-8 sm:p-12 text-center max-w-xl mx-auto shadow-sm mt-8"
-          >
-            <div
-              style={{
-                backgroundColor: "#FFF8E7",
-                borderColor: "#F4A300",
-                color: "#8B3F00",
-              }}
-              className="w-20 h-20 rounded-full border-2 mx-auto flex items-center justify-center text-3xl mb-4"
-            >
-              ✓
-            </div>
-            <h2 style={{ color: "#17130B" }} className="text-2xl font-bold mb-2">
-              Payment Confirmed!
-            </h2>
-            <p style={{ color: "#766F65" }} className="text-sm mb-6">
-              Thank you for booking with Party Square. Your order for <strong>{productName}</strong> has been placed successfully.
-            </p>
-            <div
-              style={{
-                backgroundColor: "#FAF7F2",
-                border: "1px dashed #E8D8B5",
-              }}
-              className="p-4 rounded-xl text-left text-sm mb-6 space-y-1"
-            >
-              <div className="flex justify-between">
-                <span style={{ color: "#766F65" }}>Transaction ID:</span>
-                <span className="font-mono font-medium">TXN_PS_{Math.floor(100000 + Math.random() * 900000)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span style={{ color: "#766F65" }}>Amount Paid:</span>
-                <span className="font-bold text-[#8B3F00]">₹{finalTotal.toLocaleString("en-IN")}</span>
-              </div>
-              <div className="flex justify-between">
-                <span style={{ color: "#766F65" }}>Payment Mode:</span>
-                <span className="capitalize">{selectedMethod}</span>
-              </div>
-            </div>
-            <button
-              onClick={() => setPaymentSuccess(false)}
-              style={{
-                backgroundColor: "#8B3F00",
-                color: "#FFFFFF",
-              }}
-              className="px-6 py-2.5 rounded-xl font-medium text-sm hover:opacity-90 transition-opacity"
-            >
-              Return to Checkout Demo
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* LEFT COLUMN: PAYMENT DETAILS */}
-            <div className="lg:col-span-7 space-y-6">
-              <div
-                style={{
-                  backgroundColor: "#FFFFFF",
-                  border: "1px solid #E8D8B5",
-                }}
-                className="rounded-3xl p-6 sm:p-8 shadow-xs"
-              >
-                {/* Title */}
-                <div className="mb-6">
-                  <h2 style={{ color: "#17130B" }} className="text-xl sm:text-2xl font-bold">
-                    Payment Details
-                  </h2>
-                  <p style={{ color: "#766F65" }} className="text-sm mt-1">
-                    Choose your preferred payment method
-                  </p>
-                </div>
-
-                {/* Payment Methods Selection */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-                  {/* UPI */}
-                  <label
-                    onClick={() => setSelectedMethod("upi")}
-                    style={{
-                      backgroundColor: selectedMethod === "upi" ? "#FFF8E7" : "#FFFFFF",
-                      borderColor: selectedMethod === "upi" ? "#8B3F00" : "#E8D8B5",
-                      cursor: "pointer",
-                    }}
-                    className="flex items-center gap-3 p-4 rounded-2xl border-2 transition-all shadow-2xs"
-                  >
-                    <span
-                      style={{
-                        borderColor: selectedMethod === "upi" ? "#8B3F00" : "#766F65",
-                        backgroundColor: selectedMethod === "upi" ? "#8B3F00" : "transparent",
-                      }}
-                      className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
-                    >
-                      {selectedMethod === "upi" && <span className="w-2 h-2 rounded-full bg-white" />}
-                    </span>
-                    <div className="flex-1">
-                      <div className="font-semibold text-sm" style={{ color: "#17130B" }}>
-                        UPI
-                      </div>
-                      <div className="text-xs" style={{ color: "#766F65" }}>
-                        GPay, PhonePe, Paytm, BHIM
-                      </div>
-                    </div>
-                    <span className="text-lg">⚡</span>
-                  </label>
-
-                  {/* Credit / Debit Card */}
-                  <label
-                    onClick={() => setSelectedMethod("card")}
-                    style={{
-                      backgroundColor: selectedMethod === "card" ? "#FFF8E7" : "#FFFFFF",
-                      borderColor: selectedMethod === "card" ? "#8B3F00" : "#E8D8B5",
-                      cursor: "pointer",
-                    }}
-                    className="flex items-center gap-3 p-4 rounded-2xl border-2 transition-all shadow-2xs"
-                  >
-                    <span
-                      style={{
-                        borderColor: selectedMethod === "card" ? "#8B3F00" : "#766F65",
-                        backgroundColor: selectedMethod === "card" ? "#8B3F00" : "transparent",
-                      }}
-                      className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
-                    >
-                      {selectedMethod === "card" && <span className="w-2 h-2 rounded-full bg-white" />}
-                    </span>
-                    <div className="flex-1">
-                      <div className="font-semibold text-sm" style={{ color: "#17130B" }}>
-                        Credit / Debit Card
-                      </div>
-                      <div className="text-xs" style={{ color: "#766F65" }}>
-                        Visa, Mastercard, RuPay
-                      </div>
-                    </div>
-                    <span className="text-lg">💳</span>
-                  </label>
-
-                  {/* Net Banking */}
-                  <label
-                    onClick={() => setSelectedMethod("netbanking")}
-                    style={{
-                      backgroundColor: selectedMethod === "netbanking" ? "#FFF8E7" : "#FFFFFF",
-                      borderColor: selectedMethod === "netbanking" ? "#8B3F00" : "#E8D8B5",
-                      cursor: "pointer",
-                    }}
-                    className="flex items-center gap-3 p-4 rounded-2xl border-2 transition-all shadow-2xs"
-                  >
-                    <span
-                      style={{
-                        borderColor: selectedMethod === "netbanking" ? "#8B3F00" : "#766F65",
-                        backgroundColor: selectedMethod === "netbanking" ? "#8B3F00" : "transparent",
-                      }}
-                      className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
-                    >
-                      {selectedMethod === "netbanking" && <span className="w-2 h-2 rounded-full bg-white" />}
-                    </span>
-                    <div className="flex-1">
-                      <div className="font-semibold text-sm" style={{ color: "#17130B" }}>
-                        Net Banking
-                      </div>
-                      <div className="text-xs" style={{ color: "#766F65" }}>
-                        All major Indian banks
-                      </div>
-                    </div>
-                    <span className="text-lg">🏛️</span>
-                  </label>
-
-                  {/* Wallet */}
-                  <label
-                    onClick={() => setSelectedMethod("wallet")}
-                    style={{
-                      backgroundColor: selectedMethod === "wallet" ? "#FFF8E7" : "#FFFFFF",
-                      borderColor: selectedMethod === "wallet" ? "#8B3F00" : "#E8D8B5",
-                      cursor: "pointer",
-                    }}
-                    className="flex items-center gap-3 p-4 rounded-2xl border-2 transition-all shadow-2xs"
-                  >
-                    <span
-                      style={{
-                        borderColor: selectedMethod === "wallet" ? "#8B3F00" : "#766F65",
-                        backgroundColor: selectedMethod === "wallet" ? "#8B3F00" : "transparent",
-                      }}
-                      className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
-                    >
-                      {selectedMethod === "wallet" && <span className="w-2 h-2 rounded-full bg-white" />}
-                    </span>
-                    <div className="flex-1">
-                      <div className="font-semibold text-sm" style={{ color: "#17130B" }}>
-                        Wallet
-                      </div>
-                      <div className="text-xs" style={{ color: "#766F65" }}>
-                        Paytm, Amazon Pay, Mobikwik
-                      </div>
-                    </div>
-                    <span className="text-lg">👛</span>
-                  </label>
-                </div>
-
-                {/* DYNAMIC METHOD ACCORDION / SUB-SECTION */}
-                {selectedMethod === "upi" && (
-                  <div
-                    style={{
-                      backgroundColor: "#FFF8E7",
-                      borderColor: "#E8D8B5",
-                    }}
-                    className="p-4 sm:p-5 rounded-2xl border mb-6 space-y-3"
-                  >
-                    <label className="block text-xs font-semibold uppercase tracking-wider" style={{ color: "#8B3F00" }}>
-                      Instant UPI Payment
-                    </label>
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      <input
-                        type="text"
-                        value={upiId}
-                        onChange={(e) => setUpiId(e.target.value)}
-                        placeholder="Enter UPI ID (e.g. yourname@okhdfcbank)"
-                        style={{
-                          backgroundColor: "#FFFFFF",
-                          borderColor: "#E8D8B5",
-                          color: "#17130B",
-                        }}
-                        className="flex-1 px-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-[#8B3F00]"
-                      />
-                      <button
-                        type="button"
-                        style={{
-                          backgroundColor: "#8B3F00",
-                          color: "#FFFFFF",
-                        }}
-                        className="px-4 py-2.5 rounded-xl font-medium text-xs sm:text-sm hover:opacity-90"
-                      >
-                        Verify & Pay
-                      </button>
-                    </div>
-                    <div className="flex items-center gap-2 pt-1 text-xs" style={{ color: "#766F65" }}>
-                      <span>Or scan via UPI app on the next screen.</span>
-                    </div>
-                  </div>
-                )}
-
-                {selectedMethod === "netbanking" && (
-                  <div
-                    style={{
-                      backgroundColor: "#FFF8E7",
-                      borderColor: "#E8D8B5",
-                    }}
-                    className="p-4 sm:p-5 rounded-2xl border mb-6 space-y-3"
-                  >
-                    <label className="block text-xs font-semibold uppercase tracking-wider" style={{ color: "#8B3F00" }}>
-                      Select Bank
-                    </label>
-                    <select
-                      style={{
-                        backgroundColor: "#FFFFFF",
-                        borderColor: "#E8D8B5",
-                        color: "#17130B",
-                      }}
-                      className="w-full px-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-[#8B3F00]"
-                    >
-                      <option>HDFC Bank</option>
-                      <option>State Bank of India (SBI)</option>
-                      <option>ICICI Bank</option>
-                      <option>Axis Bank</option>
-                      <option>Kotak Mahindra Bank</option>
-                      <option>Other Banks</option>
-                    </select>
-                  </div>
-                )}
-
-                {selectedMethod === "wallet" && (
-                  <div
-                    style={{
-                      backgroundColor: "#FFF8E7",
-                      borderColor: "#E8D8B5",
-                    }}
-                    className="p-4 sm:p-5 rounded-2xl border mb-6 space-y-3"
-                  >
-                    <label className="block text-xs font-semibold uppercase tracking-wider" style={{ color: "#8B3F00" }}>
-                      Choose Wallet
-                    </label>
-                    <div className="grid grid-cols-2 gap-2 text-xs">
-                      {["Paytm Wallet", "Amazon Pay", "PhonePe Wallet", "MobiKwik"].map((w, idx) => (
-                        <div
-                          key={idx}
-                          style={{
-                            backgroundColor: "#FFFFFF",
-                            borderColor: "#E8D8B5",
-                          }}
-                          className="p-3 rounded-xl border font-medium text-center hover:border-[#8B3F00] cursor-pointer"
-                        >
-                          {w}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* CARD PAYMENT AREA */}
-                <div
-                  style={{
-                    backgroundColor: "#FAF7F2",
-                    borderColor: "#E8D8B5",
-                  }}
-                  className="p-5 sm:p-6 rounded-2xl border space-y-4"
-                >
-                  <div className="flex items-center justify-between">
-                    <h3 style={{ color: "#17130B" }} className="text-base font-bold flex items-center gap-2">
-                      <span>Card Payment Form</span>
-                    </h3>
-                    <div className="flex gap-1.5 text-xs font-semibold px-2 py-0.5 rounded bg-white border border-[#E8D8B5] text-[#766F65]">
-                      <span>VISA</span> • <span>MC</span> • <span>RUPAY</span>
-                    </div>
-                  </div>
-
-                  {/* Card Number */}
-                  <div>
-                    <label style={{ color: "#17130B" }} className="block text-xs font-semibold mb-1.5">
-                      Card Number
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        maxLength={19}
-                        value={cardNumber}
-                        onChange={(e) => setCardNumber(e.target.value)}
-                        placeholder="1234 5678 9012 3456"
-                        style={{
-                          backgroundColor: "#FFFFFF",
-                          borderColor: "#E8D8B5",
-                          color: "#17130B",
-                        }}
-                        className="w-full px-4 py-3 rounded-xl border text-sm font-mono tracking-wider focus:outline-none focus:ring-2 focus:ring-[#8B3F00]"
-                      />
-                      <span className="absolute right-3.5 top-3 text-sm text-[#766F65]">💳</span>
-                    </div>
-                  </div>
-
-                  {/* Cardholder Name */}
-                  <div>
-                    <label style={{ color: "#17130B" }} className="block text-xs font-semibold mb-1.5">
-                      Cardholder Name
-                    </label>
-                    <input
-                      type="text"
-                      value={cardHolder}
-                      onChange={(e) => setCardHolder(e.target.value)}
-                      placeholder="Enter cardholder name"
-                      style={{
-                        backgroundColor: "#FFFFFF",
-                        borderColor: "#E8D8B5",
-                        color: "#17130B",
-                      }}
-                      className="w-full px-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-[#8B3F00]"
-                    />
-                  </div>
-
-                  {/* Expiry Date and CVV */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label style={{ color: "#17130B" }} className="block text-xs font-semibold mb-1.5">
-                        Expiry Date
-                      </label>
-                      <input
-                        type="text"
-                        maxLength={5}
-                        value={expiry}
-                        onChange={(e) => setExpiry(e.target.value)}
-                        placeholder="MM / YY"
-                        style={{
-                          backgroundColor: "#FFFFFF",
-                          borderColor: "#E8D8B5",
-                          color: "#17130B",
-                        }}
-                        className="w-full px-4 py-3 rounded-xl border text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#8B3F00]"
-                      />
-                    </div>
-                    <div>
-                      <label style={{ color: "#17130B" }} className="block text-xs font-semibold mb-1.5">
-                        CVV
-                      </label>
-                      <input
-                        type="password"
-                        maxLength={4}
-                        value={cvv}
-                        onChange={(e) => setCvv(e.target.value)}
-                        placeholder="CVV"
-                        style={{
-                          backgroundColor: "#FFFFFF",
-                          borderColor: "#E8D8B5",
-                          color: "#17130B",
-                        }}
-                        className="w-full px-4 py-3 rounded-xl border text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#8B3F00]"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Save Card Checkbox */}
-                  <label className="flex items-center gap-2.5 pt-2 cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      checked={saveCard}
-                      onChange={(e) => setSaveCard(e.target.checked)}
-                      className="w-4 h-4 rounded accent-[#8B3F00]"
-                    />
-                    <span style={{ color: "#766F65" }} className="text-xs sm:text-sm">
-                      Save card for future payments
-                    </span>
-                  </label>
-
-                  {/* Security message */}
-                  <div
-                    style={{
-                      borderTop: "1px solid #E8D8B5",
-                      color: "#766F65",
-                    }}
-                    className="pt-3 flex items-center gap-2 text-xs"
-                  >
-                    <span>🔒</span>
-                    <span>Your payment information is encrypted and secure.</span>
-                  </div>
-                </div>
-
-                <div style={{ color: "#766F65" }} className="text-xs text-center mt-4">
-                  <em>This is a visual / demo page only. No real payment processing occurs.</em>
-                </div>
-              </div>
-            </div>
-
-            {/* RIGHT COLUMN: ORDER SUMMARY */}
-            <div className="lg:col-span-5 space-y-6">
-              {/* ORDER SUMMARY CARD */}
-              <div
-                style={{
-                  backgroundColor: "#FFFFFF",
-                  border: "1px solid #E8D8B5",
-                }}
-                className="rounded-3xl p-6 sm:p-7 shadow-xs"
-              >
-                <h2 style={{ color: "#17130B" }} className="text-xl font-bold mb-5 pb-3 border-b border-[#E8D8B5]">
-                  Order Summary
+          <div className="space-y-6">
+            {/* Payment Methods */}
+            <section className="bg-white rounded-3xl border border-amber-100 shadow-sm overflow-hidden">
+              <div className="p-6 border-b border-amber-100">
+                <h2 className="text-lg font-bold">
+                  Choose Payment Method
                 </h2>
 
-                {/* Product details */}
-                <div
-                  style={{
-                    backgroundColor: "#FAF7F2",
-                    borderColor: "#E8D8B5",
-                  }}
-                  className="p-4 rounded-2xl border flex items-center gap-4 mb-5"
-                >
-                  <img
-                    src={productImage}
-                    alt={productName}
-                    style={{ borderColor: "#E8D8B5" }}
-                    className="w-14 h-14 rounded-xl border object-cover shrink-0 shadow-2xs"
+                <p className="text-xs text-[#766F65] mt-1">
+                  Select your preferred payment option
+                </p>
+              </div>
+
+              <div className="p-4 sm:p-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {/* UPI */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedMethod("upi");
+                      setPaymentMsg(null);
+                    }}
+                    className={`rounded-2xl border p-4 text-left transition ${
+                      selectedMethod === "upi"
+                        ? "border-amber-500 bg-amber-50"
+                        : "border-amber-100 hover:border-amber-300"
+                    }`}
+                  >
+                    <Smartphone
+                      size={22}
+                      className={
+                        selectedMethod === "upi"
+                          ? "text-amber-600"
+                          : "text-[#766F65]"
+                      }
+                    />
+
+                    <p className="text-sm font-semibold mt-3">
+                      UPI
+                    </p>
+
+                    <p className="text-[11px] text-[#766F65] mt-1">
+                      GPay, PhonePe
+                    </p>
+                  </button>
+
+                  {/* CARD */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedMethod("card");
+                      setPaymentMsg(null);
+                    }}
+                    className={`rounded-2xl border p-4 text-left transition ${
+                      selectedMethod === "card"
+                        ? "border-amber-500 bg-amber-50"
+                        : "border-amber-100 hover:border-amber-300"
+                    }`}
+                  >
+                    <CreditCard
+                      size={22}
+                      className={
+                        selectedMethod === "card"
+                          ? "text-amber-600"
+                          : "text-[#766F65]"
+                      }
+                    />
+
+                    <p className="text-sm font-semibold mt-3">
+                      Card
+                    </p>
+
+                    <p className="text-[11px] text-[#766F65] mt-1">
+                      Credit / Debit
+                    </p>
+                  </button>
+
+                  {/* NET BANKING */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedMethod("netbanking");
+                      setPaymentMsg(null);
+                    }}
+                    className={`rounded-2xl border p-4 text-left transition ${
+                      selectedMethod === "netbanking"
+                        ? "border-amber-500 bg-amber-50"
+                        : "border-amber-100 hover:border-amber-300"
+                    }`}
+                  >
+                    <Building2
+                      size={22}
+                      className={
+                        selectedMethod === "netbanking"
+                          ? "text-amber-600"
+                          : "text-[#766F65]"
+                      }
+                    />
+
+                    <p className="text-sm font-semibold mt-3">
+                      Net Banking
+                    </p>
+
+                    <p className="text-[11px] text-[#766F65] mt-1">
+                      All major banks
+                    </p>
+                  </button>
+
+                  {/* WALLET */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedMethod("wallet");
+                      setPaymentMsg(null);
+                    }}
+                    className={`rounded-2xl border p-4 text-left transition ${
+                      selectedMethod === "wallet"
+                        ? "border-amber-500 bg-amber-50"
+                        : "border-amber-100 hover:border-amber-300"
+                    }`}
+                  >
+                    <Wallet
+                      size={22}
+                      className={
+                        selectedMethod === "wallet"
+                          ? "text-amber-600"
+                          : "text-[#766F65]"
+                      }
+                    />
+
+                    <p className="text-sm font-semibold mt-3">
+                      Wallet
+                    </p>
+
+                    <p className="text-[11px] text-[#766F65] mt-1">
+                      Paytm, Amazon Pay
+                    </p>
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            {/* ==================================================
+                PAYMENT DETAILS
+            ================================================== */}
+
+            <section className="bg-white rounded-3xl border border-amber-100 shadow-sm p-6 sm:p-7">
+              {/* UPI */}
+              {selectedMethod === "upi" && (
+                <div>
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                      <Smartphone
+                        size={20}
+                        className="text-amber-600"
+                      />
+                    </div>
+
+                    <div>
+                      <h3 className="font-bold">
+                        Pay with UPI
+                      </h3>
+
+                      <p className="text-xs text-[#766F65]">
+                        Enter your UPI ID to continue
+                      </p>
+                    </div>
+                  </div>
+
+                  <label className="block text-sm font-medium mb-2">
+                    UPI ID
+                  </label>
+
+                  <input
+                    type="text"
+                    value={upiId}
+                    onChange={(e) => {
+                      setUpiId(e.target.value);
+                      setPaymentMsg(null);
+                    }}
+                    placeholder="example@upi"
+                    className="w-full h-12 rounded-xl border border-amber-100 bg-[#FAF7F2] px-4 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
                   />
 
-                  <div className="flex-1 min-w-0">
-                    <span className="text-[10px] uppercase font-bold text-[#8B3F00] block mb-0.5">
+                  <p className="text-xs text-[#766F65] mt-3">
+                    Example: yourname@okaxis, yourname@ybl,
+                    yourname@paytm
+                  </p>
+                </div>
+              )}
+
+              {/* CARD */}
+              {selectedMethod === "card" && (
+                <div>
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                      <CreditCard
+                        size={20}
+                        className="text-amber-600"
+                      />
+                    </div>
+
+                    <div>
+                      <h3 className="font-bold">
+                        Card Details
+                      </h3>
+
+                      <p className="text-xs text-[#766F65]">
+                        Enter your card information
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Card Number
+                      </label>
+
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        maxLength={19}
+                        value={cardNumber}
+                        onChange={(e) => {
+                          const value = e.target.value
+                            .replace(/\D/g, "")
+                            .slice(0, 19);
+
+                          const formatted = value.replace(
+                            /(.{4})/g,
+                            "$1 "
+                          );
+
+                          setCardNumber(formatted.trim());
+                          setPaymentMsg(null);
+                        }}
+                        placeholder="1234 5678 9012 3456"
+                        className="w-full h-12 rounded-xl border border-amber-100 bg-[#FAF7F2] px-4 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Card Holder Name
+                      </label>
+
+                      <input
+                        type="text"
+                        value={cardHolder}
+                        onChange={(e) => {
+                          setCardHolder(e.target.value);
+                          setPaymentMsg(null);
+                        }}
+                        placeholder="Name on card"
+                        className="w-full h-12 rounded-xl border border-amber-100 bg-[#FAF7F2] px-4 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">
+                          Expiry
+                        </label>
+
+                        <input
+                          type="text"
+                          maxLength={7}
+                          value={expiry}
+                          onChange={(e) => {
+                            let value = e.target.value.replace(
+                              /\D/g,
+                              ""
+                            );
+
+                            if (value.length > 2) {
+                              value =
+                                value.slice(0, 2) +
+                                " / " +
+                                value.slice(2, 4);
+                            }
+
+                            setExpiry(value);
+                            setPaymentMsg(null);
+                          }}
+                          placeholder="MM / YY"
+                          className="w-full h-12 rounded-xl border border-amber-100 bg-[#FAF7F2] px-4 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium mb-2">
+                          CVV
+                        </label>
+
+                        <input
+                          type="password"
+                          inputMode="numeric"
+                          maxLength={4}
+                          value={cvv}
+                          onChange={(e) => {
+                            setCvv(
+                              e.target.value
+                                .replace(/\D/g, "")
+                                .slice(0, 4)
+                            );
+
+                            setPaymentMsg(null);
+                          }}
+                          placeholder="•••"
+                          className="w-full h-12 rounded-xl border border-amber-100 bg-[#FAF7F2] px-4 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                        />
+                      </div>
+                    </div>
+
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={saveCard}
+                        onChange={(e) =>
+                          setSaveCard(e.target.checked)
+                        }
+                        className="accent-amber-600"
+                      />
+
+                      <span className="text-xs text-[#766F65]">
+                        Save card for future payments
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              )}
+
+              {/* NET BANKING */}
+              {selectedMethod === "netbanking" && (
+                <div>
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                      <Building2
+                        size={20}
+                        className="text-amber-600"
+                      />
+                    </div>
+
+                    <div>
+                      <h3 className="font-bold">
+                        Net Banking
+                      </h3>
+
+                      <p className="text-xs text-[#766F65]">
+                        Select your bank
+                      </p>
+                    </div>
+                  </div>
+
+                  <label className="block text-sm font-medium mb-2">
+                    Select Bank
+                  </label>
+
+                  <select
+                    value={selectedBank}
+                    onChange={(e) => {
+                      setSelectedBank(e.target.value);
+                      setPaymentMsg(null);
+                    }}
+                    className="w-full h-12 rounded-xl border border-amber-100 bg-[#FAF7F2] px-4 text-sm outline-none focus:border-amber-400"
+                  >
+                    <option value="">
+                      Select your bank
+                    </option>
+
+                    <option value="sbi">
+                      State Bank of India
+                    </option>
+
+                    <option value="hdfc">
+                      HDFC Bank
+                    </option>
+
+                    <option value="icici">
+                      ICICI Bank
+                    </option>
+
+                    <option value="axis">
+                      Axis Bank
+                    </option>
+
+                    <option value="kotak">
+                      Kotak Mahindra Bank
+                    </option>
+
+                    <option value="pnb">
+                      Punjab National Bank
+                    </option>
+                  </select>
+                </div>
+              )}
+
+              {/* WALLET */}
+              {selectedMethod === "wallet" && (
+                <div>
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                      <Wallet
+                        size={20}
+                        className="text-amber-600"
+                      />
+                    </div>
+
+                    <div>
+                      <h3 className="font-bold">
+                        Select Wallet
+                      </h3>
+
+                      <p className="text-xs text-[#766F65]">
+                        Choose your preferred wallet
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {[
+                      {
+                        id: "paytm",
+                        name: "Paytm",
+                      },
+                      {
+                        id: "amazonpay",
+                        name: "Amazon Pay",
+                      },
+                      {
+                        id: "mobikwik",
+                        name: "MobiKwik",
+                      },
+                    ].map((wallet) => (
+                      <button
+                        key={wallet.id}
+                        type="button"
+                        onClick={() => {
+                          setSelectedWallet(wallet.id);
+                          setPaymentMsg(null);
+                        }}
+                        className={`rounded-xl border px-4 py-4 text-sm font-semibold transition ${
+                          selectedWallet === wallet.id
+                            ? "border-amber-500 bg-amber-50 text-amber-700"
+                            : "border-amber-100 hover:border-amber-300"
+                        }`}
+                      >
+                        {wallet.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* PAYMENT ERROR */}
+              {paymentMsg && (
+                <div className="mt-5 flex items-start gap-2 rounded-xl bg-red-50 border border-red-100 p-3">
+                  <AlertCircle
+                    size={16}
+                    className="text-red-500 mt-0.5 shrink-0"
+                  />
+
+                  <p className="text-xs text-red-600">
+                    {paymentMsg}
+                  </p>
+                </div>
+              )}
+            </section>
+            {/* ==================================================
+                SECURITY
+            ================================================== */}
+
+            <div className="rounded-2xl bg-amber-50/70 border border-amber-100 p-5 flex items-start gap-3">
+              <ShieldCheck
+                size={22}
+                className="text-amber-600 shrink-0 mt-0.5"
+              />
+
+              <div>
+                <p className="text-sm font-semibold text-[#17130B]">
+                  Your payment is secure
+                </p>
+
+                <p className="text-xs text-[#766F65] mt-1 leading-relaxed">
+                  Your payment information is protected using secure
+                  encryption. Party Square does not store your complete
+                  payment credentials.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* ====================================================
+              RIGHT SIDE — ORDER SUMMARY
+          ==================================================== */}
+
+          <aside className="lg:sticky lg:top-6 h-fit">
+            <section className="bg-white rounded-3xl border border-amber-100 shadow-sm overflow-hidden">
+              <div className="p-6 border-b border-amber-100">
+                <h2 className="text-lg font-bold">
+                  Order Summary
+                </h2>
+              </div>
+
+              <div className="p-6">
+                {/* PRODUCT */}
+                <div className="flex gap-4">
+                  <div className="w-24 h-24 rounded-2xl overflow-hidden bg-[#FAF7F2] shrink-0">
+                    <img
+                      src={productImage}
+                      alt={productName}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  <div className="min-w-0">
+                    <p className="text-[11px] uppercase tracking-wider text-amber-600 font-bold">
                       {productCategory}
-                    </span>
-                    <h3 style={{ color: "#17130B" }} className="font-semibold text-sm truncate">
+                    </p>
+
+                    <h3 className="font-bold text-sm leading-snug mt-1">
                       {productName}
                     </h3>
-                    <div className="flex items-center justify-between text-xs mt-1" style={{ color: "#766F65" }}>
-                      <span>Quantity: 1</span>
-                      <span className="font-bold text-sm" style={{ color: "#8B3F00" }}>
-                        ₹{baseTotal.toLocaleString("en-IN")}
-                      </span>
-                    </div>
+
+                    <p className="text-sm font-semibold text-[#17130B] mt-2">
+                      ₹{baseTotal.toLocaleString("en-IN")}
+                    </p>
                   </div>
                 </div>
 
-                {/* Price Breakdown */}
-                <div className="space-y-3 text-sm py-2">
-                  <div className="flex justify-between" style={{ color: "#766F65" }}>
-                    <span>Package Total</span>
-                    <span style={{ color: "#17130B" }} className="font-medium">
+                {/* DIVIDER */}
+                <div className="border-t border-amber-100 my-6" />
+
+                {/* PRICE */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-[#766F65]">
+                      Package Price
+                    </span>
+
+                    <span className="font-medium">
                       ₹{baseTotal.toLocaleString("en-IN")}
                     </span>
                   </div>
 
-                  <div className="flex justify-between" style={{ color: "#766F65" }}>
-                    <span>Add-ons</span>
-                    <span style={{ color: "#17130B" }} className="font-medium">
-                      ₹0
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-[#766F65]">
+                      Delivery & Setup
                     </span>
-                  </div>
 
-                  <div className="flex justify-between" style={{ color: "#766F65" }}>
-                    <span>Delivery Charges</span>
-                    <span style={{ color: "#17130B" }} className="font-medium">
-                      ₹500
+                    <span className="font-medium">
+                      ₹{deliveryCharge.toLocaleString("en-IN")}
                     </span>
                   </div>
 
                   {couponDiscount > 0 && (
-                    <div className="flex justify-between text-emerald-700 font-medium">
-                      <span>Coupon Discount ({appliedCoupon})</span>
-                      <span>- ₹{couponDiscount.toLocaleString("en-IN")}</span>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-green-600">
+                        Coupon Discount
+                      </span>
+
+                      <span className="font-medium text-green-600">
+                        -₹
+                        {couponDiscount.toLocaleString(
+                          "en-IN"
+                        )}
+                      </span>
                     </div>
                   )}
+                </div>
 
-                  <div
-                    style={{ borderColor: "#E8D8B5" }}
-                    className="border-t pt-3 flex justify-between items-baseline"
-                  >
-                    <span style={{ color: "#17130B" }} className="text-base font-bold">
-                      Total
+                {/* TOTAL */}
+                <div className="border-t border-amber-100 mt-5 pt-5">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold">
+                      Total Payable
                     </span>
-                    <span style={{ color: "#8B3F00" }} className="text-2xl font-black">
+
+                    <span className="text-xl font-bold text-[#17130B]">
                       ₹{finalTotal.toLocaleString("en-IN")}
                     </span>
                   </div>
                 </div>
 
-                {/* Coupon Section */}
-                <div className="pt-4 mt-2 border-t border-[#E8D8B5]">
-                  <form onSubmit={handleApplyCoupon} className="flex gap-2">
-                    <input
-                      type="text"
-                      value={couponCode}
-                      onChange={(e) => setCouponCode(e.target.value)}
-                      placeholder="Enter coupon code"
-                      style={{
-                        backgroundColor: "#FAF7F2",
-                        borderColor: "#E8D8B5",
-                        color: "#17130B",
-                      }}
-                      className="flex-1 px-3.5 py-2.5 rounded-xl border text-xs sm:text-sm uppercase tracking-wide focus:outline-none focus:ring-1 focus:ring-[#8B3F00]"
-                    />
-                    <button
-                      type="submit"
-                      style={{
-                        backgroundColor: "#FFF8E7",
-                        borderColor: "#8B3F00",
-                        color: "#8B3F00",
-                      }}
-                      className="px-4 py-2.5 rounded-xl border font-bold text-xs hover:bg-[#8B3F00] hover:text-white transition-colors"
-                    >
-                      APPLY
-                    </button>
-                  </form>
-                  {couponMsg && (
-                    <p
-                      className={`text-xs mt-2 ${
-                        couponMsg.error ? "text-rose-600 font-medium" : "text-emerald-700 font-medium"
-                      }`}
-                    >
-                      {couponMsg.text}
-                    </p>
-                  )}
-                  <p style={{ color: "#766F65" }} className="text-2xs text-[11px] mt-1.5">
-                    Try demo coupon: <span className="font-mono font-semibold text-[#8B3F00]">FESTIVE1000</span> or{" "}
-                    <span className="font-mono font-semibold text-[#8B3F00]">FLORAL500</span>
-                  </p>
-                </div>
-
-                {/* PAY NOW CTA BUTTON */}
-                <div className="pt-6">
-                  <button
-                    onClick={handlePayNow}
-                    disabled={isProcessing}
-                    style={{
-                      backgroundColor: isProcessing ? "#9A4505" : "#8B3F00",
-                      color: "#FFFFFF",
-                    }}
-                    className="w-full py-4 rounded-2xl font-bold text-base tracking-wide shadow-md hover:opacity-95 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    {isProcessing ? (
-                      <>
-                        <span className="animate-spin text-lg">⚙</span>
-                        <span>PROCESSING...</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>PAY NOW</span>
-                        <span className="text-sm font-normal">
-                          (₹{finalTotal.toLocaleString("en-IN")})
-                        </span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {/* SECURITY SECTION */}
-              <div
-                style={{
-                  backgroundColor: "#FFFFFF",
-                  border: "1px solid #E8D8B5",
-                }}
-                className="rounded-3xl p-6 shadow-xs space-y-4"
-              >
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">🛡️</span>
-                  <h3 style={{ color: "#17130B" }} className="font-bold text-sm sm:text-base">
-                    100% Secure Payment
-                  </h3>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs" style={{ color: "#766F65" }}>
-                  <div className="flex items-center gap-1.5">
-                    <span style={{ color: "#8B3F00" }} className="font-bold">
-                      ✓
-                    </span>
-                    <span>Secure Checkout</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span style={{ color: "#8B3F00" }} className="font-bold">
-                      ✓
-                    </span>
-                    <span>Encrypted Payment</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span style={{ color: "#8B3F00" }} className="font-bold">
-                      ✓
-                    </span>
-                    <span>Trusted Gateway</span>
-                  </div>
-                </div>
-
-                <div
-                  style={{
-                    backgroundColor: "#FAF7F2",
-                    borderColor: "#E8D8B5",
-                  }}
-                  className="p-3 rounded-2xl border flex flex-wrap items-center justify-around gap-2 text-xs font-bold"
+                {/* PAY BUTTON */}
+                <button
+                  type="button"
+                  onClick={handlePayNow}
+                  disabled={isProcessing}
+                  className="w-full mt-6 h-14 rounded-2xl bg-[#8B3F05] hover:bg-[#713200]  text-white font-bold text-sm flex items-center justify-center gap-2  disabled:opacity-70 disabled:cursor-not-allowed transition shadow-sm"
                 >
-                  <span style={{ color: "#8B3F00" }}>UPI</span>
-                  <span style={{ color: "#766F65" }}>•</span>
-                  <span style={{ color: "#17130B" }}>VISA</span>
-                  <span style={{ color: "#766F65" }}>•</span>
-                  <span style={{ color: "#17130B" }}>Mastercard</span>
-                  <span style={{ color: "#766F65" }}>•</span>
-                  <span style={{ color: "#8B3F00" }}>Razorpay</span>
-                </div>
+                  {isProcessing ? (
+                    <>
+                      <Loader2
+                        size={18}
+                        className="animate-spin"
+                      />
+
+                      Processing Payment...
+                    </>
+                  ) : (
+                    <>
+                      <Lock size={17} />
+
+                      Pay ₹{finalTotal.toLocaleString("en-IN")}
+                    </>
+                  )}
+                </button>
+
+                <p className="text-[11px] text-center text-[#766F65] mt-4 leading-relaxed">
+                  By continuing, you agree to Party Square's
+                  payment and booking terms.
+                </p>
               </div>
-            </div>
-          </div>
-        )}
+            </section>
+          </aside>
+        </div>
       </main>
     </div>
   );
 }
 
+// ================================================================
+// PAGE
+// ================================================================
+
 export default function PaymentDetailPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center font-serif text-amber-900">
-          Loading Checkout...
+        <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center">
+          <Loader2
+            size={28}
+            className="animate-spin text-amber-600"
+          />
         </div>
       }
     >

@@ -160,9 +160,9 @@ export default function ProductDetailPage() {
    * Send the selected product to payment-detail through URL.
    */
 
-  const handleBookNow = () => {
+  const handleBookNow = (foundItem : any) => {
     router.push(
-      `/payment-detail`
+      `/payment-detail?productId=${encodeURIComponent(foundItem.id)}`
     );
   };
 
@@ -892,7 +892,7 @@ export default function ProductDetailPage() {
                   {/* BOOK NOW */}
 
                   <button
-                    onClick={handleBookNow}
+                    onClick={()=>handleBookNow(foundItem)}
                     className="
                       h-12
                       rounded-xl
