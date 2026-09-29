@@ -4,6 +4,16 @@ import { galleryProducts } from "./galleryData";
 import {ganeshProducts} from "./ganeshProducts";
 import { lohriProducts } from "./lohriProducts";
 import {janmashtamiProducts} from "./janmashtamiProducts";
+import {navratriProducts} from "./navratriProducts";
+import {diwaliProducts} from "./diwaliProducts";
+import {independencedayProducts} from "./independencedayProducts";
+import {kidsbirthdayProducts} from "./kidsBirthdayProduct";
+import {motherbirthdayProducts} from "./motherBirthdayProduct";
+import { fatherbirthdayproduct } from "./fatherBirthdayProduct";
+import { newYearCards } from "./youngBirthdayProduct";
+import { hotelCards } from "./youngBirthdayProduct";
+import { outdoorCards } from "./youngBirthdayProduct";
+import { babyWelcomeDecor, cartoonAndToyDecor } from "./babyWelcomeProduct";
 
 export const weddingGifts: Product[] = [
   {
@@ -705,4 +715,15 @@ export const allProducts = [
   ...ganeshProducts,
   ...lohriProducts,
   ...janmashtamiProducts,
+  ...navratriProducts,
+  ...diwaliProducts,
+  ...independencedayProducts,
+  ...kidsbirthdayProducts,
+  ...motherbirthdayProducts,
+  ...fatherbirthdayproduct,
+  ...newYearCards,
+  ...hotelCards,
+  ...outdoorCards,
+  ...babyWelcomeDecor,
+  ...cartoonAndToyDecor,
 ];

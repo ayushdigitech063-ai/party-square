@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { birthdayProducts } from "./data/kidsbirthdayproduct";
+import { kidsbirthdayProducts } from "@/app/data/kidsBirthdayProduct";
 import {
   Sparkles,
   CheckCircle,
@@ -14,6 +14,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useWishlist } from "../../context/wishlistcontext";
+import ProductCard from "@/app/components/ProductCard";
 
 export default function BirthdayServicePage() {
   // Gallery images for child birthdays
@@ -200,68 +201,15 @@ export default function BirthdayServicePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {birthdayProducts.map((product) => {
-            const inWishlist = isInWishlist(product.id);
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {kidsbirthdayProducts.map((product) => {
             return (
-              <div
+              <ProductCard
                 key={product.id}
-                className="bg-white border border-amber-100 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col group"
-              >
-                <div className="relative h-72 w-full overflow-hidden bg-neutral-100">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
-                  />
-                  <button
-                    onClick={() => {
-                      toggleWishlist(product);
-                    }}
-                    aria-label={
-                      inWishlist ? "Remove from wishlist" : "Add to wishlist"
-                    }
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
-                  >
-                    <Heart
-                      size={16}
-                      className={
-                        inWishlist
-                          ? "fill-rose-500 text-rose-500"
-                          : "text-gray-700"
-                      }
-                    />
-                  </button>
-                </div>
-                <div className="p-6 flex flex-col flex-grow justify-between space-y-4">
-                  <div className="space-y-1.5">
-                    <h3 className="font-serif text-lg font-bold text-neutral-900">
-                      {product.name}
-                    </h3>
-                    <p className="text-neutral-500 text-xs leading-relaxed font-light">
-                      {product.description}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">
-                        Starts At
-                      </span>
-                      <span className="text-neutral-900 font-bold text-lg">
-                        {product.price}
-                      </span>
-                    </div>
-                    <Link
-                     href={`birthday/${product.id}`}
-                      className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1"
-                    >
-                      <span>Book</span>
-                      <ArrowRight size={14} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
+                product={product}
+                isInWishlist={isInWishlist}
+                toggleWishlist={toggleWishlist}
+              />
             );
           })}
         </div>

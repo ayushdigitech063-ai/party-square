@@ -17,15 +17,18 @@ import {
 } from "lucide-react";
 import { useWishlist } from "../../context/wishlistcontext";
 import { useCart } from "@/app/context/CartContext";
-import { diwaliProducts, Product } from "@/app/data/diwaliProducts";
+import { diwaliProducts } from "@/app/data/diwaliProducts";
+import type { Product } from "@/app/types/product";
+import ProductCard from "@/app/components/ProductCard";
+
 
 // Home page par jo products dikhane hain unki sirf IDs (number) yahan hain.
 // Poora data app/data/diwaliProducts.ts se aata hai.
-const TRENDING_IDS: number[] = [111, 112, 113];
-const BEST_LOVED_IDS: number[] = [111, 112, 113, 114];
-const SOCIETY_IDS: number[] = [115, 116, 117, 118];
+const TRENDING_IDS: string[] = ['diwali-111', 'diwali-112', 'diwali-113'];
+const BEST_LOVED_IDS: string[] = ['diwali-111', 'diwali-112', 'diwali-113', 'diwali-114'];
+const SOCIETY_IDS: string[] = ['diwali-115', 'diwali-116', 'diwali-117', 'diwali-118'];
 
-const getProductsByIds = (ids: number[]): Product[] =>
+const getProductsByIds = (ids: string[]): Product[] =>
   ids
     .map((id) => diwaliProducts.find((p) => p.id === id))
     .filter((p): p is Product => Boolean(p));
@@ -38,7 +41,7 @@ const toWishlistItem = (product: Product) => ({
   name: product.name,
   price: formatPrice(product.price),
   image: product.image,
-  desc: product.desc,
+  desc: product.description,
 });
 
 export default function DiwaliPage() {
@@ -67,9 +70,9 @@ export default function DiwaliPage() {
     addToCart({
       id: String(product.id),
       name: product.name,
-      price: String(product.price),
+      price: product.price,
       image: product.image,
-      desc: product.desc || "",
+      description: product.description || "",
       category: "Diwali Decoration",
     });
   };
@@ -232,79 +235,11 @@ export default function DiwaliPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {trendingProducts.map((item) => {
-            const isLiked = isInWishlist(item.id);
             return (
-              <div
-                key={item.id}
-                className="bg-white border border-amber-100 rounded-3xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col group"
-              >
-                <div className="relative h-72 w-full overflow-hidden bg-neutral-100">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
-                  />
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleWishlist(toWishlistItem(item));
-                    }}
-                    aria-label={
-                      isLiked ? "Remove from wishlist" : "Add to wishlist"
-                    }
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
-                  >
-                    <Heart
-                      size={16}
-                      className={
-                        isLiked
-                          ? "fill-rose-500 text-rose-500"
-                          : "text-gray-700"
-                      }
-                    />
-                  </button>
-                </div>
-                <div className="p-6 flex flex-col flex-grow justify-between space-y-4">
-                  <div className="space-y-1.5">
-                    <h3 className="font-serif text-lg font-bold text-neutral-900">
-                      {item.name}
-                    </h3>
-                    <p className="text-neutral-500 text-xs leading-relaxed font-light">
-                      {item.desc}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">
-                        Starts At
-                      </span>
-                      <span className="text-neutral-900 font-bold text-lg">
-                        {formatPrice(item.price)}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <button
-                        type="button"
-                        onClick={(e) => handleAddToCart(item, e)}
-                        title="Add to Cart"
-                        className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-full transition-colors cursor-pointer border border-amber-200 shadow-sm"
-                      >
-                        <ShoppingBag size={16} />
-                      </button>
-                      <Link
-                        href={`/Festivals/diwali/${item.id}`}
-                        className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1"
-                      >
-                        <span>Book</span>
-                        <ArrowRight size={14} />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProductCard   key={item.id}
+                                         product={item}
+                                         isInWishlist={isInWishlist}
+                                          toggleWishlist={toggleWishlist}/>
             );
           })}
         </div>
@@ -337,76 +272,11 @@ export default function DiwaliPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {bestLovedDecor.map((item) => {
-            const isLiked = isInWishlist(item.id);
             return (
-              <div
-                key={item.id}
-                className="bg-white border border-amber-100 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-              >
-                <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                  />
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleWishlist(toWishlistItem(item));
-                    }}
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-500 shadow transition cursor-pointer"
-                  >
-                    <Heart
-                      size={18}
-                      className={
-                        isLiked
-                          ? "fill-rose-500 text-rose-500"
-                          : "text-gray-700"
-                      }
-                    />
-                  </button>
-                </div>
-                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                  <div className="space-y-1.5">
-                    <h3 className="font-serif text-base font-bold text-neutral-900">
-                      {item.name}
-                    </h3>
-                    <p className="text-neutral-500 text-xs leading-relaxed font-light">
-                      {item.desc}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">
-                        Starts At
-                      </span>
-                      <span className="text-neutral-900 font-bold text-base">
-                        {formatPrice(item.price)}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <button
-                        type="button"
-                        onClick={(e) => handleAddToCart(item, e)}
-                        title="Add to Cart"
-                        className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-full transition-colors cursor-pointer border border-amber-200 shadow-sm"
-                      >
-                        <ShoppingBag size={16} />
-                      </button>
-                      <Link
-                        href={`/Festivals/diwali/${item.id}`}
-                        className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1"
-                      >
-                        <span>Book</span>
-                        <ArrowRight size={14} />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProductCard   key={item.id}
+                                         product={item}
+                                         isInWishlist={isInWishlist}
+                                          toggleWishlist={toggleWishlist}/>
             );
           })}
         </div>
@@ -429,79 +299,11 @@ export default function DiwaliPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {societyDecor.map((item) => {
-            const isLiked = isInWishlist(item.id);
             return (
-              <div
-                key={item.id}
-                className="bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-              >
-                <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                  />
-                  <span className="absolute top-3 left-3 bg-amber-500 text-neutral-950 text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">
-                    Society Special
-                  </span>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleWishlist(toWishlistItem(item));
-                    }}
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-neutral-700 hover:text-rose-500 shadow transition cursor-pointer"
-                  >
-                    <Heart
-                      size={18}
-                      className={
-                        isLiked
-                          ? "fill-rose-500 text-rose-500"
-                          : "text-gray-700"
-                      }
-                    />
-                  </button>
-                </div>
-                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                  <div className="space-y-1.5">
-                    <h3 className="font-serif text-base font-bold text-neutral-900">
-                      {item.name}
-                    </h3>
-                    <p className="text-neutral-500 text-xs leading-relaxed font-light">
-                      {item.desc}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">
-                        Starts At
-                      </span>
-                      <span className="text-neutral-900 font-bold text-base">
-                        {formatPrice(item.price)}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <button
-                        type="button"
-                        onClick={(e) => handleAddToCart(item, e)}
-                        title="Add to Cart"
-                        className="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2.5 rounded-full transition-colors cursor-pointer border border-amber-200 shadow-sm"
-                      >
-                        <ShoppingBag size={16} />
-                      </button>
-                      <Link
-                        href={`/Festivals/diwali/${item.id}`}
-                        className="bg-amber-500 text-neutral-950 px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-400 transition shadow flex items-center space-x-1"
-                      >
-                        <span>Book</span>
-                        <ArrowRight size={14} />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProductCard   key={item.id}
+                                         product={item}
+                                         isInWishlist={isInWishlist}
+                                          toggleWishlist={toggleWishlist}/>
             );
           })}
         </div>

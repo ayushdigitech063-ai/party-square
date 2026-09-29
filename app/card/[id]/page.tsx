@@ -18,7 +18,7 @@ import {
   Calendar,
 } from "lucide-react";
 
-import { allProducts } from "@/app/data/specialCollections";
+import { allProducts } from "@/app/data/allCollections";
 import { useCart } from "@/app/context/CartContext";
 import { useWishlist } from "@/app/context/wishlistcontext";
 import ProductCard from "@/app/components/ProductCard";

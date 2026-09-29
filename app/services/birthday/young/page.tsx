@@ -12,159 +12,12 @@ import {
   Trees,
 } from "lucide-react";
 import { useWishlist } from "../../../context/wishlistcontext";
-
-export  const newYearCards = [
-    {
-      id: 1,
-      image: "/party.png",
-      name: "Midnight Glow Setup",
-      desc: "Dazzling metallic balloons, LED counts & gold confetti aesthetics.",
-      price: "₹6,999",
-    },
-    {
-      id: 2,
-      image: "/party2.png",
-      name: "Grand Countdown Lounge",
-      desc: "Luxury seating backdrop, neon signs & ambient club lighting.",
-      price: "₹10,999",
-    },
-    {
-      id: 3,
-      image: "/party3.png",
-      name: "Starry Night Gala",
-      desc: "Fairy light canopy, champagne table styling & photo booth.",
-      price: "₹14,999",
-    },
-    {
-      id: 4,
-      image: "/party4.png",
-      name: "VIP Celebration Bundle",
-      desc: "Complete party transformation with entrance arch & cold pyros.",
-      price: "₹19,999",
-    },
-     {
-      id: 40,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFvpY3diWUPEHZ1ELDtkbNWmxv4xbgK0ZnQCgnY3jfng&s=10",
-      name: "VIP Celebration Bundle",
-      desc: "Complete party transformation with entrance arch & cold pyros.",
-      price: "₹19,999",
-    },
-     {
-      id: 41,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRs-zm4uSZR_d9Vd-96IeniCZU8-yPK0zZSrK9E4WMDpA&s=10",
-      name: "VIP Celebration Bundle",
-      desc: "Complete party transformation with entrance arch & cold pyros.",
-      price: "₹29,999",
-    },
-     {
-      id: 42,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlSw0QSU2Oo5hLF4wz_38zLSsdTkjlaDdxryBhUKmhzg&s=10",
-      name: "VIP Celebration Bundle",
-      desc: "Complete party transformation with entrance arch & cold pyros.",
-      price: "₹12,999",
-    },
-      {
-      id: 43,
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8U60uCEx_aiDW60yk9ceQH3rLVj1quN9B1n1Qba90Vg&s=10",
-      name: "VIP Celebration Bundle",
-      desc: "Complete party transformation with entrance arch & cold pyros.",
-      price: "₹19,989",
-    },
-  ];
-
-  export const hotelCards = [
-    {
-      id: 5,
-      image: "/hoteldecoration.png",
-      name: "Luxury Suite Romance",
-      desc: "Rose petal pathways, candlelit room styling & swan towel decor.",
-      price: "₹4,499",
-    },
-    {
-      id: 6,
-      image: "/hoteldecoration1.png",
-      name: "Royal Banquet Styling",
-      desc: "Grand floral pillars, crystal chandeliers & stage draping.",
-      price: "₹24,999",
-    },
-    {
-      id: 7,
-      image: "/hoteldecoration2.png",
-      name: "Boutique Anniversary Room",
-      desc: "Customized balloon ceiling, glowing numbers & memory frames.",
-      price: "₹5,999",
-    },
-    {
-      id: 8,
-      image: "/hoteldecoration3.png",
-      name: "Executive Birthday Setup",
-      desc: "Sophisticated backdrop with thematic balloons and cake table.",
-      price: "₹7,999",
-    },
-    {
-      id: 9,
-      image: "/hoteldecoration4.png",
-      name: "Grand Ballroom Gala",
-      desc: "Full-scale ceiling draping, royal seating & entrance archway.",
-      price: "₹34,999",
-    },
-    {
-      id: 10,
-      image: "/hoteldecoration5.png",
-      name: "Imperial Suite Experience",
-      desc: "Premium thematic setup with special lighting and floral curation.",
-      price: "₹18,999",
-    },
-  ];
-
-  export  const outdoorCards = [
-    {
-      id: 11,
-      image: "/outsidelooking.png",
-      name: "Garden Canopy Lights",
-      desc: "Stunning fairy light canopy stretching across outdoor trees.",
-      price: "₹12,999",
-    },
-    {
-      id: 12,
-      image: "/outsidelooking1.png",
-      name: "Open-Air Lawn Stage",
-      desc: "Floral gateway, open-air seating decor & warm ambient glow.",
-      price: "₹18,999",
-    },
-    {
-      id: 13,
-      image: "/outsidelooking2.png",
-      name: "Terrace Sunset Setup",
-      desc: "Boho-chic outdoor cabana with cozy cushions and lanterns.",
-      price: "₹8,999",
-    },
-    {
-      id: 14,
-      image: "/outsidelooking3.png",
-      name: "Path of Lights Entrance",
-      desc: "Illuminated floral pathway welcoming guests in style.",
-      price: "₹6,499",
-    },
-    {
-      id: 15,
-      image: "/outsidelooking4.png",
-      name: "Grand Farmhouse Open Lawn",
-      desc: "Complete perimeter ambient lighting & royal outdoor Mandap.",
-      price: "₹29,999",
-    },
-    {
-      id: 16,
-      image: "/outsidelooking5.png",
-      name: "Starlit Garden Terrace",
-      desc: "Exquisite string lighting and open-air luxury seating arrangement.",
-      price: "₹21,999",
-    },
-  ];
-
+import { newYearCards } from "@/app/data/youngBirthdayProduct";
+import { hotelCards } from "@/app/data/youngBirthdayProduct";
+import { outdoorCards } from "@/app/data/youngBirthdayProduct";
+import ProductCard from "@/app/components/ProductCard";
 export default function HomePage() {
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
-
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-neutral-900 font-sans selection:bg-[#C5A059] selection:text-white">
@@ -248,66 +101,13 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {newYearCards.map((item) => {
-            const isLiked = isInWishlist(item.id);
             return (
-              <div
+              <ProductCard
                 key={item.id}
-                className="bg-white rounded-2xl overflow-hidden border border-[#E2D2B0]/50 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-              >
-                <div className="relative h-72 w-full overflow-hidden bg-neutral-100">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <button
-                    onClick={() => {
-                      toggleWishlist(item);
-                    }}
-                    aria-label={
-                      isLiked ? "Remove from wishlist" : "Add to wishlist"
-                    }
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
-                  >
-                    <Heart
-                      size={16}
-                      className={
-                        isLiked
-                          ? "fill-rose-500 text-rose-500"
-                          : "text-gray-700"
-                      }
-                    />
-                  </button>
-                </div>
-
-                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                  <div>
-                    <h3 className="font-serif text-lg font-bold text-neutral-900 mb-1.5 group-hover:text-[#C5A059] transition-colors">
-                      {item.name}
-                    </h3>
-                    <p className="text-neutral-500 text-xs leading-relaxed line-clamp-2">
-                      {item.desc}
-                    </p>
-                  </div>
-
-                  <div className="border-t border-neutral-100 pt-4 flex items-center justify-between">
-                    <div>
-                      <span className="block text-[10px] uppercase tracking-wider text-neutral-400 font-semibold">
-                        Starts At
-                      </span>
-                      <span className="font-bold text-neutral-900 text-base">
-                        {item.price}
-                      </span>
-                    </div>
-                    <Link
-                      href={`young/${item.id}`}
-                      className="bg-neutral-950 text-white hover:bg-[#C5A059] hover:text-neutral-950 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center space-x-1.5 shadow-sm"
-                    >
-                      <span>Book</span> <ArrowRight size={14} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
+                product={item}
+                isInWishlist={isInWishlist}
+                toggleWishlist={toggleWishlist}
+              />
             );
           })}
         </div>
@@ -331,64 +131,12 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {hotelCards.map((item) => (
-              <div
+              <ProductCard
                 key={item.id}
-                className="bg-white rounded-2xl overflow-hidden border border-[#E2D2B0]/50 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-              >
-                <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <button
-                    onClick={() => toggleWishlist(item)}
-                    aria-label={
-                      isInWishlist(item.id)
-                        ? "Remove from wishlist"
-                        : "Add to wishlist"
-                    }
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md text-neutral-700 hover:text-rose-500 transition-colors"
-                  >
-                    <Heart
-                      size={18}
-                      className={
-                        isInWishlist(item.id)
-                          ? "fill-rose-500 text-rose-500"
-                          : ""
-                      }
-                    />
-                  </button>
-                </div>
-
-                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                  <div>
-                    <h3 className="font-serif text-lg font-bold text-neutral-900 mb-1.5 group-hover:text-[#C5A059] transition-colors">
-                      {item.name}
-                    </h3>
-                    <p className="text-neutral-500 text-xs leading-relaxed line-clamp-2">
-                      {item.desc}
-                    </p>
-                  </div>
-
-                  <div className="border-t border-neutral-100 pt-4 flex items-center justify-between">
-                    <div>
-                      <span className="block text-[10px] uppercase tracking-wider text-neutral-400 font-semibold">
-                        Starts At
-                      </span>
-                      <span className="font-bold text-neutral-900 text-base">
-                        {item.price}
-                      </span>
-                    </div>
-                    <Link
-                      href={`young/${item.id}`}
-                      className="bg-neutral-950 text-white hover:bg-[#C5A059] hover:text-neutral-950 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center space-x-1.5 shadow-sm"
-                    >
-                      <span>Book</span> <ArrowRight size={14} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
+                product={item}
+                isInWishlist={isInWishlist}
+                toggleWishlist={toggleWishlist}
+              />
             ))}
           </div>
         </div>
@@ -411,62 +159,12 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {outdoorCards.map((item) => (
-            <div
+            <ProductCard
               key={item.id}
-              className="bg-white rounded-2xl overflow-hidden border border-[#E2D2B0]/50 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-            >
-              <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <button
-                  onClick={() => toggleWishlist(item)}
-                  aria-label={
-                    isInWishlist(item.id)
-                      ? "Remove from wishlist"
-                      : "Add to wishlist"
-                  }
-                  className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-md text-neutral-700 hover:text-rose-500 transition-colors"
-                >
-                  <Heart
-                    size={18}
-                    className={
-                      isInWishlist(item.id) ? "fill-rose-500 text-rose-500" : ""
-                    }
-                  />
-                </button>
-              </div>
-
-              <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                <div>
-                  <h3 className="font-serif text-lg font-bold text-neutral-900 mb-1.5 group-hover:text-[#C5A059] transition-colors">
-                    {item.name}
-                  </h3>
-                  <p className="text-neutral-500 text-xs leading-relaxed line-clamp-2">
-                    {item.desc}
-                  </p>
-                </div>
-
-                <div className="border-t border-neutral-100 pt-4 flex items-center justify-between">
-                  <div>
-                    <span className="block text-[10px] uppercase tracking-wider text-neutral-400 font-semibold">
-                      Starts At
-                    </span>
-                    <span className="font-bold text-neutral-900 text-base">
-                      {item.price}
-                    </span>
-                  </div>
-                  <Link
-                    href={`young/${item.id}`}
-                    className="bg-neutral-950 text-white hover:bg-[#C5A059] hover:text-neutral-950 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center space-x-1.5 shadow-sm"
-                  >
-                    <span>Book</span> <ArrowRight size={14} />
-                  </Link>
-                </div>
-              </div>
-            </div>
+              product={item}
+              isInWishlist={isInWishlist}
+              toggleWishlist={toggleWishlist}
+            />
           ))}
         </div>
       </section>

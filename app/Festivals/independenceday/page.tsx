@@ -6,17 +6,19 @@ import { Sparkles, CheckCircle, ArrowRight, Heart, ShieldCheck, ShoppingBag } fr
 import { useWishlist } from "@/app/context/wishlistcontext";
 import { useCart } from "@/app/context/CartContext";
 import { independencedayProducts } from "@/app/data/independencedayProducts";
+import type { Product } from "@/app/types/product";
+import ProductCard from "@/app/components/ProductCard";
 
-const FEATURED_IDS = [12, 1, 13];
-const DECOR_IDS = [8, 9, 10, 11];
 
-const parsePrice = (price: string) => Number(price.replace(/[₹,]/g, ""));
+const FEATURED_IDS = ['independenceday-12', 'independenceday-1', 'independenceday-13'];
+const DECOR_IDS = ['independenceday-8', 'independenceday-9', 'independenceday-10', 'independenceday-11'];
+
 
 export default function IndependenceDayPage() {
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { addToCart } = useCart();
   const [isMounted, setIsMounted] = useState(false);
-  const [cartMessageId, setCartMessageId] = useState<number | null>(null);
+  const [cartMessageId, setCartMessageId] = useState<string | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -33,7 +35,7 @@ export default function IndependenceDayPage() {
   ).filter((p): p is NonNullable<typeof p> => Boolean(p));
 
 const handleAddToCart = (item: (typeof independencedayProducts)[number]) => {
-  addToCart({ ...item, id: String(item.id), numericPrice: parsePrice(item.price) }, 1);
+  addToCart({ ...item, id: String(item.id), numericPrice: item.price }, 1);
   setCartMessageId(item.id);
   setTimeout(() => setCartMessageId(null), 1500);
 };
@@ -80,58 +82,11 @@ const handleAddToCart = (item: (typeof independencedayProducts)[number]) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {featuredProducts.map((item) => {
-            const isLiked = isInWishlist(item.id);
             return (
-              <div key={item.id} className="bg-white border border-orange-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-                <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                  <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                  <span className="absolute top-3 left-3 bg-orange-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">Featured</span>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleWishlist(item);
-                    }}
-                    aria-label={isLiked ? "Remove from wishlist" : "Add to wishlist"}
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
-                  >
-                    <Heart size={16} className={isLiked ? "fill-rose-500 text-rose-500" : "text-neutral-700"} />
-                  </button>
-                </div>
-                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                  <div className="space-y-1.5">
-                    <h3 className="font-serif text-base font-bold text-neutral-900">{item.name}</h3>
-                    <p className="text-neutral-500 text-xs leading-relaxed font-light">{item.desc}</p>
-                  </div>
-
-                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between relative">
-                    {cartMessageId === item.id && (
-                      <span className="absolute -top-5 left-0 text-[10px] text-green-600 font-bold animate-pulse">
-                        ✓ Added to cart
-                      </span>
-                    )}
-                    <div>
-                      <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
-                      <span className="text-neutral-900 font-bold text-base">{item.price}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <button
-                        type="button"
-                        onClick={() => handleAddToCart(item)}
-                        title="Add to Cart"
-                        className="w-9 h-9 rounded-full bg-orange-50 border border-orange-200 hover:bg-orange-100 text-orange-700 flex items-center justify-center transition shadow-sm cursor-pointer"
-                      >
-                        <ShoppingBag size={15} />
-                      </button>
-                      <Link href={`/Festivals/independenceday/${item.id}`} className="bg-orange-600 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-orange-500 transition shadow flex items-center space-x-1">
-                        <span>Book</span>
-                        <ArrowRight size={14} />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProductCard   key={item.id}
+                                                      product={item}
+                                                      isInWishlist={isInWishlist}
+                                                       toggleWishlist={toggleWishlist}/>
             );
           })}
         </div>
@@ -159,60 +114,11 @@ const handleAddToCart = (item: (typeof independencedayProducts)[number]) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {independenceDecor.map((item) => {
-            const isLiked = isInWishlist(item.id);
             return (
-              <div key={item.id} className="bg-white border border-orange-100 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-                <div className="relative h-64 w-full overflow-hidden bg-neutral-100">
-                  <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleWishlist(item);
-                    }}
-                    aria-label={isLiked ? "Remove from wishlist" : "Add to wishlist"}
-                    className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
-                  >
-                    <Heart size={16} className={isLiked ? "fill-rose-500 text-rose-500" : "text-neutral-700"} />
-                  </button>
-                  <span className="absolute top-3 left-3 bg-orange-600 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow">
-                    Tricolor Special
-                  </span>
-                </div>
-                <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
-                  <div className="space-y-1.5">
-                    <h3 className="font-serif text-base font-bold text-neutral-900">{item.name}</h3>
-                    <p className="text-neutral-500 text-xs leading-relaxed font-light">{item.desc}</p>
-                  </div>
-
-                  <div className="pt-3 border-t border-neutral-100 flex items-center justify-between relative">
-                    {cartMessageId === item.id && (
-                      <span className="absolute -top-5 left-0 text-[10px] text-green-600 font-bold animate-pulse">
-                        ✓ Added to cart
-                      </span>
-                    )}
-                    <div>
-                      <span className="text-[10px] uppercase text-neutral-400 block font-semibold tracking-wider">Starts At</span>
-                      <span className="text-neutral-900 font-bold text-base">{item.price}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <button
-                        type="button"
-                        onClick={() => handleAddToCart(item)}
-                        title="Add to Cart"
-                        className="w-9 h-9 rounded-full bg-neutral-100 border border-neutral-200 hover:bg-neutral-200 text-neutral-800 flex items-center justify-center transition shadow-sm cursor-pointer"
-                      >
-                        <ShoppingBag size={15} />
-                      </button>
-                      <Link href={`/Festivals/independenceday/${item.id}`} className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-orange-600 transition shadow flex items-center space-x-1">
-                        <span>Book</span>
-                        <ArrowRight size={14} />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ProductCard   key={item.id}
+                                                      product={item}
+                                                      isInWishlist={isInWishlist}
+                                                       toggleWishlist={toggleWishlist}/>
             );
           })}
         </div>

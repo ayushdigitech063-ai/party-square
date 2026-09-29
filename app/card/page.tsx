@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import { ChevronLeft, ChevronRight, Heart, ShoppingBag } from "lucide-react";
 import Link from "next/link";
-import { weddingGifts, festivalsProducts, pujaSection, estheticProducts } from "../data/specialCollections";
+import { weddingGifts, festivalsProducts, pujaSection, estheticProducts } from "../data/allCollections";
 import { useCart } from "@/app/context/CartContext";
 import { useWishlist } from "../context/wishlistcontext";
 

@@ -7,40 +7,25 @@ import {
   CheckCircle,
   ArrowRight,
   Star,
-  Heart,
-  ShoppingBag,
 } from "lucide-react";
 import { useWishlist } from "../../context/wishlistcontext";
-import { useCart } from "@/app/context/CartContext";
 import { janmashtamiProducts } from "@/app/data/janmashtamiProducts";
 import type { Product } from "@/app/types/product";
 import ProductCard from "@/app/components/ProductCard";
 
-
 // Home page par dikhne wale products ki sirf IDs (number). Data janmashtamiProducts.ts me hai.
-const CELEBRATION_IDS: string[] = ['4', '9', '10', '11'];
-const TEMPLE_IDS: string[] = ['12', '13', '14', '15'];
+const CELEBRATION_IDS: string[] = ["4", "9", "10", "11"];
+const TEMPLE_IDS: string[] = ["12", "13", "14", "15"];
 
 const getProductsByIds = (ids: string[]): Product[] =>
   ids
     .map((id) => janmashtamiProducts.find((p) => p.id === id))
     .filter((p): p is Product => Boolean(p));
 
-const formatPrice = (price: string) => `₹${Number(price).toLocaleString("en-IN")}`;
-
-// Wishlist ko pehle jaisi hi shape milti hai (price "₹5,499" format me)
-const toWishlistItem = (product: Product) => ({
-  id: product.id,
-  name: product.name,
-  price: product.price,
-  image: product.image,
-  desc: product.description,
-});
-
 export default function JanmashtamiPage() {
   const { toggleWishlist, isInWishlist } = useWishlist();
   const [isMounted, setIsMounted] = useState(false);
-  const { addToCart } = useCart();
+
 
   useEffect(() => {
     setIsMounted(true);
@@ -49,19 +34,6 @@ export default function JanmashtamiPage() {
   if (!isMounted) {
     return null;
   }
-
-  const handleAddToCart = (product: Product, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    addToCart({
-      id: String(product.id),
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      description: product.description,
-      category: "Janmashtami Decoration",
-    });
-  };
 
   const celebrationDecor = getProductsByIds(CELEBRATION_IDS);
   const templeDecor = getProductsByIds(TEMPLE_IDS);
@@ -114,17 +86,19 @@ export default function JanmashtamiPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {celebrationDecor.map((item) => {
             return (
-              <ProductCard   key={item.id}
-                           product={item}
-                           isInWishlist={isInWishlist}
-                            toggleWishlist={toggleWishlist}/>
+              <ProductCard
+                key={item.id}
+                product={item}
+                isInWishlist={isInWishlist}
+                toggleWishlist={toggleWishlist}
+              />
             );
           })}
         </div>
 
         <div className="text-center mt-12">
-          <Link 
-            href="/Festivals/janmasthmi/all-products" 
+          <Link
+            href="/Festivals/janmasthmi/all-products"
             className="inline-flex items-center space-x-2 bg-white hover:bg-neutral-950 hover:text-white text-neutral-950 font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-wider transition shadow-sm border border-emerald-200"
           >
             <span>View More Products</span>
@@ -148,7 +122,10 @@ export default function JanmashtamiPage() {
               </span>
             </h2>
             <p className="text-neutral-200 text-xs sm:text-sm leading-relaxed font-light">
-              Immerse your family and society in the divine ecstasy of Lord Krishna&apos;s birth. Our professional decorators weave traditional Pichwai art, fresh fragrant florals, and majestic lighting into an unforgettable celebration.
+              Immerse your family and society in the divine ecstasy of Lord
+              Krishna&apos;s birth. Our professional decorators weave
+              traditional Pichwai art, fresh fragrant florals, and majestic
+              lighting into an unforgettable celebration.
             </p>
             <div className="space-y-2.5 pt-1">
               <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
@@ -166,7 +143,10 @@ export default function JanmashtamiPage() {
             </div>
 
             <div className="pt-3">
-              <Link href="/Festivals/janmasthmi/8" className="bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2">
+              <Link
+                href="/Festivals/janmasthmi/8"
+                className="bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
+              >
                 <span>View Grand Package</span>
                 <ArrowRight size={16} />
               </Link>
@@ -201,10 +181,12 @@ export default function JanmashtamiPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {templeDecor.map((item) => {
             return (
-              <ProductCard   key={item.id}
-                           product={item}
-                           isInWishlist={isInWishlist}
-                            toggleWishlist={toggleWishlist}/>
+              <ProductCard
+                key={item.id}
+                product={item}
+                isInWishlist={isInWishlist}
+                toggleWishlist={toggleWishlist}
+              />
             );
           })}
         </div>
