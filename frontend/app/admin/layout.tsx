@@ -44,6 +44,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const router = useRouter();
   const { admin, isAuthenticated, logout } = useAuth();
+  const [homeDropdownOpen, setHomeDropdownOpen] = useState(pathname.includes("/admin/home-settings"));
 
   const isLoginPage = pathname === "/admin/login";
 
@@ -73,7 +74,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Settings", href: "/admin/settings", icon: Settings },
   ];
 
-  const [homeDropdownOpen, setHomeDropdownOpen] = useState(pathname.includes("/admin/home-settings"));
   let currentTab = "hero";
   if (typeof window !== 'undefined') {
     const params = new URLSearchParams(window.location.search);
@@ -134,7 +134,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {[
                   { id: "hero", name: "Hero Banners" },
                   { id: "live_showcase", name: "Live Showcase" },
-                  { id: "services", name: "Featured Services" },
+                  { id: "services", name: "Signature Services" },
                   { id: "testimonials", name: "Testimonials" },
                   { id: "footer", name: "Footer Info" },
                 ].map(sub => {
