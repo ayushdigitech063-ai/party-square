@@ -491,9 +491,16 @@ export default function Navbar() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
-  // Automatically open the city selection popup when website loads
+  // Automatically open the city selection popup when website loads, but only if not selected before
   useEffect(() => {
-    setIsCityModalOpen(true);
+    const hasSelectedCity = localStorage.getItem("hasSelectedCity");
+    if (!hasSelectedCity) {
+      setIsCityModalOpen(true);
+    }
+    const savedCity = localStorage.getItem("selectedCity");
+    if (savedCity) {
+      setSelectedCity(savedCity);
+    }
   }, []);
 
   useEffect(() => {
@@ -515,13 +522,19 @@ export default function Navbar() {
     window.location.href = `/search?q=${encodeURIComponent(searchValue.trim())}`;
   };
 
+  const handleCitySelect = (city: string) => {
+    setSelectedCity(city);
+    localStorage.setItem("selectedCity", city);
+    localStorage.setItem("hasSelectedCity", "true");
+  };
+
   return (
     <>
-      {/* Automatic Popup on Website Load */}
+      {/* Automatic Popup on Website Load (Only once) */}
       <CityModal
         isOpen={isCityModalOpen}
         onClose={() => setIsCityModalOpen(false)}
-        onSelectCity={(city) => setSelectedCity(city)}
+        onSelectCity={handleCitySelect}
         cities={CITIES}
       />
 
