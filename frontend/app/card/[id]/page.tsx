@@ -163,7 +163,7 @@ export default function ProductDetailPage() {
   const handleBookNow = () => {
     const params = new URLSearchParams({
       productId: foundItem.id,
-      name: foundItem.title,
+      name: foundItem.name,
       price: foundItem.price.toString(),
       image: foundItem.image
     });
