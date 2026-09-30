@@ -5,12 +5,11 @@ import { useSearchParams } from "next/navigation";
 
 function PaymentContent() {
   const searchParams = useSearchParams();
-  const productId = searchParams.get("productId") || "";
- 
-  const productName = "Grand Floral Welcome Gate";
-  const productImage = "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80";
-  const productCategory ="Event Decoration";
-  const baseTotal = 18000;
+  const productId = searchParams.get("productId") || "P-1001";
+  const productName = searchParams.get("name") || "Grand Floral Welcome Gate";
+  const productImage = searchParams.get("image") || "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=400&q=80";
+  const productCategory = "Event Decoration";
+  const baseTotal = parseInt(searchParams.get("price") || "18000", 10);
 
   const [selectedMethod, setSelectedMethod] = useState<"upi" | "card" | "netbanking" | "wallet">("upi");
   const [upiId, setUpiId] = useState("");

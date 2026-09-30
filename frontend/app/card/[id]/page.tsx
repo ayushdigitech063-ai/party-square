@@ -161,9 +161,13 @@ export default function ProductDetailPage() {
    */
 
   const handleBookNow = () => {
-    router.push(
-      `/payment-detail`
-    );
+    const params = new URLSearchParams({
+      productId: foundItem.id,
+      name: foundItem.title,
+      price: foundItem.price.toString(),
+      image: foundItem.image
+    });
+    router.push(`/payment-detail?${params.toString()}`);
   };
 
   /*
