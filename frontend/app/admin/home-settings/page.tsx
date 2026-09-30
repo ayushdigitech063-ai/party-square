@@ -411,7 +411,7 @@ function HomeSettingsContent() {
                           onChange={(e) => handleImageUpload(e, index)}
                         />
                         <div className="w-12 h-12 rounded-full bg-[#FAFAFA] border border-[#ECE9E2] text-[#F5A000] flex items-center justify-center mx-auto mb-3 group-hover:scale-110 group-hover:bg-[#FFF4D6] group-hover:border-[#FFF4D6] transition-all shadow-sm">
-                          <UploadCloud, X size={20} />
+                          <UploadCloud size={20} />
                         </div>
                         <p className="text-[14px] font-semibold text-[#182033]">Click to upload to Cloudinary</p>
                         <p className="text-[12px] text-[#6F7787] mt-1">High resolution SVG, PNG, JPG or GIF (max. 5MB)</p>
@@ -464,7 +464,7 @@ function HomeSettingsContent() {
                     <div className="relative group cursor-pointer">
                       <div className="absolute inset-0 bg-[#FFF4D6] rounded-[16px] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       <div className="relative border-2 border-dashed border-[#ECE9E2] group-hover:border-[#F5A000] rounded-[16px] p-6 text-center transition-colors">
-                        <UploadCloud, X className="mx-auto h-8 w-8 text-[#6F7787] group-hover:text-[#F5A000] mb-2 transition-colors" />
+                        <UploadCloud className="mx-auto h-8 w-8 text-[#6F7787] group-hover:text-[#F5A000] mb-2 transition-colors" />
                         <p className="text-[13px] font-semibold text-[#182033]">Click to upload a video</p>
                         <p className="text-[11px] text-[#6F7787] mt-1">MP4, WebM (max 10MB recommended)</p>
                         <input 
