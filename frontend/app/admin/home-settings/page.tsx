@@ -14,7 +14,7 @@ import {
   Info, 
   Briefcase, 
   Star, 
-  UploadCloud
+  UploadCloud, X
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -104,6 +104,28 @@ function HomeSettingsContent() {
     ]
   });
 
+  const [testimonialsData, setTestimonialsData] = useState({
+    badge: "Testimonials",
+    heading1: "Customer",
+    heading2: "Reviews",
+    rating: "4.7",
+    reviewCount: 9,
+    reviews: [
+      {
+        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+        name: "Atharv Surana",
+        location: "Bhopal",
+        text: "Thank you for the decoration. It was nicely done and everyone loved it. Very cooperative and budget friendly.",
+      },
+      {
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+        name: "Sourav Dugar",
+        location: "Thane",
+        text: "I have contacted this vendor just a day before my kid’s birthday and they have done an awesome job.",
+      }
+    ]
+  });
+
   useEffect(() => {
     const fetchHomePageData = async () => {
       try {
@@ -132,6 +154,11 @@ function HomeSettingsContent() {
           if (signatureServicesSection && signatureServicesSection.contentData) {
             setServicesData(signatureServicesSection.contentData);
           }
+
+          const testimonialsSection = data.sections?.find((s: any) => s.sectionKey === 'testimonials');
+          if (testimonialsSection && testimonialsSection.contentData) {
+            setTestimonialsData(testimonialsSection.contentData);
+          }
         }
       } catch (error) {
         console.error("Error fetching homepage data:", error);
@@ -145,7 +172,7 @@ function HomeSettingsContent() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (activeSection === 'hero' || activeSection === 'live_showcase' || activeSection === 'services') {
+    if (activeSection === 'hero' || activeSection === 'live_showcase' || activeSection === 'services' || activeSection === 'testimonials') {
       try {
         const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
         const token = adminUser.token;
@@ -166,6 +193,10 @@ function HomeSettingsContent() {
           sectionKey = 'signature_services';
           dataToSave = servicesData;
           sectionName = 'Signature Services';
+        } else if (activeSection === 'testimonials') {
+          sectionKey = 'testimonials';
+          dataToSave = testimonialsData;
+          sectionName = 'Testimonials';
         }
 
         const res = await fetch(`${API_URL}/api/homepage/sections/${sectionKey}`, {
@@ -380,7 +411,7 @@ function HomeSettingsContent() {
                           onChange={(e) => handleImageUpload(e, index)}
                         />
                         <div className="w-12 h-12 rounded-full bg-[#FAFAFA] border border-[#ECE9E2] text-[#F5A000] flex items-center justify-center mx-auto mb-3 group-hover:scale-110 group-hover:bg-[#FFF4D6] group-hover:border-[#FFF4D6] transition-all shadow-sm">
-                          <UploadCloud size={20} />
+                          <UploadCloud, X size={20} />
                         </div>
                         <p className="text-[14px] font-semibold text-[#182033]">Click to upload to Cloudinary</p>
                         <p className="text-[12px] text-[#6F7787] mt-1">High resolution SVG, PNG, JPG or GIF (max. 5MB)</p>
@@ -433,7 +464,7 @@ function HomeSettingsContent() {
                     <div className="relative group cursor-pointer">
                       <div className="absolute inset-0 bg-[#FFF4D6] rounded-[16px] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       <div className="relative border-2 border-dashed border-[#ECE9E2] group-hover:border-[#F5A000] rounded-[16px] p-6 text-center transition-colors">
-                        <UploadCloud className="mx-auto h-8 w-8 text-[#6F7787] group-hover:text-[#F5A000] mb-2 transition-colors" />
+                        <UploadCloud, X className="mx-auto h-8 w-8 text-[#6F7787] group-hover:text-[#F5A000] mb-2 transition-colors" />
                         <p className="text-[13px] font-semibold text-[#182033]">Click to upload a video</p>
                         <p className="text-[11px] text-[#6F7787] mt-1">MP4, WebM (max 10MB recommended)</p>
                         <input 
@@ -571,16 +602,129 @@ function HomeSettingsContent() {
             <div className="space-y-7 animate-in slide-in-from-bottom-2 fade-in duration-300">
               <div>
                 <h3 className="text-[22px] font-extrabold text-black tracking-tight">Testimonials</h3>
-                <p className="text-[14px] text-black/70 mt-1 font-medium">Manage the title of the reviews section.</p>
+                <p className="text-[14px] text-black/70 mt-1 font-medium">Manage the reviews section on the homepage.</p>
               </div>
               
               <div className="space-y-5">
-                <InputField label="Section Heading" icon={<Type size={16}/>} defaultValue="What Our Clients Say" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <InputField 
+                    label="Badge Text" 
+                    icon={<Type size={16}/>} 
+                    value={testimonialsData.badge}
+                    onChange={(e) => setTestimonialsData({...testimonialsData, badge: e.target.value})}
+                  />
+                  <InputField 
+                    label="Rating Text (e.g. 4.7)" 
+                    icon={<Star size={16}/>} 
+                    value={testimonialsData.rating}
+                    onChange={(e) => setTestimonialsData({...testimonialsData, rating: e.target.value})}
+                  />
+                </div>
                 
-                <div className="mt-4 bg-[#FAFAFA] border border-[#ECE9E2] rounded-[16px] p-6 text-center border-dashed">
-                  <Star size={24} className="text-[#F5A000] mx-auto mb-3" />
-                  <p className="text-[14px] text-black font-bold mb-1">Manage Individual Reviews</p>
-                  <p className="text-[13px] text-black/70 font-medium">To edit individual reviews, please use the <a href="/admin/reviews" className="text-[#F5A000] font-bold hover:underline">Reviews Management</a> tab.</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <InputField 
+                    label="Heading Line 1" 
+                    icon={<Type size={16}/>} 
+                    value={testimonialsData.heading1}
+                    onChange={(e) => setTestimonialsData({...testimonialsData, heading1: e.target.value})}
+                  />
+                  <InputField 
+                    label="Heading Line 2" 
+                    icon={<Type size={16}/>} 
+                    value={testimonialsData.heading2}
+                    onChange={(e) => setTestimonialsData({...testimonialsData, heading2: e.target.value})}
+                  />
+                </div>
+
+                <div className="pt-4 border-t border-[#ECE9E2]">
+                  <div className="flex justify-between items-center mb-4">
+                    <label className="block text-[14px] font-bold text-[#182033]">Reviews List</label>
+                    <button 
+                      type="button" 
+                      onClick={() => setTestimonialsData({
+                        ...testimonialsData, 
+                        reviews: [...testimonialsData.reviews, { image: "", name: "New Client", location: "City", text: "New review text" }]
+                      })}
+                      className="text-[12px] font-bold bg-[#F5A000]/10 text-[#F5A000] px-3 py-1.5 rounded-full hover:bg-[#F5A000]/20 transition-colors"
+                    >
+                      + Add Review
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {testimonialsData.reviews.map((review, idx) => (
+                      <div key={idx} className="bg-[#FAFAFA] border border-[#ECE9E2] rounded-[16px] p-5 relative group">
+                        <button 
+                          type="button"
+                          onClick={() => {
+                            const newReviews = [...testimonialsData.reviews];
+                            newReviews.splice(idx, 1);
+                            setTestimonialsData({...testimonialsData, reviews: newReviews});
+                          }}
+                          className="absolute right-4 top-4 text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X size={16} />
+                        </button>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                          <div>
+                            <label className="block text-[12px] font-bold text-black/70 mb-1.5">Client Name</label>
+                            <input 
+                              type="text" 
+                              value={review.name}
+                              onChange={(e) => {
+                                const newReviews = [...testimonialsData.reviews];
+                                newReviews[idx].name = e.target.value;
+                                setTestimonialsData({...testimonialsData, reviews: newReviews});
+                              }}
+                              className="w-full h-10 px-3 bg-white border border-[#ECE9E2] rounded-[10px] text-[13px] text-black outline-none focus:border-[#F5A000] transition-colors" 
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[12px] font-bold text-black/70 mb-1.5">Location</label>
+                            <input 
+                              type="text" 
+                              value={review.location}
+                              onChange={(e) => {
+                                const newReviews = [...testimonialsData.reviews];
+                                newReviews[idx].location = e.target.value;
+                                setTestimonialsData({...testimonialsData, reviews: newReviews});
+                              }}
+                              className="w-full h-10 px-3 bg-white border border-[#ECE9E2] rounded-[10px] text-[13px] text-black outline-none focus:border-[#F5A000] transition-colors" 
+                            />
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <label className="block text-[12px] font-bold text-black/70 mb-1.5">Review Text</label>
+                          <textarea 
+                            value={review.text}
+                            onChange={(e) => {
+                              const newReviews = [...testimonialsData.reviews];
+                              newReviews[idx].text = e.target.value;
+                              setTestimonialsData({...testimonialsData, reviews: newReviews});
+                            }}
+                            rows={2}
+                            className="w-full p-3 bg-white border border-[#ECE9E2] rounded-[10px] text-[13px] text-black outline-none focus:border-[#F5A000] transition-colors resize-none" 
+                          />
+                        </div>
+                        
+                        <div className="mt-4">
+                          <label className="block text-[12px] font-bold text-black/70 mb-1.5">Profile Image URL</label>
+                          <input 
+                            type="text" 
+                            value={review.image}
+                            onChange={(e) => {
+                              const newReviews = [...testimonialsData.reviews];
+                              newReviews[idx].image = e.target.value;
+                              setTestimonialsData({...testimonialsData, reviews: newReviews});
+                            }}
+                            className="w-full h-10 px-3 bg-white border border-[#ECE9E2] rounded-[10px] text-[13px] text-black outline-none focus:border-[#F5A000] transition-colors" 
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
