@@ -257,7 +257,7 @@ export default function MotherBirthdayPage() {
                     </span>
                   </div>
                   <Link
-                     href={`mother/${product.id}`}
+                     href={`/card/${product.id}`}
                     className="bg-neutral-950 text-white px-5 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-950 transition shadow flex items-center space-x-1"
                   >
                     <span>Book</span>

@@ -300,7 +300,7 @@ export default function HomePage() {
                       </span>
                     </div>
                     <Link
-                      href={`young/${item.id}`}
+                      href={`/card/${item.id}`}
                       className="bg-neutral-950 text-white hover:bg-[#C5A059] hover:text-neutral-950 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center space-x-1.5 shadow-sm"
                     >
                       <span>Book</span> <ArrowRight size={14} />
@@ -381,7 +381,7 @@ export default function HomePage() {
                       </span>
                     </div>
                     <Link
-                      href={`young/${item.id}`}
+                      href={`/card/${item.id}`}
                       className="bg-neutral-950 text-white hover:bg-[#C5A059] hover:text-neutral-950 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center space-x-1.5 shadow-sm"
                     >
                       <span>Book</span> <ArrowRight size={14} />
@@ -459,7 +459,7 @@ export default function HomePage() {
                     </span>
                   </div>
                   <Link
-                    href={`young/${item.id}`}
+                    href={`/card/${item.id}`}
                     className="bg-neutral-950 text-white hover:bg-[#C5A059] hover:text-neutral-950 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center space-x-1.5 shadow-sm"
                   >
                     <span>Book</span> <ArrowRight size={14} />
