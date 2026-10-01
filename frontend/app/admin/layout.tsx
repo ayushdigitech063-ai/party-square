@@ -19,24 +19,15 @@ import {
   Search,
   ChevronDown,
   ChevronLeft,
-  LayoutTemplate
+  LayoutTemplate,
+  ShoppingBag,
+  List,
+  Package,
+  MapPin
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
-import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
-
-const plusJakarta = Plus_Jakarta_Sans({ 
-  subsets: ["latin"], 
-  weight: ["400", "500", "600", "700"],
-  variable: '--font-sans'
-});
-
-const playfair = Playfair_Display({ 
-  subsets: ["latin"], 
-  weight: ["400", "500", "600", "700"],
-  variable: '--font-serif'
-});
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -47,6 +38,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [homeDropdownOpen, setHomeDropdownOpen] = useState(pathname.includes("/admin/home-settings"));
 
   const isLoginPage = pathname === "/admin/login";
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 17) return "Good afternoon";
+    return "Good evening";
+  };
 
   useEffect(() => {
     if (!isAuthenticated && !isLoginPage) {
@@ -54,8 +51,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
   }, [isAuthenticated, isLoginPage, router]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname]);
+
   if (isLoginPage) {
-    return <div className={`${plusJakarta.variable} ${playfair.variable} font-sans`}>{children}</div>;
+    return <div className="font-sans">{children}</div>;
   }
 
   if (!isAuthenticated) {
@@ -66,6 +69,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Home Page", href: "/admin/home-settings", icon: LayoutTemplate, isDropdown: true },
     { name: "Decorations", href: "/admin/decorations", icon: Sparkles },
+    { name: "Products", href: "/admin/products", icon: ShoppingBag },
+    { name: "Categories", href: "/admin/categories", icon: List },
+    { name: "Packages", href: "/admin/packages", icon: Package },
+    { name: "Cities", href: "/admin/cities", icon: MapPin },
     { name: "Bookings", href: "/admin/bookings", icon: CalendarCheck },
     { name: "Customers", href: "/admin/users", icon: Users },
     { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },
@@ -178,7 +185,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className={`min-h-screen bg-[#FAFAFA] text-[#182033] ${plusJakarta.variable} ${playfair.variable} font-sans flex selection:bg-[#FFF4D6] selection:text-[#F5A000]`}>
+    <div className="min-h-screen bg-[#FAFAFA] text-[#182033] font-sans flex selection:bg-[#FFF4D6] selection:text-[#F5A000]">
       <Toaster position="top-right" />
       
       {/* Mobile Sidebar Overlay */}
@@ -207,19 +214,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             
             {/* Full Logo */}
             <div className={`transition-all ${isCollapsed ? "lg:hidden" : ""}`}>
-              <span className="font-serif text-2xl font-bold tracking-tight text-[#182033] block leading-none">
-                Dream<span className="text-[#F5A000]">Deco</span>
-              </span>
-              <span className="text-[10px] uppercase tracking-[0.15em] text-[#6F7787] font-semibold mt-1.5 block">
-                Admin Panel
+              <Link href="/admin" className="block">
+                <img src="/logo.png" alt="Party Square" className="h-12 w-auto object-contain" />
+              </Link>
+              <span className="text-[10px] uppercase tracking-[0.15em] text-[#6F7787] font-semibold mt-1 block">
+                Super Admin Panel
               </span>
             </div>
 
             {/* Mini Logo (Collapsed State) */}
             <div className={`hidden ${isCollapsed ? "lg:block" : ""} w-full text-center mt-1`}>
-              <span className="font-serif text-2xl font-bold tracking-tight text-[#182033] leading-none">
-                D<span className="text-[#F5A000]">D</span>
-              </span>
+              <Link href="/admin" className="block">
+                <img src="/favicon.webp" alt="PS" className="h-8 w-8 mx-auto object-contain" />
+              </Link>
             </div>
 
             {/* Mobile Close Button */}
@@ -260,22 +267,30 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <div className={`flex-1 flex flex-col min-h-screen transition-all duration-300 ${isCollapsed ? "lg:pl-[80px]" : "lg:pl-[260px]"}`}>
         
         {/* Header - Clean & Premium */}
-        <header className="sticky top-0 z-40 bg-[#FAFAFA]/90 backdrop-blur-md border-b border-[#ECE9E2] px-6 lg:px-10 py-5 flex items-center justify-between">
+        <header className="sticky top-0 z-40 bg-[#FAFAFA]/95 backdrop-blur-md border-b border-[#ECE9E2] px-4 sm:px-6 lg:px-8 py-3.5 sm:py-4 flex items-center justify-between">
           
           {/* Mobile Menu & Greeting */}
           <div className="flex items-center space-x-4">
             <button onClick={() => setSidebarOpen(true)} className="lg:hidden text-[#6F7787] hover:text-[#182033] p-2 -ml-2 transition-colors">
               <Menu size={22} />
             </button>
-            <div className="hidden md:block">
-              <h1 className="font-serif text-[22px] font-semibold text-[#182033] leading-tight">
-                Good afternoon, {admin?.name || "Super Admin"} 👋
-              </h1>
-              <p className="text-[13px] text-[#6F7787] mt-0.5">Here's what's happening with DreamDeco today.</p>
+            <div className="hidden md:flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-white border border-[#ECE9E2] shadow-xs p-1 flex items-center justify-center shrink-0">
+                <img src="/favicon.webp" alt="Party Square" className="w-full h-full object-contain" />
+              </div>
+              <div>
+                <h1 className="font-serif text-[20px] font-semibold text-[#182033] leading-tight">
+                  {getGreeting()}, {admin?.name || "Super Admin"}
+                </h1>
+                <p className="text-[13px] text-[#6F7787] mt-0.5">Here's what's happening with Party Square today.</p>
+              </div>
             </div>
             {/* Mobile simplified greeting */}
-            <div className="md:hidden">
-               <h1 className="font-serif text-lg font-semibold text-[#182033]">Dashboard</h1>
+            <div className="md:hidden flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-white border border-[#ECE9E2] p-0.5 flex items-center justify-center shrink-0">
+                <img src="/favicon.webp" alt="PS" className="w-full h-full object-contain" />
+              </div>
+              <h1 className="font-serif text-base font-semibold text-[#182033]">Party Square</h1>
             </div>
           </div>
 
@@ -316,7 +331,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Dashboard Content */}
-        <main className="flex-1 p-6 lg:p-10 w-full max-w-[1600px] mx-auto overflow-x-hidden">
+        <main className="flex-1 px-4 sm:px-6 lg:px-8 py-4 sm:py-5 w-full max-w-[1600px] mx-auto overflow-x-hidden">
           {children}
         </main>
       </div>

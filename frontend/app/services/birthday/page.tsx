@@ -333,7 +333,7 @@ export default function BirthdayServicePage() {
             </h2>
 
             <p className="text-neutral-200 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light">
-              Contact DreamDeco today to discuss your vision. Our expert
+              Contact Party Square today to discuss your vision. Our expert
               stylists are excited to craft a bespoke, magical celebration that
               you and your guests will remember forever.
             </p>

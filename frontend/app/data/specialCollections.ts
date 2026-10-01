@@ -4,6 +4,7 @@ import { galleryProducts } from "./galleryData";
 import {ganeshProducts} from "./ganeshProducts";
 import { lohriProducts } from "./lohriProducts";
 import {janmashtamiProducts} from "./janmashtamiProducts";
+import { mostLovedProducts } from "./mostLovedProducts";
 
 export const weddingGifts: Product[] = [
   {
@@ -705,4 +706,5 @@ export const allProducts = [
   ...ganeshProducts,
   ...lohriProducts,
   ...janmashtamiProducts,
+  ...mostLovedProducts,
 ];

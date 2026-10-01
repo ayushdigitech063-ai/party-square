@@ -1,4 +1,5 @@
 "use client";
+import Swal from "sweetalert2";
 
 import React, { useState } from "react";
 import { Star, CheckCircle, Trash2, MessageSquare } from "lucide-react";
@@ -10,12 +11,22 @@ export default function AdminReviews() {
     { id: 3, client: "Amit Patel", rating: 5, comment: "Candlelight setup made our anniversary unforgettable!", status: "Approved" },
   ]);
 
-  const deleteReview = (id: number) => {
+  const deleteReview = async (id: number) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#EF4444",
+      cancelButtonColor: "#6B7280",
+      confirmButtonText: "Yes, delete it!"
+    });
+    if (!result.isConfirmed) return;
     setReviews(reviews.filter(r => r.id !== id));
   };
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
+    <div className="space-y-5 sm:space-y-6 w-full">
       <div className="bg-white border border-amber-200/80 p-6 rounded-3xl shadow-sm">
         <h2 className="font-serif text-2xl font-bold text-neutral-900">Customer Reviews & Ratings</h2>
         <p className="text-neutral-500 text-xs font-light mt-1">Monitor testimonials and choose which reviews to showcase on the homepage.</p>

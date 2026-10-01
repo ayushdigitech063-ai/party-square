@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { API_URL } from "@/config";
 
 import {
   ArrowLeft,
@@ -16,11 +17,15 @@ import {
   Star,
   Truck,
   Calendar,
+  Clock,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 import { allProducts } from "@/app/data/specialCollections";
 import { useCart } from "@/app/context/CartContext";
 import { useWishlist } from "@/app/context/wishlistcontext";
+import { useAuth } from "@/app/context/AuthContext";
 import ProductCard from "@/app/components/ProductCard";
 
 export default function ProductDetailPage() {
@@ -29,19 +34,65 @@ export default function ProductDetailPage() {
 
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { user, openLoginModal } = useAuth();
 
   const [quantity, setQuantity] = useState(1);
-  /*
-   * ============================================================
-   * FIND PRODUCT
-   * ============================================================
-   */
+  const [activeTab, setActiveTab] = useState("Overview");
+  const [dbProduct, setDbProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [selectedBookingDate, setSelectedBookingDate] = useState(() => {
+    const tm = new Date();
+    tm.setDate(tm.getDate() + 1);
+    return tm.toISOString().split("T")[0];
+  });
+  const [selectedBookingTime, setSelectedBookingTime] = useState("Evening (04:00 PM - 08:00 PM)");
 
   const productId = Array.isArray(params?.id)
     ? params.id[0]
     : params?.id;
 
+  // Fetch from DB if available
+  useEffect(() => {
+    if (!productId) return;
+    setLoading(true);
+    fetch(`${API_URL}/api/products`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          const match = data.find(
+            (p: any) => String(p._id) === String(productId) || p.slug === productId
+          );
+          if (match) {
+            setDbProduct({
+              id: match._id,
+              name: match.name,
+              slug: match.slug,
+              description: match.description,
+              fullDescription: match.fullDescription || match.description,
+              price: match.price,
+              originalPrice: match.originalPrice || Math.round(Number(match.price) * 1.25),
+              image: match.image,
+              images: match.images && match.images.length > 0 ? match.images : [match.image],
+              category: match.category ? match.category.name : "Celebration Product",
+              subcategory: match.subcategory ? match.subcategory.name : "",
+              badge: match.badge || "Verified Quality Product",
+              rating: match.rating || 4.8,
+              reviewCount: match.reviewCount || 98,
+              cancellationPolicy: match.cancellationPolicy,
+              included: match.included,
+              notIncluded: match.notIncluded,
+              faqs: match.faqs
+            });
+          }
+        }
+      })
+      .catch(err => console.error("Error fetching db product:", err))
+      .finally(() => setLoading(false));
+  }, [productId]);
+
   const foundItem = useMemo(() => {
+    if (dbProduct) return dbProduct;
     if (!productId) return null;
 
     return allProducts.find(
@@ -49,7 +100,7 @@ export default function ProductDetailPage() {
         String(product.id) === String(productId) ||
         product.slug === productId
     );
-  }, [productId]);
+  }, [productId, dbProduct]);
 
   /*
    * ============================================================
@@ -57,12 +108,13 @@ export default function ProductDetailPage() {
    * ============================================================
    */
 
-  if (!productId) {
+  if (!productId || loading) {
     return (
       <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center">
-        <p className="text-amber-900 font-serif text-lg">
-          Loading...
-        </p>
+        <div className="text-center space-y-3">
+          <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="text-amber-900 font-serif text-lg">Loading Product Details...</p>
+        </div>
       </div>
     );
   }
@@ -95,13 +147,13 @@ export default function ProductDetailPage() {
    *
    * Your price is stored like:
    *
-   * "₹2,499"
+   * "Ã Â¢ Ã Â¹2,499"
    *
    * Convert it into a number for calculations.
    */
 
   const numericPrice = Number(
-    String(foundItem.price).replace(/[₹,\s]/g, "")
+    String(foundItem.price).replace(/[^0-9]/g, "")
   );
 
   const totalPrice = numericPrice * quantity;
@@ -161,13 +213,27 @@ export default function ProductDetailPage() {
    */
 
   const handleBookNow = () => {
-    const params = new URLSearchParams({
-      productId: foundItem.id,
-      name: foundItem.name,
-      price: foundItem.price.toString(),
-      image: foundItem.image
-    });
-    router.push(`/payment-detail?${params.toString()}`);
+    if (!user) {
+      openLoginModal();
+      return;
+    }
+
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem(
+        "ps_booking_draft",
+        JSON.stringify({
+          productId: foundItem.id,
+          name: foundItem.name,
+          price: totalPrice || numericPrice || foundItem.price,
+          image: foundItem.image,
+          eventDate: selectedBookingDate,
+          eventTimeSlot: selectedBookingTime,
+        })
+      );
+    }
+
+    // Clean, SEO-friendly route without query string clutter
+    router.push("/payment-detail");
   };
 
   /*
@@ -211,7 +277,7 @@ export default function ProductDetailPage() {
             Back
           </button>
 
-          <span>›</span>
+          <span>/</span>
 
           <Link
             href="/"
@@ -220,7 +286,7 @@ export default function ProductDetailPage() {
             Home
           </Link>
 
-          <span>›</span>
+          <span>/</span>
 
           <span className="text-neutral-900 font-medium truncate">
             {foundItem.name}
@@ -435,7 +501,7 @@ export default function ProductDetailPage() {
                       transition
                     "
                   >
-                    ‹
+                    Ã Â¢ Ã Â¹
                   </button>
 
 
@@ -460,7 +526,7 @@ export default function ProductDetailPage() {
                       transition
                     "
                   >
-                    ›
+                    Ã Â¢ Ã Âº
                   </button>
 
                 </div>
@@ -485,17 +551,17 @@ export default function ProductDetailPage() {
                   <div className="grid grid-cols-3 gap-3 text-center">
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 text-xs text-neutral-700">
-                      <span className="text-amber-600">✦</span>
+                      <span className="text-amber-600">Ã Â¢ Ã Â¦</span>
                       <span>100% Verified</span>
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 text-xs text-neutral-700">
-                      <span className="text-amber-600">▣</span>
+                      <span className="text-amber-600">Ã Â¢-Ã Â£</span>
                       <span>Real Photos</span>
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-1.5 text-xs text-neutral-700">
-                      <span className="text-amber-600">♟</span>
+                      <span className="text-amber-600">Ã Â¢  </span>
                       <span>Real Buyers</span>
                     </div>
 
@@ -548,14 +614,14 @@ export default function ProductDetailPage() {
                 >
                   <Sparkles size={12} />
 
-                  Verified Quality Product
+                  {foundItem.badge || "Verified Quality Product"}
                 </div>
 
 
                 {/* CATEGORY */}
 
                 <p className="text-xs text-amber-700 font-semibold uppercase tracking-wide">
-                  Celebration Product
+                  {foundItem.category || "Celebration Product"} {foundItem.subcategory ? `Ã Â¢ Ã Â¢ ${foundItem.subcategory}` : ""}
                 </p>
 
 
@@ -753,7 +819,6 @@ export default function ProductDetailPage() {
 
 
                 {/* SERVICE AVAILABLE */}
-
                 <div
                   className="
                     mt-5
@@ -765,7 +830,6 @@ export default function ProductDetailPage() {
                     py-3
                   "
                 >
-
                   <div
                     className="
                       flex
@@ -779,7 +843,86 @@ export default function ProductDetailPage() {
                     <CheckCircle2 size={16} />
                     Service available in your area
                   </div>
+                </div>
 
+                {/* EVENT DATE & TIME SELECTION */}
+                <div className="mt-5 p-4 sm:p-5 rounded-2xl bg-white border-2 border-amber-200/90 shadow-xs space-y-3.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold uppercase tracking-wider text-amber-900 flex items-center gap-1.5">
+                      <Calendar size={15} className="text-amber-600" />
+                      <span>Select Event Date &amp; Setup Time</span>
+                    </label>
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                      50% Advance Online
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {/* Event Date Picker */}
+                    <div className="space-y-1">
+                      <span className="text-[11px] font-semibold text-neutral-600 flex items-center gap-1">
+                        <Calendar size={12} className="text-amber-600" />
+                        Event Date *
+                      </span>
+                      <input
+                        type="date"
+                        required
+                        value={selectedBookingDate}
+                        min={new Date().toISOString().split("T")[0]}
+                        onChange={(e) => setSelectedBookingDate(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-amber-300 text-sm font-semibold text-neutral-800 bg-amber-50/40 focus:outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer"
+                      />
+                    </div>
+
+                    {/* Event Time Slot Selector */}
+                    <div className="space-y-1">
+                      <span className="text-[11px] font-semibold text-neutral-600 flex items-center gap-1">
+                        <Clock size={12} className="text-amber-600" />
+                        Setup Time Slot *
+                      </span>
+                      <select
+                        value={selectedBookingTime}
+                        onChange={(e) => setSelectedBookingTime(e.target.value)}
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-amber-300 text-sm font-semibold text-neutral-800 bg-amber-50/40 focus:outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer"
+                      >
+                        <option value="Morning (09:00 AM - 01:00 PM)">Morning (09:00 AM - 01:00 PM)</option>
+                        <option value="Afternoon (01:00 PM - 04:00 PM)">Afternoon (01:00 PM - 04:00 PM)</option>
+                        <option value="Evening (04:00 PM - 08:00 PM)">Evening (04:00 PM - 08:00 PM)</option>
+                        <option value="Night (08:00 PM - 11:30 PM)">Night (08:00 PM - 11:30 PM)</option>
+                        <option value="Midnight Surprise (11:30 PM - 12:30 AM)">Midnight Surprise (11:30 PM - 12:30 AM)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Quick Time Slot Chips */}
+                  <div className="flex flex-wrap gap-1.5 pt-0.5">
+                    {[
+                      { label: "Morning (9-1 PM)", val: "Morning (09:00 AM - 01:00 PM)" },
+                      { label: "Afternoon (1-4 PM)", val: "Afternoon (01:00 PM - 04:00 PM)" },
+                      { label: "Evening (4-8 PM)", val: "Evening (04:00 PM - 08:00 PM)" },
+                      { label: "Night (8-11:30 PM)", val: "Night (08:00 PM - 11:30 PM)" },
+                    ].map((slot) => {
+                      const isSelected = selectedBookingTime === slot.val;
+                      return (
+                        <button
+                          key={slot.val}
+                          type="button"
+                          onClick={() => setSelectedBookingTime(slot.val)}
+                          className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg border transition cursor-pointer ${
+                            isSelected
+                              ? "bg-amber-500 text-white border-amber-500 shadow-xs"
+                              : "bg-neutral-50 text-neutral-600 border-neutral-200 hover:border-amber-300"
+                          }`}
+                        >
+                          {slot.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <p className="text-[11px] text-neutral-500 leading-tight">
+                    Both booking date &amp; setup time are saved. 50% advance online, remaining 50% on-site setup.
+                  </p>
                 </div>
 
 
@@ -926,7 +1069,7 @@ export default function ProductDetailPage() {
                 {/* CHECKOUT MESSAGE */}
 
                 <p className="text-center text-xs text-neutral-400 mt-4">
-                  Secure checkout · Guaranteed satisfaction
+                  Secure checkout Ã ,Ã Â· Guaranteed satisfaction
                 </p>
 
               </div>
@@ -967,9 +1110,10 @@ export default function ProductDetailPage() {
                 "Cancellation Policy",
                 "Reviews",
                 "FAQ",
-              ].map((tab, index) => (
+              ].map((tab) => (
                 <button
                   key={tab}
+                  onClick={() => setActiveTab(tab)}
                   className={`
                     px-5
                     sm:px-7
@@ -977,9 +1121,10 @@ export default function ProductDetailPage() {
                     text-sm
                     font-medium
                     transition
+                    cursor-pointer
                     ${
-                      index === 0
-                        ? "text-amber-800 border-b-2 border-amber-500"
+                      activeTab === tab
+                        ? "text-amber-800 border-b-2 border-amber-500 font-bold"
                         : "text-neutral-500 hover:text-amber-800"
                     }
                   `}
@@ -999,13 +1144,14 @@ export default function ProductDetailPage() {
 
           <div
             id="overview"
-            className="
+            className={`
               scroll-mt-28
               p-5
               sm:p-8
               border-b
               border-neutral-100
-            "
+              ${activeTab !== "Overview" && activeTab !== "All" ? "hidden" : "block"}
+            `}
           >
 
             <h2
@@ -1028,9 +1174,10 @@ export default function ProductDetailPage() {
                 sm:text-base
                 leading-7
                 text-neutral-600
+                whitespace-pre-line
               "
             >
-              {foundItem.description}
+              {foundItem.fullDescription || foundItem.description}
             </p>
 
 
@@ -1107,7 +1254,7 @@ export default function ProductDetailPage() {
           ================================================== */}
 
           <div
-            className="
+            className={`
               grid
               grid-cols-1
               lg:grid-cols-12
@@ -1116,14 +1263,15 @@ export default function ProductDetailPage() {
               sm:p-8
               border-b
               border-neutral-100
-            "
+              ${activeTab !== "What's Included" && activeTab !== "What's Not Included" && activeTab !== "All" && activeTab !== "Overview" ? "hidden" : ""}
+            `}
           >
 
             {/* INCLUDED */}
 
             <div
               id="included"
-              className="
+              className={`
                 scroll-mt-28
                 lg:col-span-6
                 rounded-2xl
@@ -1131,7 +1279,8 @@ export default function ProductDetailPage() {
                 border
                 border-amber-100
                 p-6
-              "
+                ${activeTab === "What's Not Included" ? "hidden" : "block"}
+              `}
             >
 
               <h3
@@ -1155,13 +1304,13 @@ export default function ProductDetailPage() {
 
               <div className="mt-5 space-y-3">
 
-                {[
+                {(foundItem.included && foundItem.included.length > 0 ? foundItem.included : [
                   "Premium product / decoration",
                   "Quality materials",
                   "Professional setup support",
                   "On-time service",
                   "Customer support",
-                ].map((item) => (
+                ]).map((item: string) => (
                   <div
                     key={item}
                     className="
@@ -1190,7 +1339,7 @@ export default function ProductDetailPage() {
 
             <div
               id="not-included"
-              className="
+              className={`
                 scroll-mt-28
                 lg:col-span-6
                 rounded-2xl
@@ -1198,7 +1347,8 @@ export default function ProductDetailPage() {
                 border
                 border-rose-100
                 p-6
-              "
+                ${activeTab === "What's Included" ? "hidden" : "block"}
+              `}
             >
 
               <h3
@@ -1222,12 +1372,12 @@ export default function ProductDetailPage() {
 
               <div className="mt-5 space-y-3">
 
-                {[
+                {(foundItem.notIncluded && foundItem.notIncluded.length > 0 ? foundItem.notIncluded : [
                   "Venue booking charges",
                   "Custom catering and food items",
                   "Additional power backup",
                   "Damage caused by guests",
-                ].map((item) => (
+                ]).map((item: string) => (
                   <div
                     key={item}
                     className="
@@ -1257,14 +1407,15 @@ export default function ProductDetailPage() {
 
           <div
             id="cancellation"
-            className="
+            className={`
               scroll-mt-28
               p-5
               sm:p-8
               border-b
               border-neutral-100
               bg-[#FAF7F2]/40
-            "
+              ${activeTab !== "Cancellation Policy" && activeTab !== "All" && activeTab !== "Overview" ? "hidden" : "block"}
+            `}
           >
 
             <div className="max-w-3xl">
@@ -1286,12 +1437,10 @@ export default function ProductDetailPage() {
                   text-sm
                   text-neutral-600
                   leading-relaxed
+                  whitespace-pre-line
                 "
               >
-                Please contact our team as early as possible if you need
-                to cancel or reschedule your booking. Cancellation and
-                rescheduling availability may depend on the booking
-                status, event date, and preparation already completed.
+                {foundItem.cancellationPolicy || "Please contact our team as early as possible if you need to cancel or reschedule your booking. Cancellation and rescheduling availability may depend on the booking status, event date, and preparation already completed."}
               </p>
 
             </div>
@@ -1305,13 +1454,14 @@ export default function ProductDetailPage() {
 
           <div
             id="faq"
-            className="
+            className={`
               scroll-mt-28
               p-5
               sm:p-8
               border-b
               border-neutral-100
-            "
+              ${activeTab !== "FAQ" && activeTab !== "All" && activeTab !== "Overview" ? "hidden" : "block"}
+            `}
           >
 
             <h3
@@ -1326,47 +1476,66 @@ export default function ProductDetailPage() {
               Frequently Asked Questions
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-3 max-w-4xl">
 
-              {[
-                [
-                  "Can I customize the product?",
-                  "Yes. Customization can be discussed with the team according to your event requirements and selected product."
-                ],
-                [
-                  "How early should I book?",
-                  "Booking in advance is recommended so the required date, materials and service team can be arranged."
-                ],
-                [
-                  "Is setup included?",
-                  "The service includes the setup items described in the What's Included section."
-                ],
-                [
-                  "How do I confirm my booking?",
-                  "Use the Book Now button to continue to the payment and booking flow."
-                ],
-              ].map(([question, answer]) => (
-                <div
-                  key={question}
-                  className="
-                    rounded-2xl
-                    border
-                    border-neutral-100
-                    bg-white
-                    p-5
-                  "
-                >
+              {(foundItem.faqs && foundItem.faqs.length > 0
+                ? foundItem.faqs.map((f: any) => [f.question, f.answer])
+                : [
+                  [
+                    "Can I customize the product?",
+                    "Yes. Customization can be discussed with the team according to your event requirements and selected product."
+                  ],
+                  [
+                    "How early should I book?",
+                    "Booking in advance is recommended so the required date, materials and service team can be arranged."
+                  ],
+                  [
+                    "Is setup included?",
+                    "The service includes the setup items described in the What's Included section."
+                  ],
+                  [
+                    "How do I confirm my booking?",
+                    "Use the Book Now button to continue to the payment and booking flow."
+                  ],
+                ]
+              ).map(([question, answer]: [string, string], index: number) => {
+                const isOpen = openFaqIndex === index;
+                return (
+                  <div
+                    key={question + index}
+                    className={`
+                      rounded-2xl
+                      border
+                      transition-all
+                      duration-200
+                      overflow-hidden
+                      ${isOpen ? "border-amber-300 bg-amber-50/20 shadow-sm" : "border-neutral-100 bg-white hover:border-amber-200"}
+                    `}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                      className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 cursor-pointer"
+                    >
+                      <h4 className="font-semibold text-sm sm:text-base text-neutral-900 flex items-center gap-3">
+                        <span className="w-6 h-6 rounded-full bg-amber-100 text-amber-800 text-xs font-bold flex items-center justify-center shrink-0">
+                          Q
+                        </span>
+                        {question}
+                      </h4>
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform duration-200 shrink-0 ${isOpen ? "bg-amber-100 text-amber-800 rotate-180" : "bg-neutral-100 text-neutral-500"}`}>
+                        <ChevronDown size={16} />
+                      </div>
+                    </button>
 
-                  <h4 className="font-semibold text-sm text-neutral-900">
-                    {question}
-                  </h4>
-
-                  <p className="mt-2 text-sm leading-6 text-neutral-600">
-                    {answer}
-                  </p>
-
-                </div>
-              ))}
+                    {isOpen && (
+                      <div className="px-5 pb-5 pt-1 text-sm text-neutral-600 leading-relaxed border-t border-amber-100/60 pl-14">
+                        {answer}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
 
             </div>
 
@@ -1381,14 +1550,15 @@ export default function ProductDetailPage() {
 
         <section
           id="reviews"
-          className="
+          className={`
             scroll-mt-28
             mt-6
             grid
             grid-cols-1
             lg:grid-cols-2
             gap-6
-          "
+            ${activeTab !== "Reviews" && activeTab !== "All" && activeTab !== "Overview" ? "hidden" : "grid"}
+          `}
         >
 
           {/* RATING SUMMARY */}

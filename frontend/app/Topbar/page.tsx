@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ArrowRight, Play, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 
 const slides = [
   {
@@ -107,20 +107,7 @@ export default function Hero() {
           </div>
 
           {/* Floating side arrows */}
-          <button
-            onClick={prevSlide}
-            aria-label="Previous slide"
-            className="absolute left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/90 text-neutral-800 flex items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
-          >
-            <ChevronLeft size={20} />
-          </button>
-          <button
-            onClick={nextSlide}
-            aria-label="Next slide"
-            className="absolute right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/90 text-neutral-800 flex items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
-          >
-            <ChevronRight size={20} />
-          </button>
+
 
           {/* Dot pagination */}
           <div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/30 backdrop-blur-sm px-3 py-2 rounded-full">

@@ -26,7 +26,9 @@ export interface Product {
 
   rating?: number | any;
   reviewCount?: number;
-   theme?: string;
+  badge?: string;
+  faqs?: { question: string; answer: string }[];
+  theme?: string;
   gradientBg?: string;
   badgeColor?: string;
   isSpecialCard?: boolean;

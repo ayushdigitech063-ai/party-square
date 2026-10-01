@@ -1,5 +1,5 @@
-
 "use client";
+
 
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -22,11 +22,20 @@ import {
   ShoppingBasket,
   X,
   Heart,
+  User,
+  LogOut,
+  Calendar,
+  CalendarDays,
+  Sparkles,
+  Clock,
 } from "lucide-react";
 import CityModal from "./CityModal"; // <-- CityModal import kiya hai (apne folder path ke hisaab se adjust kar lein)
 import { useWishlist } from "../context/wishlistcontext";
 import LoginModal from "./LoginModal";
 import { useCart } from "../context/CartContext"; // path apne folder ke hisaab se adjust karein
+import { useCity } from "../context/CityContext";
+import { useAuth } from "../context/AuthContext";
+import { API_URL } from "@/config";
 
 const CITIES = [
   "Delhi",
@@ -476,32 +485,66 @@ function DropdownPill({
 export default function Navbar() {
   const { wishlist } = useWishlist();
   const { cartCount } = useCart(); // 👈 naya
-  const [locationOpen, setLocationOpen] = useState(false);
-  const [selectedCity, setSelectedCity] = useState("Delhi");
-  const [loginopen, setLoginOpen] = useState(false);
+  const { 
+    selectedCity, 
+    cities, 
+    isCityModalOpen, 
+    openCityModal, 
+    closeCityModal, 
+    selectCityAndClose 
+  } = useCity();
 
-  // State for controlling the popup automatically on website load
-  const [isCityModalOpen, setIsCityModalOpen] = useState(false);
+  const { user, logout, isLoginModalOpen, openLoginModal, closeLoginModal } = useAuth();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  const [locationOpen, setLocationOpen] = useState(false);
+  const [loginopen, setLoginOpen] = useState(false);
 
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [whatsappNumber, setWhatsappNumber] = useState("918010679679");
 
+  useEffect(() => {
+    // Check cached WhatsApp number
+    const cachedNumber = localStorage.getItem("party_whatsapp_number");
+    if (cachedNumber) {
+      const clean = cachedNumber.replace(/\D/g, "");
+      setWhatsappNumber(clean.startsWith("91") && clean.length > 10 ? clean : `91${clean.slice(-10)}`);
+    }
+
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/settings`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.whatsappNumber) {
+            const clean = data.whatsappNumber.replace(/\D/g, "");
+            const formatted = clean.startsWith("91") && clean.length > 10 ? clean : `91${clean.slice(-10)}`;
+            setWhatsappNumber(formatted);
+            localStorage.setItem("party_whatsapp_number", data.whatsappNumber);
+          }
+        }
+      } catch {}
+    };
+    fetchSettings();
+  }, []);
 
   const locationRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const userTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
-  // Automatically open the city selection popup when website loads, but only if not selected before
-  useEffect(() => {
-    const hasSelectedCity = localStorage.getItem("hasSelectedCity");
-    if (!hasSelectedCity) {
-      setIsCityModalOpen(true);
-    }
-    const savedCity = localStorage.getItem("selectedCity");
-    if (savedCity) {
-      setSelectedCity(savedCity);
-    }
-  }, []);
+  const handleUserMouseEnter = () => {
+    if (userTimeoutRef.current) clearTimeout(userTimeoutRef.current);
+    setUserMenuOpen(true);
+  };
+
+  const handleUserMouseLeave = () => {
+    userTimeoutRef.current = setTimeout(() => {
+      setUserMenuOpen(false);
+    }, 250);
+  };
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -511,9 +554,18 @@ export default function Navbar() {
       ) {
         setLocationOpen(false);
       }
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(e.target as Node)
+      ) {
+        setUserMenuOpen(false);
+      }
     }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      if (userTimeoutRef.current) clearTimeout(userTimeoutRef.current);
+    };
   }, []);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -522,32 +574,27 @@ export default function Navbar() {
     window.location.href = `/search?q=${encodeURIComponent(searchValue.trim())}`;
   };
 
-  const handleCitySelect = (city: string) => {
-    setSelectedCity(city);
-    localStorage.setItem("selectedCity", city);
-    localStorage.setItem("hasSelectedCity", "true");
-  };
-
   return (
     <>
-      {/* Automatic Popup on Website Load (Only once) */}
+      {/* Automatic Popup on Website Load (Only once after preloader) */}
       <CityModal
         isOpen={isCityModalOpen}
-        onClose={() => setIsCityModalOpen(false)}
-        onSelectCity={handleCitySelect}
-        cities={CITIES}
+        onClose={closeCityModal}
+        onSelectCity={selectCityAndClose}
+        cities={cities && cities.length > 0 ? cities : CITIES}
       />
 
-      <nav className="w-full bg-white border-b border-neutral-200 sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
+      <nav className="w-full bg-white border-b border-neutral-200 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4 relative z-20">
           <Link
             href="/"
-            className="flex items-center gap-1.5 sm:gap-2 shrink-0"
+            className="flex items-center shrink-0 hover:opacity-90 transition-opacity py-1"
           >
-            <span className="text-xl sm:text-2xl leading-none">🪷</span>
-            <span className="text-base sm:text-xl font-extrabold tracking-tight text-neutral-900 whitespace-nowrap">
-              DreamDeco
-            </span>
+            <img
+              src="/logo.png"
+              alt="Party Square"
+              className="h-11 sm:h-14 md:h-16 w-auto object-contain max-h-[64px]"
+            />
           </Link>
 
           <form
@@ -576,7 +623,7 @@ export default function Navbar() {
             {/* Location selector trigger on navbar */}
             <div className="relative hidden sm:block" ref={locationRef}>
            <button
-  onClick={() => setIsCityModalOpen(true)}
+  onClick={openCityModal}
   className="flex items-center gap-1.5 h-10 px-3.5 rounded-full border border-neutral-200 text-[15px] font-medium text-neutral-700 hover:border-amber-400 hover:text-amber-600 transition-colors"
 >
   <MapPin size={16} className="text-amber-500 shrink-0" />
@@ -615,7 +662,7 @@ export default function Navbar() {
             </Link>
 
             <a
-              href="https://wa.me/910000000000"
+              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi Party Square! I need help with party & celebration decoration booking.")}`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Chat on WhatsApp"
@@ -624,10 +671,174 @@ export default function Navbar() {
               <WhatsAppIcon size={18} />
             </a>
 
-            <button onClick={()=> setLoginOpen(true)} className="h-9 sm:h-11 px-3 sm:px-6 shrink-0 rounded-full bg-amber-200 text-black text-sm sm:text-[15px] font-semibold flex items-center gap-1.5 sm:gap-2 whitespace-nowrap hover:bg-amber-300 transition shadow-sm">
-              <span className="hidden sm:inline">Login</span>
-              <ArrowRight size={16} />
-            </button>
+            {/* CIRCULAR USER PROFILE ICON WITH HOVER DROPDOWN */}
+            <div
+              ref={userMenuRef}
+              onMouseEnter={handleUserMouseEnter}
+              onMouseLeave={handleUserMouseLeave}
+              className="relative z-50"
+            >
+              {user ? (
+                <button
+                  type="button"
+                  onClick={() => setUserMenuOpen((v) => !v)}
+                  aria-label="User account and bookings"
+                  className="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full bg-gradient-to-tr from-amber-500 to-amber-400 text-neutral-950 font-black text-sm flex items-center justify-center border-2 border-amber-300 shadow-xs hover:ring-2 hover:ring-amber-300 transition cursor-pointer"
+                >
+                  {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setLoginOpen(true)}
+                  aria-label="Sign In / User Profile"
+                  className="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full border border-neutral-200 bg-white hover:border-amber-400 hover:text-amber-600 text-neutral-700 flex items-center justify-center transition shadow-xs cursor-pointer"
+                >
+                  <User size={18} />
+                </button>
+              )}
+
+              {/* DROPDOWN MENU ON HOVER OR CLICK */}
+              {userMenuOpen && (
+                <div className="absolute right-0 mt-2 w-72 bg-white border border-amber-200/90 rounded-2xl shadow-2xl py-2 z-[100] overflow-hidden animate-in fade-in duration-150">
+                  {user ? (
+                    <>
+                      {/* Logged In User Info */}
+                      <div className="px-4 py-3 bg-gradient-to-b from-amber-50/80 to-white border-b border-amber-100">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 to-amber-300 text-neutral-950 font-bold flex items-center justify-center text-sm shadow-xs shrink-0">
+                            {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-sm font-bold text-neutral-900 truncate">
+                              {user.name || "Customer"}
+                            </p>
+                            <p className="text-xs text-neutral-500 truncate">
+                              {user.phone || user.email}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Account Created Date Info */}
+                        <div className="mt-2.5 pt-2 border-t border-amber-100/70 flex items-center gap-1.5 text-[11px] text-amber-900">
+                          <CalendarDays size={13} className="text-amber-600 shrink-0" />
+                          <span>
+                            Account created:{" "}
+                            <strong className="text-neutral-900">
+                              {user.createdAt
+                                ? new Date(user.createdAt).toLocaleDateString("en-IN", {
+                                    day: "numeric",
+                                    month: "short",
+                                    year: "numeric",
+                                  })
+                                : "Active Member"}
+                            </strong>
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Dropdown Links */}
+                      <div className="py-1.5">
+                        <Link
+                          href="/profile"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-neutral-700 hover:text-amber-800 hover:bg-amber-50 transition"
+                        >
+                          <User size={15} className="text-amber-600 shrink-0" />
+                          <div>
+                            <p className="font-bold">My Profile</p>
+                            <p className="text-[10px] text-neutral-400 font-normal">View account info & joining details</p>
+                          </div>
+                        </Link>
+
+                        <Link
+                          href="/profile?tab=bookings"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-neutral-700 hover:text-amber-800 hover:bg-amber-50 transition"
+                        >
+                          <Calendar size={15} className="text-amber-600 shrink-0" />
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between">
+                              <p className="font-bold">My Bookings</p>
+                              <span className="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full">
+                                50% Advance
+                              </span>
+                            </div>
+                            <p className="text-[10px] text-neutral-400 font-normal">Check booked event dates & balance</p>
+                          </div>
+                        </Link>
+
+                        {(user.role === "superadmin" || user.role === "admin") && (
+                          <Link
+                            href="/admin"
+                            onClick={() => setUserMenuOpen(false)}
+                            className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-amber-700 hover:bg-amber-50 transition"
+                          >
+                            <Sparkles size={15} className="text-amber-600 shrink-0" />
+                            <div>
+                              <p className="font-bold">Admin Dashboard</p>
+                              <p className="text-[10px] text-amber-600/70 font-normal">Manage orders, cities & users</p>
+                            </div>
+                          </Link>
+                        )}
+
+                        <div className="my-1 border-t border-neutral-100" />
+
+                        <button
+                          onClick={() => {
+                            logout();
+                            setUserMenuOpen(false);
+                          }}
+                          className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition cursor-pointer"
+                        >
+                          <LogOut size={15} />
+                          <span>Log Out</span>
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* Logged Out / Guest Dropdown */}
+                      <div className="p-4">
+                        <div className="flex items-center gap-2.5 mb-3">
+                          <div className="w-10 h-10 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                            <User size={18} />
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-neutral-900 leading-snug">
+                              Welcome to Party Square
+                            </p>
+                            <p className="text-[11px] text-neutral-500">
+                              Sign in to book decor & track event dates
+                            </p>
+                          </div>
+                        </div>
+
+                        <button
+                          onClick={() => {
+                            setUserMenuOpen(false);
+                            setLoginOpen(true);
+                          }}
+                          className="w-full py-2.5 rounded-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition shadow-sm cursor-pointer flex items-center justify-center gap-1.5"
+                        >
+                          <span>Login / Register Now</span>
+                          <ArrowRight size={13} />
+                        </button>
+
+                        <div className="mt-3 pt-3 border-t border-neutral-100 text-[11px] space-y-1">
+                          <p className="flex items-center gap-1.5 text-emerald-700 font-semibold">
+                            <Sparkles size={12} /> 50% Advance Online Booking
+                          </p>
+                          <p className="flex items-center gap-1.5 text-neutral-600">
+                            <Calendar size={12} className="text-amber-600" /> Date selection on decor page
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -650,7 +861,7 @@ export default function Navbar() {
           </div>
         )}
 
-        <div className="relative border-t border-neutral-100 bg-white">
+        <div className="relative z-10 border-t border-neutral-100 bg-white">
           <div className="pointer-events-none absolute left-0 top-0 h-full w-6 sm:w-10 bg-gradient-to-r from-white to-transparent z-10" />
 
           <div
@@ -696,7 +907,13 @@ export default function Navbar() {
           <div className="pointer-events-none absolute right-0 top-0 h-full w-6 sm:w-10 bg-gradient-to-l from-white to-transparent z-10" />
         </div>
       </nav>
-       <LoginModal isOpen={loginopen} onClose={() => setLoginOpen(false)} />
+       <LoginModal
+         isOpen={loginopen || isLoginModalOpen}
+         onClose={() => {
+           setLoginOpen(false);
+           closeLoginModal();
+         }}
+       />
     </>
   );
 }

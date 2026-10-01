@@ -1,4 +1,5 @@
 "use client";
+import Swal from "sweetalert2";
 
 import React, { useState } from "react";
 import { Image as ImageIcon, Plus, Trash2, Upload } from "lucide-react";
@@ -21,12 +22,22 @@ export default function AdminGallery() {
     setTitle("");
   };
 
-  const deletePhoto = (id: number) => {
+  const deletePhoto = async (id: number) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#EF4444",
+      cancelButtonColor: "#6B7280",
+      confirmButtonText: "Yes, delete it!"
+    });
+    if (!result.isConfirmed) return;
     setPhotos(photos.filter(p => p.id !== id));
   };
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
+    <div className="space-y-5 sm:space-y-6 w-full">
       <div className="bg-white border border-amber-200/80 p-6 rounded-3xl shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="font-serif text-2xl font-bold text-neutral-900">Event Gallery Manager</h2>

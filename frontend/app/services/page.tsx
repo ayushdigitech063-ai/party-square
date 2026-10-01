@@ -14,7 +14,7 @@ export default function AboutPage() {
         <div className="absolute inset-0 z-0">
           <img 
             src="/wedding1.png" 
-            alt="DreamDeco Luxury Setup" 
+            alt="Party Square Luxury Setup" 
             className="w-full h-full object-cover object-center scale-105 animate-fade-in"
           />
           {/* Dark luxury gradient overlay for text readability */}
@@ -25,7 +25,7 @@ export default function AboutPage() {
         <div className="max-w-5xl mx-auto px-6 text-center relative z-10 space-y-4 pt-10">
           <div className="inline-flex items-center space-x-2 bg-black/40 backdrop-blur-md border border-[#C5A059]/60 px-4 py-1.5 rounded-full text-[#DFBC71] text-xs uppercase tracking-[0.25em] font-medium shadow-lg">
             <Sparkles size={13} />
-            <span>The DreamDeco Legacy</span>
+            <span>The Party Square Legacy</span>
           </div>
           
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light tracking-wide text-white drop-shadow-md">
@@ -80,7 +80,7 @@ export default function AboutPage() {
             </h2>
 
             <p className="text-neutral-600 text-sm md:text-base font-light leading-relaxed">
-              At DreamDeco, we believe every milestone deserves a canvas as unique as your story. From grand royal weddings and traditional mandaps to intimate candlelight dinners and vibrant festive setups, our expert artisans design atmospheres that leave lasting impressions.
+              At Party Square, we believe every milestone deserves a canvas as unique as your story. From grand royal weddings and traditional mandaps to intimate candlelight dinners and vibrant festive setups, our expert artisans design atmospheres that leave lasting impressions.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">

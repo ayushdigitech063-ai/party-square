@@ -29,7 +29,7 @@ function HomeSettingsContent() {
     banners: [
       {
         headline: "Transform Your Dream Events Into Reality",
-        subheadline: "DreamDeco provides premium decoration services for weddings, birthdays, and corporate events across Jaipur.",
+        subheadline: "Party Square provides premium decoration services for weddings, birthdays, and celebrations across India.",
         buttonText: "Explore Themes",
         buttonLink: "/decorations",
         backgroundImage: ""
@@ -741,16 +741,16 @@ function HomeSettingsContent() {
               <div className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <InputField label="Contact Phone" icon={<Phone size={16}/>} defaultValue="+91 98765 43210" />
-                  <InputField label="Contact Email" icon={<Mail size={16}/>} defaultValue="hello@dreamdeco.com" />
+                  <InputField label="Contact Email" icon={<Mail size={16}/>} defaultValue="hello@partysquare.com" />
                 </div>
                 
-                <TextAreaField label="Office Address" defaultValue="123 Luxury Lane, Malviya Nagar, Jaipur, Rajasthan 302017" rows={3} />
+                <TextAreaField label="Office Address" defaultValue="124 Luxury Avenue, Event Square, New Delhi, India" rows={3} />
                 
                 <div className="pt-2">
                   <label className="block text-[13px] font-bold text-[#182033] mb-3">Social Media Links</label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <InputField label="" icon={<LinkIcon size={16}/>} defaultValue="https://instagram.com/dreamdeco" placeholder="Instagram URL" />
-                    <InputField label="" icon={<LinkIcon size={16}/>} defaultValue="https://facebook.com/dreamdeco" placeholder="Facebook URL" />
+                    <InputField label="" icon={<LinkIcon size={16}/>} defaultValue="https://instagram.com/partysquare" placeholder="Instagram URL" />
+                    <InputField label="" icon={<LinkIcon size={16}/>} defaultValue="https://facebook.com/partysquare" placeholder="Facebook URL" />
                   </div>
                 </div>
               </div>

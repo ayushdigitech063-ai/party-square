@@ -1,39 +1,87 @@
 "use client";
+import Swal from "sweetalert2";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Sparkles, Plus, Trash2, Edit3, Check } from "lucide-react";
+import { API_URL } from '@/config';
 
 export default function AdminDecorations() {
-  const [themes, setThemes] = useState([
-    { id: 1, name: "Christmas Magic Decor", category: "Festive", price: "₹6,499", status: "Active" },
-    { id: 2, name: "Ganpati Mandap Setup", category: "Traditional", price: "₹8,999", status: "Active" },
-    { id: 3, name: "Romantic Candlelight Vibe", category: "Party", price: "₹4,599", status: "Active" },
-    { id: 4, name: "Birthday Balloon Bash", category: "Birthday", price: "₹3,999", status: "Active" },
-  ]);
+  const [themes, setThemes] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchThemes();
+  }, []);
+
+  const fetchThemes = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/products`);
+      const data = await res.json();
+      setThemes(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ name: "", category: "Party", price: "" });
 
-  const handleAddTheme = (e: React.FormEvent) => {
+  const handleAddTheme = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.price) return;
-    setThemes([...themes, {
-      id: Date.now(),
-      name: form.name,
-      category: form.category,
-      price: `₹${form.price}`,
-      status: "Active"
-    }]);
-    setForm({ name: "", category: "Party", price: "" });
-    setShowModal(false);
+    
+    try {
+      const res = await fetch(`${API_URL}/api/products`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          category: { name: form.category }, // backend might expect category as object or string depending on schema
+          price: form.price,
+          status: "Active"
+        })
+      });
+      if (res.ok) {
+        setForm({ name: "", category: "Party", price: "" });
+        setShowModal(false);
+        fetchThemes();
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const deleteTheme = (id: number) => {
-    setThemes(themes.filter(t => t.id !== id));
+  const deleteTheme = async (id: string) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#EF4444",
+      cancelButtonColor: "#6B7280",
+      confirmButtonText: "Yes, delete it!"
+    });
+    if (!result.isConfirmed) return;
+    try {
+      const res = await fetch(`${API_URL}/api/products/${id}`, {
+        method: 'DELETE'
+      });
+      if (res.ok) {
+        fetchThemes();
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
+    <div className="space-y-5 sm:space-y-6 w-full">
       
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white border border-amber-200/80 p-6 rounded-3xl shadow-sm">
@@ -53,14 +101,14 @@ export default function AdminDecorations() {
       {/* Themes Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {themes.map((theme) => (
-          <div key={theme.id} className="bg-white border border-amber-200/80 rounded-3xl p-6 shadow-sm space-y-4 flex flex-col justify-between hover:shadow-md transition">
+          <div key={theme._id || theme.id} className="bg-white border border-amber-200/80 rounded-3xl p-6 shadow-sm space-y-4 flex flex-col justify-between hover:shadow-md transition">
             <div className="space-y-2">
               <div className="flex justify-between items-start">
                 <span className="bg-amber-100 text-amber-900 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                  {theme.category}
+                  {theme.category?.name || theme.category || "Uncategorized"}
                 </span>
                 <span className="text-green-700 bg-green-50 px-2.5 py-0.5 rounded-full text-[10px] font-bold">
-                  {theme.status}
+                  {theme.status || "Active"}
                 </span>
               </div>
               <h3 className="font-serif text-lg font-bold text-neutral-900 pt-2">{theme.name}</h3>
@@ -69,10 +117,10 @@ export default function AdminDecorations() {
             <div className="pt-4 border-t border-amber-100 flex items-center justify-between">
               <div>
                 <span className="text-[10px] uppercase text-neutral-400 block font-bold">Starting Package</span>
-                <span className="font-serif font-bold text-xl text-neutral-900">{theme.price}</span>
+                <span className="font-serif font-bold text-xl text-neutral-900">₹{theme.price}</span>
               </div>
               <button 
-                onClick={() => deleteTheme(theme.id)}
+                onClick={() => deleteTheme(theme._id || theme.id)}
                 className="w-9 h-9 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition"
                 title="Delete Theme"
               >

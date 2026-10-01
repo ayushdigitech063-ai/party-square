@@ -107,14 +107,18 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 pb-16 border-b border-amber-300/70">
           {/* Brand Info (4 Columns) */}
           <div className="lg:col-span-4 space-y-4">
-            <h2 className="text-2xl font-serif font-bold tracking-wide text-neutral-950">
-              Aesthetic{" "}
-              <span className="italic font-normal text-amber-800">Decor</span>
-            </h2>
+            <Link href="/" className="inline-block hover:opacity-90 transition-opacity">
+              <div className="bg-white p-3 rounded-2xl inline-block border border-amber-300 shadow-sm">
+                <img
+                  src="/logo.png"
+                  alt="Party Square Logo"
+                  className="h-14 sm:h-16 w-auto object-contain"
+                />
+              </div>
+            </Link>
             <p className="text-neutral-800 text-sm font-medium leading-relaxed">
-              Transforming your special occasions into breathtaking visual
-              poetry. From grand weddings to intimate celebrations, we design
-              memories that last forever.
+              Transforming your special occasions into breathtaking celebrations with Party Square.
+              From grand birthdays and weddings to intimate celebrations, we design memories that last forever.
             </p>
             <div className="flex items-center space-x-3 pt-2">
               <a
@@ -255,7 +259,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center space-x-3">
                 <Mail size={16} className="text-amber-800 shrink-0" />
-                <span>support@aestheticdecor.com</span>
+                <span>support@partysquare.com</span>
               </li>
             </ul>
           </div>
@@ -264,7 +268,7 @@ export default function Footer() {
         {/* Bottom Copyright Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-700 font-semibold gap-4">
           <p>
-            © {new Date().getFullYear()} Aesthetic Decor. All rights reserved.
+            © {new Date().getFullYear()} Party Square. All rights reserved.
           </p>
           <div className="flex space-x-6">
             <Link

@@ -12,7 +12,7 @@ export default function AdminAnalytics() {
   ];
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
+    <div className="space-y-5 sm:space-y-6 w-full">
       
       {/* Header */}
       <div className="bg-white border border-amber-200/80 p-6 rounded-3xl shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">

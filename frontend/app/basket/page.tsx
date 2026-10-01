@@ -3,8 +3,12 @@
 import React, { useState, useEffect } from "react";
 import { Trash2, ShoppingBag, ArrowRight, Sparkles, Eye, X, Calendar } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
 export default function BasketPage() {
+  const router = useRouter();
+  const { user, openLoginModal } = useAuth();
   const [cart, setCart] = useState<any[]>([]);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
 
@@ -166,7 +170,25 @@ export default function BasketPage() {
           </div>
 
           <button
-            onClick={() => alert("Proceeding to checkout/booking confirmation!")}
+            onClick={() => {
+              if (!user) {
+                openLoginModal();
+                return;
+              }
+              const firstItem = cart[0];
+              if (typeof window !== "undefined") {
+                sessionStorage.setItem(
+                  "ps_booking_draft",
+                  JSON.stringify({
+                    productId: firstItem?.id || "CART",
+                    name: cart.length > 1 ? `${firstItem.name} + ${cart.length - 1} more items` : firstItem?.name || "Decor Package",
+                    price: grandTotal,
+                    image: firstItem?.image || "",
+                  })
+                );
+              }
+              router.push("/payment-detail");
+            }}
             className="w-full bg-[#A0522D] hover:bg-amber-900 text-white font-bold py-4 rounded-full text-xs uppercase tracking-widest transition shadow-lg flex items-center justify-center space-x-2 cursor-pointer"
           >
             <span>Proceed to Checkout</span>

@@ -42,6 +42,7 @@ export default function ChristmasPage() {
 ];
 
 const PACKAGE_IDS: string[] = [
+  "christmas-magic",
   "christmas-7",
   "christmas-8",
   "christmas-9",

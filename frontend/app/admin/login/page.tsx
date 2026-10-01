@@ -142,22 +142,16 @@ export default function AdminLoginPage() {
             <div className="px-8 pt-8 pb-10 sm:px-10">
 
               {/* Logo */}
-              <div className="flex items-center justify-center gap-3 mb-2">
-                <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center shadow-lg shadow-amber-500/10">
-                  <PartyPopper size={24} className="text-amber-300" />
+              <div className="flex flex-col items-center justify-center mb-6">
+                <div className="bg-white rounded-2xl p-3 shadow-xl mb-3 border border-amber-400/40 inline-block">
+                  <img src="/logo.png" alt="Party Square Logo" className="h-12 w-auto object-contain" />
                 </div>
-              </div>
-
-              <div className="text-center mb-8">
-                <h1 className="font-serif text-3xl font-bold text-white tracking-wide">
-                  Dream<span className="text-amber-400">Deco</span>
-                </h1>
-                <div className="inline-flex items-center gap-1.5 mt-2 bg-amber-500/15 border border-amber-500/30 px-3 py-1 rounded-full">
+                <div className="inline-flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/30 px-3.5 py-1 rounded-full">
                   <Sparkles size={12} className="text-amber-300" />
-                  <span className="text-[10px] uppercase tracking-[2px] text-amber-300 font-bold">Admin Portal</span>
+                  <span className="text-[10px] uppercase tracking-[2px] text-amber-300 font-bold">Super Admin Portal</span>
                 </div>
-                <p className="text-neutral-300 text-sm mt-3 font-light">
-                  Sign in to manage your celebration empire
+                <p className="text-neutral-300 text-sm mt-2.5 font-light">
+                  Sign in to manage Party Square celebrations
                 </p>
               </div>
 
@@ -272,7 +266,7 @@ export default function AdminLoginPage() {
 
           {/* Bottom branding */}
           <p className="text-center text-[10px] text-neutral-500 mt-5 tracking-wider">
-            © 2026 DreamDeco · Party Square Pvt Ltd
+            © 2026 Party Square Pvt Ltd. All rights reserved.
           </p>
         </div>
       </div>

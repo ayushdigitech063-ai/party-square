@@ -1,8 +1,8 @@
-
 "use client";
 
+
 import React, { useState, useEffect } from "react";
-import { ArrowRight, Play, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import Link from "next/link";
 import { API_URL } from "@/config";
 
@@ -134,21 +134,7 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Floating side arrows - Hidden on small mobile, visible on sm and up */}
-          <button
-            onClick={prevSlide}
-            aria-label="Previous slide"
-            className="hidden sm:flex absolute left-3 md:left-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-11 md:h-11 rounded-full bg-white/90 text-neutral-800 items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
-          >
-            <ChevronLeft size={18} className="md:w-5 md:h-5" />
-          </button>
-          <button
-            onClick={nextSlide}
-            aria-label="Next slide"
-            className="hidden sm:flex absolute right-3 md:right-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 md:w-11 md:h-11 rounded-full bg-white/90 text-neutral-800 items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
-          >
-            <ChevronRight size={18} className="md:w-5 md:h-5" />
-          </button>
+
 
           {/* Dot pagination */}
           <div className="absolute bottom-5 sm:bottom-7 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:gap-2 bg-black/30 backdrop-blur-sm px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full">

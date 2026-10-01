@@ -1,7 +1,56 @@
 import { Product } from "../types/product";
 
 export const christmasProducts: Product[] = [
-   {
+  {
+    id: "christmas-magic",
+    slug: "christmas-magic",
+    name: "Christmas Magic Decor",
+    description:
+      "Bring home the Christmas cheer with frosted pine trees, glittering ornaments, warm fairy lights, and cozy winter-themed festive corners.",
+    price: 8499,
+    originalPrice: 11999,
+    image: "/crismasdecoration.png",
+    images: [
+      "/crismasdecoration.png",
+      "/crismasdecoration1.png",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB1N6QA6-7p2IKCkf-yZo46P-pmQLQc8jxuwTbDhRmdA&s",
+    ],
+    category: "Festivals",
+    subcategory: "Christmas",
+    availability: true,
+    rating: 4.9,
+    reviewCount: 48,
+    included: [
+      "Twin frosted Christmas trees with warm fairy lights",
+      "Festive fireplace garland & hanging holiday wreath",
+      "Glittering red & gold holiday ornaments and baubles",
+      "Cozy plaid winter cushions & tartan wraps",
+      "Decorative gift boxes and tabletop candle lamps",
+      "Complete on-site delivery and professional installation",
+    ],
+    notIncluded: [
+      "Real working fireplace / fire fuel",
+      "Extra room lighting outside designated area",
+      "Outdoor electrical extensions",
+    ],
+    cancellationPolicy:
+      "Full refund if cancelled at least 24 hours prior to scheduled event setup. Easy rescheduling available.",
+    faqs: [
+      {
+        question: "How long does the Christmas Magic setup take?",
+        answer: "Our team of professional decorators will complete the full setup within 2 to 3 hours."
+      },
+      {
+        question: "Are trees and ornaments real or artificial?",
+        answer: "We use high-grade fire-safe artificial pine trees and durable shatterproof ornaments designed to stay flawless throughout your celebrations."
+      },
+      {
+        question: "Can this theme be customized for living rooms or offices?",
+        answer: "Yes! The setup easily adapts to living spaces, hotel lounges, corporate offices, or villa halls."
+      }
+    ]
+  },
+  {
     id: "christmas-1",
     slug: "grand-decorated-christmas-tree",
     name: "Grand Decorated Christmas Tree",

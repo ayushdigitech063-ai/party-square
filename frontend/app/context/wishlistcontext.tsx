@@ -14,7 +14,7 @@ export type WishlistProduct = {
   image?: string;
   src?: string;
   desc?: string;
-  price?: number ;
+  price?: number | string;
   category?: string;
 };
 

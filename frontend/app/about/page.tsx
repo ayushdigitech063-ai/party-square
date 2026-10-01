@@ -13,7 +13,7 @@ export default function AboutPage() {
         <div className="absolute inset-0 z-0">
           <img 
             src="/home2.png" 
-            alt="DreamDeco Luxury Story" 
+            alt="Party Square Luxury Story" 
             className="w-full h-full object-cover object-center scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
@@ -31,7 +31,7 @@ export default function AboutPage() {
           </h1>
 
           <p className="text-neutral-200 text-sm md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
-            Discover the philosophy, passion, and meticulous craftsmanship behind DreamDeco—India’s premier luxury event styling house.
+            Discover the philosophy, passion, and meticulous craftsmanship behind Party Square—India’s premier luxury event styling house.
           </p>
         </div>
       </section>
@@ -45,7 +45,7 @@ export default function AboutPage() {
             <div className="relative h-[450px] sm:h-[520px] rounded-[32px] overflow-hidden border border-[#E2D2B0] shadow-2xl">
               <img 
                 src="/homepage.png" 
-                alt="DreamDeco Craftsmanship" 
+                alt="Party Square Craftsmanship" 
                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -71,7 +71,7 @@ export default function AboutPage() {
             </h2>
 
             <p className="text-neutral-600 text-sm md:text-base font-light leading-relaxed">
-              Founded over a decade ago, DreamDeco started with a simple belief: that every milestone deserves a stage as grand as the emotions behind it. What began as a boutique floral styling initiative has evolved into an elite creative agency trusted by families, corporate giants, and luxury hosts across the country.
+              Founded over a decade ago, Party Square started with a simple belief: that every milestone deserves a stage as grand as the emotions behind it. What began as a boutique floral styling initiative has evolved into an elite creative agency trusted by families, corporate giants, and luxury hosts across the country.
             </p>
 
             <p className="text-neutral-600 text-sm md:text-base font-light leading-relaxed">
@@ -162,7 +162,7 @@ export default function AboutPage() {
             </h2>
 
             <p className="text-neutral-600 text-sm md:text-base font-light leading-relaxed">
-              Beyond intimate celebrations, DreamDeco brings architectural scale and brand-aligned aesthetics to corporate environments. We partner with top enterprises to transform offices and venue spaces for annual galas, brand launches, and festive celebrations.
+              Beyond intimate celebrations, Party Square brings architectural scale and brand-aligned aesthetics to corporate environments. We partner with top enterprises to transform offices and venue spaces for annual galas, brand launches, and festive celebrations.
             </p>
 
             <div className="space-y-3 pt-2">
@@ -182,7 +182,7 @@ export default function AboutPage() {
           <div className="relative h-80 sm:h-96 rounded-3xl overflow-hidden border border-[#E2D2B0] shadow-lg">
             <img 
               src="/coprateoffice.png" 
-              alt="DreamDeco Corporate Standards" 
+              alt="Party Square Corporate Standards" 
               className="w-full h-full object-cover hover:scale-105 transition duration-700"
             />
           </div>

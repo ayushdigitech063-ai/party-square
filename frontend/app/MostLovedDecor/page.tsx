@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { Sparkles, X, ArrowRight } from "lucide-react";
 
 const decorationItems = [
@@ -10,6 +11,8 @@ const decorationItems = [
     subtitle: "Joyful & Vibrant Setups",
     image: "/birthdaydesign.png",
     description: "Make birthdays extra special with vibrant balloon arches, custom backdrops, fairy lights, and personalized theme setups designed to create everlasting memories.",
+    link: "/card/birthday-celebration",
+    price: 4999,
   },
   {
     id: 2,
@@ -17,6 +20,8 @@ const decorationItems = [
     subtitle: "Candlelight & Roses",
     image: "/romaticvibe.png",
     description: "Ignite the romance with breathtaking candlelight pathways, cascading rose petals, cozy cabanas, and intimate dinner decor tailored for anniversaries and dates.",
+    link: "/card/romantic-vibes",
+    price: 5499,
   },
   {
     id: 3,
@@ -24,6 +29,8 @@ const decorationItems = [
     subtitle: "Divine Mandap Decor",
     image: "/ganpatidecoration.png",
     description: "Welcome Lord Ganesha home with exquisite traditional mandaps, fresh floral hangings, gold accents, and serene lighting setups crafted with deep devotion.",
+    link: "/card/ganpati-utsav",
+    price: 6999,
   },
   {
     id: 4,
@@ -31,6 +38,8 @@ const decorationItems = [
     subtitle: "Traditional & Colorful",
     image: "/navratridecoration.png",
     description: "Celebrate the festive nine nights with vibrant ethnic props, marigold floral styling, traditional elements, and bright festive illumination.",
+    link: "/card/navratri-celebration",
+    price: 6499,
   },
   {
     id: 5,
@@ -38,6 +47,8 @@ const decorationItems = [
     subtitle: "Divine Krishna Jhula",
     image: "/janmasthmi.png",
     description: "Transform your space into a divine Vrindavan with beautifully decorated jhulas, peacock feather motifs, butter pots, and glowing traditional lights.",
+    link: "/card/janmashtami-celebration",
+    price: 5999,
   },
   {
     id: 6,
@@ -45,6 +56,8 @@ const decorationItems = [
     subtitle: "Festive Winter Wonderland",
     image: "/crismasdecoration.png",
     description: "Bring home the Christmas cheer with frosted pine trees, glittering ornaments, warm fairy lights, and cozy winter-themed festive corners.",
+    link: "/card/christmas-magic",
+    price: 8499,
   },
   {
     id: 7,
@@ -52,6 +65,8 @@ const decorationItems = [
     subtitle: "Traditional Lighting & Diya Decor",
     image: "/diwalidecoration.png",
     description: "Brighten up your home with bespoke floral rangolis, traditional diyas, ambient lighting, and elegant festive corners for Laxmi Pujan.",
+    link: "/card/diwali-festivities",
+    price: 7999,
   },
   {
     id: 8,
@@ -59,6 +74,8 @@ const decorationItems = [
     subtitle: "Luxury Stage & Events",
     image: "/homepage.png",
     description: "From grand receptions to premium family milestones, experience breathtaking stage styling, floral ceilings, and immaculate attention to detail.",
+    link: "/card/grand-celebrations",
+    price: 14999,
   },
 ];
 
@@ -174,25 +191,44 @@ export default function MostLovedDecor() {
 
             {/* Modal Content */}
             <div className="space-y-3">
-              <h3 className="text-2xl font-serif text-[#1A1A1A]">
-                {selectedItem.title}
-              </h3>
+              <div className="flex items-center justify-between">
+                <Link 
+                  href={selectedItem.link}
+                  onClick={() => setSelectedItem(null)}
+                  className="text-2xl font-serif text-[#1A1A1A] hover:text-[#8C6D24] transition-colors"
+                >
+                  {selectedItem.title}
+                </Link>
+                {selectedItem.price && (
+                  <span className="font-bold text-lg text-[#8C6D24]">
+                    ₹{selectedItem.price.toLocaleString("en-IN")}
+                  </span>
+                )}
+              </div>
               <p className="text-[#4A4A4A] text-sm leading-relaxed font-light">
                 {selectedItem.description}
               </p>
+              {selectedItem.price && (
+                <div className="flex items-center justify-between text-xs bg-[#FFF8E7] border border-[#E2D2B0] px-3.5 py-2 rounded-xl text-[#7B6220] font-semibold">
+                  <span>⚡ 50% Online Advance: ₹{Math.round(selectedItem.price * 0.5).toLocaleString("en-IN")}</span>
+                  <span>50% Payable on-site</span>
+                </div>
+              )}
             </div>
 
             {/* Action Buttons */}
             <div className="flex items-center space-x-4 pt-2">
-              <button 
+              <Link 
+                href={selectedItem.link}
                 onClick={() => setSelectedItem(null)}
-                className="flex-1 bg-[#8C6D24] text-white py-3 rounded-full font-medium text-sm hover:bg-[#72571D] transition shadow-md cursor-pointer"
+                className="flex-1 bg-[#8C6D24] text-white py-3.5 rounded-full font-bold text-sm hover:bg-[#72571D] transition shadow-md flex items-center justify-center gap-2 cursor-pointer text-center"
               >
-                Book This Theme
-              </button>
+                <span>View Details &amp; Book Theme</span>
+                <ArrowRight size={16} />
+              </Link>
               <button 
                 onClick={() => setSelectedItem(null)}
-                className="px-6 py-3 rounded-full border border-[#D9CEB3] hover:border-[#8C6D24] text-sm text-[#4A4A4A] transition cursor-pointer"
+                className="px-6 py-3.5 rounded-full border border-[#D9CEB3] hover:border-[#8C6D24] text-sm text-[#4A4A4A] transition cursor-pointer font-medium"
               >
                 Close
               </button>
