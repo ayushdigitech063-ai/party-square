@@ -275,7 +275,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Menu size={22} />
             </button>
             <div className="hidden md:flex items-center gap-3">
-          
+          {/* jhsdfjkh */}
               <div>
                 <h1 className="font-serif text-[20px] font-semibold text-[#182033] leading-tight">
                   {getGreeting()}, {admin?.name || "Super Admin"}
