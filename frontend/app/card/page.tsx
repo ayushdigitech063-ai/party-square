@@ -1,16 +1,66 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Heart, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { weddingGifts, festivalsProducts, pujaSection, estheticProducts } from "../data/specialCollections";
 import { useCart } from "@/app/context/CartContext";
 import { useWishlist } from "../context/wishlistcontext";
-
+import { useCity } from "../context/CityContext";
+import { API_URL } from "@/config";
 
 export default function CardPage() {
   const { addToCart } = useCart();
-   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
+  const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
+  const { selectedCity } = useCity();
+
+  // Dynamic live products from DB
+  const [dbProducts, setDbProducts] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/products`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setDbProducts(data);
+        }
+      })
+      .catch((err) => console.error("Error loading products in card page:", err));
+  }, []);
+
+  // Filter products by category from live DB if available, else static
+  const filterByCat = (categoryName: string, staticFallback: any[]) => {
+    if (dbProducts.length === 0) return staticFallback;
+    const matched = dbProducts.filter((p) => {
+      const cat = p.category ? (typeof p.category === "object" ? p.category.name : p.category) : "";
+      const matchesCat = String(cat).toLowerCase().includes(categoryName.toLowerCase());
+      if (!matchesCat) return false;
+
+      // City filter
+      if (!selectedCity || selectedCity === "All") return true;
+      if (!p.availableCities || p.availableCities.length === 0) return true;
+      return p.availableCities.includes("All") || p.availableCities.includes(selectedCity);
+    });
+
+    if (matched.length === 0) {
+      // If none in this category in DB, fallback to static
+      return staticFallback;
+    }
+
+    return matched.map((p) => ({
+      id: p._id,
+      slug: p.slug || p._id,
+      name: p.name,
+      description: p.description,
+      price: typeof p.price === "number" ? `₹${p.price.toLocaleString("en-IN")}` : p.price,
+      image: p.image,
+    }));
+  };
+
+  const activeWedding = filterByCat("Wedding", weddingGifts);
+  const activeFestivals = filterByCat("Festival", festivalsProducts);
+  const activePuja = filterByCat("Puja", pujaSection);
+  const activeEsthetic = filterByCat("Esthetic", estheticProducts);
 
   // Refs for horizontal scrolling containers
   const weddingRef = useRef<HTMLDivElement>(null);
@@ -27,8 +77,6 @@ export default function CardPage() {
 
   const handleAddToCart = (item: any, e: React.MouseEvent) => {
     e.stopPropagation(); // Prevents card link click event
-    
-    // Sirf global cart function call hoga, jisse ek hi single toast aayega
     addToCart(item, 1);
   };
 
@@ -44,7 +92,7 @@ export default function CardPage() {
         </div>
 
         <div ref={weddingRef} className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory">
-          {weddingGifts.map((item) => (
+          {activeWedding.map((item) => (
             <div key={item.id} className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start">
               <div className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
@@ -114,7 +162,7 @@ export default function CardPage() {
         </div>
 
         <div ref={festivalRef} className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory">
-          {festivalsProducts.map((item) => (
+          {activeFestivals.map((item) => (
             <div key={item.id} className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start">
               <div  className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
@@ -184,7 +232,7 @@ export default function CardPage() {
         </div>
 
         <div ref={pujaRef} className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory">
-          {pujaSection.map((item) => (
+          {activePuja.map((item) => (
             <div key={item.id} className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start">
               <div className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
@@ -254,7 +302,7 @@ export default function CardPage() {
         </div>
 
         <div ref={estheticRef} className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory">
-          {estheticProducts.map((item) => (
+          {activeEsthetic.map((item) => (
             <div key={item.id} className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start">
               <div className="relative h-48 w-full overflow-hidden bg-neutral-100 block">
                 <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />

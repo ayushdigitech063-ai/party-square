@@ -1,10 +1,110 @@
 "use client";
 
-import React from "react";
-import { Sparkles, Heart, Award, CheckCircle2, ArrowRight, Calendar, Building2, Baby, Flame, PartyPopper, Home, Flag, Gift, Sun } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Sparkles, Heart, Award, CheckCircle2, ArrowRight, Calendar, Building2, Baby, Flame, PartyPopper, Home, Flag, Gift, Sun, MessageCircle } from "lucide-react";
 import Link from "next/link";
+import { API_URL } from "@/config";
+
+function WhatsAppIcon({ size = 16, className = "" }: { size?: number; className?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.7.44 3.36 1.28 4.82L2 22l5.4-1.42a9.9 9.9 0 0 0 4.64 1.18h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0 0 12.04 2zm0 18.1h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.2.84.85-3.12-.2-.32a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.55-3.7 8.28-8.19 8.28zm4.52-6.19c-.25-.12-1.47-.72-1.7-.8-.23-.09-.4-.12-.56.12-.17.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.12-1.06-.39-2.02-1.25-.75-.66-1.25-1.48-1.4-1.73-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.24-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.42h-.48c-.16 0-.43.06-.66.31-.22.25-.87.85-.87 2.08 0 1.22.89 2.4 1.02 2.57.12.16 1.75 2.67 4.24 3.74.59.26 1.06.41 1.42.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.28z" />
+    </svg>
+  );
+}
+
+const DEFAULT_THEME_ITEMS = [
+  {
+    id: "th-1",
+    name: "Radiant Diwali Decor",
+    category: "Diwali Festive",
+    image: "/diwali.png",
+    price: "₹14,999",
+    description: "Traditional diyas, grand floral rangolis, golden lighting, and warm festive backdrops for homes and commercial offices.",
+    tag: "Diwali Festive"
+  },
+  {
+    id: "th-2",
+    name: "Bespoke Home Makeovers",
+    category: "Home Styling",
+    image: "/homedecoration.png",
+    price: "₹8,999",
+    description: "Elevating living spaces with aesthetic floral arrangements, ambient lighting, and elegant corners tailored for housewarmings.",
+    tag: "Home Styling"
+  },
+  {
+    id: "th-3",
+    name: "Winter Wonderland Christmas",
+    category: "Christmas Joy",
+    image: "/crismasdecoration1.png",
+    price: "₹12,499",
+    description: "Custom decorated Christmas trees, snowy themes, fairy lights, and cozy festive corners that capture holiday magic.",
+    tag: "Christmas Joy"
+  },
+  {
+    id: "th-4",
+    name: "Glamorous New Year Parties",
+    category: "New Year Bash",
+    image: "/newyearparty.png",
+    price: "₹15,999",
+    description: "Glittering metallic backdrops, balloon installations, champagne-themed setups, and high-energy party environments.",
+    tag: "New Year Bash"
+  },
+  {
+    id: "th-5",
+    name: "Patriotic & National Events",
+    category: "National Pride",
+    image: "/indepencedaydecoration.png",
+    price: "₹9,999",
+    description: "Tricolor floral installations, themed backdrops, and respectful patriotic setups for institutions, schools, and corporate offices.",
+    tag: "National Pride"
+  },
+  {
+    id: "th-6",
+    name: "Welcome Baby & Cradle Ceremonies",
+    category: "New Arrival",
+    image: "/welcomebabaydecoration.png",
+    price: "₹7,999",
+    description: "Soft pastel balloon arches, teddy-themed props, and delicate floral settings to welcome your newborn home with warmth and love.",
+    tag: "New Arrival"
+  }
+];
 
 export default function AboutPage() {
+  const [whatsappNumber, setWhatsappNumber] = useState("918010679679");
+  const [themesList, setThemesList] = useState(DEFAULT_THEME_ITEMS);
+
+  useEffect(() => {
+    // 1. Fetch live WhatsApp Number from settings
+    const cached = typeof window !== "undefined" ? localStorage.getItem("party_whatsapp_number") : null;
+    if (cached) {
+      const clean = cached.replace(/\D/g, "");
+      setWhatsappNumber(clean.startsWith("91") && clean.length > 10 ? clean : `91${clean.slice(-10)}`);
+    }
+
+    fetch(`${API_URL}/api/settings`)
+      .then(res => res.json())
+      .then(data => {
+        if (data?.whatsappNumber) {
+          const clean = data.whatsappNumber.replace(/\D/g, "");
+          const formatted = clean.startsWith("91") && clean.length > 10 ? clean : `91${clean.slice(-10)}`;
+          setWhatsappNumber(formatted);
+          if (typeof window !== "undefined") localStorage.setItem("party_whatsapp_number", data.whatsappNumber);
+        }
+      })
+      .catch(() => {});
+
+    // 2. Fetch live Theme Decorations from /api/homepage
+    fetch(`${API_URL}/api/homepage`)
+      .then(res => res.json())
+      .then(data => {
+        const themeSection = data.sections?.find((s: any) => s.sectionKey === 'theme_decorations');
+        if (themeSection?.contentData?.themes && Array.isArray(themeSection.contentData.themes) && themeSection.contentData.themes.length > 0) {
+          setThemesList(themeSection.contentData.themes);
+        }
+      })
+      .catch(() => {});
+  }, []);
   return (
     <div className="w-full bg-[#F3EFE9] font-sans text-neutral-900 selection:bg-[#DFBC71] selection:text-neutral-900 overflow-hidden">
       
@@ -304,103 +404,61 @@ export default function AboutPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          
-          {/* Diwali */}
-          <div className="bg-[#FFFDF9] border border-[#E2D2B0] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-56 overflow-hidden">
-              <img src="/diwali.png" alt="Diwali Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#C5A059]/30">
-                <Flame size={13} /> Diwali Festive
-              </div>
-            </div>
-            <div className="p-6 space-y-2">
-              <h3 className="text-xl font-serif text-neutral-900">Radiant Diwali Decor</h3>
-              <p className="text-neutral-600 text-xs font-light leading-relaxed">
-                Traditional diyas, grand floral rangolis, golden lighting, and warm festive backdrops for homes and commercial offices.
-              </p>
-            </div>
-          </div>
+          {themesList.map((theme) => {
+            const wpText = `Hello Party Square! I want to enquire and book this Theme Decoration: "${theme.name}" (${theme.price || "Custom"}). Please share details and availability.`;
+            const wpUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(wpText)}`;
 
-          {/* Home Decoration */}
-          <div className="bg-[#FFFDF9] border border-[#E2D2B0] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-56 overflow-hidden">
-              <img src="/homedecoration.png" alt="Home Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#C5A059]/30">
-                <Home size={13} /> Home Styling
-              </div>
-            </div>
-            <div className="p-6 space-y-2">
-              <h3 className="text-xl font-serif text-neutral-900">Bespoke Home Makeovers</h3>
-              <p className="text-neutral-600 text-xs font-light leading-relaxed">
-                Elevating living spaces with aesthetic floral arrangements, ambient lighting, and elegant corners tailored for housewarmings.
-              </p>
-            </div>
-          </div>
+            return (
+              <div 
+                key={theme.id}
+                className="bg-[#FFFDF9] border border-[#E2D2B0] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+              >
+                <div>
+                  <div className="relative h-60 overflow-hidden bg-neutral-100">
+                    <img 
+                      src={theme.image} 
+                      alt={theme.name} 
+                      className="w-full h-full object-cover group-hover:scale-105 transition duration-700" 
+                    />
+                    <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 border border-[#C5A059]/30">
+                      <Sparkles size={12} /> {theme.tag || theme.category}
+                    </div>
 
-          {/* Christmas */}
-          <div className="bg-[#FFFDF9] border border-[#E2D2B0] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-56 overflow-hidden">
-              <img src="/crismasdecoration1.png" alt="Christmas Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#C5A059]/30">
-                <Gift size={13} /> Christmas Joy
-              </div>
-            </div>
-            <div className="p-6 space-y-2">
-              <h3 className="text-xl font-serif text-neutral-900">Winter Wonderland Christmas</h3>
-              <p className="text-neutral-600 text-xs font-light leading-relaxed">
-                Custom decorated Christmas trees, snowy themes, fairy lights, and cozy festive corners that capture holiday magic.
-              </p>
-            </div>
-          </div>
+                    {theme.price && (
+                      <div className="absolute bottom-3 right-3 bg-neutral-900/85 backdrop-blur-md text-amber-300 px-3.5 py-1 rounded-full text-xs font-bold border border-white/10 font-mono shadow-md">
+                        {theme.price}
+                      </div>
+                    )}
+                  </div>
 
-          {/* New Year Party */}
-          <div className="bg-[#FFFDF9] border border-[#E2D2B0] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-56 overflow-hidden">
-              <img src="/newyearparty.png" alt="New Year Party Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#C5A059]/30">
-                <PartyPopper size={13} /> New Year Bash
-              </div>
-            </div>
-            <div className="p-6 space-y-2">
-              <h3 className="text-xl font-serif text-neutral-900">Glamorous New Year Parties</h3>
-              <p className="text-neutral-600 text-xs font-light leading-relaxed">
-                Glittering metallic backdrops, balloon installations, champagne-themed setups, and high-energy party environments.
-              </p>
-            </div>
-          </div>
+                  <div className="p-6 space-y-2.5">
+                    <div className="text-[11px] font-bold text-amber-800 uppercase tracking-wider">
+                      {theme.category}
+                    </div>
+                    <h3 className="text-xl font-serif font-bold text-neutral-900 group-hover:text-amber-800 transition">
+                      {theme.name}
+                    </h3>
+                    <p className="text-neutral-600 text-xs font-light leading-relaxed">
+                      {theme.description}
+                    </p>
+                  </div>
+                </div>
 
-          {/* Independence Day */}
-          <div className="bg-[#FFFDF9] border border-[#E2D2B0] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-56 overflow-hidden">
-              <img src="/indepencedaydecoration.png" alt="Independence Day Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#C5A059]/30">
-                <Flag size={13} /> National Pride
+                {/* WhatsApp Action Button */}
+                <div className="p-5 pt-0">
+                  <a
+                    href={wpUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 px-5 rounded-2xl text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 shadow-sm hover:shadow-md cursor-pointer"
+                  >
+                    <WhatsAppIcon size={16} />
+                    <span>Book on WhatsApp</span>
+                  </a>
+                </div>
               </div>
-            </div>
-            <div className="p-6 space-y-2">
-              <h3 className="text-xl font-serif text-neutral-900">Patriotic & National Events</h3>
-              <p className="text-neutral-600 text-xs font-light leading-relaxed">
-                Tricolor floral installations, themed backdrops, and respectful patriotic setups for institutions, schools, and corporate offices.
-              </p>
-            </div>
-          </div>
-
-          {/* Welcome Baby */}
-          <div className="bg-[#FFFDF9] border border-[#E2D2B0] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-56 overflow-hidden">
-              <img src="/welcomebabaydecoration.png" alt="Welcome Baby Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#C5A059]/30">
-                <Baby size={13} /> New Arrival
-              </div>
-            </div>
-            <div className="p-6 space-y-2">
-              <h3 className="text-xl font-serif text-neutral-900">Welcome Baby & Cradle Ceremonies</h3>
-              <p className="text-neutral-600 text-xs font-light leading-relaxed">
-                Soft pastel balloon arches, teddy-themed props, and delicate floral settings to welcome your newborn home with warmth and love.
-              </p>
-            </div>
-          </div>
-
+            );
+          })}
         </div>
       </section>
 

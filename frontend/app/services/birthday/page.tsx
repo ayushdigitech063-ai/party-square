@@ -116,73 +116,7 @@ export default function BirthdayServicePage() {
         </div>
       </section>
 
-      {/* ================= BIRTHDAY PACKAGES CARDS SECTION ================= */}
-      <section id="packages" className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-20 space-y-4">
-          <span className="text-xs uppercase tracking-[0.25em] text-[#C5A059] font-bold">
-            Party Packages
-          </span>
-          <h2 className="font-serif text-5xl md:text-6xl font-bold">
-            Choose Your Birthday Theme
-          </h2>
-          <p className="text-neutral-600 text-lg font-light">
-            Explore our specialized decoration packages crafted to bring smiles
-            and unforgettable memories.
-          </p>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {birthdayPackages.map((pkg) => (
-            <div
-              key={pkg.id}
-              className={`relative rounded-3xl bg-white border transition-all duration-300 p-8 flex flex-col justify-between shadow-xl hover:shadow-2xl ${
-                pkg.popular
-                  ? "border-2 border-[#C5A059] ring-4 ring-[#C5A059]/10 scale-105 md:-translate-y-3"
-                  : "border-neutral-200"
-              }`}
-            >
-              {pkg.popular && (
-                <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-[#C5A059] text-neutral-900 text-xs font-bold uppercase tracking-widest px-6 py-2.5 rounded-full shadow-xl">
-                  Most Loved
-                </div>
-              )}
-
-              <div>
-                <div className="relative h-56 rounded-2xl overflow-hidden mb-8 border border-neutral-100 shadow-inner">
-                  <img
-                    src={pkg.image}
-                    alt={pkg.name}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute top-4 right-4 bg-neutral-900/80 text-[#DFBC71] text-sm font-bold px-5 py-2.5 rounded-full backdrop-blur-md shadow-lg">
-                    {pkg.price}
-                  </div>
-                </div>
-
-                <h3 className="font-serif text-3xl font-semibold text-neutral-900 mb-3">
-                  {pkg.name}
-                </h3>
-                <p className="text-neutral-600 text-sm leading-relaxed mb-8">
-                  {pkg.desc}
-                </p>
-              </div>
-
-              <div>
-                <Link
-                  href="/contact"
-                  className={`w-full block text-center py-4 rounded-full text-sm font-bold uppercase tracking-wider transition ${
-                    pkg.popular
-                      ? "bg-[#C5A059] text-neutral-900 hover:bg-[#b08d4b] shadow-lg"
-                      : "bg-neutral-900 text-white hover:bg-neutral-800"
-                  }`}
-                >
-                  Select Package
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* Kids Birthday products */}
 

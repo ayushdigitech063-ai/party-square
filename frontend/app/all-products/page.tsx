@@ -2,64 +2,78 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
-import { Sparkles, Heart, Search } from "lucide-react";
+import { Sparkles, Heart, Search, MapPin } from "lucide-react";
 import { useWishlist } from "@/app/context/wishlistcontext";
+import { useCity } from "@/app/context/CityContext";
 import { API_URL } from "@/config";
 import { useProducts } from "@/app/hooks/useProducts";
 
-export default function AllProductsPage() {
-    const { products: allProducts, loading } = useProducts();
-  const { toggleWishlist, isInWishlist } = useWishlist();
-  
-  const [dbProducts, setDbProducts] = useState<any[]>([]);
+function WhatsAppIcon({ size = 15, className = "" }: { size?: number; className?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.7.44 3.36 1.28 4.82L2 22l5.4-1.42a9.9 9.9 0 0 0 4.64 1.18h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.87 9.87 0 0 0 12.04 2zm0 18.1h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.2.84.85-3.12-.2-.32a8.2 8.2 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.55-3.7 8.28-8.19 8.28zm4.52-6.19c-.25-.12-1.47-.72-1.7-.8-.23-.09-.4-.12-.56.12-.17.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.12-1.06-.39-2.02-1.25-.75-.66-1.25-1.48-1.4-1.73-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.24-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.42h-.48c-.16 0-.43.06-.66.31-.22.25-.87.85-.87 2.08 0 1.22.89 2.4 1.02 2.57.12.16 1.75 2.67 4.24 3.74.59.26 1.06.41 1.42.53.6.19 1.14.16 1.57.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.16-.48-.28z" />
+    </svg>
+  );
+}
 
+export default function AllProductsPage() {
+  const { selectedCity, openCityModal } = useCity();
+  const { products: combinedProducts, loading } = useProducts(undefined, undefined, selectedCity);
+  const { toggleWishlist, isInWishlist } = useWishlist();
+
+  const [dbCategories, setDbCategories] = useState<string[]>([]);
+  const [whatsappNumber, setWhatsappNumber] = useState("918010679679");
+
+  // Fetch all categories and whatsapp number from API
   useEffect(() => {
-    // Fetch products from backend
-    fetch(`${API_URL}/api/products`)
+    fetch(`${API_URL}/api/categories`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
-          // Map DB product format to match the frontend static format
-          const formattedDb = data.map(p => ({
-            id: p._id,
-            name: p.name,
-            description: p.description,
-            price: p.price,
-            image: p.image,
-            images: p.images || [p.image],
-            category: p.category ? p.category.name : "Uncategorized"
-          }));
-          setDbProducts(formattedDb);
+          const names = data.map((c: any) => c.name).filter(Boolean);
+          setDbCategories(names);
         }
       })
-      .catch(err => console.error("Error fetching DB products:", err));
+      .catch(err => console.error("Error loading categories:", err));
+
+    fetch(`${API_URL}/api/settings`)
+      .then(res => res.json())
+      .then(sData => {
+        if (sData?.whatsappNumber) {
+          const clean = sData.whatsappNumber.replace(/\D/g, "");
+          setWhatsappNumber(clean.startsWith("91") && clean.length > 10 ? clean : `91${clean.slice(-10)}`);
+        }
+      })
+      .catch(err => console.error("Error loading settings:", err));
   }, []);
 
-  const combinedProducts = useMemo(() => [...dbProducts, ...allProducts], [dbProducts]);
-
-  // Extract unique categories (clean up names for display)
+  // Merge unique categories from DB categories AND product categories
   const categories = useMemo(() => {
     const cats = new Set<string>();
+    dbCategories.forEach(c => cats.add(c));
     combinedProducts.forEach(p => {
       if (p.category) {
         cats.add(p.category);
       }
     });
     return ["All", ...Array.from(cats)];
-  }, [combinedProducts]);
+  }, [dbCategories, combinedProducts]);
 
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredProducts = useMemo(() => {
-    if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div></div>;
+    if (loading) return null;
     return combinedProducts.filter(p => {
-      const matchesCategory = activeCategory === "All" || p.category === activeCategory;
+      const matchesCategory = 
+        activeCategory === "All" || 
+        (p.category && p.category.toLowerCase().trim() === activeCategory.toLowerCase().trim()) ||
+        (p.subcategory && p.subcategory.toLowerCase().trim() === activeCategory.toLowerCase().trim());
       const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                            (p.category && p.category.toLowerCase().includes(searchQuery.toLowerCase()));
       return matchesCategory && matchesSearch;
     });
-  }, [activeCategory, searchQuery]);
+  }, [activeCategory, searchQuery, combinedProducts, loading]);
 
   return (
     <div className="min-h-screen bg-[#FDFBF7] font-sans">
@@ -72,56 +86,92 @@ export default function AllProductsPage() {
             <span>Party Square Collections</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-light tracking-tight">
-            Explore All <span className="text-amber-400 italic">Decorations</span>
+            Explore All <span className="text-amber-400 italic">Products</span>
           </h1>
           <p className="text-neutral-300 text-sm md:text-base max-w-2xl mx-auto font-light leading-relaxed">
             Browse our complete catalog of premium decorations. From grand weddings and corporate events to intimate birthdays and festive celebrations.
           </p>
           
-          {/* Search Bar */}
-          <div className="max-w-md mx-auto relative mt-8">
-            <input 
-              type="text" 
-              placeholder="Search decorations, themes..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/10 border border-white/20 text-white placeholder-white/50 px-5 py-3.5 pl-12 rounded-full focus:outline-none focus:border-amber-400 transition-colors"
-            />
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50" size={18} />
+          {/* Search Bar & City Selector */}
+          <div className="max-w-xl mx-auto flex flex-col sm:flex-row items-center gap-3 mt-8">
+            <div className="relative flex-1 w-full">
+              <input 
+                type="text" 
+                placeholder="Search decorations, themes..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-white/10 border border-white/20 text-white placeholder-white/50 px-5 py-3 pl-12 rounded-full focus:outline-none focus:border-amber-400 transition-colors text-sm"
+              />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50" size={17} />
+            </div>
+
+            <button
+              onClick={openCityModal}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-300 text-neutral-950 px-5 py-3 rounded-full text-xs font-bold transition shadow-md shrink-0 cursor-pointer"
+            >
+              <MapPin size={15} />
+              <span>City: {selectedCity || "Select City"}</span>
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Filter Categories */}
+      {/* Filter Categories & City indicator */}
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="flex overflow-x-auto no-scrollbar gap-3 pb-4 border-b border-neutral-200">
-          {categories.map((cat) => (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-200">
+          <div className="flex overflow-x-auto no-scrollbar gap-3">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`whitespace-nowrap px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+                  activeCategory === cat 
+                    ? "bg-neutral-900 text-white shadow-md" 
+                    : "bg-white text-neutral-600 border border-neutral-200 hover:border-amber-400 hover:text-amber-600"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {selectedCity && (
             <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`whitespace-nowrap px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                activeCategory === cat 
-                  ? "bg-neutral-900 text-white shadow-md" 
-                  : "bg-white text-neutral-600 border border-neutral-200 hover:border-amber-400 hover:text-amber-600"
-              }`}
+              onClick={openCityModal}
+              className="inline-flex items-center gap-1.5 self-start sm:self-auto bg-amber-50 border border-amber-200 text-amber-900 px-4 py-2 rounded-full text-xs font-semibold hover:bg-amber-100 transition shrink-0 cursor-pointer"
             >
-              {cat}
+              <MapPin size={13} className="text-amber-600" />
+              <span>Showing for: <strong className="text-black underline">{selectedCity}</strong></span>
+              <span className="text-[10px] text-amber-700 ml-1">(Change)</span>
             </button>
-          ))}
+          )}
         </div>
       </div>
 
       {/* Products Grid */}
       <div className="max-w-7xl mx-auto px-6 pb-24">
-        {filteredProducts.length === 0 ? (
+        {loading ? (
+          <div className="min-h-[40vh] flex items-center justify-center">
+            <div className="w-9 h-9 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : !filteredProducts || filteredProducts.length === 0 ? (
           <div className="text-center py-20 text-neutral-500">
-            <p className="text-lg">No decorations found matching your criteria.</p>
-            <button 
-              onClick={() => {setActiveCategory("All"); setSearchQuery("");}}
-              className="mt-4 text-amber-600 font-medium hover:underline"
-            >
-              Clear filters
-            </button>
+            <p className="text-lg">No decorations found in <strong className="text-neutral-900">{selectedCity}</strong> matching your criteria.</p>
+            <div className="flex items-center justify-center gap-4 mt-4">
+              <button 
+                onClick={() => {setActiveCategory("All"); setSearchQuery("");}}
+                className="text-amber-600 font-medium hover:underline text-sm"
+              >
+                Clear search filters
+              </button>
+              <span className="text-neutral-300">|</span>
+              <button 
+                onClick={openCityModal}
+                className="text-amber-700 font-bold hover:underline text-sm"
+              >
+                Change City
+              </button>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -160,21 +210,42 @@ export default function AllProductsPage() {
                       {product.name}
                     </h3>
                     
-                    <div className="mt-auto pt-4 flex items-center justify-between">
-                      <span className="text-lg font-bold text-neutral-900">
-                        {typeof product.price === 'number' 
-                          ? `₹${product.price.toLocaleString("en-IN")}` 
-                          : String(product.price).includes('₹') || String(product.price).includes('')
-                            ? String(product.price).replace('', '₹')
-                            : `₹${String(product.price)}`
-                        }
-                      </span>
-                      <Link
-                        href={`/card/${product.id}`}
-                        className="bg-neutral-900 text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-amber-500 hover:text-neutral-900 transition-colors shadow-sm"
-                      >
-                        Details
-                      </Link>
+                    <div className="mt-auto pt-4 space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-lg font-bold text-neutral-900">
+                          {typeof product.price === 'number' 
+                            ? `₹${product.price.toLocaleString("en-IN")}` 
+                            : String(product.price).includes('₹') || String(product.price).includes('')
+                              ? String(product.price).replace('', '₹')
+                              : `₹${String(product.price)}`
+                          }
+                        </span>
+                        <Link
+                          href={`/card/${product.id}`}
+                          className="text-xs font-semibold text-neutral-700 bg-neutral-100 hover:bg-neutral-200 px-4 py-1.5 rounded-full transition-colors"
+                        >
+                          Details
+                        </Link>
+                      </div>
+
+                      {(() => {
+                        const priceStr = typeof product.price === 'number' ? `₹${product.price.toLocaleString("en-IN")}` : `₹${product.price}`;
+                        const pUrl = typeof window !== 'undefined' ? `${window.location.origin}/card/${product.id}` : '';
+                        const wpMsg = `Hello Party Square! I want to order this product: "${product.name}" (${priceStr}). Product Link: ${pUrl}`;
+                        const wpHref = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(wpMsg)}`;
+
+                        return (
+                          <a
+                            href={wpHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="w-full py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#25D366] hover:bg-[#20bd5a] text-white transition flex items-center justify-center gap-1.5 shadow-sm"
+                          >
+                            <WhatsAppIcon size={14} />
+                            <span>Order on WhatsApp</span>
+                          </a>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>

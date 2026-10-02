@@ -159,6 +159,7 @@ const NAV_PILLS: (LinkPill | DropdownPillData)[] = [
     icon: LayoutGrid,
   },
   { type: "link", label: "Corporate Planner", href: "/about", icon: Info },
+  { type: "link", label: "All Products", href: "/all-products", icon: Sparkles },
 ];
 
 function WhatsAppIcon({
@@ -621,19 +622,18 @@ export default function Navbar() {
             </button>
 
             {/* Location selector trigger on navbar */}
-            <div className="relative hidden sm:block" ref={locationRef}>
-           <button
-  onClick={openCityModal}
-  className="flex items-center gap-1.5 h-10 px-3.5 rounded-full border border-neutral-200 text-[15px] font-medium text-neutral-700 hover:border-amber-400 hover:text-amber-600 transition-colors"
->
-  <MapPin size={16} className="text-amber-500 shrink-0" />
-  <span className="whitespace-nowrap">{selectedCity}</span>
-  <ChevronDown
-    size={15}
-    className={`transition-transform shrink-0 ${locationOpen ? "rotate-180" : ""}`}
-  />
-</button>
-
+            <div className="relative" ref={locationRef}>
+              <button
+                onClick={openCityModal}
+                className="flex items-center gap-1 sm:gap-1.5 h-9 sm:h-10 px-2.5 sm:px-3.5 rounded-full border border-neutral-200 text-xs sm:text-[15px] font-medium text-neutral-700 hover:border-amber-400 hover:text-amber-600 transition-colors cursor-pointer"
+              >
+                <MapPin size={15} className="text-amber-500 shrink-0" />
+                <span className="max-w-[70px] sm:max-w-none truncate">{selectedCity}</span>
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform shrink-0 ${isCityModalOpen ? "rotate-180" : ""}`}
+                />
+              </button>
             </div>
 <Link
   href="/basket"

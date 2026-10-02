@@ -170,6 +170,9 @@ export default function AdminPackages() {
   };
 
   const getCategoryName = (slug: string) => {
+    if (slug === "ring-decoration") return "Ring Decoration";
+    if (slug === "wall-decoration") return "Wall & Door Decor";
+    if (slug === "corporate-planner") return "Corporate Planner";
     const cat = categories.find(c => c.slug === slug);
     return cat ? cat.name : slug;
   };
@@ -282,12 +285,19 @@ export default function AdminPackages() {
                   onChange={e => setFormData({...formData, pageTarget: e.target.value})}
                   className="w-full px-4 py-2.5 rounded-xl border border-[#ECE9E2] focus:border-[#F5A000] outline-none text-sm"
                 >
-                  <option value="">-- Select Category Page --</option>
-                  {categories.map(c => (
-                    <option key={c._id} value={c.slug}>{c.name}</option>
-                  ))}
+                  <option value="">-- Select Target Page --</option>
+                  <optgroup label="Dedicated Service Pages">
+                    <option value="ring-decoration">Ring Decoration (/services/ring-decoration)</option>
+                    <option value="wall-decoration">Wall Decoration (/services/wall-decoration)</option>
+                    <option value="corporate-planner">Corporate Planner (/about)</option>
+                  </optgroup>
+                  <optgroup label="Category Pages">
+                    {categories.map(c => (
+                      <option key={c._id} value={c.slug}>{c.name}</option>
+                    ))}
+                  </optgroup>
                 </select>
-                <p className="text-xs text-neutral-500 mt-1">Select the category page where this pricing plan should appear.</p>
+                <p className="text-xs text-neutral-500 mt-1">Select the service or category page where this package should appear.</p>
               </div>
 
               <div>

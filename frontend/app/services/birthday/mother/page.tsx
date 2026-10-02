@@ -118,78 +118,7 @@ export default function MotherBirthdayPage() {
         </div>
       </section>
 
-      {/* ================= COMPACT & SLEEK CARDS SECTION ================= */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="text-xs uppercase tracking-[0.3em] text-[#C5A059] font-bold">
-            Bespoke Collections
-          </span>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900">
-            Designed with Love & Elegance
-          </h2>
-          <p className="text-neutral-600 text-sm sm:text-base font-light">
-            Compact, hand-picked themes crafted exclusively for mothers and
-            milestone birthdays.
-          </p>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {motherPackages.map((pkg) => (
-            <div
-              key={pkg.id}
-              onMouseEnter={() => setActiveCard(pkg.id)}
-              onMouseLeave={() => setActiveCard(null)}
-              className={`group relative rounded-3xl bg-white transition-all duration-500 p-7 flex flex-col justify-between shadow-lg hover:shadow-2xl hover:-translate-y-2 border ${
-                pkg.popular
-                  ? "border-2 border-[#C5A059] ring-4 ring-[#C5A059]/10"
-                  : activeCard === pkg.id
-                    ? "border-[#C5A059]/60 shadow-xl"
-                    : "border-neutral-200/80"
-              }`}
-            >
-              {pkg.popular && (
-                <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#DFBC71] to-[#C5A059] text-neutral-950 text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md">
-                  Most Preferred
-                </div>
-              )}
-
-              <div>
-                <div className="relative h-56 rounded-2xl overflow-hidden mb-6 bg-neutral-100 border border-neutral-100">
-                  <img
-                    src={pkg.image}
-                    alt={pkg.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute top-3 right-3 bg-neutral-950/85 text-[#DFBC71] text-xs font-bold px-3.5 py-1.5 rounded-full backdrop-blur-md shadow-md border border-white/10">
-                    {pkg.price}
-                  </div>
-                </div>
-
-                <h3 className="font-serif text-2xl font-bold text-neutral-900 mb-2.5 group-hover:text-[#C5A059] transition-colors">
-                  {pkg.name}
-                </h3>
-                <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed mb-6 font-light">
-                  {pkg.desc}
-                </p>
-              </div>
-
-              <div>
-                <Link
-                  href="/contact"
-                  className={`w-full block text-center py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
-                    pkg.popular
-                      ? "bg-gradient-to-r from-[#DFBC71] to-[#C5A059] text-neutral-950 hover:shadow-lg hover:scale-[1.02]"
-                      : "bg-neutral-900 text-white hover:bg-[#C5A059] hover:text-neutral-950 shadow-md"
-                  }`}
-                >
-                  Select This Theme
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
       {/* MOTHER'S BIRTHDAY PRODUCTS */}
 
       <section className="py-16 px-6 max-w-7xl mx-auto">

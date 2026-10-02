@@ -1,14 +1,15 @@
 "use client";
 import Swal from "sweetalert2";
 
-import React, { useState, useEffect, useMemo } from "react";
-import { Plus, Edit2, Trash2, X, Image as ImageIcon, Search, Filter, Layers, FolderTree, ChevronLeft, ChevronRight, PlusCircle, Trash } from "lucide-react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
+import { Plus, Edit2, Trash2, X, Image as ImageIcon, Search, Filter, Layers, FolderTree, ChevronLeft, ChevronRight, PlusCircle, Trash, Check, ChevronDown, MapPin, Globe, FileText, Sparkles, Tag, Sliders } from "lucide-react";
 import toast from "react-hot-toast";
 import { API_URL } from "@/config";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
+  const [availableCityList, setAvailableCityList] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -31,6 +32,22 @@ export default function AdminProducts() {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
+
+  // City Multi-Select Dropdown State
+  const [cityDropdownOpen, setCityDropdownOpen] = useState(false);
+  const [citySearchQuery, setCitySearchQuery] = useState("");
+  const cityDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close city dropdown on click outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (cityDropdownRef.current && !cityDropdownRef.current.contains(e.target as Node)) {
+        setCityDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const defaultFaqs = [
     { question: "Can I customize the product?", answer: "Yes. Customization can be discussed with the team according to your event requirements and selected product." },
@@ -55,7 +72,17 @@ export default function AdminProducts() {
     cancellationPolicy: "Please contact our team as early as possible if you need to cancel or reschedule your booking. Cancellation and rescheduling availability may depend on the booking status, event date, and preparation already completed.",
     includedText: "Premium product / decoration\nQuality materials\nProfessional setup support\nOn-time service\nCustomer support",
     notIncludedText: "Venue booking charges\nCustom catering and food items\nAdditional power backup\nDamage caused by guests",
-    faqs: defaultFaqs
+    faqs: defaultFaqs,
+    availableCities: [] as string[],
+    cityOverrides: [] as Array<{
+      cityName: string;
+      metaTitle: string;
+      metaDescription: string;
+      metaKeywords: string;
+      customTitle: string;
+      customDescription: string;
+      customPrice: string | number;
+    }>
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -66,13 +93,20 @@ export default function AdminProducts() {
 
   const fetchData = async () => {
     try {
-      const [prodRes, catRes] = await Promise.all([
+      const [prodRes, catRes, cityRes] = await Promise.all([
         fetch(`${API_URL}/api/products`),
-        fetch(`${API_URL}/api/categories`)
+        fetch(`${API_URL}/api/categories`),
+        fetch(`${API_URL}/api/cities`)
       ]);
       if (prodRes.ok && catRes.ok) {
         setProducts(await prodRes.json());
         setCategories(await catRes.json());
+      }
+      if (cityRes && cityRes.ok) {
+        const cData = await cityRes.json();
+        if (Array.isArray(cData)) {
+          setAvailableCityList(cData.map((c: any) => c.name));
+        }
       }
     } catch (err) {
       console.error(err);
@@ -145,7 +179,17 @@ export default function AdminProducts() {
         cancellationPolicy: formData.cancellationPolicy,
         included,
         notIncluded,
-        faqs
+        faqs,
+        availableCities: formData.availableCities || [],
+        cityOverrides: (formData.cityOverrides || []).filter(o => o.cityName?.trim()).map(o => ({
+          cityName: o.cityName.trim(),
+          metaTitle: o.metaTitle || '',
+          metaDescription: o.metaDescription || '',
+          metaKeywords: o.metaKeywords || '',
+          customTitle: o.customTitle || '',
+          customDescription: o.customDescription || '',
+          customPrice: o.customPrice ? Number(String(o.customPrice).replace(/\D/g, "")) : undefined
+        }))
       };
 
       const adminUser = JSON.parse(localStorage.getItem("adminUser") || "{}");
@@ -239,7 +283,17 @@ export default function AdminProducts() {
         cancellationPolicy: product.cancellationPolicy || "Please contact our team as early as possible if you need to cancel or reschedule your booking. Cancellation and rescheduling availability may depend on the booking status, event date, and preparation already completed.",
         includedText: incText,
         notIncludedText: notIncText,
-        faqs: productFaqs
+        faqs: productFaqs,
+        availableCities: Array.isArray(product.availableCities) ? product.availableCities : [],
+        cityOverrides: Array.isArray(product.cityOverrides) ? product.cityOverrides.map((o: any) => ({
+          cityName: o.cityName || "",
+          metaTitle: o.metaTitle || "",
+          metaDescription: o.metaDescription || "",
+          metaKeywords: o.metaKeywords || "",
+          customTitle: o.customTitle || "",
+          customDescription: o.customDescription || "",
+          customPrice: o.customPrice ? o.customPrice.toString() : ""
+        })) : []
       });
     } else {
       setEditingId(null);
@@ -259,7 +313,9 @@ export default function AdminProducts() {
         cancellationPolicy: "Please contact our team as early as possible if you need to cancel or reschedule your booking. Cancellation and rescheduling availability may depend on the booking status, event date, and preparation already completed.",
         includedText: "Premium product / decoration\nQuality materials\nProfessional setup support\nOn-time service\nCustomer support",
         notIncludedText: "Venue booking charges\nCustom catering and food items\nAdditional power backup\nDamage caused by guests",
-        faqs: defaultFaqs
+        faqs: defaultFaqs,
+        availableCities: [],
+        cityOverrides: []
       });
     }
     setImageFile(null);
@@ -517,6 +573,24 @@ export default function AdminProducts() {
                     <td className="p-4">
                       <div className="font-medium text-black text-sm">{p.name}</div>
                       <div className="text-xs text-neutral-500 mt-0.5 font-mono">{p.slug}</div>
+                      <div className="mt-1 flex flex-wrap gap-1">
+                        {!p.availableCities || p.availableCities.length === 0 ? (
+                          <span className="text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded font-medium border border-emerald-200">
+                            🌐 All Cities
+                          </span>
+                        ) : (
+                          p.availableCities.slice(0, 3).map((c: string) => (
+                            <span key={c} className="text-[10px] text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded font-medium border border-amber-200">
+                              📍 {c}
+                            </span>
+                          ))
+                        )}
+                        {p.availableCities && p.availableCities.length > 3 && (
+                          <span className="text-[10px] text-neutral-500 bg-neutral-100 px-1 py-0.5 rounded">
+                            +{p.availableCities.length - 3} more
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="p-4">
                       <span className="inline-flex bg-amber-50 text-amber-800 border border-amber-200 px-2.5 py-0.5 rounded-full text-xs font-semibold">
@@ -528,7 +602,7 @@ export default function AdminProducts() {
                         </span>
                       )}
                     </td>
-                    <td className="p-4 font-bold text-neutral-900 text-sm">â ¹{Number(p.price).toLocaleString("en-IN")}</td>
+                    <td className="p-4 font-bold text-neutral-900 text-sm">₹{Number(p.price).toLocaleString("en-IN")}</td>
                     <td className="p-4 text-right space-x-2">
                       <button onClick={() => openModal(p)} className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer" title="Edit">
                         <Edit2 size={16} />
@@ -657,7 +731,7 @@ export default function AdminProducts() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                  <label className="block text-sm font-bold text-black mb-1.5">Price (â ¹)</label>
+                  <label className="block text-sm font-bold text-black mb-1.5">Price (₹)</label>
                   <input 
                     type="number" 
                     required
@@ -669,7 +743,7 @@ export default function AdminProducts() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-black mb-1.5">Original (MRP â ¹)</label>
+                  <label className="block text-sm font-bold text-black mb-1.5">Original (MRP ₹)</label>
                   <input 
                     type="number" 
                     min="0"
@@ -752,11 +826,396 @@ export default function AdminProducts() {
                 </div>
               </div>
 
+              {/* Available Cities Selection - Modern Searchable Dropdown */}
+              <div className="space-y-1.5 relative" ref={cityDropdownRef}>
+                <div className="flex items-center justify-between">
+                  <label className="block text-sm font-bold text-black">
+                    Available in Cities (Location Filter)
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, availableCities: [] })}
+                      className="text-[11px] font-bold text-[#8C6D24] hover:underline cursor-pointer"
+                    >
+                      Clear (All Cities)
+                    </button>
+                    <span className="text-neutral-300">|</span>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, availableCities: [...availableCityList] })}
+                      className="text-[11px] font-bold text-[#8C6D24] hover:underline cursor-pointer"
+                    >
+                      Select All ({availableCityList.length})
+                    </button>
+                  </div>
+                </div>
+
+                {/* Dropdown Trigger Box */}
+                <div
+                  onClick={() => setCityDropdownOpen(!cityDropdownOpen)}
+                  className="min-h-[46px] w-full px-3.5 py-2 rounded-xl border border-[#ECE9E2] hover:border-amber-400 bg-white flex items-center justify-between gap-2 cursor-pointer transition shadow-xs"
+                >
+                  <div className="flex flex-wrap items-center gap-1.5 flex-1 min-w-0">
+                    {formData.availableCities.length === 0 ? (
+                      <span className="text-xs text-neutral-500 flex items-center gap-1.5 py-1">
+                        <MapPin size={13} className="text-amber-500" />
+                        <span>✨ Available Everywhere (All Cities)</span>
+                      </span>
+                    ) : (
+                      formData.availableCities.map((city) => (
+                        <span
+                          key={city}
+                          className="inline-flex items-center gap-1 bg-amber-100/80 text-amber-900 border border-amber-300/80 px-2 py-0.5 rounded-lg text-xs font-semibold"
+                        >
+                          <span>{city}</span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setFormData({
+                                ...formData,
+                                availableCities: formData.availableCities.filter(c => c !== city)
+                              });
+                            }}
+                            className="hover:text-red-600 cursor-pointer ml-0.5"
+                          >
+                            ×
+                          </button>
+                        </span>
+                      ))
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-neutral-400 shrink-0">
+                    <span className="text-xs font-medium">
+                      {formData.availableCities.length > 0 ? `${formData.availableCities.length} selected` : ""}
+                    </span>
+                    <ChevronDown
+                      size={16}
+                      className={`transition-transform duration-200 ${cityDropdownOpen ? "rotate-180" : ""}`}
+                    />
+                  </div>
+                </div>
+
+                {/* Dropdown Menu Popup */}
+                {cityDropdownOpen && (
+                  <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-2xl border border-amber-200 shadow-xl z-50 p-3 animate-in fade-in duration-150 space-y-2.5">
+                    {/* Search inside Dropdown */}
+                    <div className="relative">
+                      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
+                      <input
+                        type="text"
+                        placeholder="Search city name (e.g. Delhi, Pune)..."
+                        value={citySearchQuery}
+                        onChange={(e) => setCitySearchQuery(e.target.value)}
+                        className="w-full pl-8 pr-3 py-1.5 text-xs bg-neutral-50 rounded-xl border border-neutral-200 focus:bg-white focus:border-amber-400 outline-none"
+                      />
+                    </div>
+
+                    {/* Quick Filter Status */}
+                    <div className="flex items-center justify-between text-[11px] text-neutral-500 px-1 border-b border-neutral-100 pb-1.5">
+                      <span>Choose one or multiple cities:</span>
+                      <span className="font-semibold text-amber-800">
+                        {formData.availableCities.length} of {availableCityList.length} chosen
+                      </span>
+                    </div>
+
+                    {/* Scrollable Cities Checklist */}
+                    <div className="max-h-48 overflow-y-auto space-y-1 pr-1">
+                      {availableCityList
+                        .filter(c => c.toLowerCase().includes(citySearchQuery.toLowerCase().trim()))
+                        .map((city) => {
+                          const isSelected = formData.availableCities.includes(city);
+                          return (
+                            <div
+                              key={city}
+                              onClick={() => {
+                                if (isSelected) {
+                                  setFormData({
+                                    ...formData,
+                                    availableCities: formData.availableCities.filter(c => c !== city)
+                                  });
+                                } else {
+                                  setFormData({
+                                    ...formData,
+                                    availableCities: [...formData.availableCities, city]
+                                  });
+                                }
+                              }}
+                              className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs cursor-pointer transition ${
+                                isSelected
+                                  ? "bg-amber-50 text-amber-900 font-bold"
+                                  : "hover:bg-neutral-50 text-neutral-700"
+                              }`}
+                            >
+                              <div className="flex items-center gap-2">
+                                <div
+                                  className={`w-4 h-4 rounded-md border flex items-center justify-center transition ${
+                                    isSelected
+                                      ? "bg-[#8C6D24] border-[#8C6D24] text-white"
+                                      : "border-neutral-300 bg-white"
+                                  }`}
+                                >
+                                  {isSelected && <Check size={12} strokeWidth={3} />}
+                                </div>
+                                <span>{city}</span>
+                              </div>
+                              {isSelected && (
+                                <span className="text-[10px] uppercase font-bold text-amber-600 bg-amber-100/70 px-1.5 py-0.5 rounded">
+                                  Selected
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      {availableCityList.filter(c => c.toLowerCase().includes(citySearchQuery.toLowerCase().trim())).length === 0 && (
+                        <div className="text-center py-4 text-xs text-neutral-400">
+                          No matching cities found
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Dropdown Footer Action */}
+                    <div className="pt-2 border-t border-neutral-100 flex items-center justify-between">
+                      <p className="text-[11px] text-neutral-500">
+                        {formData.availableCities.length === 0 ? "✨ Will be visible in all cities" : "Filtered to selected cities"}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setCityDropdownOpen(false)}
+                        className="bg-neutral-900 hover:bg-black text-white text-xs font-bold px-4 py-1.5 rounded-full cursor-pointer transition shadow-xs"
+                      >
+                        Done
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* CITY-WISE CONTENT & META TAGS OVERRIDES SECTION */}
+              <div className="bg-gradient-to-br from-amber-50/50 via-[#FFFDF9] to-orange-50/40 p-5 rounded-2xl border border-amber-200/80 shadow-xs space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-200/60 pb-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <Globe size={16} className="text-amber-700" />
+                      <h4 className="text-sm font-bold text-neutral-900">
+                        City-Wise Custom Content & SEO Meta Tags
+                      </h4>
+                    </div>
+                    <p className="text-[11px] text-neutral-500 mt-0.5">
+                      Delhi, Jaipur ya kisi bhi specific city ke liye custom meta tags, localized title, description aur pricing set karein.
+                    </p>
+                  </div>
+
+                  {/* Add City Override button */}
+                  {availableCityList.length > 0 && (
+                    <div className="flex items-center gap-2">
+                      <select
+                        onChange={(e) => {
+                          const cName = e.target.value;
+                          if (!cName) return;
+                          if (formData.cityOverrides.some(o => o.cityName.toLowerCase() === cName.toLowerCase())) {
+                            toast.error(`${cName} is already added in overrides`);
+                            e.target.value = "";
+                            return;
+                          }
+                          setFormData({
+                            ...formData,
+                            cityOverrides: [
+                              ...formData.cityOverrides,
+                              {
+                                cityName: cName,
+                                metaTitle: `Best ${formData.name || 'Decoration'} in ${cName} | Party Square`,
+                                metaDescription: `Book premium ${formData.name || 'party decoration'} in ${cName}. On-time professional setup with affordable rates.`,
+                                metaKeywords: `${formData.name}, ${cName} party decoration, balloon decor in ${cName}`,
+                                customTitle: `${formData.name || 'Decoration'} (${cName} Special)`,
+                                customDescription: formData.description ? `${formData.description} (Exclusive service available across ${cName}).` : '',
+                                customPrice: formData.price || ''
+                              }
+                            ]
+                          });
+                          e.target.value = "";
+                        }}
+                        defaultValue=""
+                        className="px-3 py-1.5 rounded-xl border border-amber-300 bg-white text-xs font-bold text-amber-950 focus:outline-none focus:ring-1 focus:ring-amber-500 shadow-2xs cursor-pointer"
+                      >
+                        <option value="">+ Add City Custom SEO & Content</option>
+                        {availableCityList
+                          .filter(c => !formData.cityOverrides.some(o => o.cityName.toLowerCase() === c.toLowerCase()))
+                          .map(c => (
+                            <option key={c} value={c}>{c}</option>
+                          ))}
+                      </select>
+                    </div>
+                  )}
+                </div>
+
+                {formData.cityOverrides.length === 0 ? (
+                  <div className="text-center py-5 border border-dashed border-amber-200 rounded-xl bg-white/60">
+                    <Sliders size={20} className="text-neutral-400 mx-auto mb-1" />
+                    <p className="text-xs font-semibold text-neutral-700">No city-specific overrides added yet</p>
+                    <p className="text-[11px] text-neutral-400 mt-0.5">
+                      Agar aap Delhi, Mumbai etc. ke liye alag Meta Title/Keywords ya alag content show karna chahte hain, toh upar dropdown se city select karein.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {formData.cityOverrides.map((override, oIdx) => (
+                      <div
+                        key={override.cityName || oIdx}
+                        className="bg-white p-4 rounded-xl border border-amber-200/80 shadow-xs space-y-3 relative group"
+                      >
+                        <div className="flex items-center justify-between border-b border-neutral-100 pb-2">
+                          <div className="flex items-center gap-2">
+                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                            <span className="font-bold text-xs uppercase tracking-wider text-amber-950">
+                              📍 {override.cityName} Custom Settings
+                            </span>
+                            <span className="text-[10px] text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-semibold">
+                              Active for {override.cityName}
+                            </span>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = formData.cityOverrides.filter((_, i) => i !== oIdx);
+                              setFormData({ ...formData, cityOverrides: updated });
+                            }}
+                            className="text-red-400 hover:text-red-600 p-1 hover:bg-red-50 rounded-lg transition cursor-pointer text-xs flex items-center gap-1"
+                            title="Remove this city override"
+                          >
+                            <Trash size={13} />
+                            <span>Remove</span>
+                          </button>
+                        </div>
+
+                        {/* SEO Meta Tags for this city */}
+                        <div className="bg-[#FAF8F5] p-3 rounded-xl border border-amber-100 space-y-2.5">
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-neutral-800">
+                            <Tag size={13} className="text-amber-700" />
+                            <span>SEO Meta Tags ({override.cityName})</span>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <div>
+                              <label className="block text-[11px] font-bold text-neutral-600 mb-1">
+                                Meta Title ({override.cityName})
+                              </label>
+                              <input
+                                type="text"
+                                value={override.metaTitle}
+                                onChange={(e) => {
+                                  const updated = [...formData.cityOverrides];
+                                  updated[oIdx].metaTitle = e.target.value;
+                                  setFormData({ ...formData, cityOverrides: updated });
+                                }}
+                                placeholder={`e.g. Best Birthday Decor in ${override.cityName}`}
+                                className="w-full px-3 py-1.5 rounded-lg border border-neutral-200 bg-white text-xs outline-none focus:border-amber-400 font-medium"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-[11px] font-bold text-neutral-600 mb-1">
+                                Meta Keywords ({override.cityName})
+                              </label>
+                              <input
+                                type="text"
+                                value={override.metaKeywords}
+                                onChange={(e) => {
+                                  const updated = [...formData.cityOverrides];
+                                  updated[oIdx].metaKeywords = e.target.value;
+                                  setFormData({ ...formData, cityOverrides: updated });
+                                }}
+                                placeholder={`e.g. ${override.cityName} decor, balloon setup in ${override.cityName}`}
+                                className="w-full px-3 py-1.5 rounded-lg border border-neutral-200 bg-white text-xs outline-none focus:border-amber-400"
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="block text-[11px] font-bold text-neutral-600 mb-1">
+                              Meta Description ({override.cityName})
+                            </label>
+                            <textarea
+                              rows={2}
+                              value={override.metaDescription}
+                              onChange={(e) => {
+                                const updated = [...formData.cityOverrides];
+                                updated[oIdx].metaDescription = e.target.value;
+                                setFormData({ ...formData, cityOverrides: updated });
+                              }}
+                              placeholder={`SEO search snippet for customers searching in ${override.cityName}...`}
+                              className="w-full px-3 py-1.5 rounded-lg border border-neutral-200 bg-white text-xs outline-none focus:border-amber-400 resize-none leading-relaxed"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Localized Title, Description, and Custom Price */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                          <div className="sm:col-span-2">
+                            <label className="block text-[11px] font-bold text-neutral-600 mb-1">
+                              Custom Title in {override.cityName} (Optional)
+                            </label>
+                            <input
+                              type="text"
+                              value={override.customTitle}
+                              onChange={(e) => {
+                                const updated = [...formData.cityOverrides];
+                                updated[oIdx].customTitle = e.target.value;
+                                setFormData({ ...formData, cityOverrides: updated });
+                              }}
+                              placeholder={`Default: ${formData.name}`}
+                              className="w-full px-3 py-1.5 rounded-lg border border-neutral-200 bg-white text-xs outline-none focus:border-amber-400"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-[11px] font-bold text-neutral-600 mb-1">
+                              City Price (₹) (Optional)
+                            </label>
+                            <input
+                              type="number"
+                              value={override.customPrice}
+                              onChange={(e) => {
+                                const updated = [...formData.cityOverrides];
+                                updated[oIdx].customPrice = e.target.value;
+                                setFormData({ ...formData, cityOverrides: updated });
+                              }}
+                              placeholder={`Default: ₹${formData.price || 0}`}
+                              className="w-full px-3 py-1.5 rounded-lg border border-neutral-200 bg-white text-xs outline-none focus:border-amber-400 font-mono"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-bold text-neutral-600 mb-1">
+                            Custom Description for {override.cityName} (Optional)
+                          </label>
+                          <textarea
+                            rows={2}
+                            value={override.customDescription}
+                            onChange={(e) => {
+                              const updated = [...formData.cityOverrides];
+                              updated[oIdx].customDescription = e.target.value;
+                              setFormData({ ...formData, cityOverrides: updated });
+                            }}
+                            placeholder={`Localized description or special local venue details for ${override.cityName}...`}
+                            className="w-full px-3 py-1.5 rounded-lg border border-neutral-200 bg-white text-xs outline-none focus:border-amber-400 resize-none leading-relaxed"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               {/* What's Included & Not Included Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-[#FFF9E8]/60 p-4 rounded-2xl border border-amber-200/70">
                   <label className="block text-xs font-bold text-amber-900 mb-1">
-                    â " What's Included (1 item per line)
+                    ✓ What's Included (1 item per line)
                   </label>
                   <textarea 
                     rows={4}
@@ -768,7 +1227,7 @@ export default function AdminProducts() {
                 </div>
                 <div className="bg-rose-50/50 p-4 rounded-2xl border border-rose-200/60">
                   <label className="block text-xs font-bold text-rose-900 mb-1">
-                    â - What's Not Included (1 item per line)
+                    ✕ What's Not Included (1 item per line)
                   </label>
                   <textarea 
                     rows={4}

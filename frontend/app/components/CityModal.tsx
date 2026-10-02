@@ -119,21 +119,32 @@ const getCityIcon = (cityName: string) => {
 };
 
 export default function CityModal({ isOpen, onClose, onSelectCity, cities }: CityModalProps) {
+  const [search, setSearch] = React.useState("");
+
   if (!isOpen) return null;
+
+  const filteredCities = cities.filter(c => 
+    c.toLowerCase().includes(search.toLowerCase().trim())
+  );
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
       <div className="relative w-full max-w-4xl bg-[#FFFDF9] border border-amber-300/60 rounded-3xl shadow-2xl p-6 md:p-8 overflow-hidden max-h-[90vh] flex flex-col">
         
         {/* Top Header */}
-        <div className="flex items-center justify-between pb-6 border-b border-amber-200/60 shrink-0">
+        <div className="flex items-center justify-between pb-4 border-b border-amber-200/60 shrink-0">
           <div className="flex items-center space-x-2.5">
             <div className="w-9 h-9 rounded-full bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700 font-bold">
               📍
             </div>
-            <h2 className="text-xl md:text-2xl font-serif font-bold text-neutral-900 tracking-wide">
-              SELECT YOUR CITY
-            </h2>
+            <div>
+              <h2 className="text-xl md:text-2xl font-serif font-bold text-neutral-900 tracking-wide">
+                SELECT YOUR CITY
+              </h2>
+              <p className="text-xs text-neutral-500">
+                Choose your location to see decorations available near you
+              </p>
+            </div>
           </div>
           <button
             onClick={onClose}
@@ -144,9 +155,20 @@ export default function CityModal({ isOpen, onClose, onSelectCity, cities }: Cit
           </button>
         </div>
 
+        {/* City Search Bar */}
+        <div className="pt-4 pb-2 shrink-0">
+          <input
+            type="text"
+            placeholder="Search your city (e.g. Delhi, Mumbai, Noida)..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full px-4 py-2.5 rounded-2xl border border-neutral-200 bg-neutral-50/70 text-sm outline-none focus:bg-white focus:border-amber-400 focus:ring-2 focus:ring-amber-200/50 transition"
+          />
+        </div>
+
         {/* Cities Grid with Clean Custom Scrollbar & Perfectly Aligned Icons */}
         <div 
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 py-6 overflow-y-auto pr-1"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 py-4 overflow-y-auto pr-1"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           <style jsx>{`
@@ -154,23 +176,29 @@ export default function CityModal({ isOpen, onClose, onSelectCity, cities }: Cit
               display: none;
             }
           `}</style>
-          {cities.map((city) => (
-            <button
-              key={city}
-              onClick={() => {
-                onSelectCity(city);
-                onClose();
-              }}
-              className="group flex flex-col items-center justify-center p-4 bg-white hover:bg-amber-50/80 border border-neutral-200/80 hover:border-amber-400 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
-            >
-              <div className="w-12 h-12 rounded-xl bg-amber-50/80 group-hover:bg-amber-100 border border-amber-200/70 flex items-center justify-center text-amber-600 mb-2.5 transition group-hover:scale-110">
-                {getCityIcon(city)}
-              </div>
-              <span className="text-xs md:text-sm font-semibold text-neutral-800 group-hover:text-amber-900 transition text-center">
-                {city}
-              </span>
-            </button>
-          ))}
+          {filteredCities.length === 0 ? (
+            <div className="col-span-full py-10 text-center text-neutral-500 text-sm">
+              No cities found matching "{search}"
+            </div>
+          ) : (
+            filteredCities.map((city) => (
+              <button
+                key={city}
+                onClick={() => {
+                  onSelectCity(city);
+                  onClose();
+                }}
+                className="group flex flex-col items-center justify-center p-4 bg-white hover:bg-amber-50/80 border border-neutral-200/80 hover:border-amber-400 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
+              >
+                <div className="w-12 h-12 rounded-xl bg-amber-50/80 group-hover:bg-amber-100 border border-amber-200/70 flex items-center justify-center text-amber-600 mb-2.5 transition group-hover:scale-110">
+                  {getCityIcon(city)}
+                </div>
+                <span className="text-xs md:text-sm font-semibold text-neutral-800 group-hover:text-amber-900 transition text-center">
+                  {city}
+                </span>
+              </button>
+            ))
+          )}
         </div>
 
         {/* Footer Note */}

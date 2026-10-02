@@ -68,7 +68,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const navItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Home Page", href: "/admin/home-settings", icon: LayoutTemplate, isDropdown: true },
-    { name: "Decorations", href: "/admin/decorations", icon: Sparkles },
+    { name: "Theme Decorations", href: "/admin/decorations", icon: Sparkles },
     { name: "Products", href: "/admin/products", icon: ShoppingBag },
     { name: "Categories", href: "/admin/categories", icon: List },
     { name: "Packages", href: "/admin/packages", icon: Package },
@@ -275,9 +275,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Menu size={22} />
             </button>
             <div className="hidden md:flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-white border border-[#ECE9E2] shadow-xs p-1 flex items-center justify-center shrink-0">
-                <img src="/favicon.webp" alt="Party Square" className="w-full h-full object-contain" />
-              </div>
+          
               <div>
                 <h1 className="font-serif text-[20px] font-semibold text-[#182033] leading-tight">
                   {getGreeting()}, {admin?.name || "Super Admin"}

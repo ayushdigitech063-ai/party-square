@@ -1,310 +1,162 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  Heart,
-  ArrowRight,
-  Sparkles,
-  ShoppingBag,
-} from "lucide-react";
+import { Camera, ArrowRight, Sparkles, Maximize2 } from "lucide-react";
+import { API_URL } from "@/config";
 
-import { useWishlist } from "../context/wishlistcontext";
-import { useCart } from "../context/CartContext";
-import { galleryProducts } from "../data/galleryData";
-import { Product } from "@/app/types/product";
+interface GalleryPhoto {
+  id: string | number;
+  title: string;
+  category: string;
+  image: string;
+  price?: number;
+  description?: string;
+}
+
+const DEFAULT_HOMEPAGE_PHOTOS: GalleryPhoto[] = [
+  {
+    id: "g1",
+    title: "Royal Wedding Mandap Setup",
+    category: "Wedding Decoration",
+    image: "/wedding1.png",
+    price: 45000,
+  },
+  {
+    id: "g2",
+    title: "Birthday Balloon Garland Arch",
+    category: "Birthday Decoration",
+    image: "/aniversarry2.png",
+    price: 6500,
+  },
+  {
+    id: "g3",
+    title: "Candlelight Dinner Setup",
+    category: "Proposal & Romantic Setup",
+    image: "/aniversarry1.png",
+    price: 8000,
+  },
+  {
+    id: "g4",
+    title: "Floral Celebration Arch",
+    category: "Anniversary Decoration",
+    image: "/wedding3.png",
+    price: 9500,
+  },
+];
 
 export default function Gallery() {
-  const [activeTab, setActiveTab] = useState("All");
+  const [photos, setPhotos] = useState<GalleryPhoto[]>(DEFAULT_HOMEPAGE_PHOTOS);
 
-  const { addToCart } = useCart();
-
-  const { toggleWishlist, isInWishlist } = useWishlist();
-
-  // =========================================================
-  // GET UNIQUE CATEGORIES FROM galleryProducts
-  // =========================================================
-
-  const categories = useMemo(() => {
-    return [
-      "All",
-      ...Array.from(
-        new Set(galleryProducts.map((product) => product.category))
-      ),
-    ];
+  // Live sync with Super Admin Gallery
+  useEffect(() => {
+    fetch(`${API_URL}/api/homepage`)
+      .then((res) => res.json())
+      .then((data) => {
+        const gallerySec = data.sections?.find((s: any) => s.sectionKey === "gallery");
+        if (
+          gallerySec?.contentData?.photos &&
+          Array.isArray(gallerySec.contentData.photos) &&
+          gallerySec.contentData.photos.length > 0
+        ) {
+          setPhotos(gallerySec.contentData.photos);
+        }
+      })
+      .catch((err) => console.error("Error loading gallery for homepage:", err));
   }, []);
 
-  // =========================================================
-  // FILTER PRODUCTS
-  // =========================================================
-
-  const filteredProducts = useMemo(() => {
-    if (activeTab === "All") {
-      return galleryProducts;
-    }
-
-    return galleryProducts.filter(
-      (product) => product.category === activeTab
-    );
-  }, [activeTab]);
-
-  // =========================================================
-  // GROUP PRODUCTS BY CATEGORY
-  // =========================================================
-
-  const groupedProducts = useMemo(() => {
-    const groups: Record<string, Product[]> = {};
-
-    filteredProducts.forEach((product) => {
-      if (!groups[product.category]) {
-        groups[product.category] = [];
-      }
-
-      groups[product.category].push(product);
-    });
-
-    return groups;
-  }, [filteredProducts]);
-
-  // =========================================================
-  // ADD TO CART
-  // =========================================================
-
-  const handleDirectAdd = (
-    item: Product,
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    addToCart(
-      {
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        image: item.image,
-        description: item.description,
-        category: item.category,
-      },
-      1
-    );
-  };
+  // Display only first 4 on homepage (just like admin panel overview)
+  const displayPhotos = photos.slice(0, 4);
 
   return (
-    <section className="bg-[#FAF7F2] py-16 px-4 sm:px-8 md:px-16 text-[#1A1A1A] relative font-sans">
-      <div className="max-w-7xl mx-auto relative z-10">
-
-        {/* =====================================================
-            SECTION HEADER
-        ====================================================== */}
-
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center space-x-2 bg-amber-100 px-4 py-1.5 rounded-full mb-4">
-            <Sparkles size={14} className="text-amber-700" />
-
-            <span className="text-xs uppercase tracking-widest font-semibold text-amber-900">
-              OUR EXCLUSIVE PORTFOLIO
-            </span>
+    <section id="gallery" className="bg-[#FAF7F2] py-20 px-4 sm:px-6 md:px-12 text-neutral-900 font-sans relative">
+      <div className="max-w-7xl mx-auto">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <div className="space-y-3 max-w-xl">
+            <div className="inline-flex items-center gap-2 bg-amber-100/90 border border-amber-300 px-3.5 py-1 rounded-full">
+              <Camera size={13} className="text-amber-800" />
+              <span className="text-[10px] uppercase tracking-widest font-bold text-amber-950">
+                Live Event Portfolio
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-neutral-900 tracking-tight leading-tight">
+              Moments We’ve <span className="italic text-amber-700 font-light">Crafted With Love</span>
+            </h2>
+            <p className="text-neutral-600 text-xs sm:text-sm font-light leading-relaxed">
+              Explore authentic photos of our real setups. From royal wedding mandaps to intimate birthday celebrations.
+            </p>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl font-serif text-gray-900 leading-[1.15]">
-            A closer look at{" "}
-            <span className="italic font-light text-amber-800">
-              every celebration
-            </span>
-          </h2>
+          {/* Show All Gallery Button */}
+          <Link
+            href="/gallery"
+            className="inline-flex items-center justify-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white font-bold px-7 py-3.5 rounded-full text-xs uppercase tracking-wider transition shadow-md shrink-0 cursor-pointer self-start md:self-auto"
+          >
+            <span>View All Gallery</span>
+            <ArrowRight size={15} />
+          </Link>
         </div>
 
-        {/* =====================================================
-            CATEGORY TABS
-        ====================================================== */}
-
-        <div className="flex items-center justify-start sm:justify-center overflow-x-auto pb-3 gap-2 mb-12 scrollbar-none">
-          {categories.map((category) => (
-            <button
-              type="button"
-              key={category}
-              onClick={() => setActiveTab(category)}
-              className={`whitespace-nowrap px-6 py-2.5 rounded-full text-sm font-medium transition cursor-pointer ${
-                activeTab === category
-                  ? "bg-amber-900 text-white"
-                  : "bg-white text-gray-700 border border-amber-200"
-              }`}
+        {/* 4 Photo Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {displayPhotos.map((photo, index) => (
+            <Link
+              key={photo.id || index}
+              href="/gallery"
+              className="group relative rounded-3xl overflow-hidden bg-white border border-neutral-200/90 hover:border-amber-400 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-end min-h-[340px]"
             >
-              {category === "All" ? "All Collections" : category}
-            </button>
+              {/* Photo */}
+              <img
+                src={photo.image}
+                alt={photo.title}
+                className="absolute inset-0 w-full h-full object-cover group-hover:scale-106 transition-transform duration-500"
+                loading="lazy"
+              />
+
+              {/* Gradient Shade */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-80 group-hover:opacity-95 transition-opacity" />
+
+              {/* Category Pill Tag */}
+              <div className="absolute top-4 left-4 z-10">
+                <span className="bg-black/60 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-white/20">
+                  {photo.category}
+                </span>
+              </div>
+
+              {/* View Full Screen Icon */}
+              <div className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
+                <Maximize2 size={14} />
+              </div>
+
+              {/* Info at bottom */}
+              <div className="relative z-10 p-5 text-white space-y-1">
+                {photo.price && (
+                  <span className="text-amber-300 text-xs font-bold drop-shadow-sm block">
+                    ₹{Number(photo.price).toLocaleString("en-IN")}
+                  </span>
+                )}
+                <h3 className="font-serif font-bold text-white text-base leading-snug line-clamp-1">
+                  {photo.title}
+                </h3>
+                <span className="text-[11px] text-amber-400/90 font-medium flex items-center gap-1 group-hover:underline pt-1">
+                  <span>View in Gallery</span>
+                  <ArrowRight size={11} className="group-hover:translate-x-1 transition-transform" />
+                </span>
+              </div>
+            </Link>
           ))}
         </div>
 
-        {/* =====================================================
-            PRODUCTS
-        ====================================================== */}
-
-        <div className="space-y-16">
-
-          {Object.entries(groupedProducts).map(
-            ([categoryName, products]) => (
-              <div
-                key={categoryName}
-                className="space-y-6"
-              >
-
-                {/* =================================================
-                    CATEGORY HEADER
-                ================================================== */}
-
-                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-amber-200/60 pb-4 gap-1 sm:gap-2">
-                  <h3 className="text-xl sm:text-3xl font-serif font-normal text-gray-900 flex items-center gap-3">
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-700 inline-block" />
-
-                    {categoryName}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-amber-800/80 font-light italic">
-                    {categoryName === "Wedding Decoration" &&
-                      "Grand mandaps, floral aisles & royal setups"}
-
-                    {categoryName === "Home Decoration" &&
-                      "Everyday spaces, made a little more special"}
-
-                    {categoryName === "Anniversary Decoration" &&
-                      "Candlelight, florals & romantic themes"}
-
-                    {categoryName === "Child Birthday" &&
-                      "Playful themes, balloons & bright colours"}
-                  </p>
-                </div>
-
-                {/* =================================================
-                    PRODUCT CARDS
-                ================================================== */}
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6">
-
-                  {products.map((item) => {
-                    const likedStatus = isInWishlist(item.id);
-
-                    return (
-                      <div
-                        key={item.id}
-                        className="group bg-white rounded-2xl overflow-hidden border border-amber-200 hover:border-amber-400 shadow-sm hover:shadow-xl transition flex flex-col"
-                      >
-
-                        {/* =================================================
-                            IMAGE
-                        ================================================== */}
-
-                        <div className="relative aspect-[4/5] bg-amber-50 overflow-hidden">
-
-                          <Link
-                            href={`/card/${item.id}`}
-                            className="block w-full h-full"
-                          >
-                            <img
-                              src={item.image}
-                              alt={item.name}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
-                            />
-                          </Link>
-
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-                          {/* Wishlist */}
-
-                          <button
-                            type="button"
-                            onClick={() => toggleWishlist(item)}
-                            aria-label={
-                              likedStatus
-                                ? "Remove from wishlist"
-                                : "Add to wishlist"
-                            }
-                            className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer z-10"
-                          >
-                            <Heart
-                              size={16}
-                              className={
-                                likedStatus
-                                  ? "fill-rose-500 text-rose-500"
-                                  : "text-gray-700"
-                              }
-                            />
-                          </button>
-                        </div>
-
-                        {/* =================================================
-                            CONTENT
-                        ================================================== */}
-
-                        <div className="p-4 flex flex-col justify-between flex-1 space-y-3">
-
-                          <Link
-                            href={`/card/${item.id}`}
-                            className="block"
-                          >
-                            <h4 className="font-serif text-base font-medium text-gray-900 hover:text-amber-800 transition">
-                              {item.name}
-                            </h4>
-
-                            <p className="text-xs text-gray-500 line-clamp-2 mt-1">
-                              {item.description}
-                            </p>
-                          </Link>
-
-                          {/* =================================================
-                              PRICE + ACTIONS
-                          ================================================== */}
-
-                          <div className="flex items-center justify-between pt-3 border-t border-amber-100 gap-2">
-
-                            <div>
-                              <span className="text-[10px] uppercase tracking-wider text-gray-400 block font-medium">
-                                Starts at
-                              </span>
-
-                              <span className="text-sm font-semibold text-amber-900">
-                                ₹{item.price.toLocaleString("en-IN")}
-                              </span>
-                            </div>
-
-                            <div className="flex items-center space-x-2">
-
-                              {/* Add To Cart */}
-
-                              <button
-                                type="button"
-                                onClick={(e) =>
-                                  handleDirectAdd(item, e)
-                                }
-                                title="Add to Basket"
-                                className="w-9 h-9 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 flex items-center justify-center shadow-sm transition cursor-pointer shrink-0"
-                              >
-                                <ShoppingBag size={15} />
-                              </button>
-
-                              {/* Book */}
-
-                              <Link
-                                href={`/card/${item.id}`}
-                                className="bg-amber-900 hover:bg-black text-white text-[11px] font-bold uppercase px-3.5 py-2 rounded-full transition shadow-sm inline-flex items-center gap-1"
-                              >
-                                <span>Book</span>
-
-                                <ArrowRight size={11} />
-                              </Link>
-
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-
-                </div>
-              </div>
-            )
-          )}
-
+        {/* Mobile View All Button */}
+        <div className="mt-8 text-center sm:hidden">
+          <Link
+            href="/gallery"
+            className="w-full inline-flex items-center justify-center gap-2 bg-neutral-900 text-white font-bold py-3.5 rounded-full text-xs uppercase tracking-wider"
+          >
+            <span>View All Gallery Photos</span>
+            <ArrowRight size={14} />
+          </Link>
         </div>
       </div>
     </section>

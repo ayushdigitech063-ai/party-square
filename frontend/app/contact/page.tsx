@@ -130,78 +130,10 @@ export default function ContactPage() {
           </div>
         </div>
 
-        {/* Main Content: Form & Info Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
-          {/* Left Side: Contact Info & Perks (5 Columns) */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="bg-gradient-to-br from-amber-100/80 to-amber-50/80 backdrop-blur-md border border-amber-300/80 rounded-3xl p-8 shadow-sm space-y-8">
-              <div>
-                <h3 className="text-2xl font-serif font-bold text-neutral-950 mb-2">Let’s Talk Styling</h3>
-                <p className="text-neutral-700 text-sm font-medium">
-                  Connect directly with our senior event architects or visit our design studio in New Delhi.
-                </p>
-              </div>
-
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-2xl bg-white border border-amber-300 flex items-center justify-center text-amber-800 shrink-0 shadow-sm">
-                    <MapPin size={22} />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-amber-950 mb-1">Studio Address</h4>
-                    <p className="text-sm font-medium text-neutral-800 leading-relaxed">
-                      124 Luxury Avenue, Event Square, New Delhi, India 110001
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-2xl bg-white border border-amber-300 flex items-center justify-center text-amber-800 shrink-0 shadow-sm">
-                    <Phone size={22} />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-amber-950 mb-1">Direct Line</h4>
-                    <p className="text-sm font-medium text-neutral-800">
-                      +91 98765 43210 / +91 91234 56789
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-2xl bg-white border border-amber-300 flex items-center justify-center text-amber-800 shrink-0 shadow-sm">
-                    <Mail size={22} />
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-amber-950 mb-1">Email Inquiry</h4>
-                    <p className="text-sm font-medium text-neutral-800">
-                      support@aestheticdecor.com
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Perks Highlights */}
-              <div className="pt-6 border-t border-amber-300/60 space-y-3">
-                <div className="flex items-center space-x-3 text-sm font-semibold text-neutral-800">
-                  <CheckCircle2 size={18} className="text-amber-800 shrink-0" />
-                  <span>Free initial consultation & moodboard preview</span>
-                </div>
-                <div className="flex items-center space-x-3 text-sm font-semibold text-neutral-800">
-                  <CheckCircle2 size={18} className="text-amber-800 shrink-0" />
-                  <span>Customized themes tailored to your venue budget</span>
-                </div>
-                <div className="flex items-center space-x-3 text-sm font-semibold text-neutral-800">
-                  <CheckCircle2 size={18} className="text-amber-800 shrink-0" />
-                  <span>On-time professional setup guaranteed</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Side: Interactive Form (7 Columns) */}
-          <div className="lg:col-span-7">
-            <div className="bg-white/95 backdrop-blur-md border border-amber-300/80 rounded-3xl p-8 md:p-10 shadow-md">
+        {/* Main Content: Form Section (Clean Centered) */}
+        <div className="max-w-3xl mx-auto w-full">
+          <div>
+            <div className="bg-white/95 backdrop-blur-md border border-amber-300/80 rounded-3xl p-8 md:p-12 shadow-lg">
               {submitted ? (
                 <div className="text-center py-20 space-y-4">
                   <div className="w-20 h-20 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center mx-auto shadow-sm">
