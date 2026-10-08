@@ -14,6 +14,7 @@ import { newYearCards } from "./youngBirthdayProduct";
 import { hotelCards } from "./youngBirthdayProduct";
 import { outdoorCards } from "./youngBirthdayProduct";
 import { babyWelcomeDecor, cartoonAndToyDecor } from "./babyWelcomeProduct";
+import { decorationItems } from "./decorationThemeData";
 
 export const weddingGifts: Product[] = [
   {
@@ -726,4 +727,5 @@ export const allProducts = [
   ...outdoorCards,
   ...babyWelcomeDecor,
   ...cartoonAndToyDecor,
+  ...decorationItems,
 ];
