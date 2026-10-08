@@ -2,68 +2,17 @@
 
 import React, { useState } from "react";
 import { Sparkles, X, ArrowRight } from "lucide-react";
-
-const decorationItems = [
-  {
-    id: 1,
-    title: "Birthday Celebration",
-    subtitle: "Joyful & Vibrant Setups",
-    image: "/birthdaydesign.png",
-    description: "Make birthdays extra special with vibrant balloon arches, custom backdrops, fairy lights, and personalized theme setups designed to create everlasting memories.",
-  },
-  {
-    id: 2,
-    title: "Romantic Vibes",
-    subtitle: "Candlelight & Roses",
-    image: "/romaticvibe.png",
-    description: "Ignite the romance with breathtaking candlelight pathways, cascading rose petals, cozy cabanas, and intimate dinner decor tailored for anniversaries and dates.",
-  },
-  {
-    id: 3,
-    title: "Ganpati Utsav",
-    subtitle: "Divine Mandap Decor",
-    image: "/ganpatidecoration.png",
-    description: "Welcome Lord Ganesha home with exquisite traditional mandaps, fresh floral hangings, gold accents, and serene lighting setups crafted with deep devotion.",
-  },
-  {
-    id: 4,
-    title: "Navratri Celebration",
-    subtitle: "Traditional & Colorful",
-    image: "/navratridecoration.png",
-    description: "Celebrate the festive nine nights with vibrant ethnic props, marigold floral styling, traditional elements, and bright festive illumination.",
-  },
-  {
-    id: 5,
-    title: "Janmashtami",
-    subtitle: "Divine Krishna Jhula",
-    image: "/janmasthmi.png",
-    description: "Transform your space into a divine Vrindavan with beautifully decorated jhulas, peacock feather motifs, butter pots, and glowing traditional lights.",
-  },
-  {
-    id: 6,
-    title: "Christmas Magic",
-    subtitle: "Festive Winter Wonderland",
-    image: "/crismasdecoration.png",
-    description: "Bring home the Christmas cheer with frosted pine trees, glittering ornaments, warm fairy lights, and cozy winter-themed festive corners.",
-  },
-  {
-    id: 7,
-    title: "Diwali Festivities",
-    subtitle: "Traditional Lighting & Diya Decor",
-    image: "/diwalidecoration.png",
-    description: "Brighten up your home with bespoke floral rangolis, traditional diyas, ambient lighting, and elegant festive corners for Laxmi Pujan.",
-  },
-  {
-    id: 8,
-    title: "Grand Celebrations",
-    subtitle: "Luxury Stage & Events",
-    image: "/homepage.png",
-    description: "From grand receptions to premium family milestones, experience breathtaking stage styling, floral ceilings, and immaculate attention to detail.",
-  },
-];
+import { Product } from "../types/product";
+import { useRouter } from "next/navigation";
+import { decorationItems } from "../data/decorationThemeData";
 
 export default function MostLovedDecor() {
   const [selectedItem, setSelectedItem] = useState<typeof decorationItems[0] | null>(null);
+  const router = useRouter();
+    const openDetailPage = (item : any) =>{
+           router.push(`/card/${item.slug}`);
+    }
+
 
   return (
     <section className="relative bg-[#FBF8F2] text-[#1A1A1A] py-24 px-6 md:px-16 overflow-hidden font-sans border-t border-[#E6DEC9]">
@@ -97,14 +46,14 @@ export default function MostLovedDecor() {
             {[...decorationItems, ...decorationItems].map((item, index) => (
               <div 
                 key={`${item.id}-${index}`}
-                onClick={() => setSelectedItem(item)}
+                onClick={() => openDetailPage(item)}
                 className="flex flex-col items-center group cursor-pointer"
               >
                 {/* Circular Image Card */}
                 <div className="w-[150px] h-[150px] rounded-full overflow-hidden border-4 border-[#E2D2B0] group-hover:border-[#8C6D24] shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 relative bg-white shrink-0">
                   <img 
                     src={item.image} 
-                    alt={item.title}
+                    alt={item.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" 
                   />
                   {/* Subtle hover overlay */}
@@ -118,10 +67,10 @@ export default function MostLovedDecor() {
                 {/* Title Below Circle */}
                 <div className="mt-4 text-center space-y-0.5">
                   <span className="text-[10px] uppercase tracking-[0.2em] text-[#8C6D24] font-semibold block">
-                    {item.subtitle}
+                    {item.subcategory}
                   </span>
                   <h3 className="text-base font-serif text-[#1A1A1A] group-hover:text-[#8C6D24] transition-colors">
-                    {item.title}
+                    {item.name}
                   </h3>
                 </div>
               </div>
@@ -154,7 +103,7 @@ export default function MostLovedDecor() {
             
             {/* Properly Positioned Close Button */}
             <button 
-              onClick={() => setSelectedItem(null)}
+              onClick={() => openDetailPage(selectedItem)}
               className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-[#F4EFE6] border border-[#D9CEB3] text-[#8C6D24] hover:bg-[#EBE2D0] flex items-center justify-center transition shadow-sm cursor-pointer"
             >
               <X size={18} />
@@ -164,18 +113,18 @@ export default function MostLovedDecor() {
             <div className="w-full h-60 rounded-2xl overflow-hidden relative border border-[#D9CEB3]">
               <img 
                 src={selectedItem.image} 
-                alt={selectedItem.title} 
+                alt={selectedItem.name} 
                 className="w-full h-full object-cover"
               />
               <span className="absolute bottom-4 left-4 text-xs tracking-widest text-[#7B6220] uppercase font-medium bg-[#FFFDF9]/90 px-3 py-1 rounded-full backdrop-blur-md shadow-sm">
-                {selectedItem.subtitle}
+                {selectedItem.subcategory}
               </span>
             </div>
 
             {/* Modal Content */}
             <div className="space-y-3">
               <h3 className="text-2xl font-serif text-[#1A1A1A]">
-                {selectedItem.title}
+                {selectedItem.name}
               </h3>
               <p className="text-[#4A4A4A] text-sm leading-relaxed font-light">
                 {selectedItem.description}
