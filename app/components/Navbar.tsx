@@ -21,6 +21,7 @@ import {
   Search,
   ShoppingBasket,
   X,
+  User,
   Heart,
 } from "lucide-react";
 import CityModal from "./CityModal"; // <-- CityModal import kiya hai (apne folder path ke hisaab se adjust kar lein)
@@ -479,6 +480,24 @@ export default function Navbar() {
   const [locationOpen, setLocationOpen] = useState(false);
   const [selectedCity, setSelectedCity] = useState("Delhi");
   const [loginopen, setLoginOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState("Profile");
+
+  useEffect(() => {
+    const token = document.cookie.split("; ").find(row => row.startsWith("token="))?.split("=")[1];
+    if (token) {
+      setIsLoggedIn(true);
+      const userCookie = document.cookie.split("; ").find(row => row.startsWith("user="))?.split("=")[1];
+      if (userCookie) {
+        try {
+          const userObj = JSON.parse(decodeURIComponent(userCookie));
+          if (userObj && userObj.name) {
+            setUserName(userObj.name);
+          }
+        } catch(e) {}
+      }
+    }
+  }, []);
 
   // State for controlling the popup automatically on website load
   const [isCityModalOpen, setIsCityModalOpen] = useState(false);
@@ -611,10 +630,25 @@ export default function Navbar() {
               <WhatsAppIcon size={18} />
             </a>
 
-            <button onClick={()=> setLoginOpen(true)} className="h-9 sm:h-11 px-3 sm:px-6 shrink-0 rounded-full bg-amber-200 text-black text-sm sm:text-[15px] font-semibold flex items-center gap-1.5 sm:gap-2 whitespace-nowrap hover:bg-amber-300 transition shadow-sm">
-              <span className="hidden sm:inline">Login</span>
-              <ArrowRight size={16} />
-            </button>
+            {isLoggedIn ? (
+                <div className="relative group">
+                  <Link href="/profile" className="h-9 w-9 sm:h-11 sm:w-11 shrink-0 rounded-full bg-amber-200 text-black flex items-center justify-center hover:bg-amber-300 transition shadow-sm" aria-label="User Profile">
+                    <User size={20} />
+                  </Link>
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pt-2 pb-1">
+                    <div className="px-4 py-2 border-b border-gray-50 mb-1">
+                      <p className="text-sm font-bold text-gray-900 truncate">{userName}</p>
+                    </div>
+                    <Link href="/profile" className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-amber-50 hover:text-amber-600 transition">My Profile</Link>
+                    <button onClick={() => { document.cookie = "token=; path=/; max-age=0;"; document.cookie = "user=; path=/; max-age=0;"; window.location.href = "/"; }} className="w-full text-left block px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 transition">Logout</button>
+                  </div>
+                </div>
+              ) : (
+              <button onClick={()=> setLoginOpen(true)} className="h-9 sm:h-11 px-3 sm:px-6 shrink-0 rounded-full bg-amber-200 text-black text-sm sm:text-[15px] font-semibold flex items-center gap-1.5 sm:gap-2 whitespace-nowrap hover:bg-amber-300 transition shadow-sm">
+                <span className="hidden sm:inline">Login</span>
+                <ArrowRight size={16} />
+              </button>
+            )}
           </div>
         </div>
 

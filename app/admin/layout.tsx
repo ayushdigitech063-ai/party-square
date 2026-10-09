@@ -26,10 +26,7 @@ export default function AdminLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
-  // The login page must not show the sidebar
-  if (pathname === "/admin/login") {
-    return <>{children}</>;
-  }
+
   const navItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     {
@@ -129,7 +126,7 @@ export default function AdminLayout({
       <div className="flex-1 flex flex-col min-h-screen">
         {/* Top Header */}
 
-        {/* <header className="top-0 right-0 left-0 lg:left-72 z-40 bg-[#F3EFE9]/95 backdrop-blur-md border-b border-amber-200/60 px-6 sm:px-10 py-4 flex items-center justify-between">
+        <header className="fixed top-0 right-0 left-0 lg:left-72 z-40 bg-[#F3EFE9]/95 backdrop-blur-md border-b border-amber-200/60 px-6 sm:px-10 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -166,7 +163,7 @@ export default function AdminLayout({
               </span>
             </div>
           </div>
-        </header> */}
+        </header>
 
         {/* Page Content Render Area */}
         <main className="flex-1 p-6 sm:p-10">{children}</main>
