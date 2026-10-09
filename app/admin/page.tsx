@@ -3,14 +3,12 @@
 import React, { useMemo, useState } from "react";
 
 import DashboardHeader from "./component/DashboardHeader";
-import DashboardToolbar from "./component/DashboardToolbar";
 import KpiCards from "./component/KpiCards";
 import RevenueChart from "./component/RevenuChart";
 import CategoryChart from "./component/CategoryChart";
 import BookingsTable from "./component/BookingsTable";
 import AttentionPanel from "./component/AttentionPanel";
 import TopThemes from "./component/TopThemes";
-import UpcomingEvents from "./component/UpcommingEvents";
 
 import { INITIAL_BOOKINGS } from "./data/bookings";
 import { Booking, Status } from "./types/dashboard";
@@ -22,11 +20,9 @@ export default function AdminDashboard() {
 
   const [range, setRange] = useState<"7D" | "30D" | "90D">("30D");
 
-  const [bookings, setBookings] =
-    useState<Booking[]>(INITIAL_BOOKINGS);
+  const [bookings, setBookings] = useState<Booking[]>(INITIAL_BOOKINGS);
 
-  const [tab, setTab] =
-    useState<"All" | Status>("All");
+  const [tab, setTab] = useState<"All" | Status>("All");
 
   const [query, setQuery] = useState("");
 
@@ -38,6 +34,18 @@ export default function AdminDashboard() {
     (booking) => booking.status === "Pending"
   ).length;
 
+  // Counts shown inside the status tabs: All (12), Pending (2) ...
+  const counts = useMemo(
+    () => ({
+      All: bookings.length,
+      Pending: bookings.filter((b) => b.status === "Pending").length,
+      Confirmed: bookings.filter((b) => b.status === "Confirmed").length,
+      Completed: bookings.filter((b) => b.status === "Completed").length,
+      Cancelled: bookings.filter((b) => b.status === "Cancelled").length,
+    }),
+    [bookings]
+  );
+
   // =========================
   // FILTER BOOKINGS
   // =========================
@@ -46,16 +54,11 @@ export default function AdminDashboard() {
     const search = query.trim().toLowerCase();
 
     return bookings.filter((booking) => {
-      const matchesStatus =
-        tab === "All" || booking.status === tab;
+      const matchesStatus = tab === "All" || booking.status === tab;
 
       const matchesSearch =
         !search ||
-        [
-          booking.id,
-          booking.customer,
-          booking.theme,
-        ].some((field) =>
+        [booking.id, booking.customer, booking.theme].some((field) =>
           field.toLowerCase().includes(search)
         );
 
@@ -67,18 +70,10 @@ export default function AdminDashboard() {
   // UPDATE BOOKING STATUS
   // =========================
 
-  const updateStatus = (
-    id: string,
-    status: Status
-  ) => {
+  const updateStatus = (id: string, status: Status) => {
     setBookings((previousBookings) =>
       previousBookings.map((booking) =>
-        booking.id === id
-          ? {
-              ...booking,
-              status,
-            }
-          : booking
+        booking.id === id ? { ...booking, status } : booking
       )
     );
   };
@@ -108,20 +103,11 @@ export default function AdminDashboard() {
 
     const csv = [header, ...rows]
       .map((row) =>
-        row
-          .map(
-            (cell) =>
-              `"${String(cell).replace(/"/g, '""')}"`
-          )
-          .join(",")
+        row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(",")
       )
       .join("\n");
 
-    const url = URL.createObjectURL(
-      new Blob([csv], {
-        type: "text/csv",
-      })
-    );
+    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
 
     const link = document.createElement("a");
 
@@ -139,37 +125,28 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
-
-      {/* Header */}
+      {/* Welcome + date range */}
       <DashboardHeader
         pendingCount={pendingCount}
-      />
-
-      {/* Date Range */}
-      <DashboardToolbar
         range={range}
         setRange={setRange}
       />
 
       {/* KPI Cards */}
-      <KpiCards
-        pendingCount={pendingCount}
-      />
+      <KpiCards pendingCount={pendingCount} />
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <RevenueChart
-          range={range}
-        />
+        <RevenueChart range={range} />
 
         <CategoryChart />
       </div>
 
       {/* Bookings + Side Panels */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
-
         <BookingsTable
           bookings={filteredBookings}
+          counts={counts}
           tab={tab}
           setTab={setTab}
           query={query}
@@ -179,19 +156,11 @@ export default function AdminDashboard() {
         />
 
         <div className="space-y-5">
-
-          <AttentionPanel
-            pendingCount={pendingCount}
-          />
+          <AttentionPanel pendingCount={pendingCount} />
 
           <TopThemes />
-
-          <UpcomingEvents />
-
         </div>
-
       </div>
-
     </div>
   );
 }
