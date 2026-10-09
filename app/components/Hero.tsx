@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, Play, ChevronLeft, ChevronRight } from "lucide-react";
 import MostLovedDecor from "../MostLovedDecor/page";
+import { apiRequest } from "@/lib/api";
 
 const slides = [
   {
@@ -60,6 +61,17 @@ export default function Hero() {
   };
 
   const currentSlide = slides[currentIndex];
+
+  const getHomeData = async() =>{
+
+    const response = await apiRequest('/homepage');
+
+    console.log(response);
+
+  }
+ useEffect(()=>{
+       getHomeData();
+ },[])
 
   return (
     <div className="w-full min-h-screen bg-[#F3EFE9] font-sans text-neutral-900 selection:bg-amber-400 selection:text-black">
