@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 
@@ -86,14 +86,14 @@ export default function CookieSettingsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 py-10 md:py-14">
+    <main className="min-h-screen bg-gradient-to-br from-[#EEF6EB] via-orange-50 to-yellow-50 py-10 md:py-14">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Main Card */}
-        <section className="overflow-hidden rounded-3xl border border-amber-200/80 bg-white shadow-sm">
+        <section className="overflow-hidden rounded-3xl border border-[#E8E8E3]/80 bg-white shadow-sm">
           {/* Header */}
-          <div className="border-b border-amber-100 bg-gradient-to-r from-amber-100/90 to-amber-50/90 px-6 py-10 text-center md:px-12">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-amber-300 bg-white text-2xl shadow-sm">
-              🍪
+          <div className="border-b border-[#E8E8E3] bg-gradient-to-r from-[#EEF6EB]/90 to-[#EEF6EB]/90 px-6 py-10 text-center md:px-12">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-[#8CBC67] bg-white text-2xl shadow-sm">
+              ðŸª
             </div>
 
             <h1 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
@@ -106,7 +106,7 @@ export default function CookieSettingsPage() {
               like to allow.
             </p>
 
-            <p className="mt-3 text-sm font-medium text-amber-700">
+            <p className="mt-3 text-sm font-medium text-[#202522]">
               Last Updated: October 2026
             </p>
           </div>
@@ -154,7 +154,7 @@ export default function CookieSettingsPage() {
                   return (
                     <div
                       key={cookie.id}
-                      className="rounded-2xl border border-amber-200 bg-amber-50/40 p-5 transition-all duration-200 hover:border-amber-300 hover:bg-amber-50/70 md:p-6"
+                      className="rounded-2xl border border-[#E8E8E3] bg-[#EEF6EB]/40 p-5 transition-all duration-200 hover:border-[#8CBC67] hover:bg-[#EEF6EB]/70 md:p-6"
                     >
                       <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
                         {/* Text */}
@@ -165,7 +165,7 @@ export default function CookieSettingsPage() {
                             </h3>
 
                             {cookie.required && (
-                              <span className="rounded-full border border-amber-200 bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
+                              <span className="rounded-full border border-[#E8E8E3] bg-[#EEF6EB] px-3 py-1 text-xs font-semibold text-[#202522]">
                                 Always Active
                               </span>
                             )}
@@ -183,8 +183,8 @@ export default function CookieSettingsPage() {
                           disabled={cookie.required}
                           aria-label={`Toggle ${cookie.title}`}
                           aria-pressed={enabled}
-                          className={`relative h-7 w-12 shrink-0 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 ${
-                            enabled ? "bg-amber-500" : "bg-gray-300"
+                          className={`relative h-7 w-12 shrink-0 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#8CBC67] focus:ring-offset-2 ${
+                            enabled ? "bg-[#8CBC67]" : "bg-gray-300"
                           } ${
                             cookie.required
                               ? "cursor-not-allowed opacity-80"
@@ -211,9 +211,9 @@ export default function CookieSettingsPage() {
               </h2>
 
               <div className="grid gap-4 md:grid-cols-2">
-                <div className="rounded-2xl border border-amber-200 bg-white p-5 shadow-sm">
-                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-lg">
-                    ⚙️
+                <div className="rounded-2xl border border-[#E8E8E3] bg-white p-5 shadow-sm">
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#EEF6EB] text-lg">
+                    âš™ï¸
                   </div>
 
                   <h3 className="font-bold text-gray-900">
@@ -226,9 +226,9 @@ export default function CookieSettingsPage() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-amber-200 bg-white p-5 shadow-sm">
-                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-lg">
-                    📊
+                <div className="rounded-2xl border border-[#E8E8E3] bg-white p-5 shadow-sm">
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#EEF6EB] text-lg">
+                    ðŸ“Š
                   </div>
 
                   <h3 className="font-bold text-gray-900">Website Analytics</h3>
@@ -239,9 +239,9 @@ export default function CookieSettingsPage() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-amber-200 bg-white p-5 shadow-sm">
-                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-lg">
-                    ✨
+                <div className="rounded-2xl border border-[#E8E8E3] bg-white p-5 shadow-sm">
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#EEF6EB] text-lg">
+                    âœ¨
                   </div>
 
                   <h3 className="font-bold text-gray-900">Personalization</h3>
@@ -252,9 +252,9 @@ export default function CookieSettingsPage() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-amber-200 bg-white p-5 shadow-sm">
-                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-lg">
-                    🎯
+                <div className="rounded-2xl border border-[#E8E8E3] bg-white p-5 shadow-sm">
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#EEF6EB] text-lg">
+                    ðŸŽ¯
                   </div>
 
                   <h3 className="font-bold text-gray-900">
@@ -297,7 +297,7 @@ export default function CookieSettingsPage() {
             </div>
 
             {/* Privacy Notice */}
-            <div className="rounded-2xl border border-amber-300 bg-gradient-to-r from-amber-100/80 to-yellow-50 p-6 md:p-8">
+            <div className="rounded-2xl border border-[#8CBC67] bg-gradient-to-r from-[#EEF6EB]/80 to-yellow-50 p-6 md:p-8">
               <h2 className="text-lg font-bold text-gray-900 md:text-xl">
                 Your Privacy Matters
               </h2>
@@ -314,10 +314,10 @@ export default function CookieSettingsPage() {
           {/* Success Message */}
           {saved && (
             <div className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-32px)]">
-              <div className="relative flex items-start gap-4 rounded-2xl border border-amber-300 bg-white p-5 shadow-2xl">
+              <div className="relative flex items-start gap-4 rounded-2xl border border-[#8CBC67] bg-white p-5 shadow-2xl">
                 {/* Success Icon */}
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-500 text-base font-bold text-white shadow-sm">
-                  ✓
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#8CBC67] text-base font-bold text-white shadow-sm">
+                  âœ“
                 </div>
 
                 {/* Message */}
@@ -338,14 +338,14 @@ export default function CookieSettingsPage() {
                   className="absolute right-4 top-4 text-lg leading-none text-gray-400 transition hover:text-gray-700"
                   aria-label="Close"
                 >
-                  ×
+                  Ã—
                 </button>
               </div>
             </div>
           )}
 
           {/* Bottom Actions */}
-          <div className="border-t border-amber-100 bg-amber-50/50 px-6 py-6 md:px-12">
+          <div className="border-t border-[#E8E8E3] bg-[#EEF6EB]/50 px-6 py-6 md:px-12">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-gray-600">
                 You can change your cookie preferences at any time.
@@ -355,7 +355,7 @@ export default function CookieSettingsPage() {
                 <button
                   type="button"
                   onClick={rejectOptional}
-                  className="rounded-xl border border-amber-300 bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-amber-50"
+                  className="rounded-xl border border-[#8CBC67] bg-white px-5 py-3 text-sm font-semibold text-gray-800 transition hover:bg-[#EEF6EB]"
                 >
                   Reject Optional
                 </button>
@@ -363,7 +363,7 @@ export default function CookieSettingsPage() {
                 <button
                   type="button"
                   onClick={acceptAll}
-                  className="rounded-xl bg-amber-500 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-600"
+                  className="rounded-xl bg-[#8CBC67] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#7AB055]"
                 >
                   Accept All
                 </button>
@@ -371,7 +371,7 @@ export default function CookieSettingsPage() {
                 <button
                   type="button"
                   onClick={saveSettings}
-                  className="rounded-xl border border-amber-500 bg-amber-100 px-5 py-3 text-sm font-semibold text-amber-900 transition hover:bg-amber-200"
+                  className="rounded-xl border border-[#8CBC67] bg-[#EEF6EB] px-5 py-3 text-sm font-semibold text-[#202522] transition hover:bg-[#F7D6C7]"
                 >
                   Save Preferences
                 </button>
@@ -391,3 +391,4 @@ export default function CookieSettingsPage() {
     </main>
   );
 }
+

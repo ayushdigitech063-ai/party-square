@@ -442,10 +442,10 @@ export const ganeshProducts: Product[] = [
     theme: "Golden Glow",
 
     gradientBg:
-      "from-amber-950 via-amber-900 to-neutral-950",
+      "from-amber-950 via-[#202522] to-neutral-950",
 
     badgeColor:
-      "bg-amber-400 text-neutral-950",
+      "bg-[#8CBC67] text-neutral-950",
 
     isSpecialCard: true,
   },

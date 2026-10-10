@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -84,7 +84,7 @@ export default function BirthdayServicePage() {
     sortBy === "recommended" ? kidsbirthdayProducts : sortedProducts;
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-neutral-900 font-sans">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans">
       {/* ================= HERO SECTION WITH FULL BACKGROUND IMAGE ================= */}
       <section className="relative h-[350px] flex items-center justify-center overflow-hidden text-white">
         {/* Background Image Container with full cover and center positioning */}
@@ -104,7 +104,7 @@ export default function BirthdayServicePage() {
         {/* Hero Content on Left Side */}
         <div className="relative z-20 max-w-7xl mx-auto px-6 w-full">
           <div className="max-w-3xl space-y-8">
-            <div className="inline-flex items-center space-x-3 bg-[#C5A059]/20 border border-[#C5A059]/50 px-5 py-2.5 rounded-full text-[#DFBC71] text-sm font-medium tracking-widest uppercase backdrop-blur-sm">
+            <div className="inline-flex items-center space-x-3 bg-[#D7A84B]/20 border border-[#D7A84B]/50 px-5 py-2.5 rounded-full text-[#DFBC71] text-sm font-medium tracking-widest uppercase backdrop-blur-sm">
               <Gift size={16} />
               <span>India's Premier Birthday Stylists</span>
             </div>
@@ -123,7 +123,7 @@ export default function BirthdayServicePage() {
             <div className="flex flex-wrap gap-5 pt-4">
               <Link
                 href="/contact"
-                className="bg-gradient-to-r from-[#DFBC71] to-[#C5A059] text-neutral-950 px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest shadow-xl hover:brightness-105 transition flex items-center space-x-3"
+                className="bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest shadow-xl hover:brightness-105 transition flex items-center space-x-3"
               >
                 <span>Book Birthday Decor</span>
                 <ArrowRight size={18} />
@@ -150,13 +150,13 @@ export default function BirthdayServicePage() {
       {/* ================= BIRTHDAY PACKAGES CARDS SECTION ================= */}
       <section id="packages" className="py-24 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-20 space-y-4">
-          <span className="text-xs uppercase tracking-[0.25em] text-[#C5A059] font-bold">
+          <span className="text-xs uppercase tracking-[0.25em] text-[#D7A84B] font-bold">
             Party Packages
           </span>
           <h2 className="font-serif text-5xl md:text-6xl font-bold">
             Choose Your Birthday Theme
           </h2>
-          <p className="text-neutral-600 text-lg font-light">
+          <p className="text-[#6B706C] text-lg font-light">
             Explore our specialized decoration packages crafted to bring smiles
             and unforgettable memories.
           </p>
@@ -168,18 +168,18 @@ export default function BirthdayServicePage() {
               key={pkg.id}
               className={`relative rounded-3xl bg-white border transition-all duration-300 p-8 flex flex-col justify-between shadow-xl hover:shadow-2xl ${
                 pkg.popular
-                  ? "border-2 border-[#C5A059] ring-4 ring-[#C5A059]/10 scale-105 md:-translate-y-3"
-                  : "border-neutral-200"
+                  ? "border-2 border-[#D7A84B] ring-4 ring-[#D7A84B]/10 scale-105 md:-translate-y-3"
+                  : "border-[#E8E8E3]"
               }`}
             >
               {pkg.popular && (
-                <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-[#C5A059] text-neutral-900 text-xs font-bold uppercase tracking-widest px-6 py-2.5 rounded-full shadow-xl">
+                <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-[#D7A84B] text-[#202522] text-xs font-bold uppercase tracking-widest px-6 py-2.5 rounded-full shadow-xl">
                   Most Loved
                 </div>
               )}
 
               <div>
-                <div className="relative h-56 rounded-2xl overflow-hidden mb-8 border border-neutral-100 shadow-inner">
+                <div className="relative h-56 rounded-2xl overflow-hidden mb-8 border border-[#E8E8E3] shadow-inner">
                   <img
                     src={pkg.image}
                     alt={pkg.name}
@@ -190,10 +190,10 @@ export default function BirthdayServicePage() {
                   </div>
                 </div>
 
-                <h3 className="font-serif text-3xl font-semibold text-neutral-900 mb-3">
+                <h3 className="font-serif text-3xl font-semibold text-[#202522] mb-3">
                   {pkg.name}
                 </h3>
-                <p className="text-neutral-600 text-sm leading-relaxed mb-8">
+                <p className="text-[#6B706C] text-sm leading-relaxed mb-8">
                   {pkg.desc}
                 </p>
               </div>
@@ -203,7 +203,7 @@ export default function BirthdayServicePage() {
                   href="/contact"
                   className={`w-full block text-center py-4 rounded-full text-sm font-bold uppercase tracking-wider transition ${
                     pkg.popular
-                      ? "bg-[#C5A059] text-neutral-900 hover:bg-[#b08d4b] shadow-lg"
+                      ? "bg-[#D7A84B] text-[#202522] hover:bg-[#b08d4b] shadow-lg"
                       : "bg-neutral-900 text-white hover:bg-neutral-800"
                   }`}
                 >
@@ -222,22 +222,22 @@ export default function BirthdayServicePage() {
           <div className="flex items-center justify-between gap-6">
             {/* LEFT - Heading */}
             <div className="text-left">
-              <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
-                  Kids Collection
+              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
+                Â  Kids Collection
               </span>
               <div className="flex items-baseline gap-3">
-                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 mt-1">
+                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522] mt-1">
                   Kids Birthday Products
                 </h2>
-                <span className="text-neutral-400 text-2xl">|</span>
+                <span className="text-[#6B706C] text-2xl">|</span>
 
-                <span className="text-neutral-500 text-2xl">
+                <span className="text-[#6B706C] text-2xl">
                   {productsToDisplay.length} Items
                 </span>
               </div>
 
-              <p className="text-neutral-600 text-sm font-light mt-2">
-                 Discover fun and colorful birthday products designed to make
+              <p className="text-[#6B706C] text-sm font-light mt-2">
+                Â Discover fun and colorful birthday products designed to make
                 every child's celebration extra special.
               </p>
             </div>
@@ -264,24 +264,24 @@ export default function BirthdayServicePage() {
       </section>
 
       {/* ================= KIDS & SPECIAL BIRTHDAY GALLERY SECTION ================= */}
-      <section className="py-24 bg-[#EFEADB] border-t border-[#E2D2B0]">
+      <section className="py-24 bg-[#EFEADB] border-t border-[#E8E8E3]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div className="max-w-2xl">
-              <span className="text-xs uppercase tracking-[0.25em] text-[#8C6D24] font-medium">
+              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-medium">
                 Moments of Joy
               </span>
-              <h2 className="font-serif text-5xl md:text-6xl text-neutral-900 mt-2 leading-tight">
+              <h2 className="font-serif text-5xl md:text-6xl text-[#202522] mt-2 leading-tight">
                 Kids & Special Birthday Gallery
               </h2>
-              <p className="text-neutral-700 text-lg font-light mt-4">
+              <p className="text-[#202522] text-lg font-light mt-4">
                 A glimpse into our joyous setups featuring wonderful decorations
                 for kids and milestones.
               </p>
             </div>
             <Link
               href="/gallery"
-              className="shrink-0 bg-white text-neutral-900 px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest border border-neutral-300 hover:border-[#C5A059] hover:text-[#8C6D24] transition flex items-center space-x-2 shadow-sm"
+              className="shrink-0 bg-white text-[#202522] px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest border border-neutral-300 hover:border-[#D7A84B] hover:text-[#8CBC67] transition flex items-center space-x-2 shadow-sm"
             >
               <span>View Full Gallery</span>
               <ArrowRight size={16} />
@@ -318,7 +318,7 @@ export default function BirthdayServicePage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-16 text-center lg:text-left lg:flex lg:items-center lg:justify-between gap-12">
           <div className="space-y-6 lg:max-w-3xl">
-            <div className="inline-flex items-center space-x-2 bg-[#C5A059]/20 border border-[#C5A059]/40 px-4 py-1.5 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase">
+            <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/20 border border-[#D7A84B]/40 px-4 py-1.5 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase">
               <Star size={13} className="text-rose-400 fill-rose-400" />
               <span>Book Your Experience</span>
             </div>
@@ -329,7 +329,7 @@ export default function BirthdayServicePage() {
             </h2>
 
             <p className="text-neutral-200 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto lg:mx-0 font-light">
-              Contact DreamDeco today to discuss your vision. Our expert
+              Contact Party Square today to discuss your vision. Our expert
               stylists are excited to craft a bespoke, magical celebration that
               you and your guests will remember forever.
             </p>
@@ -338,7 +338,7 @@ export default function BirthdayServicePage() {
           <div className="flex flex-col sm:flex-row lg:flex-col gap-5 pt-10 lg:pt-0 shrink-0 justify-center">
             <Link
               href="/contact"
-              className="bg-gradient-to-r from-[#DFBC71] to-[#C5A059] text-neutral-950 px-12 py-5 rounded-full font-bold text-sm uppercase tracking-widest shadow-2xl hover:scale-105 transition-transform duration-300 flex items-center justify-center space-x-2"
+              className="bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 px-12 py-5 rounded-full font-bold text-sm uppercase tracking-widest shadow-2xl hover:scale-105 transition-transform duration-300 flex items-center justify-center space-x-2"
             >
               <span>Get Free Quote</span>
               <ArrowRight size={18} />
@@ -359,3 +359,4 @@ export default function BirthdayServicePage() {
     </div>
   );
 }
+

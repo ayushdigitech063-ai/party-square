@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 
@@ -51,10 +51,10 @@ export default function SlidingProductsSection() {
   const duplicatedItems = [...slidingItems, ...slidingItems];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-amber-50/40 via-white to-orange-50/30 overflow-hidden w-full">
+    <section className="py-20 bg-gradient-to-b from-[#EEF6EB]/40 via-white to-orange-50/30 overflow-hidden w-full">
       {/* Section Heading */}
       <div className="text-center mb-14 px-4">
-        <span className="text-xs font-semibold tracking-widest text-amber-600 uppercase bg-amber-100/60 px-3 py-1 rounded-full">
+        <span className="text-xs font-semibold tracking-widest text-[#8CBC67] uppercase bg-[#EEF6EB]/60 px-3 py-1 rounded-full">
           Artisan Showcase
         </span>
         <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mt-3">
@@ -76,7 +76,7 @@ export default function SlidingProductsSection() {
           {duplicatedItems.map((item, index) => (
             <div
               key={`${item.id}-${index}`}
-              className="product-card relative w-80 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between border border-amber-100/60"
+              className="product-card relative w-80 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col justify-between border border-[#E8E8E3]/60"
             >
               {/* Image Section */}
               <div className="relative h-56 w-full overflow-hidden bg-gray-100 flex-shrink-0">
@@ -102,7 +102,7 @@ export default function SlidingProductsSection() {
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
-                  <span className="text-[11px] font-semibold text-amber-600 uppercase tracking-wider">
+                  <span className="text-[11px] font-semibold text-[#8CBC67] uppercase tracking-wider">
                     Handmade Art
                   </span>
                   <span className="text-xs text-gray-400 font-medium">

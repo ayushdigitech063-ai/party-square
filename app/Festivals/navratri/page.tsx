@@ -100,7 +100,7 @@ export default function NavratriPage() {
     sortBy === "recommended" ? divineEssentials : sortedProducts;
 
   return (
-    <div className="min-h-screen text-neutral-900 font-sans bg-[#FFFDF9] selection:bg-rose-600 selection:text-white overflow-x-hidden pb-20">
+    <div className="min-h-screen text-[#202522] font-sans bg-[#FFFFFF] selection:bg-rose-600 selection:text-white overflow-x-hidden pb-20">
       {/* Hero Section */}
       <section className="relative w-full h-[350px] px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[35px] shadow-2xl">
         <div
@@ -133,21 +133,21 @@ export default function NavratriPage() {
           <div className="flex items-center justify-between gap-6">
             {/* LEFT - Heading */}
             <div className="text-left">
-              <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
+              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
                 Divine Essentials
               </span>
               <div className="flex items-baseline gap-3">
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 mt-1">
+              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522] mt-1">
                 Exclusive Puja Offerings
               </h2>
-               <span className="text-neutral-400 text-2xl">|</span>
+               <span className="text-[#6B706C] text-2xl">|</span>
 
-                <span className="text-neutral-500 text-2xl">
+                <span className="text-[#6B706C] text-2xl">
                   {productsToDisplay.length} Items
                 </span>
               </div>
 
-              <p className="text-neutral-600 text-sm font-light mt-2">
+              <p className="text-[#6B706C] text-sm font-light mt-2">
                 Essential festival items including sacred flower decorations,
                 Mata Ji poshak, and holy prasad hampers.
               </p>
@@ -190,10 +190,10 @@ export default function NavratriPage() {
           <span className="text-xs uppercase tracking-[0.25em] text-rose-600 font-bold">
             Mata Ji Pandal
           </span>
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522]">
             Sacred Mata Ji Decorations
           </h2>
-          <p className="text-neutral-600 text-sm font-light">
+          <p className="text-[#6B706C] text-sm font-light">
             Bring divine blessings and spiritual aura to your home and community
             pandals.
           </p>
@@ -219,10 +219,10 @@ export default function NavratriPage() {
           <span className="text-xs uppercase tracking-[0.3em] text-rose-700 font-bold bg-rose-100 px-4 py-1.5 rounded-full inline-block">
             Garba Nights
           </span>
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-neutral-900">
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#202522]">
             Special Garba Pandal Decor
           </h2>
-          <p className="text-neutral-600 text-sm sm:text-base font-light">
+          <p className="text-[#6B706C] text-sm sm:text-base font-light">
             High-energy stage setups, traditional umbrella decorations, and
             vibrant lighting for unforgettable Dandiya nights.
           </p>

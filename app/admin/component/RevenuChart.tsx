@@ -156,23 +156,23 @@ export default function RevenueChart({
     );
 
   return (
-    <div className="lg:col-span-2 bg-white border border-amber-200/80 rounded-3xl p-6 shadow-sm">
+    <div className="lg:col-span-2 bg-white border border-[#E8E8E3]/80 rounded-3xl p-6 shadow-sm">
 
       <div className="flex items-start justify-between gap-3">
 
         <div>
 
-          <h3 className="font-serif text-xl font-bold text-neutral-900">
+          <h3 className="font-serif text-xl font-bold text-[#202522]">
             Revenue
           </h3>
 
-          <p className="text-xs text-neutral-500 mt-0.5">
+          <p className="text-xs text-[#6B706C] mt-0.5">
             Earnings over the selected period
           </p>
 
         </div>
 
-        <p className="font-serif text-2xl font-bold text-amber-800 lining-nums">
+        <p className="font-serif text-2xl font-bold text-[#202522] lining-nums">
           {inr(revenueTotal)}
         </p>
 

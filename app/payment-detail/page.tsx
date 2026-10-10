@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -18,6 +19,7 @@ import {
 } from "lucide-react";
 
 import { getProductById } from "@/app/data/productResolver";
+import LoginModal from "@/app/components/LoginModal";
 
 type PaymentMethod = "upi" | "card" | "netbanking" | "wallet";
 
@@ -61,6 +63,21 @@ function PaymentContent() {
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const checkAuth = () => {
+    const tokenCookie = document.cookie.includes("token=");
+    const adminToken = typeof window !== 'undefined' && localStorage.getItem("adminToken");
+    const adminCookie = document.cookie.includes("adminToken=");
+    const isAuth = !!(tokenCookie || adminToken || adminCookie);
+    setIsLoggedIn(isAuth);
+    return isAuth;
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   // Generate transaction ID only once.
   const [transactionId] = useState(
@@ -73,26 +90,26 @@ function PaymentContent() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center px-4">
-        <div className="max-w-md w-full bg-white rounded-3xl border border-amber-100 shadow-sm p-8 text-center">
-          <div className="w-16 h-16 mx-auto rounded-full bg-amber-50 flex items-center justify-center mb-5">
-            <AlertCircle size={30} className="text-amber-600" />
+      <div className="min-h-screen bg-[#FCFBF7] flex items-center justify-center px-4">
+        <div className="max-w-md w-full bg-white rounded-3xl border border-[#E8E8E3] shadow-sm p-8 text-center">
+          <div className="w-16 h-16 mx-auto rounded-full bg-[#EEF6EB] flex items-center justify-center mb-5">
+            <AlertCircle size={30} className="text-[#8CBC67]" />
           </div>
 
-          <h1 className="text-2xl font-bold text-[#17130B]">
+          <h1 className="text-2xl font-bold text-[#202522]">
             Product Not Found
           </h1>
 
-          <p className="text-sm text-[#766F65] mt-3 leading-relaxed">
+          <p className="text-sm text-[#6B706C] mt-3 leading-relaxed">
             The selected decoration package could not be found. Please return
             to the products page and select a package again.
           </p>
 
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-2 mt-6 px-6 py-3 rounded-full bg-[#C5A059] text-white text-sm font-semibold bg-[#8B3F05]
+            className="inline-flex items-center justify-center gap-2 mt-6 px-6 py-3 rounded-full bg-[#D7A84B] text-white text-sm font-semibold bg-[#8CBC67]
 
-                      hover:bg-[#713200] transition"
+                      hover:bg-[#7AB055] transition"
           >
             <ArrowLeft size={16} />
             Back to Home
@@ -233,6 +250,11 @@ function PaymentContent() {
   // ============================================================
 
   const handlePayNow = () => {
+    if (!checkAuth()) {
+      setShowLoginModal(true);
+      return;
+    }
+
     setPaymentMsg(null);
 
     const validationError = validatePayment();
@@ -258,65 +280,65 @@ function PaymentContent() {
 
   if (paymentSuccess) {
     return (
-      <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center px-4 py-10">
-        <div className="max-w-xl w-full bg-white rounded-3xl shadow-sm border border-amber-100 p-8 md:p-10 text-center">
-          <div className="w-20 h-20 mx-auto rounded-full bg-green-50 flex items-center justify-center mb-6">
+      <div className="min-h-screen bg-[#FCFBF7] flex items-center justify-center px-4 py-10">
+        <div className="max-w-xl w-full bg-white rounded-3xl shadow-sm border border-[#E8E8E3] p-8 md:p-10 text-center">
+          <div className="w-20 h-20 mx-auto rounded-full bg-[#EEF6EB] flex items-center justify-center mb-6">
             <CheckCircle2
               size={42}
-              className="text-green-600"
+              className="text-[#8CBC67]"
             />
           </div>
 
-          <p className="text-xs uppercase tracking-[0.2em] text-[#8B3F05] font-bold mb-2">
+          <p className="text-xs uppercase tracking-[0.2em] text-[#8CBC67] font-bold mb-2">
             Payment Successful
           </p>
 
-          <h1 className="text-3xl md:text-4xl font-bold text-[#17130B]">
+          <h1 className="text-3xl md:text-4xl font-bold text-[#202522]">
             Your Booking is Confirmed
           </h1>
 
-          <p className="text-sm text-[#766F65] mt-4 leading-relaxed">
+          <p className="text-sm text-[#6B706C] mt-4 leading-relaxed">
             Thank you for choosing Party Square. Your payment has been
             successfully processed.
           </p>
 
-          <div className="mt-8 rounded-2xl bg-[#FAF7F2] border border-amber-100 p-5 text-left">
+          <div className="mt-8 rounded-2xl bg-[#FCFBF7] border border-[#E8E8E3] p-5 text-left">
             <div className="flex items-center justify-between gap-4 py-2">
-              <span className="text-sm text-[#766F65]">
+              <span className="text-sm text-[#6B706C]">
                 Product
               </span>
 
-              <strong className="text-sm text-[#17130B] text-right">
+              <strong className="text-sm text-[#202522] text-right">
                 {productName}
               </strong>
             </div>
 
             <div className="flex items-center justify-between gap-4 py-2">
-              <span className="text-sm text-[#766F65]">
+              <span className="text-sm text-[#6B706C]">
                 Amount Paid
               </span>
 
-              <strong className="text-sm text-[#17130B]">
+              <strong className="text-sm text-[#202522]">
                 ₹{finalTotal.toLocaleString("en-IN")}
               </strong>
             </div>
 
             <div className="flex items-center justify-between gap-4 py-2">
-              <span className="text-sm text-[#766F65]">
+              <span className="text-sm text-[#6B706C]">
                 Payment Method
               </span>
 
-              <strong className="text-sm text-[#17130B] uppercase">
+              <strong className="text-sm text-[#202522] uppercase">
                 {selectedMethod}
               </strong>
             </div>
 
             <div className="flex items-center justify-between gap-4 py-2">
-              <span className="text-sm text-[#766F65]">
+              <span className="text-sm text-[#6B706C]">
                 Transaction ID
               </span>
 
-              <span className="font-mono text-xs font-medium text-[#17130B]">
+              <span className="font-mono text-xs font-medium text-[#202522]">
                 {transactionId}
               </span>
             </div>
@@ -325,16 +347,16 @@ function PaymentContent() {
           <div className="flex flex-col sm:flex-row gap-3 mt-7">
             <Link
               href="/"
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-white font-semibold text-sm bg-[#8B3F05]
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-white font-semibold text-sm bg-[#8CBC67]
 
-                      hover:bg-[#713200] transition"
+                      hover:bg-[#7AB055] transition"
             >
               Back to Home
             </Link>
 
             <Link
               href="/services/birthday"
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border border-amber-200 text-[#17130B] font-semibold text-sm hover:bg-amber-50 transition"
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border border-[#E8E8E3] text-[#202522] font-semibold text-sm hover:bg-[#EEF6EB] transition"
             >
               Explore More
             </Link>
@@ -349,40 +371,7 @@ function PaymentContent() {
   // ============================================================
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] text-[#17130B]">
-      {/* ========================================================
-          HEADER
-      ========================================================= */}
-
-      <header className="bg-white border-b border-amber-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-20 flex items-center justify-between">
-            <Link
-              href="/"
-              className="flex items-center gap-2 text-sm font-semibold text-[#8B3F05] hover:text-#713200 transition"
-            >
-              <ArrowLeft size={18} />
-              Back
-            </Link>
-
-            <div className="text-center">
-              <h1 className="text-xl sm:text-2xl font-bold text-[#8B3F05]">
-                Secure Checkout
-              </h1>
-
-              <p className="text-xs text-[#766F65] mt-1 text-[#8B3F05]">
-                Complete your booking securely
-              </p>
-            </div>
-
-            <div className="flex items-center gap-1.5 text-xs text-[#766F65]">
-              <Lock size={14} />
-              Secure
-            </div>
-          </div>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-[#FCFBF7] text-[#202522]">
       {/* ========================================================
           CONTENT
       ========================================================= */}
@@ -395,13 +384,13 @@ function PaymentContent() {
 
           <div className="space-y-6">
             {/* Payment Methods */}
-            <section className="bg-white rounded-3xl border border-amber-100 shadow-sm overflow-hidden">
-              <div className="p-6 border-b border-amber-100">
+            <section className="bg-white rounded-3xl border border-[#E8E8E3] shadow-sm overflow-hidden">
+              <div className="p-6 border-b border-[#E8E8E3]">
                 <h2 className="text-lg font-bold">
                   Choose Payment Method
                 </h2>
 
-                <p className="text-xs text-[#766F65] mt-1">
+                <p className="text-xs text-[#6B706C] mt-1">
                   Select your preferred payment option
                 </p>
               </div>
@@ -417,16 +406,16 @@ function PaymentContent() {
                     }}
                     className={`rounded-2xl border p-4 text-left transition ${
                       selectedMethod === "upi"
-                        ? "border-amber-500 bg-amber-50"
-                        : "border-amber-100 hover:border-amber-300"
+                        ? "border-[#8CBC67] bg-[#EEF6EB]"
+                        : "border-[#E8E8E3] hover:border-[#8CBC67]"
                     }`}
                   >
                     <Smartphone
                       size={22}
                       className={
                         selectedMethod === "upi"
-                          ? "text-amber-600"
-                          : "text-[#766F65]"
+                          ? "text-[#8CBC67]"
+                          : "text-[#6B706C]"
                       }
                     />
 
@@ -434,7 +423,7 @@ function PaymentContent() {
                       UPI
                     </p>
 
-                    <p className="text-[11px] text-[#766F65] mt-1">
+                    <p className="text-[11px] text-[#6B706C] mt-1">
                       GPay, PhonePe
                     </p>
                   </button>
@@ -448,16 +437,16 @@ function PaymentContent() {
                     }}
                     className={`rounded-2xl border p-4 text-left transition ${
                       selectedMethod === "card"
-                        ? "border-amber-500 bg-amber-50"
-                        : "border-amber-100 hover:border-amber-300"
+                        ? "border-[#8CBC67] bg-[#EEF6EB]"
+                        : "border-[#E8E8E3] hover:border-[#8CBC67]"
                     }`}
                   >
                     <CreditCard
                       size={22}
                       className={
                         selectedMethod === "card"
-                          ? "text-amber-600"
-                          : "text-[#766F65]"
+                          ? "text-[#8CBC67]"
+                          : "text-[#6B706C]"
                       }
                     />
 
@@ -465,7 +454,7 @@ function PaymentContent() {
                       Card
                     </p>
 
-                    <p className="text-[11px] text-[#766F65] mt-1">
+                    <p className="text-[11px] text-[#6B706C] mt-1">
                       Credit / Debit
                     </p>
                   </button>
@@ -479,16 +468,16 @@ function PaymentContent() {
                     }}
                     className={`rounded-2xl border p-4 text-left transition ${
                       selectedMethod === "netbanking"
-                        ? "border-amber-500 bg-amber-50"
-                        : "border-amber-100 hover:border-amber-300"
+                        ? "border-[#8CBC67] bg-[#EEF6EB]"
+                        : "border-[#E8E8E3] hover:border-[#8CBC67]"
                     }`}
                   >
                     <Building2
                       size={22}
                       className={
                         selectedMethod === "netbanking"
-                          ? "text-amber-600"
-                          : "text-[#766F65]"
+                          ? "text-[#8CBC67]"
+                          : "text-[#6B706C]"
                       }
                     />
 
@@ -496,7 +485,7 @@ function PaymentContent() {
                       Net Banking
                     </p>
 
-                    <p className="text-[11px] text-[#766F65] mt-1">
+                    <p className="text-[11px] text-[#6B706C] mt-1">
                       All major banks
                     </p>
                   </button>
@@ -510,16 +499,16 @@ function PaymentContent() {
                     }}
                     className={`rounded-2xl border p-4 text-left transition ${
                       selectedMethod === "wallet"
-                        ? "border-amber-500 bg-amber-50"
-                        : "border-amber-100 hover:border-amber-300"
+                        ? "border-[#8CBC67] bg-[#EEF6EB]"
+                        : "border-[#E8E8E3] hover:border-[#8CBC67]"
                     }`}
                   >
                     <Wallet
                       size={22}
                       className={
                         selectedMethod === "wallet"
-                          ? "text-amber-600"
-                          : "text-[#766F65]"
+                          ? "text-[#8CBC67]"
+                          : "text-[#6B706C]"
                       }
                     />
 
@@ -527,7 +516,7 @@ function PaymentContent() {
                       Wallet
                     </p>
 
-                    <p className="text-[11px] text-[#766F65] mt-1">
+                    <p className="text-[11px] text-[#6B706C] mt-1">
                       Paytm, Amazon Pay
                     </p>
                   </button>
@@ -539,15 +528,15 @@ function PaymentContent() {
                 PAYMENT DETAILS
             ================================================== */}
 
-            <section className="bg-white rounded-3xl border border-amber-100 shadow-sm p-6 sm:p-7">
+            <section className="bg-white rounded-3xl border border-[#E8E8E3] shadow-sm p-6 sm:p-7">
               {/* UPI */}
               {selectedMethod === "upi" && (
                 <div>
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-[#EEF6EB] flex items-center justify-center">
                       <Smartphone
                         size={20}
-                        className="text-amber-600"
+                        className="text-[#8CBC67]"
                       />
                     </div>
 
@@ -556,7 +545,7 @@ function PaymentContent() {
                         Pay with UPI
                       </h3>
 
-                      <p className="text-xs text-[#766F65]">
+                      <p className="text-xs text-[#6B706C]">
                         Enter your UPI ID to continue
                       </p>
                     </div>
@@ -574,10 +563,10 @@ function PaymentContent() {
                       setPaymentMsg(null);
                     }}
                     placeholder="example@upi"
-                    className="w-full h-12 rounded-xl border border-amber-100 bg-[#FAF7F2] px-4 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                    className="w-full h-12 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] px-4 text-sm outline-none focus:border-[#8CBC67] focus:ring-2 focus:ring-[#EEF6EB]"
                   />
 
-                  <p className="text-xs text-[#766F65] mt-3">
+                  <p className="text-xs text-[#6B706C] mt-3">
                     Example: yourname@okaxis, yourname@ybl,
                     yourname@paytm
                   </p>
@@ -588,10 +577,10 @@ function PaymentContent() {
               {selectedMethod === "card" && (
                 <div>
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-[#EEF6EB] flex items-center justify-center">
                       <CreditCard
                         size={20}
-                        className="text-amber-600"
+                        className="text-[#8CBC67]"
                       />
                     </div>
 
@@ -600,7 +589,7 @@ function PaymentContent() {
                         Card Details
                       </h3>
 
-                      <p className="text-xs text-[#766F65]">
+                      <p className="text-xs text-[#6B706C]">
                         Enter your card information
                       </p>
                     </div>
@@ -631,7 +620,7 @@ function PaymentContent() {
                           setPaymentMsg(null);
                         }}
                         placeholder="1234 5678 9012 3456"
-                        className="w-full h-12 rounded-xl border border-amber-100 bg-[#FAF7F2] px-4 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                        className="w-full h-12 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] px-4 text-sm outline-none focus:border-[#8CBC67] focus:ring-2 focus:ring-[#EEF6EB]"
                       />
                     </div>
 
@@ -648,7 +637,7 @@ function PaymentContent() {
                           setPaymentMsg(null);
                         }}
                         placeholder="Name on card"
-                        className="w-full h-12 rounded-xl border border-amber-100 bg-[#FAF7F2] px-4 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                        className="w-full h-12 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] px-4 text-sm outline-none focus:border-[#8CBC67] focus:ring-2 focus:ring-[#EEF6EB]"
                       />
                     </div>
 
@@ -679,7 +668,7 @@ function PaymentContent() {
                             setPaymentMsg(null);
                           }}
                           placeholder="MM / YY"
-                          className="w-full h-12 rounded-xl border border-amber-100 bg-[#FAF7F2] px-4 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                          className="w-full h-12 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] px-4 text-sm outline-none focus:border-[#8CBC67] focus:ring-2 focus:ring-[#EEF6EB]"
                         />
                       </div>
 
@@ -702,8 +691,8 @@ function PaymentContent() {
 
                             setPaymentMsg(null);
                           }}
-                          placeholder="•••"
-                          className="w-full h-12 rounded-xl border border-amber-100 bg-[#FAF7F2] px-4 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100"
+                          placeholder="â€¢â€¢â€¢"
+                          className="w-full h-12 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] px-4 text-sm outline-none focus:border-[#8CBC67] focus:ring-2 focus:ring-[#EEF6EB]"
                         />
                       </div>
                     </div>
@@ -718,7 +707,7 @@ function PaymentContent() {
                         className="accent-amber-600"
                       />
 
-                      <span className="text-xs text-[#766F65]">
+                      <span className="text-xs text-[#6B706C]">
                         Save card for future payments
                       </span>
                     </label>
@@ -730,10 +719,10 @@ function PaymentContent() {
               {selectedMethod === "netbanking" && (
                 <div>
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-[#EEF6EB] flex items-center justify-center">
                       <Building2
                         size={20}
-                        className="text-amber-600"
+                        className="text-[#8CBC67]"
                       />
                     </div>
 
@@ -742,7 +731,7 @@ function PaymentContent() {
                         Net Banking
                       </h3>
 
-                      <p className="text-xs text-[#766F65]">
+                      <p className="text-xs text-[#6B706C]">
                         Select your bank
                       </p>
                     </div>
@@ -758,7 +747,7 @@ function PaymentContent() {
                       setSelectedBank(e.target.value);
                       setPaymentMsg(null);
                     }}
-                    className="w-full h-12 rounded-xl border border-amber-100 bg-[#FAF7F2] px-4 text-sm outline-none focus:border-amber-400"
+                    className="w-full h-12 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] px-4 text-sm outline-none focus:border-[#8CBC67]"
                   >
                     <option value="">
                       Select your bank
@@ -795,10 +784,10 @@ function PaymentContent() {
               {selectedMethod === "wallet" && (
                 <div>
                   <div className="flex items-center gap-3 mb-5">
-                    <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-[#EEF6EB] flex items-center justify-center">
                       <Wallet
                         size={20}
-                        className="text-amber-600"
+                        className="text-[#8CBC67]"
                       />
                     </div>
 
@@ -807,7 +796,7 @@ function PaymentContent() {
                         Select Wallet
                       </h3>
 
-                      <p className="text-xs text-[#766F65]">
+                      <p className="text-xs text-[#6B706C]">
                         Choose your preferred wallet
                       </p>
                     </div>
@@ -837,8 +826,8 @@ function PaymentContent() {
                         }}
                         className={`rounded-xl border px-4 py-4 text-sm font-semibold transition ${
                           selectedWallet === wallet.id
-                            ? "border-amber-500 bg-amber-50 text-amber-700"
-                            : "border-amber-100 hover:border-amber-300"
+                            ? "border-[#8CBC67] bg-[#EEF6EB] text-[#202522]"
+                            : "border-[#E8E8E3] hover:border-[#8CBC67]"
                         }`}
                       >
                         {wallet.name}
@@ -850,10 +839,10 @@ function PaymentContent() {
 
               {/* PAYMENT ERROR */}
               {paymentMsg && (
-                <div className="mt-5 flex items-start gap-2 rounded-xl bg-red-50 border border-red-100 p-3">
+                <div className="mt-5 flex items-start gap-2 rounded-xl bg-[#F7D6C7] border border-red-100 p-3">
                   <AlertCircle
                     size={16}
-                    className="text-red-500 mt-0.5 shrink-0"
+                    className="text-[#D7A84B] mt-0.5 shrink-0"
                   />
 
                   <p className="text-xs text-red-600">
@@ -866,18 +855,18 @@ function PaymentContent() {
                 SECURITY
             ================================================== */}
 
-            <div className="rounded-2xl bg-amber-50/70 border border-amber-100 p-5 flex items-start gap-3">
+            <div className="rounded-2xl bg-[#EEF6EB]/70 border border-[#E8E8E3] p-5 flex items-start gap-3">
               <ShieldCheck
                 size={22}
-                className="text-amber-600 shrink-0 mt-0.5"
+                className="text-[#8CBC67] shrink-0 mt-0.5"
               />
 
               <div>
-                <p className="text-sm font-semibold text-[#17130B]">
+                <p className="text-sm font-semibold text-[#202522]">
                   Your payment is secure
                 </p>
 
-                <p className="text-xs text-[#766F65] mt-1 leading-relaxed">
+                <p className="text-xs text-[#6B706C] mt-1 leading-relaxed">
                   Your payment information is protected using secure
                   encryption. Party Square does not store your complete
                   payment credentials.
@@ -887,12 +876,12 @@ function PaymentContent() {
           </div>
 
           {/* ====================================================
-              RIGHT SIDE — ORDER SUMMARY
+              RIGHT SIDE â€” ORDER SUMMARY
           ==================================================== */}
 
           <aside className="lg:sticky lg:top-6 h-fit">
-            <section className="bg-white rounded-3xl border border-amber-100 shadow-sm overflow-hidden">
-              <div className="p-6 border-b border-amber-100">
+            <section className="bg-white rounded-3xl border border-[#E8E8E3] shadow-sm overflow-hidden">
+              <div className="p-6 border-b border-[#E8E8E3]">
                 <h2 className="text-lg font-bold">
                   Order Summary
                 </h2>
@@ -901,7 +890,7 @@ function PaymentContent() {
               <div className="p-6">
                 {/* PRODUCT */}
                 <div className="flex gap-4">
-                  <div className="w-24 h-24 rounded-2xl overflow-hidden bg-[#FAF7F2] shrink-0">
+                  <div className="w-24 h-24 rounded-2xl overflow-hidden bg-[#FCFBF7] shrink-0">
                     <img
                       src={productImage}
                       alt={productName}
@@ -910,7 +899,7 @@ function PaymentContent() {
                   </div>
 
                   <div className="min-w-0">
-                    <p className="text-[11px] uppercase tracking-wider text-amber-600 font-bold">
+                    <p className="text-[11px] uppercase tracking-wider text-[#8CBC67] font-bold">
                       {productCategory}
                     </p>
 
@@ -918,19 +907,19 @@ function PaymentContent() {
                       {productName}
                     </h3>
 
-                    <p className="text-sm font-semibold text-[#17130B] mt-2">
+                    <p className="text-sm font-semibold text-[#202522] mt-2">
                       ₹{baseTotal.toLocaleString("en-IN")}
                     </p>
                   </div>
                 </div>
 
                 {/* DIVIDER */}
-                <div className="border-t border-amber-100 my-6" />
+                <div className="border-t border-[#E8E8E3] my-6" />
 
                 {/* PRICE */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-[#766F65]">
+                    <span className="text-[#6B706C]">
                       Package Price
                     </span>
 
@@ -940,7 +929,7 @@ function PaymentContent() {
                   </div>
 
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-[#766F65]">
+                    <span className="text-[#6B706C]">
                       Delivery & Setup
                     </span>
 
@@ -951,11 +940,11 @@ function PaymentContent() {
 
                   {couponDiscount > 0 && (
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-green-600">
+                      <span className="text-[#8CBC67]">
                         Coupon Discount
                       </span>
 
-                      <span className="font-medium text-green-600">
+                      <span className="font-medium text-[#8CBC67]">
                         -₹
                         {couponDiscount.toLocaleString(
                           "en-IN"
@@ -966,13 +955,13 @@ function PaymentContent() {
                 </div>
 
                 {/* TOTAL */}
-                <div className="border-t border-amber-100 mt-5 pt-5">
+                <div className="border-t border-[#E8E8E3] mt-5 pt-5">
                   <div className="flex items-center justify-between">
                     <span className="font-bold">
                       Total Payable
                     </span>
 
-                    <span className="text-xl font-bold text-[#17130B]">
+                    <span className="text-xl font-bold text-[#202522]">
                       ₹{finalTotal.toLocaleString("en-IN")}
                     </span>
                   </div>
@@ -983,7 +972,7 @@ function PaymentContent() {
                   type="button"
                   onClick={handlePayNow}
                   disabled={isProcessing}
-                  className="w-full mt-6 h-14 rounded-2xl bg-[#8B3F05] hover:bg-[#713200]  text-white font-bold text-sm flex items-center justify-center gap-2  disabled:opacity-70 disabled:cursor-not-allowed transition shadow-sm"
+                  className="w-full mt-6 h-14 rounded-2xl bg-[#8CBC67] hover:bg-[#7AB055]  text-white font-bold text-sm flex items-center justify-center gap-2  disabled:opacity-70 disabled:cursor-not-allowed transition shadow-sm"
                 >
                   {isProcessing ? (
                     <>
@@ -1003,7 +992,7 @@ function PaymentContent() {
                   )}
                 </button>
 
-                <p className="text-[11px] text-center text-[#766F65] mt-4 leading-relaxed">
+                <p className="text-[11px] text-center text-[#6B706C] mt-4 leading-relaxed">
                   By continuing, you agree to Party Square's
                   payment and booking terms.
                 </p>
@@ -1012,6 +1001,13 @@ function PaymentContent() {
           </aside>
         </div>
       </main>
+      <LoginModal 
+        isOpen={showLoginModal} 
+        onClose={() => {
+          setShowLoginModal(false);
+          checkAuth();
+        }} 
+      />
     </div>
   );
 }
@@ -1024,10 +1020,10 @@ export default function PaymentDetailPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center">
+        <div className="min-h-screen bg-[#FCFBF7] flex items-center justify-center">
           <Loader2
             size={28}
-            className="animate-spin text-amber-600"
+            className="animate-spin text-[#8CBC67]"
           />
         </div>
       }

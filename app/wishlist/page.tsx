@@ -8,13 +8,13 @@ export default function Wishlist() {
     removeFromWishlist,
   } = useWishlist();
   return (
-       <section className="min-h-screen bg-[#FAF7F2] px-6 py-12">
+       <section className="min-h-screen bg-[#FCFBF7] px-6 py-12">
 
       <div className="mx-auto max-w-6xl">
 
         {/* HEADER */}
 
-        <div className="flex items-center justify-between border-b border-amber-200 pb-6 mb-8">
+        <div className="flex items-center justify-between border-b border-[#E8E8E3] pb-6 mb-8">
 
           <div>
             <h1 className="text-3xl font-serif font-bold text-gray-900">
@@ -70,14 +70,14 @@ export default function Wishlist() {
 
               <div
                 key={product.id}
-                className="bg-white rounded-2xl border border-amber-200 shadow-sm p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 transition hover:shadow-md"
+                className="bg-white rounded-2xl border border-[#E8E8E3] shadow-sm p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 transition hover:shadow-md"
               >
 
                 {/* IMAGE + PRODUCT INFORMATION */}
 
                 <div className="flex items-center space-x-4 w-full sm:w-auto">
 
-                  <div className="w-20 h-20 rounded-xl overflow-hidden bg-amber-50 border border-amber-100 flex-shrink-0">
+                  <div className="w-20 h-20 rounded-xl overflow-hidden bg-[#EEF6EB] border border-[#E8E8E3] flex-shrink-0">
 
                     <img
                       src={product.image}
@@ -89,7 +89,7 @@ export default function Wishlist() {
 
                   <div className="space-y-1">
 
-                    <p className="text-[10px] uppercase tracking-wider text-amber-700 font-bold">
+                    <p className="text-[10px] uppercase tracking-wider text-[#202522] font-bold">
                       {product.category}
                     </p>
 
@@ -101,7 +101,7 @@ export default function Wishlist() {
                       {product.desc}
                     </p>
 
-                    <div className="inline-flex items-center bg-amber-100 text-amber-900 px-2.5 py-0.5 rounded-full text-xs font-semibold">
+                    <div className="inline-flex items-center bg-[#EEF6EB] text-[#202522] px-2.5 py-0.5 rounded-full text-xs font-semibold">
                       Starting Price: {product.price}
                     </div>
 
@@ -112,7 +112,7 @@ export default function Wishlist() {
 
                 {/* RIGHT SIDE */}
 
-                <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-3 border-t sm:border-t-0 pt-3 sm:pt-0 border-amber-100">
+                <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-3 border-t sm:border-t-0 pt-3 sm:pt-0 border-[#E8E8E3]">
 
                   <div className="text-right">
 
@@ -120,7 +120,7 @@ export default function Wishlist() {
                       Starting From
                     </p>
 
-                    <p className="text-lg font-bold text-amber-900">
+                    <p className="text-lg font-bold text-[#202522]">
                       {product.price}
                     </p>
 
@@ -130,7 +130,7 @@ export default function Wishlist() {
                   {/* BOOK */}
 
                   <button
-                    className="px-4 py-2 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5 transition cursor-pointer"
+                    className="px-4 py-2 rounded-full bg-[#EEF6EB] hover:bg-[#EEF6EB] text-[#202522] text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5 transition cursor-pointer"
                   >
                     <span>Book</span>
                     <ArrowRight size={15} />

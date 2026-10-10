@@ -37,7 +37,7 @@ export default function Services() {
       
       {/* Soft Luxury Red & Golden Background Glows */}
       <div className="absolute top-10 left-10 w-96 h-96 bg-red-200/30 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-amber-300/30 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#D7A84B]/30 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 items-start">
@@ -59,21 +59,21 @@ export default function Services() {
               <p>
                 We specialize in curating breathtaking, custom-tailored environments for all of life's most precious celebrations — seamlessly blending artistic vision with flawless execution.
               </p>
-              <p className="text-xs md:text-sm text-neutral-600">
+              <p className="text-xs md:text-sm text-[#6B706C]">
                 From grand destination weddings and luxury anniversary celebrations to intimate home gatherings and vibrant festive setups, we transform ordinary spaces into timeless visual poetry.
               </p>
 
               {/* Extra bullet points added to increase length and detail */}
               <div className="pt-2 space-y-2.5 border-t border-red-900/10">
-                <div className="flex items-start space-x-2.5 text-xs text-neutral-700">
+                <div className="flex items-start space-x-2.5 text-xs text-[#202522]">
                   <CheckCircle2 size={16} className="text-red-800 shrink-0 mt-0.5" />
                   <span>100% Customized themes tailored to your unique preferences & budget.</span>
                 </div>
-                <div className="flex items-start space-x-2.5 text-xs text-neutral-700">
+                <div className="flex items-start space-x-2.5 text-xs text-[#202522]">
                   <CheckCircle2 size={16} className="text-red-800 shrink-0 mt-0.5" />
                   <span>Premium fresh floral arrangements, luxury drapery & lighting effects.</span>
                 </div>
-                <div className="flex items-start space-x-2.5 text-xs text-neutral-700">
+                <div className="flex items-start space-x-2.5 text-xs text-[#202522]">
                   <CheckCircle2 size={16} className="text-red-800 shrink-0 mt-0.5" />
                   <span>End-to-end on-site setup and professional event styling execution.</span>
                 </div>
@@ -103,7 +103,7 @@ export default function Services() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
               <div className="relative h-full flex flex-col justify-end p-8 sm:p-10">
-                <span className="inline-block w-max bg-amber-300/20 backdrop-blur-md border border-amber-300/40 text-amber-200 text-xs px-3 py-1 rounded-full mb-3 tracking-wide">
+                <span className="inline-block w-max bg-[#D7A84B]/20 backdrop-blur-md border border-[#8CBC67]/40 text-[#D7A84B] text-xs px-3 py-1 rounded-full mb-3 tracking-wide">
                   {featured.tag}
                 </span>
                 <div className="flex items-end justify-between gap-4">
@@ -111,7 +111,7 @@ export default function Services() {
                     <h3 className="text-2xl sm:text-3xl font-serif text-white">{featured.title}</h3>
                     <p className="text-white/80 text-sm mt-1 font-light max-w-md">{featured.subtitle}</p>
                   </div>
-                  <span className="shrink-0 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center text-white group-hover:bg-amber-200 group-hover:text-[#241C15] group-hover:border-amber-200 transition-all shadow-md">
+                  <span className="shrink-0 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center text-white group-hover:bg-[#F7D6C7] group-hover:text-[#241C15] group-hover:border-[#E8E8E3] transition-all shadow-md">
                     <ArrowUpRight size={20} />
                   </span>
                 </div>
@@ -126,7 +126,7 @@ export default function Services() {
                   key={index}
                   className="group flex items-center gap-5 p-4 sm:p-5 rounded-2xl bg-white/80 hover:bg-white border border-red-200/50 shadow-sm hover:shadow-md transition-all duration-300 backdrop-blur-sm"
                 >
-                  <div className="shrink-0 w-24 h-20 sm:w-28 sm:h-22 rounded-xl overflow-hidden bg-red-50 border border-red-100">
+                  <div className="shrink-0 w-24 h-20 sm:w-28 sm:h-22 rounded-xl overflow-hidden bg-[#F7D6C7] border border-red-100">
                     <img
                       src={service.image}
                       alt={service.title}

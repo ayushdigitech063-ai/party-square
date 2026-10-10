@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -33,7 +33,7 @@ export default function ProductCard({
     router.push(`/card/${product.slug}`);
   };
   const salePrice = Number(product.price) || 0;
-  const originalPrice = Number(product.originalPrice) || 0;
+  const originalPrice = Number(product.originalPrice) || (salePrice * 1.25);
   const hasDiscount = originalPrice > salePrice && salePrice > 0;
   const discountPercent = hasDiscount
     ? Math.round(((originalPrice - salePrice) / originalPrice) * 100)
@@ -42,7 +42,7 @@ export default function ProductCard({
   const reviewCount = Number(product.reviewCount) || 0;
   return (
     <div
-      className="bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group"
+      className="bg-white border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group"
       onClick={openProductDetailPage}
     >
       {/* Image */}
@@ -62,7 +62,7 @@ export default function ProductCard({
         />
 
         {hasDiscount && (
-          <span className="absolute top-3 left-3 bg-rose-600 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow">
+          <span className="absolute top-3 left-3 bg-[#F7D6C7] text-[#C23B22] text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">
             {discountPercent}% OFF
           </span>
         )}
@@ -79,45 +79,45 @@ export default function ProductCard({
       <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
         <div className="space-y-1">
           <Link href={`/card/${product.slug}`}>
-            <h3 className="font-serif text-sm font-bold text-neutral-900 line-clamp-1 hover:text-amber-800 transition">
+            <h3 className="font-serif text-sm font-bold text-[#202522] line-clamp-1 hover:text-[#202522] transition">
               {product.name}
             </h3>
           </Link>
 
           {rating > 0 && (
-            <div className="flex items-center space-x-1.5">
-              <span className="inline-flex items-center space-x-1 bg-emerald-600 text-white text-[11px] font-bold px-1.5 py-0.5 rounded">
-                <span>{rating.toFixed(1)}</span>
-                <Star size={10} className="fill-white" />
+            <div className="inline-flex items-center space-x-1.5 bg-[#EEF6EB] px-2 py-1 rounded-md">
+              <Star size={12} className="fill-[#D7A84B] text-[#D7A84B]" />
+              <span className="text-[11px] font-bold text-[#202522]">
+                {rating.toFixed(1)}
               </span>
               {reviewCount > 0 && (
-                <span className="text-[11px] text-neutral-500">
+                <span className="text-[11px] text-[#6B706C]">
                   ({reviewCount.toLocaleString("en-IN")} reviews)
                 </span>
               )}
             </div>
           )}
 
-          <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">
+          <p className="text-[#6B706C] text-xs leading-relaxed font-light line-clamp-2">
             {product.description}
           </p>
         </div>
 
         {/* Bottom */}
-        <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+        <div className="pt-3 border-t border-[#E8E8E3] flex items-center justify-between">
           <div className="flex flex-col leading-tight">
             <div className="flex items-baseline space-x-1.5">
-              <span className="text-neutral-900 font-bold text-sm">
+              <span className="text-[#202522] font-bold text-sm">
                 ₹{salePrice.toLocaleString("en-IN")}
               </span>
               {hasDiscount && (
-                <span className="text-neutral-400 text-xs line-through">
+                <span className="text-[#6B706C] text-xs line-through">
                   ₹{originalPrice.toLocaleString("en-IN")}
                 </span>
               )}
             </div>
             {hasDiscount && (
-              <span className="text-[11px] font-semibold text-emerald-700">
+              <span className="text-[11px] font-semibold text-[#8CBC67]">
                 You save ₹{(originalPrice - salePrice).toLocaleString("en-IN")}
               </span>
             )}
@@ -126,7 +126,7 @@ export default function ProductCard({
             {/* Book */}
             <button
               onClick={openProductDetailPage}
-              className="bg-amber-800 text-white px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-900 transition shadow"
+              className="bg-[#8CBC67] text-[#FCFBF7] px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-[#7AB055] transition shadow"
             >
               Book
             </button>
@@ -136,3 +136,6 @@ export default function ProductCard({
     </div>
   );
 }
+
+
+

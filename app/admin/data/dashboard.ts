@@ -32,12 +32,12 @@ export const TOP_THEMES = [
 ];
 
 export const KPI = [
-  { title: "Total Bookings", value: "1,248", change: "+12%", icon: CalendarCheck, color: "bg-amber-500", href: "/admin/bookings", trend: [8, 10, 9, 13, 12, 16, 18] },
+  { title: "Total Bookings", value: "1,248", change: "+12%", icon: CalendarCheck, color: "bg-[#8CBC67]", href: "/admin/bookings", trend: [8, 10, 9, 13, 12, 16, 18] },
   { title: "Active Themes", value: "24", change: "+4 new", icon: Sparkle, color: "bg-stone-900 text-white", href: "/admin/themes", trend: [14, 15, 15, 18, 20, 22, 24] },
-  { title: "Total Revenue", value: "₹24,80,000", change: "+18%", icon: TrendingUp, color: "bg-amber-400", href: "/admin/analytics", trend: [5, 7, 6, 9, 11, 10, 14] },
+  { title: "Total Revenue", value: "₹24,80,000", change: "+18%", icon: TrendingUp, color: "bg-[#8CBC67]", href: "/admin/analytics", trend: [5, 7, 6, 9, 11, 10, 14] },
   { title: "Registered Users", value: "3,840", change: "+250", icon: Users, color: "bg-stone-800 text-white", href: "/admin/customers", trend: [20, 22, 25, 24, 28, 31, 34] },
   { title: "Pending Bookings", value: "", change: "needs action", icon: Clock, color: "bg-orange-500 text-white", href: "/admin/bookings", trend: [3, 5, 4, 6, 5, 7, 6] },
-  { title: "Average Rating", value: "4.8 / 5", change: "+0.1", icon: Star, color: "bg-amber-300", href: "/admin/reviews", trend: [46, 47, 47, 48, 48, 48, 48] },
+  { title: "Average Rating", value: "4.8 / 5", change: "+0.1", icon: Star, color: "bg-[#D7A84B]", href: "/admin/reviews", trend: [46, 47, 47, 48, 48, 48, 48] },
 ];
 
 export const UPCOMING = [

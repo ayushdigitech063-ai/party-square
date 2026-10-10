@@ -59,7 +59,7 @@ export default function AddOnSection({
             overflow-hidden
             rounded-[28px]
             border
-            border-amber-100
+            border-[#E8E8E3]
             bg-[#FFFCF8]
             shadow-sm
           "
@@ -74,7 +74,7 @@ export default function AddOnSection({
               h-56
               w-56
               rounded-full
-              bg-amber-100/40
+              bg-[#EEF6EB]/40
               blur-3xl
             "
           />
@@ -102,25 +102,25 @@ export default function AddOnSection({
               <div>
                 {/* Small Label */}
                 <div className="mb-2 flex items-center gap-2">
-                  <Sparkles size={16} className="text-amber-600" />
+                  <Sparkles size={16} className="text-[#8CBC67]" />
 
-                  <span className="text-xs font-semibold uppercase tracking-[0.15em] text-amber-700">
+                  <span className="text-xs font-semibold uppercase tracking-[0.15em] text-[#202522]">
                     Complete your celebration
                   </span>
                 </div>
 
                 {/* Heading */}
                 <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="font-serif text-2xl font-bold text-neutral-800 sm:text-3xl">
+                  <h2 className="font-serif text-2xl font-bold text-[#202522] sm:text-3xl">
                     Make the celebration bigger
                   </h2>
 
-                  <span className="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-medium text-neutral-500">
+                  <span className="rounded-full bg-[#EEF6EB] px-2.5 py-1 text-[10px] font-medium text-[#6B706C]">
                     Optional
                   </span>
                 </div>
 
-                <p className="mt-2 text-sm text-neutral-500">
+                <p className="mt-2 text-sm text-[#6B706C]">
                   Add something extra to make your special day even more
                   memorable.
                 </p>
@@ -140,7 +140,7 @@ export default function AddOnSection({
                   items-center
                   gap-2
                   rounded-full
-                  bg-amber-800
+                  bg-[#7AB055]
                   px-4
                   py-2
                   text-xs
@@ -178,13 +178,13 @@ export default function AddOnSection({
       justify-center
       rounded-full
       border
-      border-amber-100
+      border-[#E8E8E3]
       bg-white
-      text-neutral-700
+      text-[#202522]
       shadow-lg
       transition-all
       duration-200
-      hover:bg-amber-800
+      hover:bg-[#7AB055]
       hover:text-white
       hover:scale-105
     "
@@ -238,13 +238,13 @@ export default function AddOnSection({
       justify-center
       rounded-full
       border
-      border-amber-100
+      border-[#E8E8E3]
       bg-white
-      text-neutral-700
+      text-[#202522]
       shadow-lg
       transition-all
       duration-200
-      hover:bg-amber-800
+      hover:bg-[#7AB055]
       hover:text-white
       hover:scale-105
     "
@@ -273,12 +273,12 @@ export default function AddOnSection({
             {/* Bottom */}
             {/* -------------------------------- */}
 
-            <div className="mt-2 flex items-center justify-between border-t border-amber-100 pt-4">
-              <p className="text-xs text-neutral-400">
+            <div className="mt-2 flex items-center justify-between border-t border-[#E8E8E3] pt-4">
+              <p className="text-xs text-[#6B706C]">
                 ✨ Choose anything you like to complete your celebration.
               </p>
 
-              <span className="hidden text-xs font-medium text-amber-700 sm:block">
+              <span className="hidden text-xs font-medium text-[#202522] sm:block">
                 {relatedProducts.length} recommendations
               </span>
             </div>

@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* Global Base Styles */
@@ -10,6 +11,8 @@ body {
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.6;
+  background-color: #FCFBF7;
+  color: #202522;
 }
 
 /* Typography Defaults using Playfair Display */

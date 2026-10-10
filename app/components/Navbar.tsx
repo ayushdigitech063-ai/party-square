@@ -1,4 +1,4 @@
-
+﻿
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -300,15 +300,15 @@ function DropdownPill({
           right: 0,
           maxHeight: `calc(100vh - ${coords.top}px - 16px)`,
         }}
-        className={`z-[999] overflow-y-auto bg-white/95 backdrop-blur-xl border-t border-neutral-100 rounded-b-3xl shadow-[0_28px_56px_-16px_rgba(0,0,0,0.25)] transition-all duration-200 ease-out ${
+        className={`z-[999] overflow-y-auto bg-white/95 backdrop-blur-xl border-t border-[#E8E8E3] rounded-b-3xl shadow-[0_28px_56px_-16px_rgba(0,0,0,0.25)] transition-all duration-200 ease-out ${
           visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-5 sm:py-8 grid grid-cols-1 md:grid-cols-[250px_1fr] gap-5 md:gap-12">
-          {/* Left — heading + text links */}
+          {/* Left â€” heading + text links */}
           <div>
-            <h3 className="flex items-center gap-2 text-base sm:text-lg font-extrabold text-neutral-800 mb-3 sm:mb-4 pb-3 border-b-2 border-amber-200">
-              <Icon size={18} className="text-amber-500" />
+            <h3 className="flex items-center gap-2 text-base sm:text-lg font-extrabold text-[#202522] mb-3 sm:mb-4 pb-3 border-b-2 border-[#E8E8E3]">
+              <Icon size={18} className="text-[#8CBC67]" />
               {label}
             </h3>
 
@@ -325,10 +325,10 @@ function DropdownPill({
                       onFocus={() => setActiveChild(child)}
                       className={`block px-3 py-2 sm:py-2.5 rounded-lg text-sm sm:text-[15px] transition-colors ${
                         childActive
-                          ? "text-amber-600 font-semibold bg-amber-50"
+                          ? "text-[#8CBC67] font-semibold bg-[#EEF6EB]"
                           : isPreviewed
-                            ? "text-amber-600 font-semibold bg-amber-50/70"
-                            : "text-neutral-800 font-medium hover:bg-amber-50 hover:text-amber-600"
+                            ? "text-[#8CBC67] font-semibold bg-[#EEF6EB]/70"
+                            : "text-[#202522] font-medium hover:bg-[#EEF6EB] hover:text-[#8CBC67]"
                       }`}
                     >
                       {child.label}
@@ -339,7 +339,7 @@ function DropdownPill({
             </ul>
           </div>
 
-          {/* Right — image cards for the same items */}
+          {/* Right â€” image cards for the same items */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 content-start">
             {children.map((child) => {
               const isPreviewed = activeChild?.href === child.href;
@@ -355,7 +355,7 @@ function DropdownPill({
                   <div
                     className={`relative w-[160px] h-[120px] mx-auto rounded-xl overflow-hidden bg-neutral-100 ring-2 ring-offset-2 transition-all duration-200 ${
                       isPreviewed
-                        ? "ring-amber-400 shadow-lg"
+                        ? "ring-[#8CBC67] shadow-lg"
                         : "ring-transparent group-hover:ring-amber-300"
                     }`}
                   >
@@ -376,8 +376,8 @@ function DropdownPill({
                   <span
                     className={`mt-2.5 block text-center text-[13px] sm:text-sm font-semibold leading-snug transition-colors ${
                       isPreviewed
-                        ? "text-amber-600"
-                        : "text-neutral-800 group-hover:text-amber-600"
+                        ? "text-[#8CBC67]"
+                        : "text-[#202522] group-hover:text-[#8CBC67]"
                     }`}
                   >
                     {child.label}
@@ -399,8 +399,8 @@ function DropdownPill({
         onMouseLeave={scheduleClose}
         className={`shrink-0 flex items-stretch rounded-full border overflow-hidden transition-colors ${
           isActive || open
-            ? "bg-amber-500 border-amber-500 shadow-sm"
-            : "bg-white border-neutral-200 hover:border-amber-300"
+            ? "bg-[#8CBC67] border-[#8CBC67] shadow-sm"
+            : "bg-white border-[#E8E8E3] hover:border-[#8CBC67]"
         }`}
       >
         <Link
@@ -408,12 +408,12 @@ function DropdownPill({
           className={`flex items-center gap-1.5 sm:gap-2 pl-3 sm:pl-4 pr-2 sm:pr-2.5 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
             isActive || open
               ? "text-white"
-              : "text-neutral-700 hover:text-amber-700 hover:bg-amber-50"
+              : "text-[#202522] hover:text-[#202522] hover:bg-[#EEF6EB]"
           }`}
         >
           <Icon
             size={16}
-            className={isActive || open ? "text-white" : "text-amber-500"}
+            className={isActive || open ? "text-white" : "text-[#8CBC67]"}
           />
           {label}
         </Link>
@@ -426,7 +426,7 @@ function DropdownPill({
           className={`flex items-center pl-1.5 pr-3 sm:pr-3.5 py-2 border-l transition-colors ${
             isActive || open
               ? "border-white/30 text-white"
-              : "border-neutral-200 text-neutral-500 hover:text-amber-700 hover:bg-amber-50"
+              : "border-[#E8E8E3] text-[#6B706C] hover:text-[#202522] hover:bg-[#EEF6EB]"
           }`}
         >
           <ChevronDown
@@ -454,13 +454,13 @@ function DropdownPill({
         aria-expanded={open}
         className={`flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-2 text-sm font-medium whitespace-nowrap border transition-colors ${
           isActive || open
-            ? "bg-amber-500 text-white border-amber-500 shadow-sm"
-            : "bg-white text-neutral-700 border-neutral-200 hover:border-amber-300 hover:text-amber-700 hover:bg-amber-50"
+            ? "bg-[#8CBC67] text-white border-[#8CBC67] shadow-sm"
+            : "bg-white text-[#202522] border-[#E8E8E3] hover:border-[#8CBC67] hover:text-[#202522] hover:bg-[#EEF6EB]"
         }`}
       >
         <Icon
           size={16}
-          className={isActive || open ? "text-white" : "text-amber-500"}
+          className={isActive || open ? "text-white" : "text-[#8CBC67]"}
         />
         {label}
         <ChevronDown
@@ -476,7 +476,7 @@ function DropdownPill({
 
 export default function Navbar() {
   const { wishlist } = useWishlist();
-  const { cartCount } = useCart(); // 👈 naya
+  const { cartCount } = useCart(); // ðŸ‘ˆ naya
   const [locationOpen, setLocationOpen] = useState(false);
   const [selectedCity, setSelectedCity] = useState("Delhi");
   const [loginopen, setLoginOpen] = useState(false);
@@ -512,7 +512,11 @@ export default function Navbar() {
 
   // Automatically open the city selection popup when website loads
   useEffect(() => {
-    setIsCityModalOpen(true);
+    const hasSeenCityModal = localStorage.getItem("hasSeenCityModal");
+    if (!hasSeenCityModal) {
+      setIsCityModalOpen(true);
+      localStorage.setItem("hasSeenCityModal", "true");
+    }
   }, []);
 
   useEffect(() => {
@@ -544,29 +548,21 @@ export default function Navbar() {
         cities={CITIES}
       />
 
-      <nav className="w-full bg-white border-b border-neutral-200 sticky top-0 z-30">
+      <nav className="w-full bg-white border-b border-[#E8E8E3] sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
-          <Link
-            href="/"
-            className="flex items-center gap-1.5 sm:gap-2 shrink-0"
-          >
-            <span className="text-xl sm:text-2xl leading-none">🪷</span>
-            <span className="text-base sm:text-xl font-extrabold tracking-tight text-neutral-900 whitespace-nowrap">
-              DreamDeco
-            </span>
-          </Link>
+          <Link href="/" className="flex items-center shrink-0"><div className="w-32 h-10 sm:w-40 sm:h-12 relative flex-shrink-0"><Image src="/logo-full.png" alt="Party Square" fill className="object-contain object-left" priority /></div></Link>
 
           <form
             onSubmit={handleSearchSubmit}
-            className="hidden md:flex flex-1 max-w-md items-center gap-2 h-11 px-4 rounded-full border border-neutral-200 bg-neutral-50 focus-within:border-amber-400 focus-within:bg-white transition-colors"
+            className="hidden md:flex flex-1 max-w-md items-center gap-2 h-11 px-4 rounded-full border border-[#E8E8E3] bg-neutral-50 focus-within:border-[#8CBC67] focus-within:bg-white transition-colors"
           >
-            <Search size={16} className="text-neutral-400 shrink-0" />
+            <Search size={16} className="text-[#6B706C] shrink-0" />
             <input
               type="text"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               placeholder="Search decorations, themes, events..."
-              className="w-full bg-transparent text-sm text-neutral-800 placeholder:text-neutral-400 focus:outline-none"
+              className="w-full bg-transparent text-sm text-[#202522] placeholder:text-[#6B706C] focus:outline-none"
             />
           </form>
 
@@ -574,7 +570,7 @@ export default function Navbar() {
             <button
               onClick={() => setSearchOpen((v) => !v)}
               aria-label="Search"
-              className="md:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-600 hover:border-amber-300 hover:text-amber-600 transition-colors"
+              className="md:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
             >
               {searchOpen ? <X size={17} /> : <Search size={17} />}
             </button>
@@ -583,9 +579,9 @@ export default function Navbar() {
             <div className="relative hidden sm:block" ref={locationRef}>
            <button
   onClick={() => setIsCityModalOpen(true)}
-  className="flex items-center gap-1.5 h-10 px-3.5 rounded-full border border-neutral-200 text-[15px] font-medium text-neutral-700 hover:border-amber-400 hover:text-amber-600 transition-colors"
+  className="flex items-center gap-1.5 h-10 px-3.5 rounded-full border border-[#E8E8E3] text-[15px] font-medium text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
 >
-  <MapPin size={16} className="text-amber-500 shrink-0" />
+  <MapPin size={16} className="text-[#8CBC67] shrink-0" />
   <span className="whitespace-nowrap">{selectedCity}</span>
   <ChevronDown
     size={15}
@@ -597,7 +593,7 @@ export default function Navbar() {
 <Link
   href="/basket"
   aria-label="Basket"
-  className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-600 hover:border-amber-300 hover:text-amber-600 transition-colors"
+  className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
 >
   <ShoppingBasket size={18} />
   {cartCount > 0 && (
@@ -609,7 +605,7 @@ export default function Navbar() {
             <Link
               href="/wishlist"
               aria-label={`Wishlist${wishlist.length > 0 ? `, ${wishlist.length} items` : ""}`}
-              className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-600 hover:border-amber-300 hover:text-amber-600 transition-colors"
+              className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
             >
               <Heart size={18} />
 
@@ -632,19 +628,19 @@ export default function Navbar() {
 
             {isLoggedIn ? (
                 <div className="relative group">
-                  <Link href="/profile" className="h-9 w-9 sm:h-11 sm:w-11 shrink-0 rounded-full bg-amber-200 text-black flex items-center justify-center hover:bg-amber-300 transition shadow-sm" aria-label="User Profile">
+                  <Link href="/profile" className="h-9 w-9 sm:h-11 sm:w-11 shrink-0 rounded-full bg-[#F7D6C7] text-black flex items-center justify-center hover:bg-[#D7A84B] transition shadow-sm" aria-label="User Profile">
                     <User size={20} />
                   </Link>
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pt-2 pb-1">
                     <div className="px-4 py-2 border-b border-gray-50 mb-1">
                       <p className="text-sm font-bold text-gray-900 truncate">{userName}</p>
                     </div>
-                    <Link href="/profile" className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-amber-50 hover:text-amber-600 transition">My Profile</Link>
-                    <button onClick={() => { document.cookie = "token=; path=/; max-age=0;"; document.cookie = "user=; path=/; max-age=0;"; window.location.href = "/"; }} className="w-full text-left block px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 transition">Logout</button>
+                    <Link href="/profile" className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-[#EEF6EB] hover:text-[#8CBC67] transition">My Profile</Link>
+                    <button onClick={() => { document.cookie = "token=; path=/; max-age=0;"; document.cookie = "user=; path=/; max-age=0;"; window.location.href = "/"; }} className="w-full text-left block px-4 py-2 text-sm font-medium text-red-600 hover:bg-[#F7D6C7] transition">Logout</button>
                   </div>
                 </div>
               ) : (
-              <button onClick={()=> setLoginOpen(true)} className="h-9 sm:h-11 px-3 sm:px-6 shrink-0 rounded-full bg-amber-200 text-black text-sm sm:text-[15px] font-semibold flex items-center gap-1.5 sm:gap-2 whitespace-nowrap hover:bg-amber-300 transition shadow-sm">
+              <button onClick={()=> setLoginOpen(true)} className="h-9 sm:h-11 px-3 sm:px-6 shrink-0 rounded-full bg-[#F7D6C7] text-black text-sm sm:text-[15px] font-semibold flex items-center gap-1.5 sm:gap-2 whitespace-nowrap hover:bg-[#D7A84B] transition shadow-sm">
                 <span className="hidden sm:inline">Login</span>
                 <ArrowRight size={16} />
               </button>
@@ -653,25 +649,25 @@ export default function Navbar() {
         </div>
 
         {searchOpen && (
-          <div className="md:hidden border-t border-neutral-100 px-3 sm:px-6 py-3 bg-white">
+          <div className="md:hidden border-t border-[#E8E8E3] px-3 sm:px-6 py-3 bg-white">
             <form
               onSubmit={handleSearchSubmit}
-              className="flex items-center gap-2 h-11 px-4 rounded-full border border-neutral-200 bg-neutral-50 focus-within:border-amber-400 focus-within:bg-white transition-colors"
+              className="flex items-center gap-2 h-11 px-4 rounded-full border border-[#E8E8E3] bg-neutral-50 focus-within:border-[#8CBC67] focus-within:bg-white transition-colors"
             >
-              <Search size={16} className="text-neutral-400 shrink-0" />
+              <Search size={16} className="text-[#6B706C] shrink-0" />
               <input
                 type="text"
                 autoFocus
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
                 placeholder="Search decorations, themes, events..."
-                className="w-full bg-transparent text-sm text-neutral-800 placeholder:text-neutral-400 focus:outline-none"
+                className="w-full bg-transparent text-sm text-[#202522] placeholder:text-[#6B706C] focus:outline-none"
               />
             </form>
           </div>
         )}
 
-        <div className="relative border-t border-neutral-100 bg-white">
+        <div className="relative border-t border-[#E8E8E3] bg-white">
           <div className="pointer-events-none absolute left-0 top-0 h-full w-6 sm:w-10 bg-gradient-to-r from-white to-transparent z-10" />
 
           <div
@@ -695,13 +691,13 @@ export default function Navbar() {
                     href={href}
                     className={`shrink-0 flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-2 text-sm font-medium whitespace-nowrap border transition-colors ${
                       isActive
-                        ? "bg-amber-500 text-white border-amber-500 shadow-sm"
-                        : "bg-white text-neutral-700 border-neutral-200 hover:border-amber-300 hover:text-amber-700 hover:bg-amber-50"
+                        ? "bg-[#8CBC67] text-white border-[#8CBC67] shadow-sm"
+                        : "bg-white text-[#202522] border-[#E8E8E3] hover:border-[#8CBC67] hover:text-[#202522] hover:bg-[#EEF6EB]"
                     }`}
                   >
                     <Icon
                       size={16}
-                      className={isActive ? "text-white" : "text-amber-500"}
+                      className={isActive ? "text-white" : "text-[#8CBC67]"}
                     />
                     {label}
                   </Link>
@@ -721,3 +717,5 @@ export default function Navbar() {
     </>
   );
 }
+
+

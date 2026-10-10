@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 
@@ -35,19 +35,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   // Load from localStorage on initial render
   useEffect(() => {
-    const savedCart = localStorage.getItem("dreamdeco_cart");
-    const savedLikes = localStorage.getItem("dreamdeco_likes");
+    const savedCart = localStorage.getItem("Party Square_cart");
+    const savedLikes = localStorage.getItem("Party Square_likes");
     if (savedCart) setCart(JSON.parse(savedCart));
     if (savedLikes) setLikes(JSON.parse(savedLikes));
   }, []);
 
   // Save to localStorage whenever cart/likes change
   useEffect(() => {
-    localStorage.setItem("dreamdeco_cart", JSON.stringify(cart));
+    localStorage.setItem("Party Square_cart", JSON.stringify(cart));
   }, [cart]);
 
   useEffect(() => {
-    localStorage.setItem("dreamdeco_likes", JSON.stringify(likes));
+    localStorage.setItem("Party Square_likes", JSON.stringify(likes));
   }, [likes]);
 
   const addToCart = (product: Omit<Product, "quantity">, quantityToAdd: number = 1) => {
@@ -109,8 +109,8 @@ const cartCount = cart.length;
       value={{ cart, likes, addToCart, removeFromCart, toggleLike, isLiked, notification, closeNotification, cartCount }}
     >
 {notification && (
-  <div className="fixed bottom-6 left-6 sm:left-10 z-50 bg-[#1A1A1A] text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 border border-red-500/30 animate-slide-up max-w-md">
-    <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-red-50 border border-red-200">
+  <div className="fixed bottom-6 left-6 sm:left-10 z-50 bg-[#202522] text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 border border-red-500/30 animate-slide-up max-w-md">
+    <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-[#F7D6C7] border border-red-200">
       <img src={notification.product.image} alt={notification.product.name} className="w-full h-full object-cover" />
     </div>
     <div className="flex-1 pr-2">
@@ -123,7 +123,7 @@ const cartCount = cart.length;
       className="text-gray-400 hover:text-white p-1 transition cursor-pointer"
       aria-label="Close"
     >
-      ✕
+      âœ•
     </button>
   </div>
 )}

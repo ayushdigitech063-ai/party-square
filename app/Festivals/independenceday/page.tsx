@@ -84,7 +84,7 @@ export default function IndependenceDayPage() {
     sortBy === "recommended" ? featuredProducts : sortedProducts;
 
   return (
-    <div className="min-h-screen text-neutral-900 font-sans bg-[#F8FAFC] selection:bg-orange-600 selection:text-white overflow-x-hidden pb-20">
+    <div className="min-h-screen text-[#202522] font-sans bg-[#F8FAFC] selection:bg-orange-600 selection:text-white overflow-x-hidden pb-20">
       {/* Hero Section */}
       <section className="relative w-full h-[350px] px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[35px] shadow-2xl">
         <div
@@ -119,21 +119,21 @@ export default function IndependenceDayPage() {
           <div className="flex items-center justify-between gap-6">
             {/* LEFT - Heading */}
             <div className="text-left">
-              <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
+              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
                  Featured Collections
               </span>
                <div className="flex items-baseline gap-3">
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 mt-1">
+              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522] mt-1">
                 Patriotic Decoration Specials
               </h2>
-              <span className="text-neutral-400 text-2xl">|</span>
+              <span className="text-[#6B706C] text-2xl">|</span>
 
-                <span className="text-neutral-500 text-2xl">
+                <span className="text-[#6B706C] text-2xl">
                   {productsToDisplay.length} Items
                 </span>
               </div>
 
-              <p className="text-neutral-600 text-sm font-light mt-2">
+              <p className="text-[#6B706C] text-sm font-light mt-2">
                  Explore our handpicked tricolor decoration specials for grand
                 national celebrations and events.
               </p>

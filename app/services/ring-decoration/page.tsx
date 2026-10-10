@@ -63,7 +63,7 @@ export default function RingDecorationPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-neutral-900 font-sans">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans">
       
       {/* ================= HERO SECTION WITH SINGLE CLEAR ring.png BACKGROUND ================= */}
       <section className="relative h-[550px] flex items-center justify-center overflow-hidden text-white">
@@ -76,7 +76,7 @@ export default function RingDecorationPage() {
         {/* Hero Content */}
         <div className="relative z-20 max-w-7xl mx-auto px-6 w-full text-center sm:text-left">
           <div className="max-w-2xl space-y-6">
-            <div className="inline-flex items-center space-x-2 bg-[#C5A059]/30 border border-[#C5A059]/50 px-4 py-1.5 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase backdrop-blur-md">
+            <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/30 border border-[#D7A84B]/50 px-4 py-1.5 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase backdrop-blur-md">
               <Sparkles size={13} />
               <span>Royal Ring Ceremony Specialists</span>
             </div>
@@ -92,7 +92,7 @@ export default function RingDecorationPage() {
             <div className="flex flex-wrap gap-4 pt-2 justify-center sm:justify-start">
               <Link
                 href="/contact"
-                className="bg-gradient-to-r from-[#DFBC71] to-[#C5A059] text-neutral-900 px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-wider shadow-xl hover:brightness-105 transition flex items-center space-x-2"
+                className="bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-[#202522] px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-wider shadow-xl hover:brightness-105 transition flex items-center space-x-2"
               >
                 <span>Book Ring Ceremony</span>
                 <ArrowRight size={15} />
@@ -114,9 +114,9 @@ export default function RingDecorationPage() {
       {/* ================= CEREMONY CARDS GRID SECTION ================= */}
       <section className="py-20 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="text-xs uppercase tracking-[0.25em] text-[#C5A059] font-bold">Exclusive Collections</span>
+          <span className="text-xs uppercase tracking-[0.25em] text-[#D7A84B] font-bold">Exclusive Collections</span>
           <h2 className="font-serif text-3xl sm:text-4xl font-bold">Ring Ceremony & Couple Decor Packages</h2>
-          <p className="text-neutral-600 text-sm">Explore our specialized packages crafted to make your ring exchange ceremony an absolute fairy tale.</p>
+          <p className="text-[#6B706C] text-sm">Explore our specialized packages crafted to make your ring exchange ceremony an absolute fairy tale.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -131,24 +131,24 @@ export default function RingDecorationPage() {
                   alt={card.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
                 />
-                <div className="absolute top-4 right-4 bg-neutral-900/80 backdrop-blur-md text-[#DFBC71] text-xs font-bold px-3 py-1 rounded-full border border-[#C5A059]/40 shadow">
+                <div className="absolute top-4 right-4 bg-neutral-900/80 backdrop-blur-md text-[#DFBC71] text-xs font-bold px-3 py-1 rounded-full border border-[#D7A84B]/40 shadow">
                   {card.price}
                 </div>
               </div>
 
               <div className="p-6 flex flex-col justify-between flex-grow space-y-4">
                 <div>
-                  <h3 className="font-serif text-lg font-bold text-neutral-900 mb-2 group-hover:text-[#C5A059] transition">
+                  <h3 className="font-serif text-lg font-bold text-[#202522] mb-2 group-hover:text-[#D7A84B] transition">
                     {card.title}
                   </h3>
-                  <p className="text-neutral-600 text-xs leading-relaxed">
+                  <p className="text-[#6B706C] text-xs leading-relaxed">
                     {card.desc}
                   </p>
                 </div>
 
                 <Link
                   href="/contact"
-                  className="w-full block text-center py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#FAF8F5] border border-[#C5A059]/40 text-neutral-900 hover:bg-[#C5A059] hover:text-white transition duration-300"
+                  className="w-full block text-center py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#FAF8F5] border border-[#D7A84B]/40 text-[#202522] hover:bg-[#D7A84B] hover:text-white transition duration-300"
                 >
                   Select Package
                 </Link>
@@ -162,9 +162,9 @@ export default function RingDecorationPage() {
       <section className="py-20 bg-[#F5F1E9] border-t border-[#E8DFD1]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
-            <span className="text-xs uppercase tracking-[0.25em] text-[#C5A059] font-bold">Visual Showcase</span>
+            <span className="text-xs uppercase tracking-[0.25em] text-[#D7A84B] font-bold">Visual Showcase</span>
             <h2 className="font-serif text-3xl font-bold">Highlights & Stage Inspirations</h2>
-            <p className="text-neutral-600 text-sm">Experience the grandeur of our previous setup themes through clear visual previews.</p>
+            <p className="text-[#6B706C] text-sm">Experience the grandeur of our previous setup themes through clear visual previews.</p>
           </div>
 
           {/* Slider Card Container */}
@@ -186,16 +186,16 @@ export default function RingDecorationPage() {
 
             {/* Slide Content */}
             <div className="p-8 sm:p-12 flex flex-col justify-center space-y-6 bg-white">
-              <div className="inline-flex items-center space-x-2 bg-[#C5A059]/10 border border-[#C5A059]/30 px-3 py-1 rounded-full text-[#C5A059] text-xs font-bold tracking-widest uppercase w-max">
+              <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/10 border border-[#D7A84B]/30 px-3 py-1 rounded-full text-[#D7A84B] text-xs font-bold tracking-widest uppercase w-max">
                 <Sparkles size={13} />
                 <span>Featured Highlights</span>
               </div>
 
-              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-neutral-900">
+              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#202522]">
                 {slideImages[currentSlide].title}
               </h3>
 
-              <p className="text-neutral-600 text-sm sm:text-base leading-relaxed">
+              <p className="text-[#6B706C] text-sm sm:text-base leading-relaxed">
                 {slideImages[currentSlide].desc}
               </p>
 
@@ -206,7 +206,7 @@ export default function RingDecorationPage() {
                     key={idx}
                     onClick={() => setCurrentSlide(idx)}
                     className={`h-2 rounded-full transition-all duration-300 ${
-                      idx === currentSlide ? "w-8 bg-[#C5A059]" : "w-2 bg-neutral-300"
+                      idx === currentSlide ? "w-8 bg-[#D7A84B]" : "w-2 bg-neutral-300"
                     }`}
                   />
                 ))}
@@ -223,30 +223,30 @@ export default function RingDecorationPage() {
             
             {/* Left Content (Love Theme) */}
             <div className="p-8 sm:p-12 space-y-6">
-              <div className="inline-flex items-center space-x-2 bg-[#C5A059]/10 border border-[#C5A059]/30 px-3 py-1 rounded-full text-[#C5A059] text-xs font-bold tracking-widest uppercase">
+              <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/10 border border-[#D7A84B]/30 px-3 py-1 rounded-full text-[#D7A84B] text-xs font-bold tracking-widest uppercase">
                 <Heart size={13} className="text-rose-500 fill-rose-500" />
                 <span>Endless Romance</span>
               </div>
 
               <h2 className="font-serif text-3xl sm:text-4xl font-bold leading-tight">
-                Designed With Love, <br /><span className="text-[#C5A059]">Remembered Forever</span>
+                Designed With Love, <br /><span className="text-[#D7A84B]">Remembered Forever</span>
               </h2>
 
-              <p className="text-neutral-600 text-sm leading-relaxed">
+              <p className="text-[#6B706C] text-sm leading-relaxed">
                 Your engagement is the first milestone of a lifelong journey together. Our expert decorators pour passion into every petal, light, and corner to ensure your story is told with utmost elegance and grace.
               </p>
 
               <div className="space-y-3 pt-2">
-                <div className="flex items-center space-x-3 text-xs text-neutral-700 font-medium">
-                  <CheckCircle size={16} className="text-[#C5A059]" />
+                <div className="flex items-center space-x-3 text-xs text-[#202522] font-medium">
+                  <CheckCircle size={16} className="text-[#D7A84B]" />
                   <span>Customized Theme Consultation & 3D Preview</span>
                 </div>
-                <div className="flex items-center space-x-3 text-xs text-neutral-700 font-medium">
-                  <CheckCircle size={16} className="text-[#C5A059]" />
+                <div className="flex items-center space-x-3 text-xs text-[#202522] font-medium">
+                  <CheckCircle size={16} className="text-[#D7A84B]" />
                   <span>Fresh Imported Flowers & Organic Balloons</span>
                 </div>
-                <div className="flex items-center space-x-3 text-xs text-neutral-700 font-medium">
-                  <CheckCircle size={16} className="text-[#C5A059]" />
+                <div className="flex items-center space-x-3 text-xs text-[#202522] font-medium">
+                  <CheckCircle size={16} className="text-[#D7A84B]" />
                   <span>Punctual On-Site Setup & Dedicated Manager</span>
                 </div>
               </div>
@@ -254,7 +254,7 @@ export default function RingDecorationPage() {
               <div className="pt-4">
                 <Link
                   href="/contact"
-                  className="inline-flex items-center space-x-2 bg-neutral-900 text-white hover:bg-[#C5A059] hover:text-neutral-900 transition px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-md"
+                  className="inline-flex items-center space-x-2 bg-neutral-900 text-white hover:bg-[#D7A84B] hover:text-[#202522] transition px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-md"
                 >
                   <span>Plan Your Engagement</span>
                   <ArrowRight size={14} />

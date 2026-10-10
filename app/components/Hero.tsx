@@ -62,7 +62,7 @@ export default function Hero() {
   const currentSlide = slides[currentIndex];
 
   return (
-    <div className="w-full min-h-screen bg-[#F3EFE9] font-sans text-neutral-900 selection:bg-amber-400 selection:text-black">
+    <div className="w-full min-h-screen bg-[#F3EFE9] font-sans text-[#202522] selection:bg-[#8CBC67] selection:text-black">
 
       {/* ================= HERO SECTION CARD ================= */}
       <div className="max-w-[1212px] mx-auto p-4 sm:p-6">
@@ -82,24 +82,24 @@ export default function Hero() {
           {/* Hero Content */}
           <div className="relative z-20 h-full flex flex-col justify-center px-8 sm:px-14">
             <div className="max-w-xl">
-              <p className="text-xs tracking-[0.2em] text-amber-400 font-semibold mb-4 uppercase">
+              <p className="text-xs tracking-[0.2em] text-[#8CBC67] font-semibold mb-4 uppercase">
                 {currentSlide.subtitle}
               </p>
               <h1 className="text-4xl md:text-6xl font-serif font-bold leading-tight mb-6">
                 {currentSlide.titleFirst} <br />
-                <span className="font-bold text-amber-300">{currentSlide.titleItalic}</span>
+                <span className="font-bold text-[#8CBC67]">{currentSlide.titleItalic}</span>
               </h1>
               <p className="text-gray-200 text-sm md:text-base leading-relaxed mb-8 max-w-md">
                 {currentSlide.description}
               </p>
 
               <div className="flex items-center space-x-6">
-                <button className="bg-amber-300 text-black px-7 py-3.5 rounded-full font-semibold text-sm flex items-center space-x-3 hover:bg-amber-400 transition shadow-md cursor-pointer">
+                <button className="bg-[#D7A84B] text-black px-7 py-3.5 rounded-full font-semibold text-sm flex items-center space-x-3 hover:bg-[#8CBC67] transition shadow-md cursor-pointer">
                   <span>Explore Our Services</span>
                   <ArrowRight size={18} />
                 </button>
                 <button className="flex items-center space-x-3 text-white group cursor-pointer">
-                  <span className="w-10 h-10 rounded-full border border-white/40 flex items-center justify-center group-hover:border-amber-400 group-hover:bg-amber-400/10 transition">
+                  <span className="w-10 h-10 rounded-full border border-white/40 flex items-center justify-center group-hover:border-[#8CBC67] group-hover:bg-[#8CBC67]/10 transition">
                     <Play size={14} className="fill-white ml-0.5" />
                   </span>
                   <span className="text-sm font-medium tracking-wide">Watch Our Story</span>
@@ -112,14 +112,14 @@ export default function Hero() {
           <button
             onClick={prevSlide}
             aria-label="Previous slide"
-            className="absolute left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/90 text-neutral-800 flex items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
+            className="absolute left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/90 text-[#202522] flex items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
           >
             <ChevronLeft size={20} />
           </button>
           <button
             onClick={nextSlide}
             aria-label="Next slide"
-            className="absolute right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/90 text-neutral-800 flex items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
+            className="absolute right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/90 text-[#202522] flex items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
           >
             <ChevronRight size={20} />
           </button>
@@ -132,7 +132,7 @@ export default function Hero() {
                 onClick={() => setCurrentIndex(idx)}
                 aria-label={`Go to slide ${idx + 1}`}
                 className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                  currentIndex === idx ? "w-6 bg-amber-400" : "w-2 bg-white/50 hover:bg-white/80"
+                  currentIndex === idx ? "w-6 bg-[#8CBC67]" : "w-2 bg-white/50 hover:bg-white/80"
                 }`}
               />
             ))}

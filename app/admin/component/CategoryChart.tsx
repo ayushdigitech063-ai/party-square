@@ -14,9 +14,9 @@ export default function CategoryChart() {
     .join(", ");
 
   return (
-    <div className="bg-white border border-amber-200/80 rounded-3xl p-6 shadow-sm">
+    <div className="bg-white border border-[#E8E8E3]/80 rounded-3xl p-6 shadow-sm">
 
-      <h3 className="font-serif text-xl font-bold text-neutral-900">
+      <h3 className="font-serif text-xl font-bold text-[#202522]">
         Bookings by category
       </h3>
 
@@ -33,11 +33,11 @@ export default function CategoryChart() {
 
           <div className="absolute inset-5 rounded-full bg-white flex flex-col items-center justify-center">
 
-            <span className="font-serif text-2xl font-bold text-neutral-900 lining-nums">
+            <span className="font-serif text-2xl font-bold text-[#202522] lining-nums">
               1,248
             </span>
 
-            <span className="text-[10px] uppercase tracking-wider text-neutral-400">
+            <span className="text-[10px] uppercase tracking-wider text-[#6B706C]">
               bookings
             </span>
 
@@ -55,7 +55,7 @@ export default function CategoryChart() {
             className="flex items-center justify-between text-xs"
           >
 
-            <span className="flex items-center gap-2 text-neutral-700">
+            <span className="flex items-center gap-2 text-[#202522]">
 
               <span
                 className="w-2.5 h-2.5 rounded-full"
@@ -69,7 +69,7 @@ export default function CategoryChart() {
 
             </span>
 
-            <span className="font-bold text-neutral-900">
+            <span className="font-bold text-[#202522]">
               {category.value}%
             </span>
 

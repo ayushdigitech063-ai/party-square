@@ -56,22 +56,22 @@
 
 //   if (loading) {
 //     return (
-//       <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center text-center">
-//         <p className="text-amber-900 font-serif text-lg">Loading...</p>
+//       <div className="min-h-screen bg-[#FCFBF7] flex items-center justify-center text-center">
+//         <p className="text-[#202522] font-serif text-lg">Loading...</p>
 //       </div>
 //     );
 //   }
 
 //   if (!foundItem) {
 //     return (
-//       <div className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center text-center px-4 font-sans">
+//       <div className="min-h-screen bg-[#FCFBF7] flex flex-col items-center justify-center text-center px-4 font-sans">
 //         <h2 className="text-2xl font-serif font-bold text-gray-900 mb-2">
 //           Item Not Found
 //         </h2>
 
 //         <Link
 //           href="/"
-//           className="bg-amber-900 text-white px-6 py-2.5 rounded-full text-xs uppercase font-bold transition"
+//           className="bg-[#202522] text-white px-6 py-2.5 rounded-full text-xs uppercase font-bold transition"
 //         >
 //           Back to Home
 //         </Link>
@@ -121,7 +121,7 @@
 //   };
 
 //   return (
-//     <div className="min-h-screen bg-[#FAF7F2] text-[#1A1A1A] font-sans">
+//     <div className="min-h-screen bg-[#FCFBF7] text-[#202522] font-sans">
 //       {/* =====================================================
 //       PAGE CONTENT
 //   ====================================================== */}
@@ -129,21 +129,21 @@
 //         {/* =====================================================
 //         BREADCRUMB
 //     ====================================================== */}
-//         <div className="flex items-center gap-2 text-xs sm:text-sm text-neutral-500 mb-6">
+//         <div className="flex items-center gap-2 text-xs sm:text-sm text-[#6B706C] mb-6">
 //           <button
 //             onClick={() => router.back()}
-//             className="hover:text-amber-800 transition"
+//             className="hover:text-[#202522] transition"
 //           >
 //             Back
 //           </button>
 
 //           <span>›</span>
 
-//           <span className="hover:text-amber-800 transition">Decorations</span>
+//           <span className="hover:text-[#202522] transition">Decorations</span>
 
 //           <span>›</span>
 
-//           <span className="text-neutral-900 font-medium truncate">
+//           <span className="text-[#202522] font-medium truncate">
 //             {foundItem.name}
 //           </span>
 //         </div>
@@ -174,8 +174,8 @@
 //                   transition
 //                   ${
 //                     item === 1
-//                       ? "border-amber-500 ring-2 ring-amber-100"
-//                       : "border-amber-100 hover:border-amber-300"
+//                       ? "border-[#8CBC67] ring-2 ring-[#EEF6EB]"
+//                       : "border-[#E8E8E3] hover:border-[#8CBC67]"
 //                   }
 //                 `}
 //                   >
@@ -192,15 +192,15 @@
 //                 h-16
 //                 sm:h-[72px]
 //                 rounded-xl
-//                 bg-amber-50
+//                 bg-[#EEF6EB]
 //                 border
-//                 border-amber-100
+//                 border-[#E8E8E3]
 //                 flex
 //                 items-center
 //                 justify-center
 //                 text-xs
 //                 font-semibold
-//                 text-amber-800
+//                 text-[#202522]
 //               "
 //                 >
 //                   +5
@@ -219,7 +219,7 @@
 //                 overflow-hidden
 //                 bg-neutral-100
 //                 border
-//                 border-amber-100
+//                 border-[#E8E8E3]
 //                 shadow-sm
 //               "
 //                 >
@@ -245,7 +245,7 @@
 //                     gap-2
 //                     bg-white/95
 //                     backdrop-blur-sm
-//                     text-amber-900
+//                     text-[#202522]
 //                     px-4
 //                     py-2
 //                     rounded-full
@@ -286,7 +286,7 @@
 //                       className={
 //                         isLiked
 //                           ? "fill-rose-500 text-rose-500"
-//                           : "text-neutral-700"
+//                           : "text-[#202522]"
 //                       }
 //                     />
 //                   </button>
@@ -326,7 +326,7 @@
 //                   flex
 //                   items-center
 //                   justify-center
-//                   text-neutral-800
+//                   text-[#202522]
 //                   transition
 //                 "
 //                   >
@@ -349,7 +349,7 @@
 //                   flex
 //                   items-center
 //                   justify-center
-//                   text-neutral-800
+//                   text-[#202522]
 //                   transition
 //                 "
 //                   >
@@ -365,7 +365,7 @@
 //                 mt-4
 //                 bg-white
 //                 border
-//                 border-amber-100
+//                 border-[#E8E8E3]
 //                 rounded-2xl
 //                 px-4
 //                 py-4
@@ -381,10 +381,10 @@
 //                     justify-center
 //                     gap-1.5
 //                     text-xs
-//                     text-neutral-700
+//                     text-[#202522]
 //                   "
 //                     >
-//                       <span className="text-amber-600">✦</span>
+//                       <span className="text-[#8CBC67]">✦</span>
 
 //                       <span>100% Verified</span>
 //                     </div>
@@ -398,10 +398,10 @@
 //                     justify-center
 //                     gap-1.5
 //                     text-xs
-//                     text-neutral-700
+//                     text-[#202522]
 //                   "
 //                     >
-//                       <span className="text-amber-600">▣</span>
+//                       <span className="text-[#8CBC67]">▣</span>
 
 //                       <span>Real Photos</span>
 //                     </div>
@@ -415,10 +415,10 @@
 //                     justify-center
 //                     gap-1.5
 //                     text-xs
-//                     text-neutral-700
+//                     text-[#202522]
 //                   "
 //                     >
-//                       <span className="text-amber-600">♟</span>
+//                       <span className="text-[#8CBC67]">♟</span>
 
 //                       <span>Real Buyers</span>
 //                     </div>
@@ -441,7 +441,7 @@
 //               bg-white
 //               rounded-3xl
 //               border
-//               border-amber-100
+//               border-[#E8E8E3]
 //               p-5
 //               shadow-sm
 //             "
@@ -452,8 +452,8 @@
 //                 inline-flex
 //                 items-center
 //                 gap-2
-//                 bg-amber-100
-//                 text-amber-800
+//                 bg-[#EEF6EB]
+//                 text-[#202522]
 //                 px-3.5
 //                 py-1.5
 //                 rounded-full
@@ -467,7 +467,7 @@
 //                 </div>
 
 //                 {/* CATEGORY */}
-//                 <p className="text-xs text-amber-700 font-semibold uppercase tracking-wide">
+//                 <p className="text-xs text-[#202522] font-semibold uppercase tracking-wide">
 //                   {foundItem.categoryTitle}
 //                 </p>
 
@@ -479,7 +479,7 @@
 //                 sm:text-3xl
 //                 font-serif
 //                 font-bold
-//                 text-neutral-900
+//                 text-[#202522]
 //                 leading-tight
 //               "
 //                 >
@@ -493,14 +493,14 @@
 //                       <Star
 //                         key={i}
 //                         size={17}
-//                         className="fill-amber-500 text-amber-500"
+//                         className="fill-amber-500 text-[#8CBC67]"
 //                       />
 //                     ))}
 //                   </div>
 
-//                   <span className="font-bold text-neutral-900">4.8</span>
+//                   <span className="font-bold text-[#202522]">4.8</span>
 
-//                   <span className="text-sm text-neutral-500">
+//                   <span className="text-sm text-[#6B706C]">
 //                     (128 reviews)
 //                   </span>
 //                 </div>
@@ -511,7 +511,7 @@
 //                     className="
 //                   text-3xl
 //                   font-extrabold
-//                   text-neutral-900
+//                   text-[#202522]
 //                 "
 //                   >
 //                     {formattedTotalPrice}
@@ -520,7 +520,7 @@
 //                   <span
 //                     className="
 //                   text-sm
-//                   text-neutral-400
+//                   text-[#6B706C]
 //                   line-through
 //                 "
 //                   >
@@ -529,8 +529,8 @@
 
 //                   <span
 //                     className="
-//                   bg-amber-100
-//                   text-amber-800
+//                   bg-[#EEF6EB]
+//                   text-[#202522]
 //                   px-3
 //                   py-1
 //                   rounded-full
@@ -543,7 +543,7 @@
 //                 </div>
 
 //                 {/* UNIT PRICE */}
-//                 <p className="mt-2 text-xs text-neutral-400">
+//                 <p className="mt-2 text-xs text-[#6B706C]">
 //                   Unit Price: {foundItem.price}
 //                 </p>
 
@@ -553,7 +553,7 @@
 //                 mt-4
 //                 text-sm
 //                 leading-6
-//                 text-neutral-600
+//                 text-[#6B706C]
 //               "
 //                 >
 //                   {foundItem.desc}
@@ -571,18 +571,18 @@
 //                     h-9
 //                     mx-auto
 //                     rounded-full
-//                     bg-amber-50
+//                     bg-[#EEF6EB]
 //                     flex
 //                     items-center
 //                     justify-center
 //                     border
-//                     border-amber-100
+//                     border-[#E8E8E3]
 //                   "
 //                     >
-//                       <CheckCircle2 size={17} className="text-amber-700" />
+//                       <CheckCircle2 size={17} className="text-[#202522]" />
 //                     </div>
 
-//                     <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
+//                     <p className="mt-2 text-[10px] sm:text-xs text-[#6B706C]">
 //                       Customizable
 //                     </p>
 //                   </div>
@@ -595,18 +595,18 @@
 //                     h-9
 //                     mx-auto
 //                     rounded-full
-//                     bg-amber-50
+//                     bg-[#EEF6EB]
 //                     flex
 //                     items-center
 //                     justify-center
 //                     border
-//                     border-amber-100
+//                     border-[#E8E8E3]
 //                   "
 //                     >
-//                       <Truck size={17} className="text-amber-700" />
+//                       <Truck size={17} className="text-[#202522]" />
 //                     </div>
 
-//                     <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
+//                     <p className="mt-2 text-[10px] sm:text-xs text-[#6B706C]">
 //                       On-Time Setup
 //                     </p>
 //                   </div>
@@ -619,18 +619,18 @@
 //                     h-9
 //                     mx-auto
 //                     rounded-full
-//                     bg-amber-50
+//                     bg-[#EEF6EB]
 //                     flex
 //                     items-center
 //                     justify-center
 //                     border
-//                     border-amber-100
+//                     border-[#E8E8E3]
 //                   "
 //                     >
-//                       <Sparkles size={17} className="text-amber-700" />
+//                       <Sparkles size={17} className="text-[#202522]" />
 //                     </div>
 
-//                     <p className="mt-2 text-[10px] sm:text-xs text-neutral-600">
+//                     <p className="mt-2 text-[10px] sm:text-xs text-[#6B706C]">
 //                       Premium Quality
 //                     </p>
 //                   </div>
@@ -643,9 +643,9 @@
 //                   className="
 //                 mt-5
 //                 rounded-2xl
-//                 bg-amber-50/70
+//                 bg-[#EEF6EB]/70
 //                 border
-//                 border-amber-100
+//                 border-[#E8E8E3]
 //                 px-4
 //                 py-3
 //               "
@@ -669,7 +669,7 @@
 //                 QUANTITY
 //             ================================================== */}
 //                 <div className="flex items-center justify-between mt-5">
-//                   <span className="text-sm font-semibold text-neutral-700">
+//                   <span className="text-sm font-semibold text-[#202522]">
 //                     Quantity
 //                   </span>
 
@@ -678,7 +678,7 @@
 //                   flex
 //                   items-center
 //                   border
-//                   border-amber-300
+//                   border-[#8CBC67]
 //                   rounded-xl
 //                   overflow-hidden
 //                   bg-white
@@ -692,8 +692,8 @@
 //                     flex
 //                     items-center
 //                     justify-center
-//                     text-amber-800
-//                     hover:bg-amber-50
+//                     text-[#202522]
+//                     hover:bg-[#EEF6EB]
 //                     transition
 //                     cursor-pointer
 //                   "
@@ -720,8 +720,8 @@
 //                     flex
 //                     items-center
 //                     justify-center
-//                     text-amber-800
-//                     hover:bg-amber-50
+//                     text-[#202522]
+//                     hover:bg-[#EEF6EB]
 //                     transition
 //                     cursor-pointer
 //                   "
@@ -750,10 +750,10 @@
 //                   h-12
 //                   rounded-xl
 //                   border
-//                   border-amber-300
-//                   bg-amber-50
-//                   hover:bg-amber-100
-//                   text-amber-900
+//                   border-[#8CBC67]
+//                   bg-[#EEF6EB]
+//                   hover:bg-[#EEF6EB]
+//                   text-[#202522]
 //                   font-bold
 //                   text-sm
 //                   flex
@@ -775,8 +775,8 @@
 //                     className="
 //                   h-12
 //                   rounded-xl
-//                   bg-[#8B3F05]
-//                   hover:bg-[#713200]
+//                   bg-[#8CBC67]
+//                   hover:bg-[#7AB055]
 //                   text-white
 //                   font-bold
 //                   text-sm
@@ -797,7 +797,7 @@
 //                 </div>
 
 //                 {/* CHECKOUT MESSAGE */}
-//                 <p className="text-center text-xs text-neutral-400 mt-4">
+//                 <p className="text-center text-xs text-[#6B706C] mt-4">
 //                   Secure checkout · Guaranteed satisfaction
 //                 </p>
 //               </div>
@@ -816,7 +816,7 @@
 //         bg-white
 //         rounded-3xl
 //         border
-//         border-amber-100
+//         border-[#E8E8E3]
 //         shadow-sm
 //         overflow-hidden
 //       "
@@ -824,7 +824,7 @@
 //           {/* =================================================
 //           TABS
 //       ================================================== */}
-//           <div className="border-b border-neutral-100 overflow-x-auto sticky top-0 bg-white/95 backdrop-blur-md z-20">
+//           <div className="border-b border-[#E8E8E3] overflow-x-auto sticky top-0 bg-white/95 backdrop-blur-md z-20">
 //             <div className="flex min-w-max">
 //               {[
 //                 "Overview",
@@ -845,8 +845,8 @@
 //                 transition
 //                 ${
 //                   index === 0
-//                     ? "text-amber-800 border-b-2 border-amber-500"
-//                     : "text-neutral-500 hover:text-amber-800"
+//                     ? "text-[#202522] border-b-2 border-[#8CBC67]"
+//                     : "text-[#6B706C] hover:text-[#202522]"
 //                 }
 //               `}
 //                 >
@@ -866,7 +866,7 @@
 //           p-5
 //           sm:p-8
 //           border-b
-//           border-neutral-100
+//           border-[#E8E8E3]
 //         "
 //           >
 //             <h2
@@ -875,7 +875,7 @@
 //             sm:text-2xl
 //             font-serif
 //             font-bold
-//             text-neutral-900
+//             text-[#202522]
 //             leading-tight
 //           "
 //             >
@@ -888,7 +888,7 @@
 //             text-sm
 //             sm:text-base
 //             leading-7
-//             text-neutral-600
+//             text-[#6B706C]
 //           "
 //             >
 //               {foundItem.desc}
@@ -904,50 +904,50 @@
 //             mt-7
 //           "
 //             >
-//               <div className="rounded-2xl bg-amber-50 p-4">
-//                 <Sparkles size={19} className="text-amber-700" />
+//               <div className="rounded-2xl bg-[#EEF6EB] p-4">
+//                 <Sparkles size={19} className="text-[#202522]" />
 
-//                 <p className="mt-3 text-xs font-semibold text-neutral-800">
+//                 <p className="mt-3 text-xs font-semibold text-[#202522]">
 //                   Premium Decor
 //                 </p>
 
-//                 <p className="text-[11px] text-neutral-500 mt-1">
+//                 <p className="text-[11px] text-[#6B706C] mt-1">
 //                   & Setup
 //                 </p>
 //               </div>
 
-//               <div className="rounded-2xl bg-amber-50 p-4">
-//                 <CheckCircle2 size={19} className="text-amber-700" />
+//               <div className="rounded-2xl bg-[#EEF6EB] p-4">
+//                 <CheckCircle2 size={19} className="text-[#202522]" />
 
-//                 <p className="mt-3 text-xs font-semibold text-neutral-800">
+//                 <p className="mt-3 text-xs font-semibold text-[#202522]">
 //                   Verified
 //                 </p>
 
-//                 <p className="text-[11px] text-neutral-500 mt-1">
+//                 <p className="text-[11px] text-[#6B706C] mt-1">
 //                   Quality
 //                 </p>
 //               </div>
 
-//               <div className="rounded-2xl bg-amber-50 p-4">
-//                 <Truck size={19} className="text-amber-700" />
+//               <div className="rounded-2xl bg-[#EEF6EB] p-4">
+//                 <Truck size={19} className="text-[#202522]" />
 
-//                 <p className="mt-3 text-xs font-semibold text-neutral-800">
+//                 <p className="mt-3 text-xs font-semibold text-[#202522]">
 //                   On-Time
 //                 </p>
 
-//                 <p className="text-[11px] text-neutral-500 mt-1">
+//                 <p className="text-[11px] text-[#6B706C] mt-1">
 //                   Setup
 //                 </p>
 //               </div>
 
-//               <div className="rounded-2xl bg-amber-50 p-4">
-//                 <Calendar size={19} className="text-amber-700" />
+//               <div className="rounded-2xl bg-[#EEF6EB] p-4">
+//                 <Calendar size={19} className="text-[#202522]" />
 
-//                 <p className="mt-3 text-xs font-semibold text-neutral-800">
+//                 <p className="mt-3 text-xs font-semibold text-[#202522]">
 //                   Easy
 //                 </p>
 
-//                 <p className="text-[11px] text-neutral-500 mt-1">
+//                 <p className="text-[11px] text-[#6B706C] mt-1">
 //                   Booking
 //                 </p>
 //               </div>
@@ -966,7 +966,7 @@
 //           p-5
 //           sm:p-8
 //           border-b
-//           border-neutral-100
+//           border-[#E8E8E3]
 //         "
 //           >
 //             {/* WHAT'S INCLUDED */}
@@ -978,7 +978,7 @@
 //             rounded-2xl
 //             bg-[#FFF9E8]
 //             border
-//             border-amber-100
+//             border-[#E8E8E3]
 //             p-6
 //           "
 //             >
@@ -987,7 +987,7 @@
 //               font-serif
 //               font-bold
 //               text-lg
-//               text-neutral-900
+//               text-[#202522]
 //               flex
 //               items-center
 //               gap-2
@@ -1012,7 +1012,7 @@
 //                   items-center
 //                   gap-3
 //                   text-sm
-//                   text-neutral-700
+//                   text-[#202522]
 //                 "
 //                   >
 //                     <CheckCircle2
@@ -1044,7 +1044,7 @@
 //               font-serif
 //               font-bold
 //               text-lg
-//               text-neutral-900
+//               text-[#202522]
 //               flex
 //               items-center
 //               gap-2
@@ -1068,7 +1068,7 @@
 //                   items-center
 //                   gap-3
 //                   text-sm
-//                   text-neutral-700
+//                   text-[#202522]
 //                 "
 //                   >
 //                     <span className="w-1.5 h-1.5 rounded-full bg-rose-400 shrink-0" />
@@ -1090,8 +1090,8 @@
 //           p-5
 //           sm:p-8
 //           border-b
-//           border-neutral-100
-//           bg-[#FAF7F2]/40
+//           border-[#E8E8E3]
+//           bg-[#FCFBF7]/40
 //         "
 //           >
 //             <div className="max-w-3xl">
@@ -1100,7 +1100,7 @@
 //               font-serif
 //               font-bold
 //               text-lg
-//               text-neutral-900
+//               text-[#202522]
 //               mb-2
 //             "
 //               >
@@ -1110,7 +1110,7 @@
 //               <p
 //                 className="
 //               text-sm
-//               text-neutral-600
+//               text-[#6B706C]
 //               leading-relaxed
 //             "
 //               >
@@ -1132,7 +1132,7 @@
 //           p-5
 //           sm:p-8
 //           border-b
-//           border-neutral-100
+//           border-[#E8E8E3]
 //         "
 //           >
 //             <h3
@@ -1140,7 +1140,7 @@
 //             font-serif
 //             font-bold
 //             text-xl
-//             text-neutral-900
+//             text-[#202522]
 //             mb-6
 //           "
 //             >
@@ -1148,45 +1148,45 @@
 //             </h3>
 
 //             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//               <div className="rounded-2xl border border-neutral-100 bg-white p-5">
-//                 <h4 className="font-semibold text-sm text-neutral-900">
+//               <div className="rounded-2xl border border-[#E8E8E3] bg-white p-5">
+//                 <h4 className="font-semibold text-sm text-[#202522]">
 //                   Can I customize the decoration?
 //                 </h4>
 
-//                 <p className="mt-2 text-sm leading-6 text-neutral-600">
+//                 <p className="mt-2 text-sm leading-6 text-[#6B706C]">
 //                   Yes. Customization can be discussed with the team according
 //                   to your event requirements and selected service.
 //                 </p>
 //               </div>
 
-//               <div className="rounded-2xl border border-neutral-100 bg-white p-5">
-//                 <h4 className="font-semibold text-sm text-neutral-900">
+//               <div className="rounded-2xl border border-[#E8E8E3] bg-white p-5">
+//                 <h4 className="font-semibold text-sm text-[#202522]">
 //                   How early should I book?
 //                 </h4>
 
-//                 <p className="mt-2 text-sm leading-6 text-neutral-600">
+//                 <p className="mt-2 text-sm leading-6 text-[#6B706C]">
 //                   Booking in advance is recommended so the required date,
 //                   materials, and setup team can be arranged.
 //                 </p>
 //               </div>
 
-//               <div className="rounded-2xl border border-neutral-100 bg-white p-5">
-//                 <h4 className="font-semibold text-sm text-neutral-900">
+//               <div className="rounded-2xl border border-[#E8E8E3] bg-white p-5">
+//                 <h4 className="font-semibold text-sm text-[#202522]">
 //                   Is setup included?
 //                 </h4>
 
-//                 <p className="mt-2 text-sm leading-6 text-neutral-600">
+//                 <p className="mt-2 text-sm leading-6 text-[#6B706C]">
 //                   The listed decoration service includes the setup items
 //                   described in the What's Included section.
 //                 </p>
 //               </div>
 
-//               <div className="rounded-2xl border border-neutral-100 bg-white p-5">
-//                 <h4 className="font-semibold text-sm text-neutral-900">
+//               <div className="rounded-2xl border border-[#E8E8E3] bg-white p-5">
+//                 <h4 className="font-semibold text-sm text-[#202522]">
 //                   How do I confirm my booking?
 //                 </h4>
 
-//                 <p className="mt-2 text-sm leading-6 text-neutral-600">
+//                 <p className="mt-2 text-sm leading-6 text-[#6B706C]">
 //                   Use the Book Now button to continue to the existing booking
 //                   flow for this product.
 //                 </p>
@@ -1216,7 +1216,7 @@
 //             className="
 //           bg-white
 //           border
-//           border-amber-100
+//           border-[#E8E8E3]
 //           rounded-3xl
 //           p-6
 //           sm:p-8
@@ -1227,7 +1227,7 @@
 //             text-xl
 //             font-serif
 //             font-bold
-//             text-neutral-900
+//             text-[#202522]
 //           "
 //             >
 //               Customer Reviews
@@ -1242,12 +1242,12 @@
 //                     <Star
 //                       key={i}
 //                       size={16}
-//                       className="fill-amber-500 text-amber-500"
+//                       className="fill-amber-500 text-[#8CBC67]"
 //                     />
 //                   ))}
 //                 </div>
 
-//                 <p className="text-xs text-neutral-500 mt-1">
+//                 <p className="text-xs text-[#6B706C] mt-1">
 //                   128 verified reviews
 //                 </p>
 //               </div>
@@ -1263,7 +1263,7 @@
 //                 ["1", "0%"],
 //               ].map(([rating, percentage]) => (
 //                 <div key={rating} className="flex items-center gap-3 text-xs">
-//                   <span className="w-4 text-neutral-600">{rating}</span>
+//                   <span className="w-4 text-[#6B706C]">{rating}</span>
 
 //                   <div
 //                     className="
@@ -1277,7 +1277,7 @@
 //                     <div
 //                       className="
 //                     h-full
-//                     bg-amber-500
+//                     bg-[#8CBC67]
 //                     rounded-full
 //                   "
 //                       style={{
@@ -1286,7 +1286,7 @@
 //                     />
 //                   </div>
 
-//                   <span className="w-10 text-right text-neutral-500">
+//                   <span className="w-10 text-right text-[#6B706C]">
 //                     {percentage}
 //                   </span>
 //                 </div>
@@ -1301,7 +1301,7 @@
 //             className="
 //           bg-[#FFF9E8]
 //           border
-//           border-amber-100
+//           border-[#E8E8E3]
 //           rounded-3xl
 //           p-8
 //           flex
@@ -1309,7 +1309,7 @@
 //           justify-center
 //         "
 //           >
-//             <Sparkles size={24} className="text-amber-600" />
+//             <Sparkles size={24} className="text-[#8CBC67]" />
 
 //             <h3
 //               className="
@@ -1317,7 +1317,7 @@
 //             text-2xl
 //             font-serif
 //             font-bold
-//             text-neutral-900
+//             text-[#202522]
 //           "
 //             >
 //               Because the little moments matter.
@@ -1328,7 +1328,7 @@
 //             mt-3
 //             text-sm
 //             leading-6
-//             text-neutral-600
+//             text-[#6B706C]
 //           "
 //             >
 //               Create beautiful celebrations with thoughtfully designed
@@ -1340,7 +1340,7 @@
 //         RELATED PRODUCTS SECTION
 //     ====================================================== */}
 //         {relatedProducts.length > 0 && (
-//           <section className="mt-10 border-t border-amber-200/50 pt-12 pb-10">
+//           <section className="mt-10 border-t border-[#E8E8E3]/50 pt-12 pb-10">
 //             {/* SECTION HEADING */}
 //             <div className="text-center mb-8">
 //               <span
@@ -1348,8 +1348,8 @@
 //                 inline-flex
 //                 items-center
 //                 justify-center
-//                 bg-amber-100
-//                 text-amber-800
+//                 bg-[#EEF6EB]
+//                 text-[#202522]
 //                 px-4
 //                 py-1.5
 //                 rounded-full
@@ -1369,7 +1369,7 @@
 //                 sm:text-3xl
 //                 font-serif
 //                 font-bold
-//                 text-neutral-900
+//                 text-[#202522]
 //               "
 //               >
 //                 {galleryCategories.find((category : any) =>
@@ -1377,7 +1377,7 @@
 //                 )?.title || "Related Products"}
 //               </h2>
 
-//               <p className="mt-2 text-sm text-neutral-500">
+//               <p className="mt-2 text-sm text-[#6B706C]">
 //                 Explore more products from this collection.
 //               </p>
 //             </div>
@@ -1393,7 +1393,7 @@
 //                     bg-white
 //                     rounded-2xl
 //                     border
-//                     border-amber-200
+//                     border-[#E8E8E3]
 //                     overflow-hidden
 //                     shadow-sm
 //                     hover:shadow-md
@@ -1434,7 +1434,7 @@
 //                         transition
 //                       "
 //                     >
-//                       <Heart size={17} className="text-neutral-700" />
+//                       <Heart size={17} className="text-[#202522]" />
 //                     </button>
 //                   </div>
 
@@ -1445,7 +1445,7 @@
 //                         text-lg
 //                         font-serif
 //                         font-bold
-//                         text-neutral-900
+//                         text-[#202522]
 //                         truncate
 //                       "
 //                     >
@@ -1456,7 +1456,7 @@
 //                       className="
 //                         mt-1
 //                         text-xs
-//                         text-neutral-500
+//                         text-[#6B706C]
 //                         line-clamp-2
 //                         min-h-[32px]
 //                       "
@@ -1466,15 +1466,15 @@
 
 //                     {/* PRICE + BOOK */}
 //                     <div className="flex items-center justify-between mt-4">
-//                       <span className="text-sm font-bold text-neutral-900">
+//                       <span className="text-sm font-bold text-[#202522]">
 //                         {item.price}
 //                       </span>
 
 //                       <Link
 //                         href={`/gallery/${item.id}`}
 //                         className="
-//                           bg-[#8B3F05]
-//                           hover:bg-[#713200]
+//                           bg-[#8CBC67]
+//                           hover:bg-[#7AB055]
 //                           text-white
 //                           px-4
 //                           py-2
@@ -1525,7 +1525,7 @@
 //           sm:p-8
 //           shadow-2xl
 //           border
-//           border-amber-200
+//           border-[#E8E8E3]
 //           space-y-6
 //           text-center
 //         "
@@ -1534,8 +1534,8 @@
 //               className="
 //             w-16
 //             h-16
-//             bg-amber-100
-//             text-amber-900
+//             bg-[#EEF6EB]
+//             text-[#202522]
 //             rounded-full
 //             flex
 //             items-center
@@ -1561,7 +1561,7 @@
 
 //               <p className="text-sm text-gray-600">
 //                 Do you want to confirm the booking for{" "}
-//                 <span className="font-semibold text-amber-900">
+//                 <span className="font-semibold text-[#202522]">
 //                   {foundItem.name}
 //                 </span>{" "}
 //                 ({quantity} unit
@@ -1595,7 +1595,7 @@
 //                 onClick={handleConfirmBooking}
 //                 className="
 //               w-full
-//               bg-amber-900
+//               bg-[#202522]
 //               hover:bg-black
 //               text-white
 //               font-bold
@@ -1680,7 +1680,7 @@
 
 //               <p className="text-sm text-gray-600">
 //                 Your booking for{" "}
-//                 <span className="font-semibold text-amber-900">
+//                 <span className="font-semibold text-[#202522]">
 //                   {foundItem.name}
 //                 </span>{" "}
 //                 has been successfully placed. Our team will contact you soon!
@@ -1694,7 +1694,7 @@
 //               }}
 //               className="
 //             w-full
-//             bg-amber-900
+//             bg-[#202522]
 //             hover:bg-black
 //             text-white
 //             font-bold

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 // jhdsbfhvb
 import React, { useState, useEffect } from "react";
 import {
@@ -29,12 +29,12 @@ export default function BasketPage() {
     ok: boolean;
   } | null>(null);
 
-  // Component load hone par aur localStorage change hone par dreamdeco_cart load karna
+  // Component load hone par aur localStorage change hone par Party Square_cart load karna
   useEffect(() => {
     const fetchCart = () => {
       try {
         const storedCart = JSON.parse(
-          localStorage.getItem("dreamdeco_cart") || "[]",
+          localStorage.getItem("Party Square_cart") || "[]",
         );
         setCart(storedCart);
       } catch (error) {
@@ -59,7 +59,7 @@ export default function BasketPage() {
     try {
       const updatedCart = cart.filter((item) => item.id !== id);
       setCart(updatedCart);
-      localStorage.setItem("dreamdeco_cart", JSON.stringify(updatedCart));
+      localStorage.setItem("Party Square_cart", JSON.stringify(updatedCart));
 
       // Events dispatch karna taaki header aur baaki components update ho jayein
       window.dispatchEvent(new Event("storage"));
@@ -76,7 +76,7 @@ export default function BasketPage() {
       return { ...item, quantity: newQty };
     });
     setCart(updatedCart);
-    localStorage.setItem("dreamdeco_cart", JSON.stringify(updatedCart));
+    localStorage.setItem("Party Square_cart", JSON.stringify(updatedCart));
     window.dispatchEvent(new CustomEvent("cartUpdated"));
   };
 
@@ -128,8 +128,8 @@ export default function BasketPage() {
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-[#FAF7F2] flex flex-col items-center justify-center text-center px-4 font-sans">
-        <div className="w-20 h-20 bg-amber-100 text-amber-900 rounded-full flex items-center justify-center mb-4 shadow-inner">
+      <div className="min-h-screen bg-[#FCFBF7] flex flex-col items-center justify-center text-center px-4 font-sans">
+        <div className="w-20 h-20 bg-[#EEF6EB] text-[#202522] rounded-full flex items-center justify-center mb-4 shadow-inner">
           <ShoppingBag size={36} />
         </div>
         <h2 className="text-3xl font-serif font-bold text-gray-900 mb-2">
@@ -141,7 +141,7 @@ export default function BasketPage() {
         </p>
         <Link
           href="/"
-          className="bg-amber-900 hover:bg-black text-white px-8 py-3 rounded-full text-xs uppercase font-bold tracking-widest transition shadow-lg"
+          className="bg-[#202522] hover:bg-black text-white px-8 py-3 rounded-full text-xs uppercase font-bold tracking-widest transition shadow-lg"
         >
           Explore Decorations
         </Link>
@@ -150,10 +150,10 @@ export default function BasketPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] py-12 px-4 sm:px-8 md:px-16 text-gray-900 font-sans relative">
+    <div className="min-h-screen bg-[#FCFBF7] py-12 px-4 sm:px-8 md:px-16 text-gray-900 font-sans relative">
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-amber-200 pb-6">
+        <div className="flex items-center justify-between border-b border-[#E8E8E3] pb-6">
           <div>
             <h1 className="text-3xl font-serif font-bold text-gray-900">
               Your Basket
@@ -185,10 +185,10 @@ export default function BasketPage() {
             return (
               <div
                 key={item.id}
-                className="bg-white rounded-2xl border border-amber-200 shadow-sm p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 transition hover:shadow-md"
+                className="bg-white rounded-2xl border border-[#E8E8E3] shadow-sm p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 transition hover:shadow-md"
               >
                 <div className="flex items-center space-x-4 w-full sm:w-auto">
-                  <div className="w-20 h-20 rounded-xl overflow-hidden bg-amber-50 border border-amber-100 flex-shrink-0">
+                  <div className="w-20 h-20 rounded-xl overflow-hidden bg-[#EEF6EB] border border-[#E8E8E3] flex-shrink-0">
                     <img
                       src={item.image}
                       alt={item.name}
@@ -202,11 +202,11 @@ export default function BasketPage() {
                     <p className="text-xs text-gray-500">
                       Unit Price: ₹{Number(unitNumeric).toLocaleString("en-IN")}
                     </p>
-                    <div className="inline-flex items-center bg-amber-100 text-amber-900 rounded-full">
+                    <div className="inline-flex items-center bg-[#EEF6EB] text-[#202522] rounded-full">
                       <button
                         onClick={() => handleUpdateQuantity(item.id, -1)}
                         disabled={quantity <= 1}
-                        className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-amber-200 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
+                        className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-[#F7D6C7] disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
                         aria-label="Decrease quantity"
                       >
                         <Minus size={14} />
@@ -216,7 +216,7 @@ export default function BasketPage() {
                       </span>
                       <button
                         onClick={() => handleUpdateQuantity(item.id, 1)}
-                        className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-amber-200 transition cursor-pointer"
+                        className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-[#F7D6C7] transition cursor-pointer"
                         aria-label="Increase quantity"
                       >
                         <Plus size={14} />
@@ -225,12 +225,12 @@ export default function BasketPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-4 border-t sm:border-t-0 pt-3 sm:pt-0 border-amber-100">
+                <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-4 border-t sm:border-t-0 pt-3 sm:pt-0 border-[#E8E8E3]">
                   <div className="text-right">
                     <p className="text-xs text-gray-400 uppercase tracking-wider">
                       Total Price
                     </p>
-                    <p className="text-lg font-bold text-amber-900">
+                    <p className="text-lg font-bold text-[#202522]">
                       {formattedItemTotal}
                     </p>
                   </div>
@@ -245,7 +245,7 @@ export default function BasketPage() {
                         formattedItemTotal,
                       })
                     }
-                    className="px-3.5 py-2 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5 transition cursor-pointer"
+                    className="px-3.5 py-2 rounded-full bg-[#EEF6EB] hover:bg-[#EEF6EB] text-[#202522] text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5 transition cursor-pointer"
                     title="View Details"
                   >
                     <Eye size={15} />
@@ -266,15 +266,15 @@ export default function BasketPage() {
         </div>
 
         {/* Overall Summary Box */}
-        <div className="bg-white rounded-3xl border border-amber-300 shadow-xl p-6 sm:p-8 space-y-6">
-          <div className="flex items-center space-x-2 text-amber-900">
+        <div className="bg-white rounded-3xl border border-[#8CBC67] shadow-xl p-6 sm:p-8 space-y-6">
+          <div className="flex items-center space-x-2 text-[#202522]">
             <Sparkles size={18} />
             <h3 className="text-xl font-serif font-bold">
               Overall Order Summary
             </h3>
           </div>
 
-          <div className="space-y-3 border-t border-b border-amber-100 py-4 text-sm">
+          <div className="space-y-3 border-t border-b border-[#E8E8E3] py-4 text-sm">
             <div className="flex justify-between text-gray-600">
               <span>Total Unique Items:</span>
               <span className="font-semibold text-gray-900">{cart.length}</span>
@@ -308,11 +308,11 @@ export default function BasketPage() {
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value)}
                     placeholder="Enter coupon code"
-                    className="flex-1 border border-amber-200 rounded-full px-4 py-2 text-sm uppercase focus:outline-none focus:border-amber-900"
+                    className="flex-1 border border-[#E8E8E3] rounded-full px-4 py-2 text-sm uppercase focus:outline-none focus:border-[#202522]"
                   />
                   <button
                     onClick={handleApplyCoupon}
-                    className="bg-amber-900 hover:bg-black text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition cursor-pointer"
+                    className="bg-[#202522] hover:bg-black text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition cursor-pointer"
                   >
                     Apply
                   </button>
@@ -331,13 +331,13 @@ export default function BasketPage() {
               <div className="flex justify-between text-emerald-700">
                 <span>Coupon Discount:</span>
                 <span className="font-semibold">
-                  − ₹{discountAmount.toLocaleString("en-IN")}
+                  - ₹{discountAmount.toLocaleString("en-IN")}
                 </span>
               </div>
             )}
             <div className="flex justify-between text-lg font-bold text-gray-900 pt-2 border-t border-amber-50">
               <span>Grand Total Price:</span>
-              <span className="text-amber-900 text-xl">
+              <span className="text-[#202522] text-xl">
                 {formattedGrandTotal}
               </span>
             </div>
@@ -347,7 +347,7 @@ export default function BasketPage() {
             onClick={() =>
               alert("Proceeding to checkout/booking confirmation!")
             }
-            className="w-full bg-[#A0522D] hover:bg-amber-900 text-white font-bold py-4 rounded-full text-xs uppercase tracking-widest transition shadow-lg flex items-center justify-center space-x-2 cursor-pointer"
+            className="w-full bg-[#A0522D] hover:bg-[#202522] text-white font-bold py-4 rounded-full text-xs uppercase tracking-widest transition shadow-lg flex items-center justify-center space-x-2 cursor-pointer"
           >
             <span>Proceed to Checkout</span>
             <ArrowRight size={16} />
@@ -358,7 +358,7 @@ export default function BasketPage() {
       {/* View Details Popup Modal */}
       {selectedItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-amber-200 space-y-6 relative animate-scale-up">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-[#E8E8E3] space-y-6 relative animate-scale-up">
             <button
               onClick={() => setSelectedItem(null)}
               className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-700 transition cursor-pointer"
@@ -366,39 +366,39 @@ export default function BasketPage() {
               <X size={18} />
             </button>
 
-            <div className="flex items-center space-x-4 border-b border-amber-100 pb-4">
+            <div className="flex items-center space-x-4 border-b border-[#E8E8E3] pb-4">
               <img
                 src={selectedItem.image}
                 alt={selectedItem.name}
-                className="w-16 h-16 rounded-xl object-cover border border-amber-200"
+                className="w-16 h-16 rounded-xl object-cover border border-[#E8E8E3]"
               />
               <div>
                 <h3 className="text-xl font-serif font-bold text-gray-900">
                   {selectedItem.name}
                 </h3>
-                <p className="text-xs text-amber-800 font-semibold uppercase tracking-wider">
+                <p className="text-xs text-[#202522] font-semibold uppercase tracking-wider">
                   Package Details
                 </p>
               </div>
             </div>
 
             <div className="space-y-3 text-sm text-gray-700">
-              <div className="flex justify-between bg-amber-50 px-4 py-2.5 rounded-xl">
+              <div className="flex justify-between bg-[#EEF6EB] px-4 py-2.5 rounded-xl">
                 <span className="text-gray-500">Unit Price:</span>
                 <span className="font-bold text-gray-900">
                   ₹{Number(selectedItem.unitNumeric).toLocaleString("en-IN")}
                 </span>
               </div>
-              <div className="flex justify-between bg-amber-50 px-4 py-2.5 rounded-xl">
+              <div className="flex justify-between bg-[#EEF6EB] px-4 py-2.5 rounded-xl">
                 <span className="text-gray-500">Selected Quantity:</span>
-                <span className="font-bold text-amber-900">
+                <span className="font-bold text-[#202522]">
                   {selectedItem.quantity} Unit
                   {selectedItem.quantity > 1 ? "s" : ""}
                 </span>
               </div>
-              <div className="flex justify-between bg-amber-50 px-4 py-2.5 rounded-xl">
+              <div className="flex justify-between bg-[#EEF6EB] px-4 py-2.5 rounded-xl">
                 <span className="text-gray-500">Total Calculated Price:</span>
-                <span className="font-bold text-amber-900">
+                <span className="font-bold text-[#202522]">
                   {selectedItem.formattedItemTotal}
                 </span>
               </div>
@@ -417,7 +417,7 @@ export default function BasketPage() {
 
             <button
               onClick={() => setSelectedItem(null)}
-              className="w-full bg-amber-900 hover:bg-black text-white font-bold py-3 rounded-full text-xs uppercase tracking-widest transition shadow-md cursor-pointer"
+              className="w-full bg-[#202522] hover:bg-black text-white font-bold py-3 rounded-full text-xs uppercase tracking-widest transition shadow-md cursor-pointer"
             >
               Close Details
             </button>
@@ -427,3 +427,4 @@ export default function BasketPage() {
     </div>
   );
 }
+

@@ -1,105 +1,38 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  Sparkles,
-  CheckCircle,
-  ArrowRight,
-  Star,
-  Heart,
-  Gift,
-} from "lucide-react";
-import { useWishlist } from "../../context/wishlistcontext";
-import { christmasProducts } from "@/app/data/christmasProducts";
-import { Product } from "@/app/types/product";
-import ProductCard from "@/app/components/ProductCard";
-import ProductSort from "@/app/components/ProductSort";
+import { Sparkles, CheckCircle, ArrowRight, Gift, Star } from "lucide-react";
 import FAQSection from "@/app/components/FAQSection";
+import { useWishlist } from "@/app/context/wishlistcontext";
 
-const getProductsByIds = (ids: string[]): Product[] =>
-  ids
-    .map((id) => christmasProducts.find((p) => p.id === id))
-    .filter((p): p is Product => Boolean(p));
-
-// Wishlist ko pehle jaisi hi shape milti hai (price "₹6,499" format me)
-
+import { christmasProducts } from "@/app/data/christmasProducts";
+import ProductSort from "@/app/components/ProductSort";
+import ProductCard from "@/app/components/ProductCard";
 export default function ChristmasPage() {
-  const { toggleWishlist, isInWishlist } = useWishlist();
-  const [isMounted, setIsMounted] = useState(false);
-  const [sortBy, setSortBy] = useState<
-    "recommended" | "price-low" | "price-high"
-  >("recommended");
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
-
-  const HIGHLIGHT_IDS: string[] = [
-    "christmas-11",
-    "christmas-12",
-    "christmas-13",
-  ];
-
-  const PACKAGE_IDS: string[] = [
-    "christmas-7",
-    "christmas-8",
-    "christmas-9",
-    "christmas-10",
-  ];
-
-  const getPrice = (price: string | number) => {
-    if (typeof price === "number") return price;
-
-    const value = Number(price.replace(/[₹,]/g, "").trim());
-
-    return Number.isNaN(value) ? Infinity : value;
-  };
-
-  const sortedProducts = [...christmasProducts].sort((a, b) => {
-    switch (sortBy) {
-      case "price-low":
-        return getPrice(a.price) - getPrice(b.price);
-
-      case "price-high":
-        return getPrice(b.price) - getPrice(a.price);
-
-      case "recommended":
-      default:
-        return 0;
-    }
-  });
-
-  const christmasHighlights = getProductsByIds(HIGHLIGHT_IDS);
-  const christmasDecor = getProductsByIds(PACKAGE_IDS);
-  const productsToDisplay =
-    sortBy === "recommended" ? christmasHighlights : sortedProducts;
-
+  const [sortBy, setSortBy] = useState<any>("popular"); const { wishlist, toggleWishlist } = useWishlist();
+  const productsToDisplay = christmasProducts;
   return (
-    <div className="min-h-screen text-neutral-900 font-sans bg-[#F3EFE9] selection:bg-amber-400 selection:text-black overflow-x-hidden pb-20">
-      {/* Hero Section with background link */}
-      <section className="relative w-full h-[350px] px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[35px] shadow-2xl">
+    <div className="min-h-screen bg-[#FCFBF7]">
+      {/* 1. HERO SECTION */}
+      <section className="relative w-full h-[60vh] sm:h-[80vh] flex flex-col justify-center items-center text-center overflow-hidden">
         <div
-          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center transform scale-105"
           style={{
-            backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmhHn1L4k6qg_HB8dffCqMkJzok0Ac3Ds1uPDCN2x-QQ&s=10')`,
+            backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuPDCN2x-QQ&s=10')`,
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/85 via-neutral-950/50 to-neutral-950/30" />
         </div>
 
         <div className="relative z-10 space-y-6 max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center space-x-2 bg-amber-500/20 border border-amber-500/40 px-5 py-2 rounded-full text-amber-300 text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
-            <Sparkles size={15} className="text-amber-400" />
-            <span>Merry Christmas • Season of Joy & Magic 2026</span>
+          <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-5 py-2 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
+            <Sparkles size={15} className="text-[#8CBC67]" />
+            <span>Merry Christmas â€¢ Season of Joy & Magic 2026</span>
           </div>
           <h1 className="font-serif text-4xl sm:text-7xl font-bold tracking-tight text-white drop-shadow-2xl">
             Enchanting{" "}
-            <span className="text-amber-300 italic font-normal">Christmas</span>{" "}
+            <span className="text-[#8CBC67] italic font-normal">Christmas</span>{" "}
             Celebrations
           </h1>
           <p className="text-neutral-200 text-sm sm:text-lg max-w-2xl mx-auto leading-relaxed font-light">
@@ -115,22 +48,22 @@ export default function ChristmasPage() {
           <div className="flex items-center justify-between gap-6">
             {/* LEFT - Heading */}
             <div className="text-left">
-              <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
+              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
                 Christmas Specials
               </span>
               <div className="flex items-baseline gap-3">
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 mt-1">
+              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522] mt-1">
                 Holiday Celebration Highlights
               </h2>
-              <span className="text-neutral-400 text-2xl">|</span>
+              <span className="text-[#6B706C] text-2xl">|</span>
 
-                <span className="text-neutral-500 text-2xl">
+                <span className="text-[#6B706C] text-2xl">
                   {productsToDisplay.length} Items
                 </span>
               </div>
 
-              <p className="text-neutral-600 text-sm font-light mt-2">
-                 Explore our exclusive Christmas tree setups, wrapped festive
+              <p className="text-[#6B706C] text-sm font-light mt-2">
+                Â Explore our exclusive Christmas tree setups, wrapped festive
                 gifts, and special decoration essentials.
               </p>
             </div>
@@ -147,7 +80,7 @@ export default function ChristmasPage() {
             <ProductCard
               key={item.id}
               product={item}
-              isInWishlist={isInWishlist}
+              isInWishlist={(id: string) => wishlist.some((w: any) => w.id === id)}
               toggleWishlist={toggleWishlist}
             />
           ))}
@@ -167,7 +100,7 @@ export default function ChristmasPage() {
 
       {/* Full Width Video Section */}
       <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="relative w-full h-[450px] sm:h-[550px] rounded-[32px] overflow-hidden shadow-2xl border border-amber-500/30 bg-neutral-950 flex items-center justify-center">
+        <div className="relative w-full h-[450px] sm:h-[550px] rounded-[32px] overflow-hidden shadow-2xl border border-[#8CBC67]/30 bg-neutral-950 flex items-center justify-center">
           <video
             src="/crismas.mp4"
             autoPlay
@@ -177,13 +110,13 @@ export default function ChristmasPage() {
             className="absolute inset-0 w-full h-full object-cover opacity-90"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/90 via-neutral-950/40 to-transparent flex flex-col items-center justify-end p-8 sm:p-12 text-center space-y-4">
-            <div className="inline-flex items-center space-x-2 bg-amber-500/30 border border-amber-500/50 px-4 py-1.5 rounded-full text-amber-200 text-xs font-bold uppercase tracking-widest backdrop-blur-md">
-              <Gift size={15} className="text-amber-300" />
+            <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/30 border border-[#8CBC67]/50 px-4 py-1.5 rounded-full text-[#D7A84B] text-xs font-bold uppercase tracking-widest backdrop-blur-md">
+              <Gift size={15} className="text-[#8CBC67]" />
               <span>Magical Holiday Experience</span>
             </div>
             <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white max-w-2xl">
               Celebrate Christmas in{" "}
-              <span className="text-amber-300 italic">Grand Style</span>
+              <span className="text-[#8CBC67] italic">Grand Style</span>
             </h2>
             <p className="text-neutral-200 text-xs sm:text-sm max-w-xl font-light">
               Let professional decorators turn your venue into a breathtaking
@@ -192,7 +125,7 @@ export default function ChristmasPage() {
             <div className="pt-2">
               <Link
                 href="/contact"
-                className="bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
+                className="bg-[#8CBC67] hover:bg-[#D7A84B] text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
               >
                 <span>Book Christmas Package</span>
                 <ArrowRight size={16} />
@@ -204,7 +137,7 @@ export default function ChristmasPage() {
 
       {/* Special Card Section */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
-        <div className="bg-gradient-to-r from-neutral-900 via-stone-950 to-neutral-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-amber-400/30 grid grid-cols-1 lg:grid-cols-12 items-center">
+        <div className="bg-gradient-to-r from-neutral-900 via-stone-950 to-neutral-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-[#8CBC67]/30 grid grid-cols-1 lg:grid-cols-12 items-center">
           <div className="lg:col-span-5 h-72 sm:h-96 w-full overflow-hidden bg-neutral-950 p-4 flex items-center justify-center">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBGNDDxdate3wKiX02hMXWRLTVGaun1kQpFGELKfORzOTZF-mVOHUWG9hs&s=10"
@@ -214,13 +147,13 @@ export default function ChristmasPage() {
           </div>
 
           <div className="p-8 sm:p-12 lg:col-span-7 flex flex-col justify-center space-y-5">
-            <div className="inline-flex items-center space-x-2 bg-amber-500/20 border border-amber-500/40 px-3.5 py-1.5 rounded-full text-amber-300 text-xs font-bold uppercase tracking-widest w-max">
-              <Star size={14} className="text-amber-400" />
+            <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-3.5 py-1.5 rounded-full text-[#8CBC67] text-xs font-bold uppercase tracking-widest w-max">
+              <Star size={14} className="text-[#8CBC67]" />
               <span>Warm Candlelight Ambiance</span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white leading-tight">
               Cozy{" "}
-              <span className="text-amber-300 italic">
+              <span className="text-[#8CBC67] italic">
                 Candlelight & Floral
               </span>{" "}
               Glow
@@ -232,13 +165,13 @@ export default function ChristmasPage() {
             </p>
             <div className="space-y-2.5 pt-1">
               <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                <CheckCircle size={16} className="text-amber-400 shrink-0" />
+                <CheckCircle size={16} className="text-[#8CBC67] shrink-0" />
                 <span>
                   Custom aromatic candles and decorative glass candle holders
                 </span>
               </div>
               <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                <CheckCircle size={16} className="text-amber-400 shrink-0" />
+                <CheckCircle size={16} className="text-[#8CBC67] shrink-0" />
                 <span>
                   Professional table styling and festive centerpiece execution
                 </span>
@@ -248,7 +181,7 @@ export default function ChristmasPage() {
             <div className="pt-3">
               <Link
                 href="/contact"
-                className="bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
+                className="bg-[#8CBC67] hover:bg-[#D7A84B] text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
               >
                 <span>Your Order is confirm</span>
                 <ArrowRight size={16} />
@@ -261,3 +194,13 @@ export default function ChristmasPage() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+

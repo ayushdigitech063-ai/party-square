@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { X } from "lucide-react";
@@ -46,73 +46,7 @@ const getCityIcon = (cityName: string) => {
     case "Ahmedabad":
       return (
         <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M3 21h18v2H3v-2zm2-2h2V9H5v10zm12 0h2V9h-2v10zM9 19h6V7H9v12zM12 2L3 6v1h18V6L12 2z"/>
-        </svg>
-      );
-    case "Faridabad":
-      return (
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M12 2L4 7v2h16V7L12 2zm0 2.18L17.76 7H6.24L12 4.18zM3 20h18v2H3v-2zm2-2h2V10H5v8zm12 0h2V10h-2v8zM9 18h6V10H9v8z"/>
-        </svg>
-      );
-    case "Ghaziabad":
-      return (
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M2 21h20v2H2v-2zm3-3h2V6H5v12zm4 0h2V4h-2v14zm4 0h2V8h-2v10zm4 0h2V10h-2v8z"/>
-        </svg>
-      );
-    case "Gurugram":
-      return (
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M9 2h6v20H9V2zm2 2v2h2V4h-2zm0 4v2h2V8h-2zm0 4v2h2v-2h-2zm0 4v2h2v-2h-2zm-6 2h14v2H5v-2z"/>
-        </svg>
-      );
-    case "Jaipur":
-      return (
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M3 21h18v2H3v-2zm1-3h2V9H4v9zm14 0h2V9h-2v9zM8 18h8V7H8v11zM12 3l-6 3h12L12 3z"/>
-        </svg>
-      );
-    case "Kolkata":
-      return (
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M12 2L3 7v2h18V7L12 2zm0 2.18L17.76 7H6.24L12 4.18zM3 20h18v2H3v-2zm2-2h2V10H5v8zm12 0h2V10h-2v8zM9 16h6V10H9v6z"/>
-        </svg>
-      );
-    case "Lucknow":
-      return (
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M12 2C7.03 2 3 6.03 3 11v10h18V11c0-4.97-4.03-9-9-9zm0 2c3.87 0 7 3.13 7 7v8H5v-8c0-3.87 3.13-7 7-7zm-4 9h8v2H8v-2z"/>
-        </svg>
-      );
-    case "Mangalore":
-      return (
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M3 20h18v2H3v-2zm2-3h2v-4H5v4zm4 0h2v-6H9v6zm4 0h2v-8h-2v8zm4 0h2v-4h-2v4zM12 2L2 7v2h20V7L12 2z"/>
-        </svg>
-      );
-    case "Mysore":
-      return (
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M3 21h18v2H3v-2zm1-2h2V9H4v10zm14 0h2V9h-2v10zM8 19h8V7H8v12zM12 4l-4 3h8l-4-3z"/>
-        </svg>
-      );
-    case "Noida":
-      return (
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M2 20h20v2H2v-2zm1-3l4-8h10l4 8H3zm4.5-6L10 15h4l2.5-4H7.5z"/>
-        </svg>
-      );
-    case "Pune":
-      return (
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M3 21h18v2H3v-2zm1-2h2V8H4v11zm14 0h2V8h-2v11zM8 19h8V6L12 3 8 6v13z"/>
-        </svg>
-      );
-    default:
-      return (
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
         </svg>
       );
   }
@@ -123,22 +57,22 @@ export default function CityModal({ isOpen, onClose, onSelectCity, cities }: Cit
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-4xl bg-[#FFFDF9] border border-amber-300/60 rounded-3xl shadow-2xl p-4 sm:p-5 overflow-hidden max-h-[80vh] flex flex-col">
+      <div className="relative w-full max-w-4xl bg-[#FFFFFF] border border-[#8CBC67]/60 rounded-3xl shadow-2xl p-4 sm:p-5 overflow-hidden max-h-[80vh] flex flex-col">
         
         {/* Top Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-amber-200/60 shrink-0">
+        <div className="flex items-center justify-between pb-4 border-b border-[#E8E8E3]/60 shrink-0">
           <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-full bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700 font-bold">
-              📍
+            <div className="w-8 h-8 rounded-full bg-[#EEF6EB] border border-[#8CBC67] flex items-center justify-center text-[#202522] font-bold">
+              ðŸ“
             </div>
-            <h2 className="text-lg sm:text-xl font-serif font-bold text-neutral-900 tracking-wide">
+            <h2 className="text-lg sm:text-xl font-serif font-bold text-[#202522] tracking-wide">
               SELECT YOUR CITY
             </h2>
           </div>
           <button
             onClick={onClose}
             aria-label="Close modal"
-            className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-amber-100 border border-neutral-200 hover:border-amber-300 flex items-center justify-center text-neutral-600 hover:text-amber-800 transition cursor-pointer"
+            className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-[#EEF6EB] border border-[#E8E8E3] hover:border-[#8CBC67] flex items-center justify-center text-[#6B706C] hover:text-[#202522] transition cursor-pointer"
           >
             <X size={18} />
           </button>
@@ -161,12 +95,12 @@ export default function CityModal({ isOpen, onClose, onSelectCity, cities }: Cit
                 onSelectCity(city);
                 onClose();
               }}
-              className="group flex flex-col items-center justify-center p-2.5 bg-white hover:bg-amber-50/80 border border-neutral-200/80 hover:border-amber-400 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
+              className="group flex flex-col items-center justify-center p-2.5 bg-white hover:bg-[#EEF6EB]/80 border border-[#E8E8E3]/80 hover:border-[#8CBC67] rounded-xl shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
             >
-              <div className="w-9 h-9 rounded-lg bg-amber-50/80 group-hover:bg-amber-100 border border-amber-200/70 flex items-center justify-center text-amber-600 mb-2.5 transition group-hover:scale-110">
+              <div className="w-9 h-9 rounded-lg bg-[#EEF6EB]/80 group-hover:bg-[#EEF6EB] border border-[#E8E8E3]/70 flex items-center justify-center text-[#8CBC67] mb-2.5 transition group-hover:scale-110">
                 {getCityIcon(city)}
               </div>
-              <span className="text-xs md:text-sm font-semibold text-neutral-800 group-hover:text-amber-900 transition text-center">
+              <span className="text-xs md:text-sm font-semibold text-[#202522] group-hover:text-[#202522] transition text-center">
                 {city}
               </span>
             </button>
@@ -174,8 +108,8 @@ export default function CityModal({ isOpen, onClose, onSelectCity, cities }: Cit
         </div>
 
         {/* Footer Note */}
-        <div className="pt-3 border-t border-amber-200/60 text-center shrink-0">
-          <p className="text-[11px] leading-4 text-neutral-500 font-medium">
+        <div className="pt-3 border-t border-[#E8E8E3]/60 text-center shrink-0">
+          <p className="text-[11px] leading-4 text-[#6B706C] font-medium">
             Select your delivery location to explore personalized decor packages available in your city.
           </p>
         </div>
@@ -184,3 +118,4 @@ export default function CityModal({ isOpen, onClose, onSelectCity, cities }: Cit
     </div>
   );
 }
+

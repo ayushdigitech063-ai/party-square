@@ -78,7 +78,7 @@ export default function WallDecorationPage() {
   }, [sliderImages.length]);
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-neutral-900 font-sans selection:bg-[#C5A059] selection:text-white">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans selection:bg-[#D7A84B] selection:text-white">
       
       {/* ================= HERO BANNER (FULLY FIXED & CENTERED) ================= */}
       <section className="relative min-h-[75vh] flex items-center justify-center text-white py-24 px-6 overflow-hidden">
@@ -96,7 +96,7 @@ export default function WallDecorationPage() {
 
         <div className="max-w-7xl mx-auto relative z-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
           <div className="space-y-6">
-            <div className="inline-flex items-center space-x-2 bg-[#C5A059]/20 border border-[#C5A059]/50 px-4 py-2 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-lg">
+            <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/20 border border-[#D7A84B]/50 px-4 py-2 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-lg">
               <Sparkles size={14} className="text-[#DFBC71]" />
               <span>Wall & Door Styling Specialists</span>
             </div>
@@ -112,7 +112,7 @@ export default function WallDecorationPage() {
             <div className="flex flex-wrap gap-4 pt-4">
               <Link
                 href="/contact"
-                className="group relative bg-gradient-to-r from-[#DFBC71] to-[#C5A059] text-neutral-950 px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-2xl hover:scale-105 transition-all duration-300 flex items-center space-x-2"
+                className="group relative bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-2xl hover:scale-105 transition-all duration-300 flex items-center space-x-2"
               >
                 <span>Book Wall Decor</span>
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -131,7 +131,7 @@ export default function WallDecorationPage() {
 
           <div className="relative group flex justify-center">
             <div className="absolute -inset-1 bg-gradient-to-r from-[#DFBC71] to-transparent rounded-3xl blur-xl opacity-40 group-hover:opacity-70 transition duration-500"></div>
-            <div className="relative rounded-3xl overflow-hidden border border-[#C5A059]/40 shadow-2xl w-full h-80 sm:h-96 bg-neutral-900">
+            <div className="relative rounded-3xl overflow-hidden border border-[#D7A84B]/40 shadow-2xl w-full h-80 sm:h-96 bg-neutral-900">
               <img src="/walldecoration.png" alt="Wall Decoration Showcase" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
             </div>
           </div>
@@ -142,24 +142,24 @@ export default function WallDecorationPage() {
       <section className="py-12 bg-white border-b border-[#E8DFD1]">
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD1]">
-            <Star className="w-8 h-8 text-[#C5A059] mx-auto mb-2" />
+            <Star className="w-8 h-8 text-[#D7A84B] mx-auto mb-2" />
             <h3 className="font-bold text-sm">Damage-Free Tape</h3>
-            <p className="text-xs text-neutral-600 mt-1">Safe for paint & walls</p>
+            <p className="text-xs text-[#6B706C] mt-1">Safe for paint & walls</p>
           </div>
           <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD1]">
-            <ShieldCheck className="w-8 h-8 text-[#C5A059] mx-auto mb-2" />
+            <ShieldCheck className="w-8 h-8 text-[#D7A84B] mx-auto mb-2" />
             <h3 className="font-bold text-sm">Expert Installers</h3>
-            <p className="text-xs text-neutral-600 mt-1">Clean & professional fitting</p>
+            <p className="text-xs text-[#6B706C] mt-1">Clean & professional fitting</p>
           </div>
           <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD1]">
-            <Calendar className="w-8 h-8 text-[#C5A059] mx-auto mb-2" />
+            <Calendar className="w-8 h-8 text-[#D7A84B] mx-auto mb-2" />
             <h3 className="font-bold text-sm">Quick Setup</h3>
-            <p className="text-xs text-neutral-600 mt-1">Ready within 2 hours</p>
+            <p className="text-xs text-[#6B706C] mt-1">Ready within 2 hours</p>
           </div>
           <div className="p-4 rounded-2xl bg-[#FAF8F5] border border-[#E8DFD1]">
-            <Heart className="w-8 h-8 text-[#C5A059] mx-auto mb-2" />
+            <Heart className="w-8 h-8 text-[#D7A84B] mx-auto mb-2" />
             <h3 className="font-bold text-sm">Custom Themes</h3>
-            <p className="text-xs text-neutral-600 mt-1">Tailored to your choice</p>
+            <p className="text-xs text-[#6B706C] mt-1">Tailored to your choice</p>
           </div>
         </div>
       </section>
@@ -221,9 +221,9 @@ export default function WallDecorationPage() {
       {/* ================= PACKAGES SECTION WITH PROPER IMAGES ================= */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="text-xs uppercase tracking-[0.25em] text-[#C5A059] font-bold">Pricing Plans</span>
+          <span className="text-xs uppercase tracking-[0.25em] text-[#D7A84B] font-bold">Pricing Plans</span>
           <h2 className="font-serif text-3xl sm:text-4xl font-bold">Choose Wall & Door Packages</h2>
-          <p className="text-neutral-600 text-sm">Select from our specialized decoration packages for walls, corners, and doorways.</p>
+          <p className="text-[#6B706C] text-sm">Select from our specialized decoration packages for walls, corners, and doorways.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -231,17 +231,17 @@ export default function WallDecorationPage() {
             <div
               key={pkg.id}
               className={`relative rounded-3xl bg-white border transition-all duration-300 flex flex-col justify-between shadow-md hover:shadow-xl overflow-hidden group ${
-                pkg.popular ? "border-[#C5A059] ring-2 ring-[#C5A059]/20 scale-105 md:-translate-y-2" : "border-neutral-200"
+                pkg.popular ? "border-[#D7A84B] ring-2 ring-[#D7A84B]/20 scale-105 md:-translate-y-2" : "border-[#E8E8E3]"
               }`}
             >
               {pkg.popular && (
-                <div className="absolute top-4 right-4 z-10 bg-[#C5A059] text-neutral-900 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-md">
+                <div className="absolute top-4 right-4 z-10 bg-[#D7A84B] text-[#202522] text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-md">
                   Most Popular
                 </div>
               )}
 
               {/* Package Image Preview */}
-              <div className="relative h-56 w-full overflow-hidden bg-neutral-100 border-b border-neutral-100">
+              <div className="relative h-56 w-full overflow-hidden bg-neutral-100 border-b border-[#E8E8E3]">
                 <img 
                   src={pkg.image} 
                   alt={pkg.name} 
@@ -251,14 +251,14 @@ export default function WallDecorationPage() {
 
               <div className="p-8 flex flex-col flex-grow justify-between">
                 <div>
-                  <h3 className="font-serif text-2xl font-bold text-neutral-900 mb-2">{pkg.name}</h3>
-                  <p className="text-neutral-600 text-xs leading-relaxed mb-6">{pkg.desc}</p>
-                  <div className="text-3xl font-bold text-[#C5A059] mb-6">{pkg.price}</div>
+                  <h3 className="font-serif text-2xl font-bold text-[#202522] mb-2">{pkg.name}</h3>
+                  <p className="text-[#6B706C] text-xs leading-relaxed mb-6">{pkg.desc}</p>
+                  <div className="text-3xl font-bold text-[#D7A84B] mb-6">{pkg.price}</div>
 
-                  <div className="space-y-3 border-t border-neutral-100 pt-6">
+                  <div className="space-y-3 border-t border-[#E8E8E3] pt-6">
                     {pkg.features.map((feat, idx) => (
-                      <div key={idx} className="flex items-start space-x-3 text-xs text-neutral-700">
-                        <CheckCircle size={16} className="text-[#C5A059] shrink-0 mt-0.5" />
+                      <div key={idx} className="flex items-start space-x-3 text-xs text-[#202522]">
+                        <CheckCircle size={16} className="text-[#D7A84B] shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </div>
                     ))}
@@ -270,7 +270,7 @@ export default function WallDecorationPage() {
                     href="/contact"
                     className={`w-full block text-center py-3 rounded-full text-xs font-bold uppercase tracking-wider transition ${
                       pkg.popular
-                        ? "bg-[#C5A059] text-neutral-900 hover:bg-[#b08d4b] shadow-md"
+                        ? "bg-[#D7A84B] text-[#202522] hover:bg-[#b08d4b] shadow-md"
                         : "bg-neutral-900 text-white hover:bg-neutral-800"
                     }`}
                   >
@@ -288,10 +288,10 @@ export default function WallDecorationPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
             <div>
-              <span className="text-xs uppercase tracking-[0.25em] text-[#C5A059] font-bold">Visual Showcase</span>
+              <span className="text-xs uppercase tracking-[0.25em] text-[#D7A84B] font-bold">Visual Showcase</span>
               <h2 className="font-serif text-3xl font-bold mt-1">Wall & Door Decoration Gallery</h2>
             </div>
-            <Link href="/services" className="mt-4 md:mt-0 text-xs font-bold text-[#C5A059] hover:underline flex items-center space-x-1">
+            <Link href="/services" className="mt-4 md:mt-0 text-xs font-bold text-[#D7A84B] hover:underline flex items-center space-x-1">
               <span>View Full Gallery</span>
               <ArrowRight size={14} />
             </Link>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
@@ -89,24 +89,24 @@ export default function Gallery() {
   };
 
   return (
-    <section className="bg-[#FAF7F2] py-16 px-4 sm:px-8 md:px-16 text-[#1A1A1A] relative font-sans">
+    <section className="bg-[#FCFBF7] py-16 px-4 sm:px-8 md:px-16 text-[#202522] relative font-sans">
       <div className="max-w-7xl mx-auto relative z-10">
         {/* =====================================================
             SECTION HEADER
         ====================================================== */}
 
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center space-x-2 bg-amber-100 px-4 py-1.5 rounded-full mb-4">
-            <Sparkles size={14} className="text-amber-700" />
+          <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] px-4 py-1.5 rounded-full mb-4">
+            <Sparkles size={14} className="text-[#202522]" />
 
-            <span className="text-xs uppercase tracking-widest font-semibold text-amber-900">
+            <span className="text-xs uppercase tracking-widest font-semibold text-[#202522]">
               OUR EXCLUSIVE PORTFOLIO
             </span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-serif text-gray-900 leading-[1.15]">
             A closer look at{" "}
-            <span className="italic font-light text-amber-800">
+            <span className="italic font-light text-[#202522]">
               every celebration
             </span>
           </h2>
@@ -124,8 +124,8 @@ export default function Gallery() {
               onClick={() => setActiveTab(category)}
               className={`whitespace-nowrap px-6 py-2.5 rounded-full text-sm font-medium transition cursor-pointer ${
                 activeTab === category
-                  ? "bg-amber-900 text-white"
-                  : "bg-white text-gray-700 border border-amber-200"
+                  ? "bg-[#202522] text-white"
+                  : "bg-white text-gray-700 border border-[#E8E8E3]"
               }`}
             >
               {category === "All" ? "All Collections" : category}
@@ -144,14 +144,14 @@ export default function Gallery() {
                     CATEGORY HEADER
                 ================================================== */}
 
-              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-amber-200/60 pb-4 gap-1 sm:gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-[#E8E8E3]/60 pb-4 gap-1 sm:gap-2">
                 <h3 className="text-xl sm:text-3xl font-serif font-normal text-gray-900 flex items-center gap-3">
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-700 inline-block" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#7AB055] inline-block" />
 
                   {categoryName}
                 </h3>
 
-                <p className="text-xs sm:text-sm text-amber-800/80 font-light italic">
+                <p className="text-xs sm:text-sm text-[#202522]/80 font-light italic">
                   {categoryName === "Wedding Decoration" &&
                     "Grand mandaps, floral aisles & royal setups"}
 
@@ -177,13 +177,13 @@ export default function Gallery() {
                   return (
                     <div
                       key={item.id}
-                      className="group bg-white rounded-2xl overflow-hidden border border-amber-200 hover:border-amber-400 shadow-sm hover:shadow-xl transition flex flex-col"
+                      className="group bg-white rounded-2xl overflow-hidden border border-[#E8E8E3] hover:border-[#8CBC67] shadow-sm hover:shadow-xl transition flex flex-col"
                     >
                       {/* =================================================
                             IMAGE
                         ================================================== */}
 
-                      <div className="relative aspect-[4/5] bg-amber-50 overflow-hidden">
+                      <div className="relative aspect-square bg-[#EEF6EB] overflow-hidden">
                         <Link
                           href={`/card/${item.id}`}
                           className="block w-full h-full"
@@ -227,7 +227,7 @@ export default function Gallery() {
 
                       <div className="p-4 flex flex-col justify-between flex-1 space-y-3">
                         <Link href={`/card/${item.id}`} className="block">
-                          <h4 className="font-serif text-base font-medium text-gray-900 hover:text-amber-800 transition">
+                          <h4 className="font-serif text-base font-medium text-gray-900 hover:text-[#202522] transition">
                             {item.name}
                           </h4>
                           <RatingRow item={item} />
@@ -241,14 +241,14 @@ export default function Gallery() {
                               PRICE + ACTIONS
                           ================================================== */}
 
-                        <div className="flex items-center justify-between pt-3 border-t border-amber-100 gap-2">
+                        <div className="flex items-center justify-between pt-3 border-t border-[#E8E8E3] gap-2">
                           <div>
                             <span className="text-[10px] uppercase tracking-wider text-gray-400 block font-medium">
                               Starts at
                             </span>
 
                             <div className="flex items-baseline space-x-1.5">
-                              <span className="text-sm font-semibold text-amber-900">
+                              <span className="text-sm font-semibold text-[#202522]">
                                 ₹{item.price.toLocaleString("en-IN")}
                               </span>
                               {hasDiscount && (
@@ -272,7 +272,7 @@ export default function Gallery() {
 
                             <Link
                               href={`/card/${item.id}`}
-                              className="bg-amber-900 hover:bg-black text-white text-[11px] font-bold uppercase px-3.5 py-2 rounded-full transition shadow-sm inline-flex items-center gap-1"
+                              className="bg-[#8CBC67] hover:bg-[#7AB055] text-white text-[11px] font-bold uppercase px-3.5 py-2 rounded-full transition shadow-sm inline-flex items-center gap-1"
                             >
                               <span>Book</span>
 
@@ -292,3 +292,5 @@ export default function Gallery() {
     </section>
   );
 }
+
+

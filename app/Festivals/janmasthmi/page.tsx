@@ -61,7 +61,7 @@ export default function JanmashtamiPage() {
     sortBy === "recommended" ? celebrationDecor : sortedProducts;
 
   return (
-    <div className="min-h-screen text-neutral-900 font-sans bg-[#FBF9F4] selection:bg-emerald-600 selection:text-white overflow-x-hidden pb-20">
+    <div className="min-h-screen text-[#202522] font-sans bg-[#FBF9F4] selection:bg-emerald-600 selection:text-white overflow-x-hidden pb-20">
       {/* Hero Section */}
       <section className="relative w-full h-[350px] px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[35px] shadow-2xl">
         <div
@@ -78,7 +78,7 @@ export default function JanmashtamiPage() {
           </div>
           <h1 className="font-serif text-4xl sm:text-7xl font-bold tracking-tight text-white drop-shadow-2xl">
             Divine{" "}
-            <span className="text-amber-400 italic font-normal">
+            <span className="text-[#8CBC67] italic font-normal">
               Janmashtami
             </span>{" "}
             Celebrations
@@ -96,21 +96,21 @@ export default function JanmashtamiPage() {
           <div className="flex items-center justify-between gap-6">
             {/* LEFT - Heading */}
             <div className="text-left">
-              <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
+              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
                   Festive Highlights
               </span>
               <div className="flex items-baseline gap-3">
-                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 mt-1">
+                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522] mt-1">
                   Krishna Janmashtami Decorations
                 </h2>
-                <span className="text-neutral-400 text-2xl">|</span>
+                <span className="text-[#6B706C] text-2xl">|</span>
 
-                <span className="text-neutral-500 text-2xl">
+                <span className="text-[#6B706C] text-2xl">
                   {productsToDisplay.length} Items
                 </span>
               </div>
 
-              <p className="text-neutral-600 text-sm font-light mt-2">
+              <p className="text-[#6B706C] text-sm font-light mt-2">
                 Handcrafted jhulas and ethnic makhan handi setups for joyful
                 celebrations.
               </p>
@@ -149,15 +149,15 @@ export default function JanmashtamiPage() {
 
       {/* Grand Green & Golden Banner */}
       <section className="py-12 px-6 max-w-6xl mx-auto">
-        <div className="bg-gradient-to-r from-emerald-900 via-emerald-950 to-neutral-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-amber-500/30 grid grid-cols-1 lg:grid-cols-12 items-center">
+        <div className="bg-gradient-to-r from-emerald-900 via-emerald-950 to-neutral-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-[#8CBC67]/30 grid grid-cols-1 lg:grid-cols-12 items-center">
           <div className="p-8 sm:p-12 lg:col-span-7 flex flex-col justify-center space-y-5">
-            <div className="inline-flex items-center space-x-2 bg-amber-500/20 border border-amber-500/40 px-3.5 py-1.5 rounded-full text-amber-300 text-xs font-bold uppercase tracking-widest w-max">
-              <Sparkles size={14} className="text-amber-400" />
+            <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-3.5 py-1.5 rounded-full text-[#8CBC67] text-xs font-bold uppercase tracking-widest w-max">
+              <Sparkles size={14} className="text-[#8CBC67]" />
               <span>Grand Festival Celebration</span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white leading-tight">
               The Grand{" "}
-              <span className="text-amber-400 italic">
+              <span className="text-[#8CBC67] italic">
                 Janmotsav Experience
               </span>
             </h2>
@@ -169,13 +169,13 @@ export default function JanmashtamiPage() {
             </p>
             <div className="space-y-2.5 pt-1">
               <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                <CheckCircle size={16} className="text-amber-400 shrink-0" />
+                <CheckCircle size={16} className="text-[#8CBC67] shrink-0" />
                 <span>
                   Customized theme planning tailored to your exact venue space
                 </span>
               </div>
               <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                <CheckCircle size={16} className="text-amber-400 shrink-0" />
+                <CheckCircle size={16} className="text-[#8CBC67] shrink-0" />
                 <span>
                   End-to-end professional installation, maintenance, and cleanup
                 </span>
@@ -185,7 +185,7 @@ export default function JanmashtamiPage() {
             <div className="pt-3">
               <Link
                 href="/Festivals/janmasthmi/8"
-                className="bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
+                className="bg-[#8CBC67] hover:bg-[#D7A84B] text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
               >
                 <span>View Grand Package</span>
                 <ArrowRight size={16} />
@@ -205,15 +205,15 @@ export default function JanmashtamiPage() {
 
       {/* Special Shrinath Ji Card with srenath.png on Right */}
       <section className="py-12 px-6 max-w-6xl mx-auto">
-        <div className="bg-gradient-to-r from-emerald-950 via-emerald-900 to-amber-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-amber-500/40 grid grid-cols-1 lg:grid-cols-12 items-center">
+        <div className="bg-gradient-to-r from-emerald-950 via-emerald-900 to-amber-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-[#8CBC67]/40 grid grid-cols-1 lg:grid-cols-12 items-center">
           <div className="p-8 sm:p-12 lg:col-span-7 flex flex-col justify-center space-y-5">
-            <div className="inline-flex items-center space-x-2 bg-amber-500/20 border border-amber-500/40 px-3.5 py-1.5 rounded-full text-amber-300 text-xs font-bold uppercase tracking-widest w-max">
-              <Star size={14} className="text-amber-400" />
+            <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-3.5 py-1.5 rounded-full text-[#8CBC67] text-xs font-bold uppercase tracking-widest w-max">
+              <Star size={14} className="text-[#8CBC67]" />
               <span>Divine Masterpiece Showcase</span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white leading-tight">
               Shrinath Ji{" "}
-              <span className="text-amber-400 italic">
+              <span className="text-[#8CBC67] italic">
                 Divine Darshan Setup
               </span>
             </h2>
@@ -225,13 +225,13 @@ export default function JanmashtamiPage() {
             </p>
             <div className="space-y-2.5 pt-1">
               <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                <CheckCircle size={16} className="text-amber-400 shrink-0" />
+                <CheckCircle size={16} className="text-[#8CBC67] shrink-0" />
                 <span>
                   Hand-painted traditional Pichwai motifs & gold-leaf styling
                 </span>
               </div>
               <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                <CheckCircle size={16} className="text-amber-400 shrink-0" />
+                <CheckCircle size={16} className="text-[#8CBC67] shrink-0" />
                 <span>
                   Complete divine altar setup with lotus motifs & warm focus
                   lights
@@ -242,7 +242,7 @@ export default function JanmashtamiPage() {
             <div className="pt-3">
               <Link
                 href="/contact"
-                className="bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
+                className="bg-[#8CBC67] hover:bg-[#D7A84B] text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
               >
                 <span>Book Shrinath Ji Setup</span>
                 <ArrowRight size={16} />

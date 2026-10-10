@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useRef } from "react";
 import {
@@ -25,7 +25,7 @@ const toNumber = (v: any) =>
 
 const getPricing = (item: any) => {
   const salePrice = toNumber(item.price);
-  const originalPrice = toNumber(item.originalPrice);
+  const originalPrice = toNumber(item.originalPrice) || (salePrice * 1.25);
   const hasDiscount = originalPrice > salePrice && salePrice > 0;
   const discountPercent = hasDiscount
     ? Math.round(((originalPrice - salePrice) / originalPrice) * 100)
@@ -54,7 +54,7 @@ const RatingRow = ({ item }: { item: any }) => {
         <Star size={10} className="fill-white" />
       </span>
       {reviewCount > 0 && (
-        <span className="text-[11px] text-neutral-500">
+        <span className="text-[11px] text-[#6B706C]">
           ({reviewCount.toLocaleString("en-IN")} reviews)
         </span>
       )}
@@ -67,16 +67,16 @@ const PriceBlock = ({ item }: { item: any }) => {
   // No discount: show the price exactly as before
   if (!hasDiscount) {
     return (
-      <span className="text-neutral-900 font-bold text-sm">₹{item.price}</span>
+      <span className="text-[#202522] font-bold text-sm">₹{item.price}</span>
     );
   }
   return (
     <div className="flex flex-col leading-tight">
       <div className="flex items-baseline space-x-1.5">
-        <span className="text-neutral-900 font-bold text-sm">
+        <span className="text-[#202522] font-bold text-sm">
           ₹{salePrice.toLocaleString("en-IN")}
         </span>
-        <span className="text-neutral-400 text-xs line-through">
+        <span className="text-[#6B706C] text-xs line-through">
           ₹{originalPrice.toLocaleString("en-IN")}
         </span>
       </div>
@@ -118,17 +118,17 @@ export default function CardPage() {
     router.push(`/card/${item.slug}`);
   };
   return (
-    <div className="bg-[#FAF7F2] text-[#1A1A1A] font-sans min-h-screen relative">
+    <div className="bg-[#FCFBF7] text-[#202522] font-sans min-h-screen relative">
       {/* 1. Wedding Gift Products Section */}
-      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-amber-200/50">
+      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-[#E8E8E3]/50">
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-          <span className="text-xs uppercase tracking-[0.3em] text-amber-800 font-bold bg-amber-100 px-4 py-1.5 rounded-full inline-block">
+          <span className="text-xs uppercase tracking-[0.3em] text-[#202522] font-bold bg-[#EEF6EB] px-4 py-1.5 rounded-full inline-block">
             Special Collection
           </span>
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522]">
             Wedding Gift Products
           </h2>
-          <p className="text-neutral-600 text-sm font-light">
+          <p className="text-[#6B706C] text-sm font-light">
             Handpicked luxury presents and hampers for grand weddings and couple
             milestones.
           </p>
@@ -142,7 +142,7 @@ export default function CardPage() {
             <div
               key={item.id}
               onClick={() => openProductDetailPage(item)}
-              className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start"
+              className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start"
             >
               <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 block">
                 <img
@@ -168,21 +168,21 @@ export default function CardPage() {
               <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
                 <div className="space-y-1">
                   <Link href={`/card/${item.slug}`}>
-                    <h3 className="font-serif text-sm font-bold text-neutral-900 line-clamp-1 hover:text-amber-800 transition">
+                    <h3 className="font-serif text-sm font-bold text-[#202522] line-clamp-1 hover:text-[#202522] transition">
                       {item.name}
                     </h3>
                   </Link>
                   <RatingRow item={item} />
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">
+                  <p className="text-[#6B706C] text-xs leading-relaxed font-light line-clamp-2">
                     {item.description}
                   </p>
                 </div>
-                <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                <div className="pt-3 border-t border-[#E8E8E3] flex items-center justify-between">
                   <PriceBlock item={item} />
                   <div className="flex items-center space-x-1.5">
                     <Link
                       href={`/card/${item.slug}`}
-                      className="bg-amber-800 text-white px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-900 transition shadow"
+                      className="bg-[#8CBC67] text-[#FCFBF7] px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-[#7AB055] transition shadow"
                     >
                       Book
                     </Link>
@@ -196,13 +196,13 @@ export default function CardPage() {
         <div className="flex justify-center items-center gap-4 mt-8">
           <button
             onClick={() => scrollContainer(weddingRef, "left")}
-            className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
+            className="bg-[#EEF6EB] text-[#202522] hover:bg-[#7AB055] hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
           >
             <ChevronLeft size={22} />
           </button>
           <button
             onClick={() => scrollContainer(weddingRef, "right")}
-            className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
+            className="bg-[#EEF6EB] text-[#202522] hover:bg-[#7AB055] hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
           >
             <ChevronRight size={22} />
           </button>
@@ -210,15 +210,15 @@ export default function CardPage() {
       </section>
 
       {/* 2. Festivals Products Section */}
-      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-amber-200/50">
+      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-[#E8E8E3]/50">
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-          <span className="text-xs uppercase tracking-[0.3em] text-amber-800 font-bold bg-amber-100 px-4 py-1.5 rounded-full inline-block">
+          <span className="text-xs uppercase tracking-[0.3em] text-[#202522] font-bold bg-[#EEF6EB] px-4 py-1.5 rounded-full inline-block">
             Festive Vibes
           </span>
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522]">
             Festivals Products
           </h2>
-          <p className="text-neutral-600 text-sm font-light">
+          <p className="text-[#6B706C] text-sm font-light">
             Brighten up seasonal celebrations with vibrant cultural and
             traditional decorations.
           </p>
@@ -232,7 +232,7 @@ export default function CardPage() {
             <div
               key={item.id}
               onClick={() => openProductDetailPage(item)}
-              className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start"
+              className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start"
             >
               <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 block">
                <img
@@ -258,21 +258,21 @@ export default function CardPage() {
               <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
                 <div className="space-y-1">
                   <Link href={`/card/${item.slug}`}>
-                    <h3 className="font-serif text-sm font-bold text-neutral-900 line-clamp-1 hover:text-amber-800 transition">
+                    <h3 className="font-serif text-sm font-bold text-[#202522] line-clamp-1 hover:text-[#202522] transition">
                       {item.name}
                     </h3>
                   </Link>
                   <RatingRow item={item} />
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">
+                  <p className="text-[#6B706C] text-xs leading-relaxed font-light line-clamp-2">
                     {item.description}
                   </p>
                 </div>
-                <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                <div className="pt-3 border-t border-[#E8E8E3] flex items-center justify-between">
                   <PriceBlock item={item} />
                   <div className="flex items-center space-x-1.5">
                     <Link
                       href={`/card/${item.slug}`}
-                      className="bg-amber-800 text-white px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-900 transition shadow"
+                      className="bg-[#8CBC67] text-[#FCFBF7] px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-[#7AB055] transition shadow"
                     >
                       Book
                     </Link>
@@ -286,13 +286,13 @@ export default function CardPage() {
         <div className="flex justify-center items-center gap-4 mt-8">
           <button
             onClick={() => scrollContainer(festivalRef, "left")}
-            className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
+            className="bg-[#EEF6EB] text-[#202522] hover:bg-[#7AB055] hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
           >
             <ChevronLeft size={22} />
           </button>
           <button
             onClick={() => scrollContainer(festivalRef, "right")}
-            className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
+            className="bg-[#EEF6EB] text-[#202522] hover:bg-[#7AB055] hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
           >
             <ChevronRight size={22} />
           </button>
@@ -300,15 +300,15 @@ export default function CardPage() {
       </section>
 
       {/* 3. Puja Section */}
-      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-amber-200/50">
+      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-[#E8E8E3]/50">
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-          <span className="text-xs uppercase tracking-[0.3em] text-amber-800 font-bold bg-amber-100 px-4 py-1.5 rounded-full inline-block">
+          <span className="text-xs uppercase tracking-[0.3em] text-[#202522] font-bold bg-[#EEF6EB] px-4 py-1.5 rounded-full inline-block">
             Sacred & Devotional
           </span>
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522]">
             Puja Section
           </h2>
-          <p className="text-neutral-600 text-sm font-light">
+          <p className="text-[#6B706C] text-sm font-light">
             Exquisite mandaps, sacred thalis, and serene decor elements for
             divine prayers.
           </p>
@@ -322,7 +322,7 @@ export default function CardPage() {
             <div
               key={item.id}
               onClick={() => openProductDetailPage(item)}
-              className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start"
+              className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start"
             >
               <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 block">
                <img
@@ -348,21 +348,21 @@ export default function CardPage() {
               <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
                 <div className="space-y-1">
                   <Link href={`/card/${item.slug}`}>
-                    <h3 className="font-serif text-sm font-bold text-neutral-900 line-clamp-1 hover:text-amber-800 transition">
+                    <h3 className="font-serif text-sm font-bold text-[#202522] line-clamp-1 hover:text-[#202522] transition">
                       {item.name}
                     </h3>
                   </Link>
                   <RatingRow item={item} />
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">
+                  <p className="text-[#6B706C] text-xs leading-relaxed font-light line-clamp-2">
                     {item.description}
                   </p>
                 </div>
-                <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                <div className="pt-3 border-t border-[#E8E8E3] flex items-center justify-between">
                   <PriceBlock item={item} />
                   <div className="flex items-center space-x-1.5">
                     <Link
                       href={`/card/${item.slug}`}
-                      className="bg-amber-800 text-white px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-900 transition shadow"
+                      className="bg-[#8CBC67] text-[#FCFBF7] px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-[#7AB055] transition shadow"
                     >
                       Book
                     </Link>
@@ -376,13 +376,13 @@ export default function CardPage() {
         <div className="flex justify-center items-center gap-4 mt-8">
           <button
             onClick={() => scrollContainer(pujaRef, "left")}
-            className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
+            className="bg-[#EEF6EB] text-[#202522] hover:bg-[#7AB055] hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
           >
             <ChevronLeft size={22} />
           </button>
           <button
             onClick={() => scrollContainer(pujaRef, "right")}
-            className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
+            className="bg-[#EEF6EB] text-[#202522] hover:bg-[#7AB055] hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
           >
             <ChevronRight size={22} />
           </button>
@@ -390,15 +390,15 @@ export default function CardPage() {
       </section>
 
       {/* 4. Esthetic Products Section */}
-      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-amber-200/50 pb-20">
+      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-[#E8E8E3]/50 pb-20">
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
-          <span className="text-xs uppercase tracking-[0.3em] text-amber-800 font-bold bg-amber-100 px-4 py-1.5 rounded-full inline-block">
+          <span className="text-xs uppercase tracking-[0.3em] text-[#202522] font-bold bg-[#EEF6EB] px-4 py-1.5 rounded-full inline-block">
             Modern Elegance
           </span>
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522]">
             Esthetic Products
           </h2>
-          <p className="text-neutral-600 text-sm font-light">
+          <p className="text-[#6B706C] text-sm font-light">
             Minimalist and trend-setting artistic home decor accents for modern
             aesthetics.
           </p>
@@ -412,7 +412,7 @@ export default function CardPage() {
             <div
               key={item.id}
               onClick={() => openProductDetailPage(item)}
-              className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-amber-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start"
+              className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start"
             >
               <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 block">
                 <img
@@ -438,21 +438,21 @@ export default function CardPage() {
               <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
                 <div className="space-y-1">
                   <Link href={`/card/${item.slug}`}>
-                    <h3 className="font-serif text-sm font-bold text-neutral-900 line-clamp-1 hover:text-amber-800 transition">
+                    <h3 className="font-serif text-sm font-bold text-[#202522] line-clamp-1 hover:text-[#202522] transition">
                       {item.name}
                     </h3>
                   </Link>
                   <RatingRow item={item} />
-                  <p className="text-neutral-500 text-xs leading-relaxed font-light line-clamp-2">
+                  <p className="text-[#6B706C] text-xs leading-relaxed font-light line-clamp-2">
                     {item.description}
                   </p>
                 </div>
-                <div className="pt-3 border-t border-neutral-100 flex items-center justify-between">
+                <div className="pt-3 border-t border-[#E8E8E3] flex items-center justify-between">
                   <PriceBlock item={item} />
                   <div className="flex items-center space-x-1.5">
                     <Link
                       href={`/card/${item.slug}`}
-                      className="bg-amber-800 text-white px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-amber-900 transition shadow"
+                      className="bg-[#8CBC67] text-[#FCFBF7] px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-[#7AB055] transition shadow"
                     >
                       Book
                     </Link>
@@ -466,13 +466,13 @@ export default function CardPage() {
         <div className="flex justify-center items-center gap-4 mt-8">
           <button
             onClick={() => scrollContainer(estheticRef, "left")}
-            className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
+            className="bg-[#EEF6EB] text-[#202522] hover:bg-[#7AB055] hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
           >
             <ChevronLeft size={22} />
           </button>
           <button
             onClick={() => scrollContainer(estheticRef, "right")}
-            className="bg-amber-100 text-amber-900 hover:bg-amber-800 hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
+            className="bg-[#EEF6EB] text-[#202522] hover:bg-[#7AB055] hover:text-white p-3 rounded-full transition shadow-md cursor-pointer"
           >
             <ChevronRight size={22} />
           </button>
@@ -481,3 +481,6 @@ export default function CardPage() {
     </div>
   );
 }
+
+
+

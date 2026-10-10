@@ -54,7 +54,7 @@ export default function CustomerReviews() {
   };
 
   return (
-    <section className="relative text-[#1A1A1A] py-24 px-6 md:px-16 overflow-hidden font-sans border-t border-[#E6DEC9]/40">
+    <section className="relative text-[#202522] py-24 px-6 md:px-16 overflow-hidden font-sans border-t border-[#E8E8E3]/40">
       
       {/* Background Image Setup - Clear & Crystal Sharp */}
       <div 
@@ -63,19 +63,19 @@ export default function CustomerReviews() {
       />
       
       {/* Light Gentle Overlay */}
-      <div className="absolute inset-0 bg-[#FFFDF9]/40 backdrop-blur-[0.5px] pointer-events-none" />
+      <div className="absolute inset-0 bg-[#FFFFFF]/40 backdrop-blur-[0.5px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10 space-y-12">
         
         {/* Section Header (Without Buttons) */}
         <div className="flex flex-col items-center text-center space-y-4 border-b border-[#D9CEB3]/40 pb-8 max-w-2xl mx-auto">
-          <div className="inline-flex items-center space-x-2 bg-[#F3EAD3]/90 border border-[#E2D2B0] px-4 py-1.5 rounded-full text-[#7B6220] text-xs uppercase tracking-[0.25em] font-medium shadow-sm backdrop-blur-sm">
+          <div className="inline-flex items-center space-x-2 bg-[#EEF6EB]/90 border border-[#E8E8E3] px-4 py-1.5 rounded-full text-[#8CBC67] text-xs uppercase tracking-[0.25em] font-medium shadow-sm backdrop-blur-sm">
             <Sparkles size={13} />
             <span>Testimonials</span>
           </div>
           
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-light tracking-wide text-[#1A1A1A]">
-            Customer <span className="italic font-normal text-[#8C6D24]">Reviews</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-light tracking-wide text-[#202522]">
+            Customer <span className="italic font-normal text-[#8CBC67]">Reviews</span>
           </h2>
 
           <div className="flex items-center justify-center space-x-2 pt-1">
@@ -99,7 +99,7 @@ export default function CustomerReviews() {
           {reviews.map((item, index) => (
             <div 
               key={index} 
-              className="min-w-[300px] sm:min-w-[380px] max-w-[400px] snap-start bg-[#FFFFFF] border border-[#E6DEC9] hover:border-[#C5A059] p-8 rounded-3xl transition-all duration-300 flex flex-col justify-between space-y-6 shadow-[0_10px_30px_rgba(0,0,0,0.08)] relative group hover:-translate-y-1"
+              className="min-w-[300px] sm:min-w-[380px] max-w-[400px] snap-start bg-[#FFFFFF] border border-[#E8E8E3] hover:border-[#D7A84B] p-8 rounded-3xl transition-all duration-300 flex flex-col justify-between space-y-6 shadow-[0_10px_30px_rgba(0,0,0,0.08)] relative group hover:-translate-y-1"
             >
               {/* Subtle Watermark Quote */}
               <Quote className="absolute top-6 right-6 text-[#EFEAD9] group-hover:text-[#E2D8BE] transition-colors pointer-events-none" size={44} />
@@ -117,10 +117,10 @@ export default function CustomerReviews() {
                   className="w-12 h-12 rounded-full object-cover border border-[#D9CEB3] shadow-sm shrink-0" 
                 />
                 <div>
-                  <h4 className="text-base font-serif font-medium text-[#1A1A1A]">
+                  <h4 className="text-base font-serif font-medium text-[#202522]">
                     {item.name}
                   </h4>
-                  <span className="text-[11px] text-[#8C6D24] font-medium tracking-wider uppercase">
+                  <span className="text-[11px] text-[#8CBC67] font-medium tracking-wider uppercase">
                     {item.location}
                   </span>
                 </div>
@@ -135,14 +135,14 @@ export default function CustomerReviews() {
           <button 
             onClick={() => scroll("left")}
             aria-label="Scroll Left"
-            className="w-12 h-12 rounded-full bg-white border border-[#D9CEB3] hover:border-[#8C6D24] text-[#8C6D24] hover:bg-[#FAF5EC] flex items-center justify-center transition-all shadow-md active:scale-95 cursor-pointer"
+            className="w-12 h-12 rounded-full bg-white border border-[#D9CEB3] hover:border-[#8CBC67] text-[#8CBC67] hover:bg-[#FAF5EC] flex items-center justify-center transition-all shadow-md active:scale-95 cursor-pointer"
           >
             <ChevronLeft size={22} />
           </button>
           <button 
             onClick={() => scroll("right")}
             aria-label="Scroll Right"
-            className="w-12 h-12 rounded-full bg-white border border-[#D9CEB3] hover:border-[#8C6D24] text-[#8C6D24] hover:bg-[#FAF5EC] flex items-center justify-center transition-all shadow-md active:scale-95 cursor-pointer"
+            className="w-12 h-12 rounded-full bg-white border border-[#D9CEB3] hover:border-[#8CBC67] text-[#8CBC67] hover:bg-[#FAF5EC] flex items-center justify-center transition-all shadow-md active:scale-95 cursor-pointer"
           >
             <ChevronRight size={22} />
           </button>

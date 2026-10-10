@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import {
@@ -144,7 +144,7 @@ export default function LoginModal({
       />
 
       {/* ================= LOGIN MODAL ================= */}
-      <div className="relative z-10 w-full max-w-[430px] overflow-hidden rounded-[26px] bg-[#FFFDF9] shadow-[0_25px_80px_rgba(50,35,20,0.25)] border border-[#E9D7AE]">
+      <div className="relative z-10 w-full max-w-[430px] overflow-hidden rounded-[26px] bg-[#FFFFFF] shadow-[0_25px_80px_rgba(50,35,20,0.25)] border border-[#E9D7AE]">
 
         {/* Decorative top glow */}
         <div className="absolute -top-20 -right-20 h-44 w-44 rounded-full bg-[#F5C542]/20 blur-3xl pointer-events-none" />
@@ -154,36 +154,21 @@ export default function LoginModal({
         <div className="relative px-7 pt-7">
           <button
             onClick={handleClose}
-            className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-[#F5F0E7] text-[#5C5147] transition hover:bg-[#EDE4D6] hover:text-black"
+            className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-[#FCFBF7] text-[#6B706C] transition hover:bg-[#E8E8E3] hover:text-black"
             aria-label="Close login"
           >
             <X size={18} />
           </button>
 
-          <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FFF2C7] text-[#A66A00]">
-              <Sparkles size={17} />
-            </div>
-            <div>
-              <p className="font-serif text-xl font-bold text-[#302823]">
-                Dream<span className="text-[#B47A00]">Deco</span>
-              </p>
-              <p className="text-[9px] uppercase tracking-[2px] text-[#9A8B7B]">
-                Celebration Studio
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* ================= CONTENT ================= */}
+          <div className="flex items-center justify-center w-full pt-2"><div className="w-40 h-12 relative flex-shrink-0"><img src="/logo-full.png" alt="Party Square" className="w-full h-full object-contain object-center" /></div></div></div>{/* ================= CONTENT ================= */}
         <div className="relative px-7 pb-7 pt-8">
 
           {/* Heading */}
           <div className="mb-6">
-            <h2 className="font-serif text-[28px] font-bold leading-tight text-[#302823]">
+            <h2 className="font-serif text-[28px] font-bold leading-tight text-[#202522]">
               {view === "register" ? "Create an account" : step === "phone" ? "Log in to your account" : "Verify OTP"}
             </h2>
-            <p className="mt-2 max-w-[320px] text-sm leading-5 text-[#756D66]">
+            <p className="mt-2 max-w-[320px] text-sm leading-5 text-[#6B706C]">
               {view === "register" 
                 ? "Join us to track your decor, book faster and unlock benefits." 
                 : step === "phone" 
@@ -193,7 +178,7 @@ export default function LoginModal({
           </div>
 
           {errorMsg && (
-            <div className="mb-4 rounded-xl bg-red-50 p-3 text-xs font-medium text-red-600 border border-red-100 flex items-center">
+            <div className="mb-4 rounded-xl bg-[#F7D6C7] p-3 text-xs font-medium text-red-600 border border-red-100 flex items-center">
               {errorMsg}
             </div>
           )}
@@ -202,11 +187,11 @@ export default function LoginModal({
             <>
               {/* ================= MOBILE INPUT ================= */}
               <div className="mb-3">
-                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[1.5px] text-[#756D66]">
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[1.5px] text-[#6B706C]">
                   Mobile Number
                 </label>
-                <div className="flex h-[52px] overflow-hidden rounded-xl border border-[#DCCFAF] bg-white transition focus-within:border-[#D99A00] focus-within:ring-2 focus-within:ring-[#F5C542]/20">
-                  <div className="flex items-center border-r border-[#E7DED1] px-4 text-sm font-semibold text-[#4D443D]">
+                <div className="flex h-[52px] overflow-hidden rounded-xl border border-[#E8E8E3] bg-white transition focus-within:border-[#8CBC67] focus-within:ring-2 focus-within:ring-[#8CBC67]/20">
+                  <div className="flex items-center border-r border-[#E8E8E3] px-4 text-sm font-semibold text-[#202522]">
                     +91
                   </div>
                   <input
@@ -216,7 +201,7 @@ export default function LoginModal({
                       setMobile(e.target.value.replace(/\D/g, "").slice(0, 10))
                     }
                     placeholder="10-digit mobile number"
-                    className="w-full bg-transparent px-4 text-sm text-[#302823] outline-none placeholder:text-[#A69C92]"
+                    className="w-full bg-transparent px-4 text-sm text-[#202522] outline-none placeholder:text-[#6B706C]"
                   />
                 </div>
               </div>
@@ -225,7 +210,7 @@ export default function LoginModal({
               <button
                 onClick={handleGetOtp}
                 disabled={mobile.length !== 10 || isLoading}
-                className="group flex h-[50px] w-full items-center justify-center gap-2 rounded-xl bg-[#F5C542] text-sm font-bold text-[#302823] shadow-[0_8px_20px_rgba(217,154,0,0.18)] transition-all duration-200 hover:bg-[#E8B52F] hover:shadow-[0_10px_25px_rgba(217,154,0,0.25)] disabled:cursor-not-allowed disabled:opacity-50"
+                className="group flex h-[50px] w-full items-center justify-center gap-2 rounded-xl bg-[#8CBC67] text-sm font-bold text-[#FCFBF7] shadow-[0_8px_20px_rgba(140,188,103,0.3)] transition-all duration-200 hover:bg-[#7AB055] hover:shadow-[0_10px_25px_rgba(140,188,103,0.4)] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isLoading ? (
                   <LoaderCircle size={18} className="animate-spin" />
@@ -243,16 +228,16 @@ export default function LoginModal({
             <>
               {/* ================= OTP INPUT ================= */}
               <div className="mb-3">
-                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[1.5px] text-[#756D66]">
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[1.5px] text-[#6B706C]">
                   Enter OTP
                 </label>
-                <div className="flex h-[52px] overflow-hidden rounded-xl border border-[#DCCFAF] bg-white transition focus-within:border-[#D99A00] focus-within:ring-2 focus-within:ring-[#F5C542]/20">
+                <div className="flex h-[52px] overflow-hidden rounded-xl border border-[#E8E8E3] bg-white transition focus-within:border-[#8CBC67] focus-within:ring-2 focus-within:ring-[#8CBC67]/20">
                   <input
                     type="text"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
                     placeholder="Enter 6-digit OTP (e.g. 123456)"
-                    className="w-full bg-transparent px-4 text-sm text-[#302823] outline-none placeholder:text-[#A69C92]"
+                    className="w-full bg-transparent px-4 text-sm text-[#202522] outline-none placeholder:text-[#6B706C]"
                   />
                 </div>
               </div>
@@ -261,7 +246,7 @@ export default function LoginModal({
               <button
                 onClick={handleVerifyOtp}
                 disabled={otp.length !== 6 || isLoading}
-                className="group flex h-[50px] w-full items-center justify-center gap-2 rounded-xl bg-[#F5C542] text-sm font-bold text-[#302823] shadow-[0_8px_20px_rgba(217,154,0,0.18)] transition-all duration-200 hover:bg-[#E8B52F] hover:shadow-[0_10px_25px_rgba(217,154,0,0.25)] disabled:cursor-not-allowed disabled:opacity-50"
+                className="group flex h-[50px] w-full items-center justify-center gap-2 rounded-xl bg-[#8CBC67] text-sm font-bold text-[#FCFBF7] shadow-[0_8px_20px_rgba(140,188,103,0.3)] transition-all duration-200 hover:bg-[#7AB055] hover:shadow-[0_10px_25px_rgba(140,188,103,0.4)] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isLoading ? (
                   <LoaderCircle size={18} className="animate-spin" />
@@ -275,7 +260,7 @@ export default function LoginModal({
               
               <button 
                 onClick={() => { setStep("phone"); setOtp(""); }}
-                className="mt-4 w-full text-center text-xs font-semibold text-[#A66A00] hover:underline"
+                className="mt-4 w-full text-center text-xs font-semibold text-[#8CBC67] hover:underline"
               >
                 Change mobile number
               </button>
@@ -286,11 +271,11 @@ export default function LoginModal({
             <>
               {/* ================= MOBILE INPUT FOR REGISTRATION ================= */}
               <div className="mb-3">
-                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[1.5px] text-[#756D66]">
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[1.5px] text-[#6B706C]">
                   Mobile Number
                 </label>
-                <div className="flex h-[52px] overflow-hidden rounded-xl border border-[#DCCFAF] bg-white transition focus-within:border-[#D99A00] focus-within:ring-2 focus-within:ring-[#F5C542]/20">
-                  <div className="flex items-center border-r border-[#E7DED1] px-4 text-sm font-semibold text-[#4D443D]">
+                <div className="flex h-[52px] overflow-hidden rounded-xl border border-[#E8E8E3] bg-white transition focus-within:border-[#8CBC67] focus-within:ring-2 focus-within:ring-[#8CBC67]/20">
+                  <div className="flex items-center border-r border-[#E8E8E3] px-4 text-sm font-semibold text-[#202522]">
                     +91
                   </div>
                   <input
@@ -300,37 +285,37 @@ export default function LoginModal({
                       setMobile(e.target.value.replace(/\D/g, "").slice(0, 10))
                     }
                     placeholder="10-digit mobile number"
-                    className="w-full bg-transparent px-4 text-sm text-[#302823] outline-none placeholder:text-[#A69C92]"
+                    className="w-full bg-transparent px-4 text-sm text-[#202522] outline-none placeholder:text-[#6B706C]"
                   />
                 </div>
               </div>
 
               {/* ================= REGISTER INPUT ================= */}
               <div className="mb-3">
-                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[1.5px] text-[#756D66]">
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[1.5px] text-[#6B706C]">
                   Full Name
                 </label>
-                <div className="flex h-[52px] overflow-hidden rounded-xl border border-[#DCCFAF] bg-white transition focus-within:border-[#D99A00] focus-within:ring-2 focus-within:ring-[#F5C542]/20">
+                <div className="flex h-[52px] overflow-hidden rounded-xl border border-[#E8E8E3] bg-white transition focus-within:border-[#8CBC67] focus-within:ring-2 focus-within:ring-[#8CBC67]/20">
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="John Doe"
-                    className="w-full bg-transparent px-4 text-sm text-[#302823] outline-none placeholder:text-[#A69C92]"
+                    className="w-full bg-transparent px-4 text-sm text-[#202522] outline-none placeholder:text-[#6B706C]"
                   />
                 </div>
               </div>
               <div className="mb-5">
-                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[1.5px] text-[#756D66]">
+                <label className="mb-2 block text-[10px] font-bold uppercase tracking-[1.5px] text-[#6B706C]">
                   Email Address
                 </label>
-                <div className="flex h-[52px] overflow-hidden rounded-xl border border-[#DCCFAF] bg-white transition focus-within:border-[#D99A00] focus-within:ring-2 focus-within:ring-[#F5C542]/20">
+                <div className="flex h-[52px] overflow-hidden rounded-xl border border-[#E8E8E3] bg-white transition focus-within:border-[#8CBC67] focus-within:ring-2 focus-within:ring-[#8CBC67]/20">
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="john@example.com"
-                    className="w-full bg-transparent px-4 text-sm text-[#302823] outline-none placeholder:text-[#A69C92]"
+                    className="w-full bg-transparent px-4 text-sm text-[#202522] outline-none placeholder:text-[#6B706C]"
                   />
                 </div>
               </div>
@@ -339,7 +324,7 @@ export default function LoginModal({
               <button
                 onClick={handleRegister}
                 disabled={!name || !email || mobile.length !== 10 || isLoading}
-                className="group flex h-[50px] w-full items-center justify-center gap-2 rounded-xl bg-[#F5C542] text-sm font-bold text-[#302823] shadow-[0_8px_20px_rgba(217,154,0,0.18)] transition-all duration-200 hover:bg-[#E8B52F] hover:shadow-[0_10px_25px_rgba(217,154,0,0.25)] disabled:cursor-not-allowed disabled:opacity-50"
+                className="group flex h-[50px] w-full items-center justify-center gap-2 rounded-xl bg-[#8CBC67] text-sm font-bold text-[#FCFBF7] shadow-[0_8px_20px_rgba(140,188,103,0.3)] transition-all duration-200 hover:bg-[#7AB055] hover:shadow-[0_10px_25px_rgba(140,188,103,0.4)] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isLoading ? (
                   <LoaderCircle size={18} className="animate-spin" />
@@ -356,7 +341,7 @@ export default function LoginModal({
           {/* ================= DIVIDER ================= */}
           <div className="my-5 flex items-center gap-3">
             <div className="h-px flex-1 bg-[#E8DED2]" />
-            <span className="text-[11px] font-medium text-[#9A9188]">
+            <span className="text-[11px] font-medium text-[#6B706C]">
               or continue with
             </span>
             <div className="h-px flex-1 bg-[#E8DED2]" />
@@ -366,14 +351,14 @@ export default function LoginModal({
           <div className="grid grid-cols-3 gap-2.5">
             <button
               type="button"
-              className="flex h-[44px] items-center justify-center gap-2 rounded-xl border border-[#E5DDD4] bg-white text-xs font-semibold text-[#4B433C] transition hover:border-[#D6C29A] hover:bg-[#FFFCF6]"
+              className="flex h-[44px] items-center justify-center gap-2 rounded-xl border border-[#E8E8E3] bg-white text-xs font-semibold text-[#202522] transition hover:border-[#8CBC67] hover:bg-[#EEF6EB]"
             >
               <span className="font-bold text-[#4285F4]">G</span>
               <span className="hidden sm:inline">Google</span>
             </button>
             <button
               type="button"
-              className="flex h-[44px] items-center justify-center gap-2 rounded-xl border border-[#E5DDD4] bg-white text-xs font-semibold text-[#4B433C] transition hover:border-[#D6C29A] hover:bg-[#FFFCF6]"
+              className="flex h-[44px] items-center justify-center gap-2 rounded-xl border border-[#E8E8E3] bg-white text-xs font-semibold text-[#202522] transition hover:border-[#8CBC67] hover:bg-[#EEF6EB]"
             >
               <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#1877F2] text-[10px] font-bold text-white">
                 f
@@ -382,15 +367,15 @@ export default function LoginModal({
             </button>
             <button
               type="button"
-              className="flex h-[44px] items-center justify-center gap-2 rounded-xl border border-[#E5DDD4] bg-white text-xs font-semibold text-[#4B433C] transition hover:border-[#D6C29A] hover:bg-[#FFFCF6]"
+              className="flex h-[44px] items-center justify-center gap-2 rounded-xl border border-[#E8E8E3] bg-white text-xs font-semibold text-[#202522] transition hover:border-[#8CBC67] hover:bg-[#EEF6EB]"
             >
-              <Mail size={15} className="text-[#A66A00]" />
+              <Mail size={15} className="text-[#8CBC67]" />
               <span className="hidden sm:inline">Email</span>
             </button>
           </div>
 
           {/* ================= SWITCH VIEW ================= */}
-          <div className="mt-6 text-center text-xs text-[#756D66]">
+          <div className="mt-6 text-center text-xs text-[#6B706C]">
             {view === "login" ? (
               <>
                 Don't have an account?{" "}
@@ -399,7 +384,7 @@ export default function LoginModal({
                     setView("register");
                     setErrorMsg("");
                   }}
-                  className="font-bold text-[#A66A00] hover:underline"
+                  className="font-bold text-[#8CBC67] hover:underline"
                 >
                   Sign up
                 </button>
@@ -412,7 +397,7 @@ export default function LoginModal({
                     setView("login");
                     setErrorMsg("");
                   }}
-                  className="font-bold text-[#A66A00] hover:underline"
+                  className="font-bold text-[#8CBC67] hover:underline"
                 >
                   Log in
                 </button>
@@ -421,13 +406,13 @@ export default function LoginModal({
           </div>
 
           {/* ================= TERMS ================= */}
-          <p className="mt-6 text-center text-[10px] leading-4 text-[#9A9188]">
+          <p className="mt-6 text-center text-[10px] leading-4 text-[#6B706C]">
             By continuing, you agree to our{" "}
-            <button onClick={()=>{router.push('/terms-and-condition');handleClose()}} className="font-semibold text-[#A66A00] hover:underline">
+            <button onClick={()=>{router.push('/terms-and-condition');handleClose()}} className="font-semibold text-[#8CBC67] hover:underline">
               Terms
             </button>
             {" "} & {" "}
-            <button onClick={()=>{router.push('/privacy-Policy');handleClose()}} className="font-semibold text-[#A66A00] hover:underline">
+            <button onClick={()=>{router.push('/privacy-Policy');handleClose()}} className="font-semibold text-[#8CBC67] hover:underline">
               Privacy Policy
             </button>
             .
@@ -438,3 +423,6 @@ export default function LoginModal({
     </div>
   );
 }
+
+
+

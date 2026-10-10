@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import SlidingProducts from "@/app/components/SlidingProducts";
 import DiwaliSection from "@/app/Festivals/diwali/DiwaliSection";
 import React, { useState, useEffect, useRef } from "react";
@@ -116,7 +116,7 @@ export default function DiwaliPage() {
     sortBy === "recommended" ? trendingProducts : sortedProducts;
 
   return (
-    <div className="min-h-screen text-neutral-900 font-sans bg-[#FAF7F2] selection:bg-amber-500 selection:text-white overflow-x-hidden pb-20">
+    <div className="min-h-screen text-[#202522] font-sans bg-[#FCFBF7] selection:bg-[#8CBC67] selection:text-white overflow-x-hidden pb-20">
       {/* Hero Section with diwali.png */}
       <section className="relative w-full h-[350px] px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[35px] shadow-2xl">
         <div
@@ -127,13 +127,13 @@ export default function DiwaliPage() {
         </div>
 
         <div className="relative z-10 space-y-6 max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center space-x-2 bg-amber-500/20 border border-amber-500/40 px-5 py-2 rounded-full text-amber-300 text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
-            <Sparkles size={15} className="text-amber-400" />
-            <span>Shubh Deepawali • Festival of Lights 2026</span>
+          <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-5 py-2 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
+            <Sparkles size={15} className="text-[#8CBC67]" />
+            <span>Shubh Deepawali â€¢ Festival of Lights 2026</span>
           </div>
           <h1 className="font-serif text-4xl sm:text-7xl font-bold tracking-tight text-white drop-shadow-2xl">
             Divine{" "}
-            <span className="text-amber-400 italic font-normal">Diwali</span>{" "}
+            <span className="text-[#8CBC67] italic font-normal">Diwali</span>{" "}
             Celebrations
           </h1>
           <p className="text-neutral-200 text-sm sm:text-lg max-w-2xl mx-auto leading-relaxed font-light">
@@ -146,7 +146,7 @@ export default function DiwaliPage() {
 
       {/* Video Section */}
       <section className="py-16 px-6 w-full max-w-[96rem] mx-auto">
-        <div className="relative w-full h-[85vh] min-h-[500px] rounded-[35px] overflow-hidden shadow-2xl border border-amber-500/30 bg-neutral-950">
+        <div className="relative w-full h-[85vh] min-h-[500px] rounded-[35px] overflow-hidden shadow-2xl border border-[#8CBC67]/30 bg-neutral-950">
           <video
             ref={videoRef}
             autoPlay
@@ -164,17 +164,17 @@ export default function DiwaliPage() {
 
       {/* Signature Diwali Special Section */}
       <section className="py-14 px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="relative overflow-hidden rounded-[28px] border border-amber-500/30 bg-gradient-to-r from-[#4a1702] via-[#702500] to-[#1a0b05] shadow-[0_25px_70px_rgba(70,25,0,0.25)]">
+        <div className="relative overflow-hidden rounded-[28px] border border-[#8CBC67]/30 bg-gradient-to-r from-[#4a1702] via-[#702500] to-[#1a0b05] shadow-[0_25px_70px_rgba(70,25,0,0.25)]">
           {/* Decorative Glow */}
-          <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
+          <div className="absolute -left-20 -top-20 h-72 w-72 rounded-full bg-[#8CBC67]/10 blur-3xl pointer-events-none" />
 
           <div className="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] items-stretch">
             {/* Left Content */}
             <div className="relative z-10 flex flex-col justify-center p-7 sm:p-10 lg:p-12 xl:p-14">
               {/* Badge */}
               <div className="mb-5">
-                <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.16em] text-amber-300">
-                  <Flame size={14} className="text-amber-400" />
+                <div className="inline-flex items-center gap-2 rounded-full border border-[#8CBC67]/40 bg-[#8CBC67]/10 px-4 py-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.16em] text-[#8CBC67]">
+                  <Flame size={14} className="text-[#8CBC67]" />
                   <span>Signature Diwali Special</span>
                 </div>
               </div>
@@ -182,7 +182,7 @@ export default function DiwaliPage() {
               {/* Heading */}
               <h2 className="max-w-xl font-serif text-3xl sm:text-4xl lg:text-[42px] font-bold leading-[1.12] text-white">
                 The Auspicious Glow of{" "}
-                <span className="italic text-amber-400">Divine Diyas</span>
+                <span className="italic text-[#8CBC67]">Divine Diyas</span>
               </h2>
 
               {/* Description */}
@@ -198,7 +198,7 @@ export default function DiwaliPage() {
                 <div className="flex items-start gap-3 text-sm text-neutral-200">
                   <CheckCircle
                     size={18}
-                    className="mt-0.5 shrink-0 text-amber-400"
+                    className="mt-0.5 shrink-0 text-[#8CBC67]"
                   />
                   <span>Handcrafted terracotta and brass designer diyas</span>
                 </div>
@@ -206,7 +206,7 @@ export default function DiwaliPage() {
                 <div className="flex items-start gap-3 text-sm text-neutral-200">
                   <CheckCircle
                     size={18}
-                    className="mt-0.5 shrink-0 text-amber-400"
+                    className="mt-0.5 shrink-0 text-[#8CBC67]"
                   />
                   <span>
                     Synchronized warm lighting & floral corner styling
@@ -218,7 +218,7 @@ export default function DiwaliPage() {
               <div className="mt-9">
                 <button
                   type="button"
-                  className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 px-7 py-3.5 text-xs font-extrabold uppercase tracking-[0.13em] text-neutral-950 shadow-[0_10px_30px_rgba(251,191,36,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_35px_rgba(251,191,36,0.35)] cursor-pointer"
+                  className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-[#8CBC67] to-yellow-300 px-7 py-3.5 text-xs font-extrabold uppercase tracking-[0.13em] text-neutral-950 shadow-[0_10px_30px_rgba(251,191,36,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_35px_rgba(251,191,36,0.35)] cursor-pointer"
                 >
                   <span>Book Diwali Special</span>
 
@@ -253,21 +253,21 @@ export default function DiwaliPage() {
           <div className="flex items-center justify-between gap-6">
             {/* LEFT - Heading */}
             <div className="text-left">
-              <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
+              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
                   Trending This Season
               </span>
               <div className="flex items-baseline gap-3">
-                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 mt-1">
+                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522] mt-1">
                   Our Top Diwali Picks
                 </h2>
-                <span className="text-neutral-400 text-2xl">|</span>
+                <span className="text-[#6B706C] text-2xl">|</span>
 
-                <span className="text-neutral-500 text-2xl">
+                <span className="text-[#6B706C] text-2xl">
                   {productsToDisplay.length} Items
                 </span>
               </div>
 
-              <p className="text-neutral-600 text-sm font-light mt-2">
+              <p className="text-[#6B706C] text-sm font-light mt-2">
                 Handpicked festive favourites loved by our customers.
               </p>
             </div>
@@ -295,7 +295,7 @@ export default function DiwaliPage() {
         <div className="flex justify-center mt-12">
           <Link
             href="/Festivals/diwali/all-products"
-            className="inline-flex items-center space-x-2 border-2 border-amber-500 text-amber-700 hover:bg-amber-500 hover:text-neutral-950 px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest transition shadow-md"
+            className="inline-flex items-center space-x-2 border-2 border-[#8CBC67] text-[#202522] hover:bg-[#8CBC67] hover:text-neutral-950 px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest transition shadow-md"
           >
             <span>View More Products</span>
             <ArrowRight size={16} />
@@ -308,16 +308,16 @@ export default function DiwaliPage() {
 
       {/* Rangoli Showcase Card linked with product id "114" */}
       <section className="py-16 px-6 max-w-7xl mx-auto mb-10">
-        <div className="bg-gradient-to-r from-amber-950 via-amber-900 to-neutral-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-amber-500/40 grid grid-cols-1 lg:grid-cols-2 items-stretch">
+        <div className="bg-gradient-to-r from-amber-950 via-[#202522] to-neutral-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-[#8CBC67]/40 grid grid-cols-1 lg:grid-cols-2 items-stretch">
           <div className="p-8 sm:p-12 flex flex-col justify-between space-y-6">
             <div className="space-y-4">
-              <div className="inline-flex items-center space-x-2 bg-amber-500/20 border border-amber-500/40 px-3.5 py-1.5 rounded-full text-amber-300 text-xs font-bold uppercase tracking-widest">
-                <Star size={14} className="text-amber-400" />
+              <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-3.5 py-1.5 rounded-full text-[#8CBC67] text-xs font-bold uppercase tracking-widest">
+                <Star size={14} className="text-[#8CBC67]" />
                 <span>Artistic Rangoli Showcase</span>
               </div>
               <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white leading-tight">
                 Traditional & Floral{" "}
-                <span className="text-amber-400 italic">
+                <span className="text-[#8CBC67] italic">
                   Rangoli Masterpieces
                 </span>
               </h2>
@@ -328,13 +328,13 @@ export default function DiwaliPage() {
               </p>
               <div className="space-y-3 pt-2">
                 <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                  <CheckCircle size={16} className="text-amber-400 shrink-0" />
+                  <CheckCircle size={16} className="text-[#8CBC67] shrink-0" />
                   <span>
                     Fresh flower petals and eco-friendly vibrant colors
                   </span>
                 </div>
                 <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                  <CheckCircle size={16} className="text-amber-400 shrink-0" />
+                  <CheckCircle size={16} className="text-[#8CBC67] shrink-0" />
                   <span>
                     Customized auspicious symbols and traditional motifs
                   </span>
@@ -344,7 +344,7 @@ export default function DiwaliPage() {
             <div className="pt-4">
               <button
                 type="button"
-                className="bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2 cursor-pointer"
+                className="bg-[#8CBC67] hover:bg-[#D7A84B] text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2 cursor-pointer"
               >
                 <span>Book Rangoli Styling</span>
                 <ArrowRight size={16} />
@@ -365,3 +365,4 @@ export default function DiwaliPage() {
     </div>
   );
 }
+

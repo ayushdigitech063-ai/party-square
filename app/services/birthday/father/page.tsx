@@ -49,7 +49,7 @@ export default function FatherBirthdayPage() {
     sortBy === "recommended" ? fatherbirthdayproduct : sortedProducts;
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-neutral-900 font-sans selection:bg-[#C5A059] selection:text-white">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans selection:bg-[#D7A84B] selection:text-white">
       {/* ================= HERO SECTION WITH badbackgroundimage.png ================= */}
       <section className="relative h-[350px] flex items-center justify-center overflow-hidden text-white">
         <div
@@ -66,7 +66,7 @@ export default function FatherBirthdayPage() {
 
         <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 w-full">
           <div className="max-w-2xl space-y-6">
-            <div className="inline-flex items-center space-x-2 bg-[#C5A059]/20 border border-[#C5A059]/50 px-4 py-2 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-lg">
+            <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/20 border border-[#D7A84B]/50 px-4 py-2 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-lg">
               <Shield size={14} className="text-[#DFBC71]" />
               <span>Father's Special Tribute Celebration</span>
             </div>
@@ -87,7 +87,7 @@ export default function FatherBirthdayPage() {
             <div className="flex flex-wrap gap-4 pt-4">
               <Link
                 href="/contact"
-                className="group relative bg-gradient-to-r from-[#DFBC71] to-[#C5A059] text-neutral-950 px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-2xl hover:scale-105 transition-all duration-300 flex items-center space-x-2"
+                className="group relative bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-2xl hover:scale-105 transition-all duration-300 flex items-center space-x-2"
               >
                 <span>Book Father's Decor</span>
                 <ArrowRight
@@ -119,20 +119,20 @@ export default function FatherBirthdayPage() {
           <div className="flex items-center justify-between gap-6">
             {/* LEFT - Heading */}
             <div className="text-left">
-              <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
+              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
                 Exclusive Collections
               </span>
               <div className="flex items-baseline gap-3">
-                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 mt-1">
+                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522] mt-1">
                   Crafted with Dignity & Style
                 </h2>
-                <span className="text-neutral-400 text-2xl">|</span>
+                <span className="text-[#6B706C] text-2xl">|</span>
 
-                <span className="text-neutral-500 text-2xl">
+                <span className="text-[#6B706C] text-2xl">
                   {productsToDisplay.length} Items
                 </span>
               </div>
-              <p className="text-neutral-600 text-sm font-light mt-2">
+              <p className="text-[#6B706C] text-sm font-light mt-2">
                 Distinctive, sophisticated themes tailored specifically for
                 fathers and milestone birthdays.
               </p>
@@ -161,14 +161,14 @@ export default function FatherBirthdayPage() {
 
       {/* ================= FIXED LARGE BANNER CARD SECTION (card1.png) ================= */}
       <section className="py-16 px-6 max-w-7xl mx-auto">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 text-white shadow-2xl border border-[#C5A059]/30">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#C5A059]/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#C5A059]/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 text-white shadow-2xl border border-[#D7A84B]/30">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#D7A84B]/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#D7A84B]/5 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 items-center p-8 sm:p-12 lg:p-16 gap-10">
             {/* Left Image Box */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-md aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl border border-[#C5A059]/40 group">
+              <div className="relative w-full max-w-md aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl border border-[#D7A84B]/40 group">
                 <img
                   src="/card1.png"
                   alt="Father Grand Celebration"
@@ -189,7 +189,7 @@ export default function FatherBirthdayPage() {
 
             {/* Right Content Box */}
             <div className="lg:col-span-7 space-y-5">
-              <div className="inline-flex items-center space-x-2 bg-[#C5A059]/20 border border-[#C5A059]/40 px-4 py-1.5 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase">
+              <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/20 border border-[#D7A84B]/40 px-4 py-1.5 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase">
                 <Award size={13} className="text-[#DFBC71]" />
                 <span>Celebrating A Lifetime of Guidance</span>
               </div>
@@ -219,7 +219,7 @@ export default function FatherBirthdayPage() {
               <div className="pt-2 flex flex-wrap gap-4">
                 <Link
                   href="/contact"
-                  className="bg-gradient-to-r from-[#DFBC71] to-[#C5A059] text-neutral-950 px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-xl hover:scale-105 transition-all duration-300 flex items-center space-x-2"
+                  className="bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-xl hover:scale-105 transition-all duration-300 flex items-center space-x-2"
                 >
                   <span>Book Grand Setup for Dad</span>
                   <ArrowRight size={15} />

@@ -37,20 +37,20 @@ export default function AllChristmasProductsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAF7F2] px-6 py-10">
+    <div className="min-h-screen bg-[#FCFBF7] px-6 py-10">
           <div className="max-w-7xl mx-auto">
            <div className="flex items-baseline gap-3">
-            <h1 className="text-neutral-900 text-3xl font-serif font-bold mb-2">
+            <h1 className="text-[#202522] text-3xl font-serif font-bold mb-2">
               Christmas Celebration - All Products Catalogue
             </h1>
-            <span className="text-neutral-400 text-2xl">|</span>
+            <span className="text-[#6B706C] text-2xl">|</span>
 
-                <span className="text-neutral-500 text-2xl">
+                <span className="text-[#6B706C] text-2xl">
                   {christmasProducts.length} Items
                 </span>
             </div>
     
-            <p className="text-neutral-600 text-sm mb-8 font-light">
+            <p className="text-[#6B706C] text-sm mb-8 font-light">
               Explore our complete collection of christmas.
             </p>
     

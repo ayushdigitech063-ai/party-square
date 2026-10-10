@@ -96,7 +96,7 @@ export default function LohriPage() {
     sortBy === "recommended" ? traditionalLohriDecor : sortedProducts;
 
   return (
-    <div className="min-h-screen text-neutral-900 font-sans bg-[#FFF9F5] selection:bg-orange-600 selection:text-white overflow-x-hidden pb-20">
+    <div className="min-h-screen text-[#202522] font-sans bg-[#FFF9F5] selection:bg-orange-600 selection:text-white overflow-x-hidden pb-20">
       {/* =====================================================
           HERO SECTION
       ====================================================== */}
@@ -141,21 +141,21 @@ export default function LohriPage() {
           <div className="flex items-center justify-between gap-6">
             {/* LEFT - Heading */}
             <div className="text-left">
-              <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
+              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
                 Traditional Setup
               </span>
               <div className="flex items-baseline gap-3">
-                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 mt-1">
+                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522] mt-1">
                   Essential Lohri Decorations
                 </h2>
-                <span className="text-neutral-400 text-2xl">|</span>
+                <span className="text-[#6B706C] text-2xl">|</span>
 
-                <span className="text-neutral-500 text-2xl">
+                <span className="text-[#6B706C] text-2xl">
                   {productsToDisplay.length} Items
                 </span>
               </div>
 
-              <p className="text-neutral-600 text-sm font-light mt-2">
+              <p className="text-[#6B706C] text-sm font-light mt-2">
                  Bring warmth and authentic Punjabi tradition to your home
                 festivities.
               </p>

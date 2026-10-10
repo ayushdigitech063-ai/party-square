@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 interface PrivacySection {
   number: number;
@@ -15,9 +15,9 @@ const privacySections: PrivacySection[] = [
         <p>
           Infureka Technologies Private Limited, a company incorporated under
           the Companies Act, 2013 and having its registered office at{" "}
-          <strong>Kirti Nagar, New Delhi – 110015</strong>, operating under
-          the brand name <strong>“CherishX”</strong> (hereinafter referred to
-          as the “Company”, “CherishX”, “we”, “us”, or “our”), is committed to
+          <strong>Kirti Nagar, New Delhi â€“ 110015</strong>, operating under
+          the brand name <strong>â€œCherishXâ€</strong> (hereinafter referred to
+          as the â€œCompanyâ€, â€œCherishXâ€, â€œweâ€, â€œusâ€, or â€œourâ€), is committed to
           protecting the personally identifiable information and sensitive
           personal data that we collect from you through our website, mobile
           applications, and related services.
@@ -63,8 +63,8 @@ const privacySections: PrivacySection[] = [
           discontinue using our Platform.
         </p>
 
-        <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50/80 p-5">
-          <p className="font-medium text-amber-900">
+        <div className="mt-5 rounded-2xl border border-[#E8E8E3] bg-[#EEF6EB]/80 p-5">
+          <p className="font-medium text-[#202522]">
             Note: This Privacy Policy may be updated periodically without prior
             notice. Please review it periodically for any changes.
           </p>
@@ -360,11 +360,11 @@ const privacySections: PrivacySection[] = [
           <li>Withdraw consent or request data deletion.</li>
         </ul>
 
-        <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50/80 p-5">
+        <div className="mt-6 rounded-2xl border border-[#E8E8E3] bg-[#EEF6EB]/80 p-5">
           <p>
             To submit a data access or deletion request, please contact our
             support team with the subject{" "}
-            <strong>“Data Access Request”</strong>.
+            <strong>â€œData Access Requestâ€</strong>.
           </p>
         </div>
 
@@ -441,31 +441,31 @@ const privacySections: PrivacySection[] = [
           contact:
         </p>
 
-        <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-6">
+        <div className="rounded-2xl border border-[#E8E8E3] bg-[#EEF6EB]/70 p-6">
           <p className="font-bold text-stone-900">
             Grievance Officer
           </p>
 
           <p className="mt-2">
-            Customer Operations &amp; Support Head – CherishX
+            Customer Operations &amp; Support Head â€“ CherishX
           </p>
 
           <div className="mt-4 space-y-2">
-            <p>📍 Infureka Technologies Pvt. Ltd., Kirti Nagar, New Delhi – 110015</p>
+            <p>ðŸ“ Infureka Technologies Pvt. Ltd., Kirti Nagar, New Delhi â€“ 110015</p>
             <p>
-              ✉️{" "}
+              âœ‰ï¸{" "}
               <a
                 href="mailto:contact@cherishx.com"
-                className="font-semibold text-amber-700 transition hover:text-amber-900"
+                className="font-semibold text-[#202522] transition hover:text-[#202522]"
               >
                 contact@cherishx.com
               </a>
             </p>
             <p>
-              📞{" "}
+              ðŸ“ž{" "}
               <a
                 href="tel:+918081833833"
-                className="font-semibold text-amber-700 transition hover:text-amber-900"
+                className="font-semibold text-[#202522] transition hover:text-[#202522]"
               >
                 +91 8081833833
               </a>
@@ -489,7 +489,7 @@ const privacySections: PrivacySection[] = [
         <p>
           CherishX reserves the right to modify this Privacy Policy at any
           time. Updates will be posted on this page with the revised
-          “Last Updated” date.
+          â€œLast Updatedâ€ date.
         </p>
 
         <p className="mt-4">
@@ -504,16 +504,16 @@ const privacySections: PrivacySection[] = [
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50/40 to-white px-4 py-10 md:px-8 lg:px-12">
+    <main className="min-h-screen bg-gradient-to-b from-[#EEF6EB] via-orange-50/40 to-white px-4 py-10 md:px-8 lg:px-12">
       <div className="mx-auto max-w-6xl">
 
         {/* Main Privacy Policy Card */}
-        <section className="overflow-hidden rounded-3xl border border-amber-200/80 bg-white/95 shadow-[0_10px_40px_rgba(120,80,20,0.08)] backdrop-blur">
+        <section className="overflow-hidden rounded-3xl border border-[#E8E8E3]/80 bg-white/95 shadow-[0_10px_40px_rgba(120,80,20,0.08)] backdrop-blur">
 
           {/* Header */}
-          <div className="border-b border-amber-200/70 bg-gradient-to-r from-amber-100/90 via-amber-50/90 to-orange-50/80 px-6 py-10 text-center md:px-12 md:py-14">
+          <div className="border-b border-[#E8E8E3]/70 bg-gradient-to-r from-[#EEF6EB]/90 via-[#EEF6EB]/90 to-orange-50/80 px-6 py-10 text-center md:px-12 md:py-14">
 
-            <div className="mx-auto mb-4 inline-flex items-center rounded-full border border-amber-300/80 bg-white/70 px-4 py-2 text-sm font-semibold text-amber-800 shadow-sm">
+            <div className="mx-auto mb-4 inline-flex items-center rounded-full border border-[#8CBC67]/80 bg-white/70 px-4 py-2 text-sm font-semibold text-[#202522] shadow-sm">
               Privacy &amp; Data Protection
             </div>
 
@@ -528,7 +528,7 @@ export default function PrivacyPolicyPage() {
             </p>
 
             {/* Last Updated */}
-            <div className="mx-auto mt-7 inline-flex rounded-full border border-amber-200 bg-white/80 px-5 py-2.5 text-sm text-stone-700 shadow-sm">
+            <div className="mx-auto mt-7 inline-flex rounded-full border border-[#E8E8E3] bg-white/80 px-5 py-2.5 text-sm text-stone-700 shadow-sm">
               <span className="font-semibold text-stone-900">
                 Last Updated:
               </span>
@@ -538,9 +538,9 @@ export default function PrivacyPolicyPage() {
 
           {/* Important Notice */}
           <div className="px-6 pt-8 md:px-12 md:pt-10">
-            <div className="rounded-2xl border border-amber-300/70 bg-amber-50/70 p-5 md:p-6">
+            <div className="rounded-2xl border border-[#8CBC67]/70 bg-[#EEF6EB]/70 p-5 md:p-6">
               <p className="text-sm leading-7 text-stone-700 md:text-base">
-                <span className="font-bold text-amber-900">
+                <span className="font-bold text-[#202522]">
                   Important:
                 </span>{" "}
                 This Privacy Policy forms an integral part of the Terms &amp;
@@ -557,13 +557,13 @@ export default function PrivacyPolicyPage() {
               {privacySections.map((section) => (
                 <article
                   key={section.number}
-                  className="group rounded-3xl border border-amber-100 bg-gradient-to-br from-white to-amber-50/30 p-6 transition-all duration-300 hover:border-amber-200 hover:shadow-[0_8px_30px_rgba(120,80,20,0.06)] md:p-8"
+                  className="group rounded-3xl border border-[#E8E8E3] bg-gradient-to-br from-white to-[#EEF6EB]/30 p-6 transition-all duration-300 hover:border-[#E8E8E3] hover:shadow-[0_8px_30px_rgba(120,80,20,0.06)] md:p-8"
                 >
                   {/* Section heading */}
                   <div className="mb-5 flex items-start gap-4">
 
                     {/* Number */}
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-amber-200 bg-amber-100/80 text-sm font-bold text-amber-800">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#E8E8E3] bg-[#EEF6EB]/80 text-sm font-bold text-[#202522]">
                       {section.number}
                     </div>
 
@@ -573,7 +573,7 @@ export default function PrivacyPolicyPage() {
                         {section.title}
                       </h2>
 
-                      <div className="mt-2 h-1 w-12 rounded-full bg-amber-400 transition-all duration-300 group-hover:w-20" />
+                      <div className="mt-2 h-1 w-12 rounded-full bg-[#8CBC67] transition-all duration-300 group-hover:w-20" />
                     </div>
                   </div>
 
@@ -587,7 +587,7 @@ export default function PrivacyPolicyPage() {
           </div>
 
           {/* Bottom Navigation */}
-          <div className="border-t border-amber-200/70 bg-gradient-to-r from-amber-50/80 to-orange-50/50 px-6 py-8 md:px-12">
+          <div className="border-t border-[#E8E8E3]/70 bg-gradient-to-r from-[#EEF6EB]/80 to-orange-50/50 px-6 py-8 md:px-12">
             <div className="flex flex-col items-center justify-between gap-5 text-center md:flex-row md:text-left">
 
               <div>
@@ -604,14 +604,14 @@ export default function PrivacyPolicyPage() {
 
                 <Link
                   href="/terms-and-condition"
-                  className="rounded-xl border border-amber-300 bg-white px-5 py-2.5 text-sm font-semibold text-amber-800 transition hover:bg-amber-100"
+                  className="rounded-xl border border-[#8CBC67] bg-white px-5 py-2.5 text-sm font-semibold text-[#202522] transition hover:bg-[#EEF6EB]"
                 >
                   Terms &amp; Conditions
                 </Link>
 
                 <Link
                   href="/contact"
-                  className="rounded-xl bg-amber-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-700"
+                  className="rounded-xl bg-[#7AB055] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#7AB055]"
                 >
                   Contact Us
                 </Link>

@@ -17,7 +17,7 @@ export default function DashboardToolbar({
     <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
 
       <div
-        className="inline-flex bg-white border border-amber-200 rounded-full p-1 self-start"
+        className="inline-flex bg-white border border-[#E8E8E3] rounded-full p-1 self-start"
         role="tablist"
         aria-label="Date range"
       >
@@ -31,8 +31,8 @@ export default function DashboardToolbar({
               onClick={() => setRange(item)}
               className={`px-4 py-1.5 rounded-full text-xs font-bold transition cursor-pointer ${
                 range === item
-                  ? "bg-amber-500 text-stone-900"
-                  : "text-neutral-500 hover:text-amber-800"
+                  ? "bg-[#8CBC67] text-stone-900"
+                  : "text-[#6B706C] hover:text-[#202522]"
               }`}
             >
               {item === "7D"
@@ -46,7 +46,7 @@ export default function DashboardToolbar({
 
       </div>
 
-      <div className="flex items-center gap-2 text-xs text-neutral-500">
+      <div className="flex items-center gap-2 text-xs text-[#6B706C]">
 
         <CalendarDays size={15} />
 

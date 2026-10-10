@@ -28,11 +28,11 @@ export default function ProductSort({
           rounded-lg
           pl-4 pr-10 py-2.5
           text-sm
-          text-neutral-700
+          text-[#202522]
           outline-none
           cursor-pointer
           hover:border-neutral-400
-          focus:border-[#C5A059]
+          focus:border-[#D7A84B]
           transition
         "
       >
@@ -43,7 +43,7 @@ export default function ProductSort({
 
       <ChevronDown
         size={16}
-        className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-500"
+        className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#6B706C]"
       />
     </div>
   );

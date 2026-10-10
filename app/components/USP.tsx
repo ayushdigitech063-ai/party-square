@@ -31,13 +31,13 @@ const USPS = [
 
 export default function USP() {
   return (
-    <section className="relative overflow-hidden bg-[#FAF7F2] py-16 sm:py-20 px-4 sm:px-8">
+    <section className="relative overflow-hidden bg-[#FCFBF7] py-16 sm:py-20 px-4 sm:px-8">
       {/* soft background glows */}
-      <div className="pointer-events-none absolute -top-24 -left-24 w-80 h-80 rounded-full bg-amber-200/40 blur-3xl" />
+      <div className="pointer-events-none absolute -top-24 -left-24 w-80 h-80 rounded-full bg-[#F7D6C7]/40 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-24 w-80 h-80 rounded-full bg-rose-200/40 blur-3xl" />
 
       <div className="relative max-w-5xl mx-auto text-center">
-        <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-amber-800">
+        <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#202522]">
           Trusted since 2020
         </p>
         <h2 className="mt-3 text-3xl sm:text-4xl font-serif font-bold text-gray-900">
@@ -46,16 +46,16 @@ export default function USP() {
         <div className="mx-auto mt-4 h-0.5 w-16 rounded-full bg-[#A0522D]" />
 
         {/* Stats card */}
-        <div className="mt-12 bg-white rounded-3xl border border-amber-200 shadow-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 overflow-hidden">
+        <div className="mt-12 bg-white rounded-3xl border border-[#E8E8E3] shadow-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 overflow-hidden">
           {USPS.map(({ icon: Icon, label, value, caption }, i) => (
             <div
               key={label}
-              className={`p-6 sm:p-8 text-left transition hover:bg-amber-50/60 ${
-                i !== 0 ? "border-t sm:border-t-0 lg:border-l border-amber-100" : ""
+              className={`p-6 sm:p-8 text-left transition hover:bg-[#EEF6EB]/60 ${
+                i !== 0 ? "border-t sm:border-t-0 lg:border-l border-[#E8E8E3]" : ""
               }`}
             >
-              <div className="flex items-center space-x-2 text-amber-900">
-                <span className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
+              <div className="flex items-center space-x-2 text-[#202522]">
+                <span className="w-8 h-8 rounded-full bg-[#EEF6EB] flex items-center justify-center">
                   <Icon size={16} />
                 </span>
                 <span className="text-[11px] font-bold uppercase tracking-widest text-gray-500">

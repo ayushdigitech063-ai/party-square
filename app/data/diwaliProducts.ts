@@ -1,65 +1,19 @@
-import { Product } from "../types/product";
+﻿import { Product } from "../types/product";
 
 export const diwaliProducts: Product[] = [
+    // =========================================================
+  // REGULAR ITEMS
   // =========================================================
-  // REGULAR DIWALI PRODUCTS - ID 1 TO 12
-  // =========================================================
-
   {
     id: "diwali-1",
-    slug: "royal-diwali-jhumar-decor",
-    name: "Royal Diwali Jhumar Decor",
-    description:
-      "Beautiful hanging light decoration for perfect festive ambience.",
-    fullDescription:
-      "Bring home the ethereal glow of traditional festivities with our Royal Diwali Jhumar Decor. Handcrafted with precision, this stunning hanging piece combines warm LED lighting with rich traditional motifs to instantly elevate your living room or balcony decor.",
-    price: 1499,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSWXyfF9nfnroUuX6Av8SOfExGrXBhPPk_p0m1ziMXIA&s=10",
-    category: "Diwali",
-    subcategory: "Lighting Decoration",
-    availability: true,
-    included: [
-      "Energy-efficient warm LED lights included",
-      "Durable weather-resistant hanging structure",
-      "Easy to install and dismantle",
-      "Handcrafted traditional golden finish",
-    ],
-  },
-
-  {
-    id: "diwali-2",
-    slug: "traditional-marigold-toran",
-    name: "Traditional Marigold Toran",
-    description:
-      "Auspicious artificial marigold door hanging for welcoming guests.",
-    fullDescription:
-      "Welcome Goddess Lakshmi and your guests with vibrant, everlasting artificial marigold torans. Designed to replicate fresh flowers without the hassle of wilting, it adds an authentic festive charm to your main entrance.",
-    price: 799,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxIcLI0T0papxZtiedcH-Q-qMwsYze3OdeSj65U9bVsQ&s=10",
-    category: "Diwali",
-    subcategory: "Door Decoration",
-    availability: true,
-    included: [
-      "Made from premium reusable fabric material",
-      "Standard size fits most main doors perfectly",
-      "Washable and long-lasting quality",
-      "Bright, auspicious yellow and orange hues",
-    ],
-  },
-
-  {
-    id: "diwali-3",
-    slug: "designer-clay-diya-set",
-    name: "Designer Clay Diya Set",
-    description:
-      "Hand-painted colorful earthen diyas for a glowing festival night.",
-    fullDescription:
-      "Light up every corner of your home with our exclusive set of hand-painted terracotta diyas. Each piece is uniquely crafted and painted by traditional artisans to add a colorful, ethnic touch to your Diwali celebrations.",
-    price: 599,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsozqhCTvAr8JKXKeYznC9ZUWFuR8qes1fU8lDML8TfQ&s=10",
+    slug: "diwali-diya-decoration",
+    name: "Premium Diya & Candle Decoration",
+    price: 1599,
+    originalPrice: 2000,
+    rating: 4.8,
+    reviewCount: 150,
+    description: "A beautiful arrangement of hand-painted diyas and premium candles for your Diwali celebration.",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfU8lDML8TfQ&s=10",
     category: "Diwali",
     subcategory: "Diya & Candle Decoration",
     availability: true,
@@ -81,73 +35,7 @@ export const diwaliProducts: Product[] = [
       "Transform your walls and backdrops into a cascading waterfall of golden lights. This fairy light curtain is ideal for creating stunning backdrops for puja spaces, living rooms, or festive photography.",
     price: 1299,
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgk_3j39VAteYS_TiWDdBHSEBHaUd6naw2kLwlqpabpA&s",
-    category: "Diwali",
-    subcategory: "Lighting Decoration",
-    availability: true,
-    included: [
-      "Multiple lighting flash modes available",
-      "Low power consumption LED bulbs",
-      "Safe to touch, does not heat up quickly",
-      "Covers wide wall areas seamlessly",
-    ],
-  },
-
-  {
-    id: "diwali-5",
-    slug: "luxury-laxmi-pujan-mandap",
-    name: "Luxury Laxmi Pujan Mandap",
-    description:
-      "Exquisite floral and fabric backdrop styling for auspicious prayers.",
-    fullDescription:
-      "Create a divine sanctum for Goddess Lakshmi with our Luxury Laxmi Pujan Mandap setup. Featuring rich fabrics, floral garlands, and subtle lighting, it provides a majestic setting for your family prayers.",
-    price: 4999,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO192jZsJKPNVAM00tqiDTQHuHqubkhGW8d2AmGsY1Xw&s=10",
-    category: "Diwali",
-    subcategory: "Puja Decoration",
-    availability: true,
-    included: [
-      "Complete backdrop and seating styling package",
-      "Premium quality synthetic florals and fabrics",
-      "Professional setup support included",
-      "Auspicious color combinations",
-    ],
-  },
-
-  {
-    id: "diwali-6",
-    slug: "crystal-tea-light-holders",
-    name: "Crystal Tea Light Holders",
-    description:
-      "Elegant glass candle holders reflecting sparkling golden lights.",
-    fullDescription:
-      "Add a touch of modern elegance to your traditional decor with these crystal-cut glass tea light holders. They catch the candle flame and refract mesmerizing patterns across your tables and corners.",
-    price: 899,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2tnBN8VNbVUt13peyI-qs2j_y2h-rhXtSLfNQVMe4iQ&s=10",
-    category: "Diwali",
-    subcategory: "Diya & Candle Decoration",
-    availability: true,
-    included: [
-      "Heavy-duty premium crystal glass",
-      "Heat resistant and safe for burning candles",
-      "Enhances candle brightness multi-fold",
-      "Pack of multiple shimmering pieces",
-    ],
-  },
-
-  {
-    id: "diwali-7",
-    slug: "festive-rangoli-led-mat",
-    name: "Festive Rangoli LED Mat",
-    description:
-      "Ready-to-place reusable decorative mat with embedded warm lights.",
-    fullDescription:
-      "Skip the hassle of elaborate powder rangolis with our ready-to-use illuminated rangoli mat. Simply place it at your doorstep or mandap entrance for an instant festive greeting.",
-    price: 999,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTYnqbSGyyAridzgJtj6zw5KIbPWs1cEABW4HpUeCh8Q&s=10",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:â‚¹cEABW4HpUeCh8Q&s=10",
     category: "Diwali",
     subcategory: "Rangoli Decoration",
     availability: true,

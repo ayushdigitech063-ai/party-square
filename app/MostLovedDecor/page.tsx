@@ -15,25 +15,25 @@ export default function MostLovedDecor() {
 
 
   return (
-    <section className="relative bg-[#FBF8F2] text-[#1A1A1A] py-24 px-6 md:px-16 overflow-hidden font-sans border-t border-[#E6DEC9]">
+    <section className="relative bg-[#FCFBF7] text-[#202522] py-24 px-6 md:px-16 overflow-hidden font-sans border-t border-[#E8E8E3]">
       
       {/* Background Soft Ambient Warm Glows */}
-      <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#EEDCB9]/20 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#EEF6EB]/20 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10 space-y-12">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-[#E6DEC9] pb-8 text-center md:text-left">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-[#E8E8E3] pb-8 text-center md:text-left">
           <div className="space-y-3">
-            <div className="inline-flex items-center space-x-2 bg-[#F3EAD3] border border-[#E2D2B0] px-4 py-1.5 rounded-full text-[#7B6220] text-xs uppercase tracking-[0.25em] font-medium shadow-sm">
+            <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#E8E8E3] px-4 py-1.5 rounded-full text-[#8CBC67] text-xs uppercase tracking-[0.25em] font-medium shadow-sm">
               <Sparkles size={13} />
               <span>Our Speciality</span>
             </div>
             
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-light tracking-wide text-[#1A1A1A]">
-              Most Loved <span className="italic font-normal text-[#8C6D24]">Decorations</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-light tracking-wide text-[#202522]">
+              Most Loved <span className="italic font-normal text-[#8CBC67]">Decorations</span>
             </h2>
-            <p className="text-[#5A5A5A] text-sm max-w-xl font-light">
+            <p className="text-[#6B706C] text-sm max-w-xl font-light">
               Explore our curated themes. Click on any circular picture to view full decoration details.
             </p>
           </div>
@@ -50,7 +50,7 @@ export default function MostLovedDecor() {
                 className="flex flex-col items-center group cursor-pointer"
               >
                 {/* Circular Image Card */}
-                <div className="w-[150px] h-[150px] rounded-full overflow-hidden border-4 border-[#E2D2B0] group-hover:border-[#8C6D24] shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 relative bg-white shrink-0">
+                <div className="w-[150px] h-[150px] rounded-full overflow-hidden border-4 border-[#E8E8E3] group-hover:border-[#8CBC67] shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 relative bg-white shrink-0">
                   <img 
                     src={item.image} 
                     alt={item.name}
@@ -58,7 +58,7 @@ export default function MostLovedDecor() {
                   />
                   {/* Subtle hover overlay */}
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <span className="w-10 h-10 rounded-full bg-white/90 text-neutral-900 flex items-center justify-center shadow-md">
+                    <span className="w-10 h-10 rounded-full bg-white/90 text-[#202522] flex items-center justify-center shadow-md">
                       <ArrowRight size={18} />
                     </span>
                   </div>
@@ -66,10 +66,10 @@ export default function MostLovedDecor() {
 
                 {/* Title Below Circle */}
                 <div className="mt-4 text-center space-y-0.5">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#8C6D24] font-semibold block">
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#8CBC67] font-semibold block">
                     {item.subcategory}
                   </span>
-                  <h3 className="text-base font-serif text-[#1A1A1A] group-hover:text-[#8C6D24] transition-colors">
+                  <h3 className="text-base font-serif text-[#202522] group-hover:text-[#8CBC67] transition-colors">
                     {item.name}
                   </h3>
                 </div>
@@ -99,12 +99,12 @@ export default function MostLovedDecor() {
       {/* Interactive Detail Modal */}
       {selectedItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
-          <div className="relative bg-[#FFFDF9] border border-[#E2D2B0] rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl text-[#1A1A1A] p-6 sm:p-8 pt-14 space-y-6">
+          <div className="relative bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl text-[#202522] p-6 sm:p-8 pt-14 space-y-6">
             
             {/* Properly Positioned Close Button */}
             <button 
               onClick={() => openDetailPage(selectedItem)}
-              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-[#F4EFE6] border border-[#D9CEB3] text-[#8C6D24] hover:bg-[#EBE2D0] flex items-center justify-center transition shadow-sm cursor-pointer"
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-[#F4EFE6] border border-[#D9CEB3] text-[#8CBC67] hover:bg-[#EBE2D0] flex items-center justify-center transition shadow-sm cursor-pointer"
             >
               <X size={18} />
             </button>
@@ -116,14 +116,14 @@ export default function MostLovedDecor() {
                 alt={selectedItem.name} 
                 className="w-full h-full object-cover"
               />
-              <span className="absolute bottom-4 left-4 text-xs tracking-widest text-[#7B6220] uppercase font-medium bg-[#FFFDF9]/90 px-3 py-1 rounded-full backdrop-blur-md shadow-sm">
+              <span className="absolute bottom-4 left-4 text-xs tracking-widest text-[#8CBC67] uppercase font-medium bg-[#FFFFFF]/90 px-3 py-1 rounded-full backdrop-blur-md shadow-sm">
                 {selectedItem.subcategory}
               </span>
             </div>
 
             {/* Modal Content */}
             <div className="space-y-3">
-              <h3 className="text-2xl font-serif text-[#1A1A1A]">
+              <h3 className="text-2xl font-serif text-[#202522]">
                 {selectedItem.name}
               </h3>
               <p className="text-[#4A4A4A] text-sm leading-relaxed font-light">
@@ -135,13 +135,13 @@ export default function MostLovedDecor() {
             <div className="flex items-center space-x-4 pt-2">
               <button 
                 onClick={() => setSelectedItem(null)}
-                className="flex-1 bg-[#8C6D24] text-white py-3 rounded-full font-medium text-sm hover:bg-[#72571D] transition shadow-md cursor-pointer"
+                className="flex-1 bg-[#8CBC67] text-white py-3 rounded-full font-medium text-sm hover:bg-[#72571D] transition shadow-md cursor-pointer"
               >
                 Book This Theme
               </button>
               <button 
                 onClick={() => setSelectedItem(null)}
-                className="px-6 py-3 rounded-full border border-[#D9CEB3] hover:border-[#8C6D24] text-sm text-[#4A4A4A] transition cursor-pointer"
+                className="px-6 py-3 rounded-full border border-[#D9CEB3] hover:border-[#8CBC67] text-sm text-[#4A4A4A] transition cursor-pointer"
               >
                 Close
               </button>

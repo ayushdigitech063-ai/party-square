@@ -62,7 +62,7 @@ export const decorationItems: Product[] = [
     reviewCount: 98,
     theme: "Candlelight & Roses",
     gradientBg: "from-red-100 via-pink-50 to-rose-100",
-    badgeColor: "bg-red-500",
+    badgeColor: "bg-[#F7D6C7]0",
     isSpecialCard: true,
   },
 
@@ -259,8 +259,8 @@ export const decorationItems: Product[] = [
     rating: 5.0,
     reviewCount: 57,
     theme: "Luxury Stage & Events",
-    gradientBg: "from-amber-100 via-yellow-50 to-stone-100",
-    badgeColor: "bg-amber-600",
+    gradientBg: "from-[#EEF6EB] via-yellow-50 to-stone-100",
+    badgeColor: "bg-[#7AB055]",
     isSpecialCard: true,
   },
 ];

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -41,7 +41,7 @@ const toISO = (d: Date) =>
     d.getDate(),
   ).padStart(2, "0")}`;
 
-const toNumber = (v: any) => Number(String(v ?? "").replace(/[₹,\s]/g, "")) || 0;
+const toNumber = (v: any) => Number(String(v ?? "").replace(/[â‚¹,\s]/g, "")) || 0;
 
 const INCLUDED_ITEMS = [
   "Premium product / decoration",
@@ -99,6 +99,8 @@ export default function ProductDetailPage() {
   const [pincodeChecked, setPincodeChecked] = useState(false);
   const [pincodeError, setPincodeError] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
+  const [selectedSlot, setSelectedSlot] = useState("");
+  const [customTime, setCustomTime] = useState("");
   const [dates, setDates] = useState<
     { iso: string; top: string; num: number }[]
   >([]);
@@ -165,7 +167,7 @@ export default function ProductDetailPage() {
 
   /* ---------------- PRICE ---------------- */
 
-  const numericPrice = Number(String(foundItem.price).replace(/[₹,\s]/g, ""));
+  const numericPrice = Number(String(foundItem.price).replace(/[^0-9]/g, ""));
 
   const totalPrice = numericPrice * quantity;
 
@@ -173,9 +175,7 @@ export default function ProductDetailPage() {
 
   const originalPrice = numericPrice * 1.25 * quantity;
 
-  const formattedOriginalPrice = `₹${Math.round(originalPrice).toLocaleString(
-    "en-IN",
-  )}`;
+  const formattedOriginalPrice = `₹${Math.round(originalPrice).toLocaleString("en-IN")}`;
 
   const deliveryCharge = pincodeChecked ? DELIVERY_CHARGE : 0;
   const grandTotal = totalPrice + deliveryCharge;
@@ -211,9 +211,7 @@ export default function ProductDetailPage() {
 
   const handleBookNow = (foundItem: any) => {
     // date / pincode are added only when the user has chosen them
-    const extra = `${selectedDate ? `&date=${selectedDate}` : ""}${
-      pincodeChecked ? `&pincode=${pincode}` : ""
-    }`;
+    const extra = `${selectedDate ? `&date=${selectedDate}` : ""}${pincodeChecked ? `&pincode=${pincode}` : ""}${selectedSlot ? `&slot=${selectedSlot === "Custom Time" ? customTime : selectedSlot}` : ""}`;
 
     router.push(
       `/payment-detail?productId=${encodeURIComponent(foundItem.id)}${extra}`,
@@ -276,13 +274,13 @@ export default function ProductDetailPage() {
             Back
           </button>
 
-          <span>›</span>
+          <span>â€º</span>
 
           <Link href="/" className="hover:text-amber-800 transition">
             Home
           </Link>
 
-          <span>›</span>
+          <span>â€º</span>
 
           <span className="text-neutral-900 font-medium truncate">
             {foundItem.name}
@@ -367,13 +365,13 @@ export default function ProductDetailPage() {
                   {/* LEFT ARROW */}
 
                   <button className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-md flex items-center justify-center text-neutral-800 transition">
-                    ‹
+                    â€¹
                   </button>
 
                   {/* RIGHT ARROW */}
 
                   <button className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-md flex items-center justify-center text-neutral-800 transition">
-                    ›
+                    â€º
                   </button>
                 </div>
               </div>
@@ -426,7 +424,7 @@ export default function ProductDetailPage() {
               {activeTab === "included" && (
                 <div id="included" className="mt-4">
                   <p className="text-sm text-neutral-500">
-                    Everything below arrives with your booking — nothing to
+                    Everything below arrives with your booking â€” nothing to
                     arrange yourself.
                   </p>
 
@@ -692,7 +690,7 @@ export default function ProductDetailPage() {
                 <p className="mt-2 text-xs font-semibold text-emerald-700">
                   {deliveryCharge > 0
                     ? `For this pincode you have to pay delivery charge of Rs ${deliveryCharge}`
-                    : "Service available in your area — free delivery for this pincode"}
+                    : "Service available in your area â€” free delivery for this pincode"}
                 </p>
               )}
 
@@ -750,10 +748,38 @@ export default function ProductDetailPage() {
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  />
-                </label>
+                    />
+                  </label>
+                </div>
+
+                {/* TIME SLOT */}
+                <div className="mt-5">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-neutral-800 mb-3">Time Slot</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {["Morning (8-12)", "Noon (12-4)", "Night (6-10)", "Full Day", "Custom Time"].map((slot) => (
+                      <button
+                        key={slot}
+                        type="button"
+                        onClick={() => setSelectedSlot(slot)}
+                        className={`h-[42px] rounded-xl border flex items-center justify-center text-xs font-semibold transition cursor-pointer ${selectedSlot === slot ? "border-[#D7A84B] bg-[#FDF8E1] text-neutral-900 ring-1 ring-[#D7A84B]" : "border-neutral-200 text-neutral-600 hover:border-[#D7A84B] hover:text-neutral-900"}`}
+                      >
+                        {slot}
+                      </button>
+                    ))}
+                  </div>
+                  {selectedSlot === "Custom Time" && (
+                    <div className="mt-3">
+                      <input 
+                        type="text" 
+                        placeholder="e.g. 10:00 AM to 2:00 PM" 
+                        value={customTime}
+                        onChange={(e) => setCustomTime(e.target.value)}
+                        className="w-full h-11 px-4 rounded-xl border border-neutral-200 text-sm focus:outline-none focus:border-[#D7A84B] focus:ring-1 focus:ring-[#D7A84B]"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
 
             {/* ---------- STEP 3: MAKE IT BIGGER ---------- */}
 
@@ -792,7 +818,7 @@ export default function ProductDetailPage() {
                     Add-ons & more
                   </p>
                   <p className="text-xs text-neutral-500">
-                    Complete your celebration · same visit
+                    Complete your celebration Â· same visit
                   </p>
                 </div>
 
@@ -807,7 +833,7 @@ export default function ProductDetailPage() {
                 <div className="flex justify-between gap-3 text-neutral-700">
                   <span className="truncate">
                     {foundItem.name}
-                    {quantity > 1 ? ` × ${quantity}` : ""}
+                    {quantity > 1 ? ` Ã— ${quantity}` : ""}
                   </span>
                   <span className="font-semibold shrink-0">
                     {formattedTotalPrice}
@@ -822,7 +848,7 @@ export default function ProductDetailPage() {
                         Checked for {pincode}
                       </span>
                     </span>
-                    <span className="font-semibold">₹{deliveryCharge}</span>
+                    <span className="font-semibold">â‚¹{deliveryCharge}</span>
                   </div>
                 )}
               </div>
@@ -878,7 +904,7 @@ export default function ProductDetailPage() {
 
                 <button
                   onClick={() => handleBookNow(foundItem)}
-                  className="h-12 rounded-xl bg-[#8B3F05] hover:bg-[#713200] text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-md hover:shadow-lg cursor-pointer"
+                  className="h-12 rounded-xl bg-[#8CBC67] hover:bg-[#7AB055] text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-md hover:shadow-lg cursor-pointer"
                 >
                   <Calendar size={17} />
 
@@ -889,7 +915,7 @@ export default function ProductDetailPage() {
               {/* CHECKOUT MESSAGE */}
 
               <p className="text-center text-xs text-neutral-400 mt-4">
-                Secure checkout · Guaranteed satisfaction
+                Secure checkout Â· Guaranteed satisfaction
               </p>
             </div>
           </div>
@@ -928,9 +954,9 @@ export default function ProductDetailPage() {
 
         <button
           onClick={() => handleBookNow(foundItem)}
-          className="px-4 py-2 rounded-full bg-[#8B3F05] hover:bg-[#713200] text-white text-xs font-bold cursor-pointer transition"
+          className="px-4 py-2 rounded-full bg-[#8CBC67] hover:bg-[#7AB055] text-white text-xs font-bold cursor-pointer transition"
         >
-          {formattedGrandTotal} · Book now
+          {formattedGrandTotal} → Book now
         </button>
       </div>
     </div>

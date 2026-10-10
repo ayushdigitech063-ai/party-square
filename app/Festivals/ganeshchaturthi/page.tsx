@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -105,7 +105,7 @@ export default function GaneshChaturthi() {
     sortBy === "recommended" ? bestLovedDecor : sortedProducts;
 
   return (
-    <div className="min-h-screen text-neutral-900 font-sans bg-[#FAF7F2] selection:bg-amber-500 selection:text-white overflow-x-hidden pb-20">
+    <div className="min-h-screen text-[#202522] font-sans bg-[#FCFBF7] selection:bg-[#8CBC67] selection:text-white overflow-x-hidden pb-20">
       {/* Hero Section */}
       <section className="relative w-full h-[350px] px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[35px] shadow-2xl">
         <div
@@ -116,14 +116,14 @@ export default function GaneshChaturthi() {
         </div>
 
         <div className="relative z-10 space-y-6 max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center space-x-2 bg-amber-500/20 border border-amber-500/40 px-5 py-2 rounded-full text-amber-300 text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
-            <Sparkles size={15} className="text-amber-400" />
-            <span>Ganpati Bappa Morya • Festive Special 2026</span>
+          <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-5 py-2 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
+            <Sparkles size={15} className="text-[#8CBC67]" />
+            <span>Ganpati Bappa Morya â€¢ Festive Special 2026</span>
           </div>
 
           <h1 className="font-serif text-4xl sm:text-7xl font-bold tracking-tight text-white drop-shadow-2xl">
             Divine{" "}
-            <span className="text-amber-400 italic font-normal">
+            <span className="text-[#8CBC67] italic font-normal">
               Ganesh Chaturthi
             </span>{" "}
             Decorations
@@ -143,21 +143,21 @@ export default function GaneshChaturthi() {
           <div className="flex items-center justify-between gap-6">
             {/* LEFT - Heading */}
             <div className="text-left">
-              <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
+              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
                 Most Loved
               </span>
               <div className="flex items-baseline gap-3">
-                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900">
+                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522]">
                   Best Loved Decorations
                 </h2>
-                <span className="text-neutral-400 text-2xl">|</span>
+                <span className="text-[#6B706C] text-2xl">|</span>
 
-                <span className="text-neutral-500 text-2xl">
+                <span className="text-[#6B706C] text-2xl">
                   {productsToDisplay.length} Items
                 </span>
               </div>
 
-              <p className="text-neutral-600 text-sm font-light mt-2">
+              <p className="text-[#6B706C] text-sm font-light mt-2">
                 Our most sought-after traditional and modern mandap designs.
               </p>
             </div>
@@ -185,7 +185,7 @@ export default function GaneshChaturthi() {
         <div className="text-center mt-10">
           <Link
             href="/Festivals/ganeshchaturthi/all-products"
-            className="inline-flex items-center space-x-2 bg-white hover:bg-neutral-950 hover:text-white text-neutral-950 font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-wider transition shadow-sm border border-neutral-200"
+            className="inline-flex items-center space-x-2 bg-white hover:bg-neutral-950 hover:text-white text-neutral-950 font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-wider transition shadow-sm border border-[#E8E8E3]"
           >
             <span>View More Products</span>
             <ArrowRight size={14} />
@@ -197,15 +197,15 @@ export default function GaneshChaturthi() {
       {/* Mumbai Cha Raja Special Cards */}
       <section className="py-16 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <span className="text-xs uppercase tracking-[0.3em] text-amber-700 font-bold bg-amber-100/70 px-4 py-1.5 rounded-full inline-block">
+          <span className="text-xs uppercase tracking-[0.3em] text-[#202522] font-bold bg-[#EEF6EB]/70 px-4 py-1.5 rounded-full inline-block">
             Grand Special Collection
           </span>
 
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-neutral-900">
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#202522]">
             Mumbai Cha Raja Special
           </h2>
 
-          <p className="text-neutral-600 text-sm sm:text-base font-light">
+          <p className="text-[#6B706C] text-sm sm:text-base font-light">
             Inspired by the grandeur of Mumbai's iconic pandals with
             crystal-clear picture highlights.
           </p>
@@ -230,7 +230,7 @@ export default function GaneshChaturthi() {
                       {card.theme}
                     </span>
 
-                    <span className="text-[10px] text-amber-200/80 font-medium">
+                    <span className="text-[10px] text-[#D7A84B]/80 font-medium">
                       Premium Large Scale
                     </span>
                   </div>
@@ -245,10 +245,10 @@ export default function GaneshChaturthi() {
                 </div>
 
                 <div className="space-y-3 pt-3 border-t border-white/10">
-                  <div className="flex items-center space-x-1.5 text-[11px] text-amber-300 font-medium">
+                  <div className="flex items-center space-x-1.5 text-[11px] text-[#8CBC67] font-medium">
                     <ShieldCheck
                       size={14}
-                      className="text-amber-400 shrink-0"
+                      className="text-[#8CBC67] shrink-0"
                     />
 
                     <span>Includes Professional Setup & Lighting</span>
@@ -256,7 +256,7 @@ export default function GaneshChaturthi() {
 
                   <Link
                     href={`/Festivals/ganeshchaturthi/${card.id}`}
-                    className="inline-flex items-center justify-center space-x-1.5 bg-amber-400 hover:bg-amber-300 text-neutral-950 px-5 py-2.5 rounded-full font-extrabold text-xs uppercase tracking-wider transition shadow-lg w-full sm:w-auto"
+                    className="inline-flex items-center justify-center space-x-1.5 bg-[#8CBC67] hover:bg-[#D7A84B] text-neutral-950 px-5 py-2.5 rounded-full font-extrabold text-xs uppercase tracking-wider transition shadow-lg w-full sm:w-auto"
                   >
                     <span>Book Setup</span>
                     <ArrowRight size={14} />
@@ -278,17 +278,17 @@ export default function GaneshChaturthi() {
 
       {/* Masterpiece Showcase Section */}
       <section className="py-16 px-6 max-w-7xl mx-auto mb-10">
-        <div className="bg-gradient-to-r from-amber-950 via-amber-900 to-neutral-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-amber-500/40 grid grid-cols-1 lg:grid-cols-2 items-stretch">
+        <div className="bg-gradient-to-r from-amber-950 via-[#202522] to-neutral-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-[#8CBC67]/40 grid grid-cols-1 lg:grid-cols-2 items-stretch">
           <div className="p-8 sm:p-12 flex flex-col justify-between space-y-6 order-2 lg:order-1">
             <div className="space-y-4">
-              <div className="inline-flex items-center space-x-2 bg-amber-500/20 border border-amber-500/40 px-3.5 py-1.5 rounded-full text-amber-300 text-xs font-bold uppercase tracking-widest">
-                <Star size={14} className="text-amber-400" />
+              <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-3.5 py-1.5 rounded-full text-[#8CBC67] text-xs font-bold uppercase tracking-widest">
+                <Star size={14} className="text-[#8CBC67]" />
                 <span>Masterpiece Showcase</span>
               </div>
 
               <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white leading-tight">
                 The Ultimate Divine Experience with{" "}
-                <span className="text-amber-400 italic">CardGaneshJi</span>
+                <span className="text-[#8CBC67] italic">CardGaneshJi</span>
               </h2>
 
               <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed font-light">
@@ -301,12 +301,12 @@ export default function GaneshChaturthi() {
 
               <div className="space-y-3 pt-2">
                 <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                  <CheckCircle size={16} className="text-amber-400 shrink-0" />
+                  <CheckCircle size={16} className="text-[#8CBC67] shrink-0" />
                   <span>Custom structural mandap with traditional pillars</span>
                 </div>
 
                 <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                  <CheckCircle size={16} className="text-amber-400 shrink-0" />
+                  <CheckCircle size={16} className="text-[#8CBC67] shrink-0" />
                   <span>
                     Fresh marigold, rose, and exotic orchid decorations
                   </span>
@@ -317,7 +317,7 @@ export default function GaneshChaturthi() {
             <div className="pt-4">
               <Link
                 href="/contact"
-                className="bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
+                className="bg-[#8CBC67] hover:bg-[#D7A84B] text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
               >
                 <span>Book Masterpiece Setup</span>
                 <ArrowRight size={16} />
@@ -338,3 +338,4 @@ export default function GaneshChaturthi() {
     </div>
   );
 }
+

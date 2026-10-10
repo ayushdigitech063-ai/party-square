@@ -83,7 +83,7 @@ export default function MotherBirthdayPage() {
     sortBy === "recommended" ? motherbirthdayProducts : sortedProducts;
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-neutral-900 font-sans selection:bg-[#C5A059] selection:text-white">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans selection:bg-[#D7A84B] selection:text-white">
       {/* ================= HERO SECTION WITH motherbirthdayhome.png ================= */}
       <section className="relative h-[350px] flex items-center justify-center overflow-hidden text-white">
         <div
@@ -101,7 +101,7 @@ export default function MotherBirthdayPage() {
 
         <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 w-full">
           <div className="max-w-2xl space-y-6">
-            <div className="inline-flex items-center space-x-2 bg-[#C5A059]/20 border border-[#C5A059]/50 px-4 py-2 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-lg">
+            <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/20 border border-[#D7A84B]/50 px-4 py-2 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-lg">
               <Heart size={14} className="text-rose-400 fill-rose-400" />
               <span>Mother's Special Tribute Celebration</span>
             </div>
@@ -122,7 +122,7 @@ export default function MotherBirthdayPage() {
             <div className="flex flex-wrap gap-4 pt-4">
               <Link
                 href="/contact"
-                className="group relative bg-gradient-to-r from-[#DFBC71] to-[#C5A059] text-neutral-950 px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-2xl hover:shadow-[#C5A059]/30 hover:scale-105 transition-all duration-300 flex items-center space-x-2 overflow-hidden"
+                className="group relative bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-2xl hover:shadow-[#D7A84B]/30 hover:scale-105 transition-all duration-300 flex items-center space-x-2 overflow-hidden"
               >
                 <span className="relative z-10">Book Mother's Decor</span>
                 <ArrowRight
@@ -151,13 +151,13 @@ export default function MotherBirthdayPage() {
       {/* ================= COMPACT & SLEEK CARDS SECTION ================= */}
       <section className="py-24 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="text-xs uppercase tracking-[0.3em] text-[#C5A059] font-bold">
+          <span className="text-xs uppercase tracking-[0.3em] text-[#D7A84B] font-bold">
             Bespoke Collections
           </span>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-neutral-900">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#202522]">
             Designed with Love & Elegance
           </h2>
-          <p className="text-neutral-600 text-sm sm:text-base font-light">
+          <p className="text-[#6B706C] text-sm sm:text-base font-light">
             Compact, hand-picked themes crafted exclusively for mothers and
             milestone birthdays.
           </p>
@@ -171,20 +171,20 @@ export default function MotherBirthdayPage() {
               onMouseLeave={() => setActiveCard(null)}
               className={`group relative rounded-3xl bg-white transition-all duration-500 p-7 flex flex-col justify-between shadow-lg hover:shadow-2xl hover:-translate-y-2 border ${
                 pkg.popular
-                  ? "border-2 border-[#C5A059] ring-4 ring-[#C5A059]/10"
+                  ? "border-2 border-[#D7A84B] ring-4 ring-[#D7A84B]/10"
                   : activeCard === pkg.id
-                    ? "border-[#C5A059]/60 shadow-xl"
-                    : "border-neutral-200/80"
+                    ? "border-[#D7A84B]/60 shadow-xl"
+                    : "border-[#E8E8E3]/80"
               }`}
             >
               {pkg.popular && (
-                <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#DFBC71] to-[#C5A059] text-neutral-950 text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md">
+                <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md">
                   Most Preferred
                 </div>
               )}
 
               <div>
-                <div className="relative h-56 rounded-2xl overflow-hidden mb-6 bg-neutral-100 border border-neutral-100">
+                <div className="relative h-56 rounded-2xl overflow-hidden mb-6 bg-neutral-100 border border-[#E8E8E3]">
                   <img
                     src={pkg.image}
                     alt={pkg.name}
@@ -196,10 +196,10 @@ export default function MotherBirthdayPage() {
                   </div>
                 </div>
 
-                <h3 className="font-serif text-2xl font-bold text-neutral-900 mb-2.5 group-hover:text-[#C5A059] transition-colors">
+                <h3 className="font-serif text-2xl font-bold text-[#202522] mb-2.5 group-hover:text-[#D7A84B] transition-colors">
                   {pkg.name}
                 </h3>
-                <p className="text-neutral-600 text-xs sm:text-sm leading-relaxed mb-6 font-light">
+                <p className="text-[#6B706C] text-xs sm:text-sm leading-relaxed mb-6 font-light">
                   {pkg.desc}
                 </p>
               </div>
@@ -209,8 +209,8 @@ export default function MotherBirthdayPage() {
                   href="/contact"
                   className={`w-full block text-center py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                     pkg.popular
-                      ? "bg-gradient-to-r from-[#DFBC71] to-[#C5A059] text-neutral-950 hover:shadow-lg hover:scale-[1.02]"
-                      : "bg-neutral-900 text-white hover:bg-[#C5A059] hover:text-neutral-950 shadow-md"
+                      ? "bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 hover:shadow-lg hover:scale-[1.02]"
+                      : "bg-neutral-900 text-white hover:bg-[#D7A84B] hover:text-neutral-950 shadow-md"
                   }`}
                 >
                   Select This Theme
@@ -227,21 +227,21 @@ export default function MotherBirthdayPage() {
           <div className="flex items-center justify-between gap-6">
             {/* LEFT - Heading */}
             <div className="text-left">
-              <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
+              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
                 Most Loved
               </span>
               <div className="flex items-baseline gap-3">
-                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 mt-1">
+                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522] mt-1">
                   Best Loved Decorations
                 </h2>
-                <span className="text-neutral-400 text-2xl">|</span>
+                <span className="text-[#6B706C] text-2xl">|</span>
 
-                <span className="text-neutral-500 text-2xl">
+                <span className="text-[#6B706C] text-2xl">
                   {productsToDisplay.length} Items
                 </span>
               </div>
 
-              <p className="text-neutral-600 text-sm font-light mt-2">
+              <p className="text-[#6B706C] text-sm font-light mt-2">
                 Our most sought-after traditional and modern mandap designs.
               </p>
             </div>
@@ -265,20 +265,20 @@ export default function MotherBirthdayPage() {
         </div>
       </section>
       {/* ================= GALLERY SECTION ================= */}
-      <section className="py-24 bg-[#EFEADB]/60 border-t border-[#E2D2B0]/40">
+      <section className="py-24 bg-[#EFEADB]/60 border-t border-[#E8E8E3]/40">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
-              <span className="text-xs uppercase tracking-[0.3em] text-[#8C6D24] font-semibold">
+              <span className="text-xs uppercase tracking-[0.3em] text-[#8CBC67] font-semibold">
                 Precious Moments
               </span>
-              <h2 className="font-serif text-3xl sm:text-4xl text-neutral-900 mt-2">
+              <h2 className="font-serif text-3xl sm:text-4xl text-[#202522] mt-2">
                 Moments That Bring Tears of Joy
               </h2>
             </div>
             <Link
               href="/contact"
-              className="shrink-0 bg-white text-neutral-900 px-7 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest border border-neutral-300 hover:border-[#C5A059] hover:bg-[#C5A059] hover:text-white transition-all duration-300 flex items-center space-x-2 shadow-sm"
+              className="shrink-0 bg-white text-[#202522] px-7 py-3.5 rounded-full font-bold text-xs uppercase tracking-widest border border-neutral-300 hover:border-[#D7A84B] hover:bg-[#D7A84B] hover:text-white transition-all duration-300 flex items-center space-x-2 shadow-sm"
             >
               <span>Plan Her Surprise</span>
               <ArrowRight size={14} />
@@ -311,13 +311,13 @@ export default function MotherBirthdayPage() {
       <section className="py-24 px-6 max-w-7xl mx-auto">
         <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 text-white shadow-2xl border border-white/10">
           {/* Subtle background glow accents */}
-          <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#C5A059]/15 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#C5A059]/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#D7A84B]/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#D7A84B]/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 items-center p-8 sm:p-12 lg:p-16 gap-12">
             {/* Left Column: Emotional Mom Content */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center space-x-2 bg-[#C5A059]/20 border border-[#C5A059]/40 px-4 py-1.5 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase">
+              <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/20 border border-[#D7A84B]/40 px-4 py-1.5 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase">
                 <Sparkles size={13} className="text-[#DFBC71]" />
                 <span>A Tribute to Motherly Love</span>
               </div>
@@ -346,7 +346,7 @@ export default function MotherBirthdayPage() {
               <div className="pt-4 flex flex-wrap gap-4">
                 <Link
                   href="/contact"
-                  className="bg-gradient-to-r from-[#DFBC71] to-[#C5A059] text-neutral-950 px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-xl hover:scale-105 transition-all duration-300 flex items-center space-x-2"
+                  className="bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-xl hover:scale-105 transition-all duration-300 flex items-center space-x-2"
                 >
                   <span>Book Surprise for Mom</span>
                   <ArrowRight size={15} />
@@ -365,7 +365,7 @@ export default function MotherBirthdayPage() {
 
             {/* Right Column: mom.png image with luxurious border & frame */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-sm aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-2 border-[#C5A059]/50 group">
+              <div className="relative w-full max-w-sm aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-2 border-[#D7A84B]/50 group">
                 <img
                   src="/mom.png"
                   alt="Mom Special Moment"

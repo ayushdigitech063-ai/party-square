@@ -18,7 +18,7 @@ export const toyThemeDecor = [
     image: "/toyes.png",
     desc: "Vibrant and colorful toy-inspired decor elements designed to bring immense joy and a playful vibe to your baby's welcome celebration.",
     gradientBg: "from-sky-950 via-indigo-950 to-neutral-950",
-    badgeColor: "bg-amber-400 text-neutral-950",
+    badgeColor: "bg-[#8CBC67] text-neutral-950",
   },
 ];
 
@@ -62,7 +62,7 @@ export default function BabyWelcomePage() {
     return null;
   }
   return (
-    <div className="min-h-screen text-neutral-900 font-sans bg-[#FAF7F2] selection:bg-amber-500 selection:text-white overflow-x-hidden pb-20">
+    <div className="min-h-screen text-[#202522] font-sans bg-[#FCFBF7] selection:bg-[#8CBC67] selection:text-white overflow-x-hidden pb-20">
       {/* Hero Section with backgroundbacbypic.png */}
       <section className="relative w-full h-[350px] px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[35px] shadow-2xl">
         <div
@@ -73,13 +73,13 @@ export default function BabyWelcomePage() {
         </div>
 
         <div className="relative z-10 space-y-6 max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center space-x-2 bg-amber-500/20 border border-amber-500/40 px-5 py-2 rounded-full text-amber-300 text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
-            <Sparkles size={15} className="text-amber-400" />
+          <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-5 py-2 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
+            <Sparkles size={15} className="text-[#8CBC67]" />
             <span>Welcome Little One • Newborn Special 2026</span>
           </div>
           <h1 className="font-serif text-4xl sm:text-7xl font-bold tracking-tight text-white drop-shadow-2xl">
             Magical{" "}
-            <span className="text-amber-400 italic font-normal">
+            <span className="text-[#8CBC67] italic font-normal">
               Baby Welcome
             </span>{" "}
             Decorations
@@ -98,21 +98,21 @@ export default function BabyWelcomePage() {
           <div className="flex items-center justify-between gap-6">
             {/* LEFT - Heading */}
             <div className="text-left">
-              <span className="text-xs uppercase tracking-[0.25em] text-amber-600 font-bold">
+              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
                  Newborn Special
               </span>
               <div className="flex items-baseline gap-3">
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-neutral-900 mt-1">
+              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522] mt-1">
                 Baby Welcome Packages
               </h2>
-               <span className="text-neutral-400 text-2xl">|</span>
+               <span className="text-[#6B706C] text-2xl">|</span>
 
-                <span className="text-neutral-500 text-2xl">
+                <span className="text-[#6B706C] text-2xl">
                   {productsToDisplay.length} Items
                 </span>
               </div>
 
-              <p className="text-neutral-600 text-sm font-light mt-2">
+              <p className="text-[#6B706C] text-sm font-light mt-2">
                 Delightful decorations curated with love and safe materials for
                 your baby.
               </p>
@@ -141,7 +141,7 @@ export default function BabyWelcomePage() {
 
       {/* Full Width Autoplay Video Section (micymouse.mp4) */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
-        <div className="relative rounded-[32px] overflow-hidden shadow-2xl bg-neutral-950 aspect-video w-full max-h-[600px] border border-amber-500/20">
+        <div className="relative rounded-[32px] overflow-hidden shadow-2xl bg-neutral-950 aspect-video w-full max-h-[600px] border border-[#8CBC67]/20">
           <video
             src="/micymouse.mp4"
             autoPlay
@@ -152,7 +152,7 @@ export default function BabyWelcomePage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-transparent to-transparent pointer-events-none flex items-end p-6 sm:p-10">
             <div className="text-white space-y-2">
-              <span className="bg-amber-400 text-neutral-950 text-[10px] sm:text-xs font-extrabold px-3.5 py-1 rounded-full uppercase tracking-wider shadow">
+              <span className="bg-[#8CBC67] text-neutral-950 text-[10px] sm:text-xs font-extrabold px-3.5 py-1 rounded-full uppercase tracking-wider shadow">
                 Live Preview & Vibe
               </span>
               <h3 className="font-serif text-xl sm:text-3xl font-bold text-white drop-shadow-md">
@@ -170,14 +170,14 @@ export default function BabyWelcomePage() {
       {/* Dedicated Toys & Cartoon Wonderland Section */}
       <section className="py-16 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
-          <span className="inline-flex items-center space-x-1.5 text-xs uppercase tracking-[0.3em] text-amber-800 font-bold bg-amber-100 px-4 py-1.5 rounded-full shadow-sm">
-            <Smile size={14} className="text-amber-600" />
+          <span className="inline-flex items-center space-x-1.5 text-xs uppercase tracking-[0.3em] text-[#202522] font-bold bg-[#EEF6EB] px-4 py-1.5 rounded-full shadow-sm">
+            <Smile size={14} className="text-[#8CBC67]" />
             <span>Kids Favorite Themes</span>
           </span>
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-neutral-900">
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#202522]">
             Cartoon & Toy Wonderland
           </h2>
-          <p className="text-neutral-600 text-sm sm:text-base font-light">
+          <p className="text-[#6B706C] text-sm sm:text-base font-light">
             Bring alive your child's favorite fantasy worlds with our exclusive
             character and toy-themed setups.
           </p>
@@ -200,13 +200,13 @@ export default function BabyWelcomePage() {
       {/* Toy Theme Showcase Section using toyes.png */}
       <section className="py-16 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <span className="text-xs uppercase tracking-[0.3em] text-amber-700 font-bold bg-amber-100/70 px-4 py-1.5 rounded-full inline-block">
+          <span className="text-xs uppercase tracking-[0.3em] text-[#202522] font-bold bg-[#EEF6EB]/70 px-4 py-1.5 rounded-full inline-block">
             Kids Favorite
           </span>
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-neutral-900">
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#202522]">
             Toy Theme Special
           </h2>
-          <p className="text-neutral-600 text-sm sm:text-base font-light">
+          <p className="text-[#6B706C] text-sm sm:text-base font-light">
             Bring your little one's favorite playful fantasy to life with our
             exclusive toy-themed backdrop setups.
           </p>
@@ -226,7 +226,7 @@ export default function BabyWelcomePage() {
                     >
                       {card.theme}
                     </span>
-                    <span className="text-[10px] text-amber-200/80 font-medium">
+                    <span className="text-[10px] text-[#D7A84B]/80 font-medium">
                       Interactive Play Zone Decor
                     </span>
                   </div>
@@ -239,10 +239,10 @@ export default function BabyWelcomePage() {
                 </div>
 
                 <div className="space-y-4 pt-4 border-t border-white/10">
-                  <div className="flex items-center space-x-2 text-xs sm:text-sm text-amber-300 font-medium">
+                  <div className="flex items-center space-x-2 text-xs sm:text-sm text-[#8CBC67] font-medium">
                     <ShieldCheck
                       size={16}
-                      className="text-amber-400 shrink-0"
+                      className="text-[#8CBC67] shrink-0"
                     />
                     <span>
                       Includes Child-Safe Material, Setup & Balloon Styling
@@ -250,7 +250,7 @@ export default function BabyWelcomePage() {
                   </div>
                   <Link
                     href="/contact"
-                    className="inline-flex items-center justify-center space-x-2 bg-amber-400 hover:bg-amber-300 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-wider transition shadow-lg w-full sm:w-auto"
+                    className="inline-flex items-center justify-center space-x-2 bg-[#8CBC67] hover:bg-[#D7A84B] text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-wider transition shadow-lg w-full sm:w-auto"
                   >
                     <span>Book Toy Theme Setup</span>
                     <ArrowRight size={16} />

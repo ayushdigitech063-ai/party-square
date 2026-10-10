@@ -57,7 +57,7 @@ const statusStyle: Record<
     "bg-green-100 text-green-800",
 
   Pending:
-    "bg-amber-100 text-amber-800",
+    "bg-[#EEF6EB] text-[#202522]",
 
   Completed:
     "bg-blue-100 text-blue-800",
@@ -79,13 +79,13 @@ export default function BookingsTable({
   exportCsv,
 }: BookingsTableProps) {
   return (
-    <div className="xl:col-span-2 bg-white border border-amber-200/80 rounded-3xl p-6 shadow-sm space-y-5">
+    <div className="xl:col-span-2 bg-white border border-[#E8E8E3]/80 rounded-3xl p-6 shadow-sm space-y-5">
 
       {/* Header */}
 
       <div className="flex flex-wrap items-center justify-between gap-3">
 
-        <h3 className="font-serif text-xl font-bold text-neutral-900">
+        <h3 className="font-serif text-xl font-bold text-[#202522]">
           Recent Customer Bookings
         </h3>
 
@@ -93,7 +93,7 @@ export default function BookingsTable({
 
           <button
             onClick={exportCsv}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-neutral-600 hover:text-amber-800 cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6B706C] hover:text-[#202522] cursor-pointer"
           >
             <Download size={14} />
             Export CSV
@@ -101,7 +101,7 @@ export default function BookingsTable({
 
           <Link
             href="/admin/bookings"
-            className="text-xs font-bold text-amber-700 uppercase tracking-wider hover:underline"
+            className="text-xs font-bold text-[#202522] uppercase tracking-wider hover:underline"
           >
             View All
           </Link>
@@ -126,7 +126,7 @@ export default function BookingsTable({
                 className={`whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-bold border transition cursor-pointer ${
                   tab === status
                     ? "bg-stone-900 text-white border-stone-900"
-                    : "bg-white text-neutral-500 border-amber-200 hover:text-amber-800"
+                    : "bg-white text-[#6B706C] border-[#E8E8E3] hover:text-[#202522]"
                 }`}
               >
                 {status}
@@ -140,7 +140,7 @@ export default function BookingsTable({
 
           <Search
             size={14}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6B706C]"
           />
 
           <input
@@ -150,7 +150,7 @@ export default function BookingsTable({
             }
             placeholder="Search booking, customer, theme"
             aria-label="Search bookings"
-            className="w-full sm:w-64 h-9 pl-9 pr-3 rounded-full border border-amber-200 text-xs focus:outline-none focus:border-amber-600"
+            className="w-full sm:w-64 h-9 pl-9 pr-3 rounded-full border border-[#E8E8E3] text-xs focus:outline-none focus:border-[#8CBC67]"
           />
 
         </div>
@@ -165,7 +165,7 @@ export default function BookingsTable({
 
           <thead>
 
-            <tr className="border-b border-amber-100 text-neutral-400 uppercase tracking-wider text-[11px]">
+            <tr className="border-b border-[#E8E8E3] text-[#6B706C] uppercase tracking-wider text-[11px]">
 
               <th className="pb-3 font-semibold">
                 Booking
@@ -205,7 +205,7 @@ export default function BookingsTable({
               <tr>
                 <td
                   colSpan={7}
-                  className="py-10 text-center text-neutral-400"
+                  className="py-10 text-center text-[#6B706C]"
                 >
                   No bookings match your filters.
                 </td>
@@ -215,10 +215,10 @@ export default function BookingsTable({
             {bookings.map((booking) => (
               <tr
                 key={booking.id}
-                className="hover:bg-amber-50/50 transition"
+                className="hover:bg-[#EEF6EB]/50 transition"
               >
 
-                <td className="py-3.5 font-mono font-bold text-neutral-900">
+                <td className="py-3.5 font-mono font-bold text-[#202522]">
                   {booking.id}
                 </td>
 
@@ -226,7 +226,7 @@ export default function BookingsTable({
 
                   <div className="flex items-center gap-2.5">
 
-                    <span className="w-8 h-8 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold flex items-center justify-center">
+                    <span className="w-8 h-8 rounded-full bg-[#EEF6EB] text-[#202522] text-[11px] font-bold flex items-center justify-center">
                       {booking.customer
                         .split(" ")
                         .map(
@@ -237,7 +237,7 @@ export default function BookingsTable({
                         .slice(0, 2)}
                     </span>
 
-                    <span className="font-medium text-neutral-800">
+                    <span className="font-medium text-[#202522]">
                       {booking.customer}
                     </span>
 
@@ -245,15 +245,15 @@ export default function BookingsTable({
 
                 </td>
 
-                <td className="py-3.5 text-neutral-600 hidden md:table-cell">
+                <td className="py-3.5 text-[#6B706C] hidden md:table-cell">
                   {booking.theme}
                 </td>
 
-                <td className="py-3.5 text-neutral-500 hidden md:table-cell">
+                <td className="py-3.5 text-[#6B706C] hidden md:table-cell">
                   {booking.date}
                 </td>
 
-                <td className="py-3.5 font-bold text-neutral-900">
+                <td className="py-3.5 font-bold text-[#202522]">
                   {inr(booking.amount)}
                 </td>
 
@@ -321,7 +321,7 @@ export default function BookingsTable({
 
                     <Link
                       href={`/admin/bookings/${booking.id}`}
-                      className="px-2.5 py-1 rounded-full border border-amber-200 text-amber-800 hover:bg-amber-50 text-[10px] font-bold uppercase"
+                      className="px-2.5 py-1 rounded-full border border-[#E8E8E3] text-[#202522] hover:bg-[#EEF6EB] text-[10px] font-bold uppercase"
                     >
                       View
                     </Link>

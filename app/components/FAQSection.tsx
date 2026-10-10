@@ -13,12 +13,12 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="bg-[#FAF7F2] px-4 py-16 sm:px-6 lg:px-8">
+    <section className="bg-[#FCFBF7] px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
 
         {/* Heading */}
         <div className="mx-auto mb-10 max-w-3xl text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#C5A059]/30 bg-white px-4 py-2 text-sm font-medium text-[#8A6A32]">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D7A84B]/30 bg-white px-4 py-2 text-sm font-medium text-[#8A6A32]">
             <Sparkles className="h-4 w-4" />
             Frequently Asked Questions
           </div>
@@ -43,8 +43,8 @@ const FAQSection = () => {
                 key={faq.question}
                 className={`overflow-hidden rounded-[24px] border bg-white transition-all duration-300 ${
                   isOpen
-                    ? "border-[#C5A059]/50 shadow-[0_10px_35px_rgba(197,160,89,0.10)]"
-                    : "border-[#E9E2D7] shadow-sm hover:border-[#C5A059]/40"
+                    ? "border-[#D7A84B]/50 shadow-[0_10px_35px_rgba(197,160,89,0.10)]"
+                    : "border-[#E9E2D7] shadow-sm hover:border-[#D7A84B]/40"
                 }`}
               >
                 {/* Question */}
@@ -60,8 +60,8 @@ const FAQSection = () => {
                     <span
                       className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-semibold transition-colors ${
                         isOpen
-                          ? "bg-[#C5A059] text-white"
-                          : "bg-[#FAF7F2] text-[#A47C35]"
+                          ? "bg-[#D7A84B] text-white"
+                          : "bg-[#FCFBF7] text-[#A47C35]"
                       }`}
                     >
                       {String(index + 1).padStart(2, "0")}
@@ -112,10 +112,10 @@ const FAQSection = () => {
         <div className="mx-auto mt-12 max-w-4xl">
           <div className="relative overflow-hidden rounded-[28px] bg-[#29251F] px-6 py-10 text-center sm:px-10">
             
-            <div className="absolute -left-20 -top-20 h-40 w-40 rounded-full bg-[#C5A059]/20 blur-3xl" />
+            <div className="absolute -left-20 -top-20 h-40 w-40 rounded-full bg-[#D7A84B]/20 blur-3xl" />
 
             <div className="relative">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#C5A059] text-white">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#D7A84B] text-white">
                 <MessageCircle className="h-5 w-5" />
               </div>
 
@@ -130,7 +130,7 @@ const FAQSection = () => {
 
               <Link
                 href="/contact"
-                className="mt-6 inline-flex rounded-full bg-[#C5A059] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#B18D4C]"
+                className="mt-6 inline-flex rounded-full bg-[#D7A84B] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#B18D4C]"
               >
                 Contact Us
               </Link>
