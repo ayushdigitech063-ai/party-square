@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import WhatsAppFloat from "./components/WhatsAppFloat";
+import Preloader from "./components/Preloader";
 
 import { WishlistProvider } from "./context/wishlistcontext";
 import { CartProvider } from "./context/CartContext";
@@ -30,6 +31,7 @@ export default function RootLayout({
         <link rel="icon" href="/logo-icon.png" type="image/png" />
       </head>
       <body className="antialiased overflow-x-hidden">
+        <Preloader />
         <Toaster position="top-right" />
         <CartProvider>
           <WishlistProvider>
