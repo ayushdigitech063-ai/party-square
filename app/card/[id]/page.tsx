@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -29,6 +29,7 @@ import { useCart } from "@/app/context/CartContext";
 import { useWishlist } from "@/app/context/wishlistcontext";
 import ProductCard from "@/app/components/ProductCard";
 import AddOnSection from "@/app/components/AddOneSection";
+import { fetchProductByIdOrSlug } from "@/app/lib/api";
 
 /*
  * Delivery charge applied after the pincode is checked.
@@ -105,6 +106,7 @@ export default function ProductDetailPage() {
     { iso: string; top: string; num: number }[]
   >([]);
   const [activeTab2 , setActiveTab2] = useState<"overview" | "addons">("overview");
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
  
   useEffect(() => {
     const list = [];
@@ -126,17 +128,43 @@ export default function ProductDetailPage() {
   }, []);
 
   const productId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+  const [liveProduct, setLiveProduct] = useState<any>(null);
+  const [fetchingLive, setFetchingLive] = useState(true);
+
+  useEffect(() => {
+    async function loadLiveProduct() {
+      if (!productId) return;
+      try {
+        setFetchingLive(true);
+        const data = await fetchProductByIdOrSlug(productId);
+        if (data && data._id) {
+          setLiveProduct({
+            ...data,
+            id: data._id,
+            category: typeof data.category === "object" ? data.category?.name : data.category,
+            subcategory: typeof data.subcategory === "object" ? data.subcategory?.name : data.subcategory,
+          });
+        }
+      } catch (err) {
+        // Fallback
+      } finally {
+        setFetchingLive(false);
+      }
+    }
+    loadLiveProduct();
+  }, [productId]);
 
   const foundItem = useMemo(() => {
+    if (liveProduct) return liveProduct;
     if (!productId) return null;
 
     return allProducts.find(
       (product) =>
         String(product.id) === String(productId) || product.slug === productId,
     );
-  }, [productId]);
+  }, [liveProduct, productId]);
 
-  if (!productId) {
+  if (!productId || (fetchingLive && !foundItem)) {
     return (
       <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center">
         <p className="text-amber-900 font-serif text-lg">Loading...</p>
@@ -258,6 +286,18 @@ export default function ProductDetailPage() {
   }
   const isCustomDate = selectedDate && !dates.some((d) => d.iso === selectedDate);
 
+  // Collect all product images (primary + gallery)
+  const galleryImages: string[] = (() => {
+    const list: string[] = [];
+    if (foundItem?.image) list.push(foundItem.image);
+    if (Array.isArray(foundItem?.images)) {
+      foundItem.images.forEach((img: string) => {
+        if (img && !list.includes(img)) list.push(img);
+      });
+    }
+    return list.length > 0 ? list : [foundItem?.image || "/birthdaydesign.png"];
+  })();
+
   /* ---------------- PAGE ---------------- */
 
   return (
@@ -299,26 +339,29 @@ export default function ProductDetailPage() {
               {/* THUMBNAILS */}
 
               <div className="col-span-2 flex flex-col gap-3">
-                {[1, 2, 3, 4].map((item) => (
+                {galleryImages.slice(0, 5).map((imgUrl, idx) => (
                   <div
-                    key={item}
+                    key={idx}
+                    onClick={() => setActiveImageIndex(idx)}
                     className={`h-16 sm:h-[72px] rounded-xl overflow-hidden border bg-white cursor-pointer transition ${
-                      item === 1
-                        ? "border-amber-500 ring-2 ring-amber-100"
-                        : "border-amber-100 hover:border-amber-300"
+                      activeImageIndex === idx
+                        ? "border-[#8CBC67] ring-2 ring-[#8CBC67]/30 shadow-sm"
+                        : "border-[#E8E8E3] hover:border-[#8CBC67]/50"
                     }`}
                   >
                     <img
-                      src={foundItem.image}
-                      alt={`${foundItem.name} preview ${item}`}
+                      src={imgUrl}
+                      alt={`${foundItem.name} preview ${idx + 1}`}
                       className="w-full h-full object-cover"
                     />
                   </div>
                 ))}
 
-                <div className="h-16 sm:h-[72px] rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-xs font-semibold text-amber-800">
-                  +5
-                </div>
+                {galleryImages.length > 5 && (
+                  <div className="h-16 sm:h-[72px] rounded-xl bg-neutral-100 border border-[#E8E8E3] flex items-center justify-center text-xs font-semibold text-[#6B706C]">
+                    +{galleryImages.length - 5}
+                  </div>
+                )}
               </div>
 
               {/* MAIN IMAGE */}
@@ -326,7 +369,7 @@ export default function ProductDetailPage() {
               <div className="col-span-10">
                 <div className="relative aspect-[16/16] rounded-3xl overflow-hidden bg-neutral-100 border border-amber-100 shadow-sm">
                   <img
-                    src={foundItem.image}
+                    src={galleryImages[activeImageIndex] || foundItem.image}
                     alt={foundItem.name}
                     className="w-full h-full object-cover transition duration-700 hover:scale-[1.03]"
                   />
@@ -359,23 +402,44 @@ export default function ProductDetailPage() {
                   {/* IMAGE COUNTER */}
 
                   <div className="absolute bottom-5 right-5 bg-black/65 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-xs font-medium">
-                    1 / 5
+                    {activeImageIndex + 1} / {galleryImages.length}
                   </div>
 
                   {/* LEFT ARROW */}
 
-                  <button className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-md flex items-center justify-center text-neutral-800 transition">
-                    â€¹
-                  </button>
+                  {galleryImages.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setActiveImageIndex((prev) =>
+                          prev === 0 ? galleryImages.length - 1 : prev - 1
+                        )
+                      }
+                      className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-md flex items-center justify-center text-neutral-800 transition cursor-pointer"
+                    >
+                      ‹
+                    </button>
+                  )}
 
                   {/* RIGHT ARROW */}
 
-                  <button className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-md flex items-center justify-center text-neutral-800 transition">
-                    â€º
-                  </button>
+                  {galleryImages.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setActiveImageIndex((prev) =>
+                          prev === galleryImages.length - 1 ? 0 : prev + 1
+                        )
+                      }
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-md flex items-center justify-center text-neutral-800 transition cursor-pointer"
+                    >
+                      ›
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
+
 
             {/* TRUST STRIP (4 items) */}
 

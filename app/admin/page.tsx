@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 
 import DashboardHeader from "./component/DashboardHeader";
 import DashboardToolbar from "./component/DashboardToolbar";
@@ -14,6 +14,7 @@ import UpcomingEvents from "./component/UpcommingEvents";
 
 import { INITIAL_BOOKINGS } from "./data/bookings";
 import { Booking, Status } from "./types/dashboard";
+import { fetchDashboardOverview, DashboardOverview } from "@/app/lib/api";
 
 export default function AdminDashboard() {
   // =========================
@@ -29,6 +30,19 @@ export default function AdminDashboard() {
     useState<"All" | Status>("All");
 
   const [query, setQuery] = useState("");
+  const [overview, setOverview] = useState<DashboardOverview | null>(null);
+
+  useEffect(() => {
+    async function loadStats() {
+      try {
+        const data = await fetchDashboardOverview();
+        setOverview(data);
+      } catch (err) {
+        console.error("Dashboard overview stats error:", err);
+      }
+    }
+    loadStats();
+  }, []);
 
   // =========================
   // DASHBOARD CALCULATIONS
@@ -154,6 +168,7 @@ export default function AdminDashboard() {
       {/* KPI Cards */}
       <KpiCards
         pendingCount={pendingCount}
+        metrics={overview?.metrics}
       />
 
       {/* Charts */}
@@ -162,7 +177,9 @@ export default function AdminDashboard() {
           range={range}
         />
 
-        <CategoryChart />
+        <CategoryChart
+          breakdown={overview?.categoryBreakdown}
+        />
       </div>
 
       {/* Bookings + Side Panels */}

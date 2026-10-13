@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -260,6 +260,17 @@ export default function BirthdayServicePage() {
               />
             );
           })}
+        </div>
+
+        {/* VIEW MORE PRODUCTS */}
+        <div className="text-center mt-12">
+          <Link
+            href="/services/birthday/all-products"
+            className="inline-flex items-center space-x-2 bg-white hover:bg-neutral-950 hover:text-white text-neutral-950 font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-wider transition shadow-sm border border-[#E8E8E3]"
+          >
+            <span>View More Products</span>
+            <ArrowRight size={14} />
+          </Link>
         </div>
       </section>
 

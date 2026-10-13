@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -20,7 +20,11 @@ import {
   Briefcase,
   Users2,
   LogOut,
-  HelpCircle
+  HelpCircle,
+  Package as PackageIcon,
+  FolderTree,
+  ChevronDown,
+  ChevronRight
 } from "lucide-react";
 
 export default function AdminLayout({
@@ -39,11 +43,29 @@ export default function AdminLayout({
     router.push("/login");
   };
 
+  const [productsOpen, setProductsOpen] = useState(
+    pathname?.startsWith("/admin/products") ?? false
+  );
+  const [categoriesOpen, setCategoriesOpen] = useState(
+    pathname?.startsWith("/admin/categories") ?? false
+  );
+
+  const productSubItems = [
+    { name: "All Products", href: "/admin/products" },
+    { name: "Add Product", href: "/admin/products/new" },
+  ];
+
+  const categorySubItems = [
+    { name: "All Categories", href: "/admin/categories" },
+    { name: "Add Category", href: "/admin/categories/new" },
+    { name: "Subcategories", href: "/admin/categories/subcategories" },
+  ];
+
   const navItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Bookings", href: "/admin/bookings", icon: CalendarCheck },
     { name: "Customers", href: "/admin/customers", icon: Users },
-    { name: "Themes & Packages", href: "/admin/themes", icon: LayoutDashboard }, // Adjust icon if needed
+    { name: "Themes & Packages", href: "/admin/themes", icon: LayoutDashboard },
     { name: "Gallery Manager", href: "/admin/gallery", icon: Image },
     { name: "Coupons", href: "/admin/coupons", icon: Ticket },
     { name: "Reviews & Ratings", href: "/admin/reviews", icon: Star },
@@ -83,7 +105,129 @@ export default function AdminLayout({
 
           {/* Navigation */}
           <div className="space-y-1">
-            {navItems.map((item) => {
+            {/* Top items: Dashboard, Bookings, Customers */}
+            {navItems.slice(0, 3).map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`flex items-center space-x-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all ${
+                    isActive
+                      ? "bg-gradient-to-r from-[#8CBC67]/20 to-transparent text-[#8CBC67] border-l-2 border-[#8CBC67]"
+                      : "hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  <Icon size={18} className={isActive ? "text-[#8CBC67]" : "text-[#6B706C]"} />
+                  <span>{item.name}</span>
+                </Link>
+              );
+            })}
+
+            {/* Themes & Packages */}
+            {(() => {
+              const item = navItems[3];
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`flex items-center space-x-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all ${
+                    isActive
+                      ? "bg-gradient-to-r from-[#8CBC67]/20 to-transparent text-[#8CBC67] border-l-2 border-[#8CBC67]"
+                      : "hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  <Icon size={18} className={isActive ? "text-[#8CBC67]" : "text-[#6B706C]"} />
+                  <span>{item.name}</span>
+                </Link>
+              );
+            })()}
+
+            {/* PRODUCT MANAGEMENT GROUP */}
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => setProductsOpen((prev) => !prev)}
+                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all ${
+                  pathname?.startsWith("/admin/products")
+                    ? "bg-gradient-to-r from-[#8CBC67]/20 to-transparent text-[#8CBC67] border-l-2 border-[#8CBC67]"
+                    : "hover:text-white hover:bg-white/5"
+                }`}
+              >
+                <div className="flex items-center space-x-3">
+                  <PackageIcon size={18} className={pathname?.startsWith("/admin/products") ? "text-[#8CBC67]" : "text-[#6B706C]"} />
+                  <span>Product Management</span>
+                </div>
+                {productsOpen ? <ChevronDown size={14} className="text-[#8CBC67]" /> : <ChevronRight size={14} className="text-[#6B706C]" />}
+              </button>
+
+              {productsOpen && (
+                <div className="pl-8 pr-2 py-1 space-y-1">
+                  {productSubItems.map((sub) => {
+                    const isSubActive = pathname === sub.href;
+                    return (
+                      <Link
+                        key={sub.name}
+                        href={sub.href}
+                        className={`block px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                          isSubActive
+                            ? "text-[#8CBC67] font-semibold bg-white/5"
+                            : "text-[#8A8F8B] hover:text-white hover:bg-white/5"
+                        }`}
+                      >
+                        {sub.name}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* CATEGORY MANAGEMENT GROUP */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setCategoriesOpen((prev) => !prev)}
+                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all ${
+                  pathname?.startsWith("/admin/categories")
+                    ? "bg-gradient-to-r from-[#8CBC67]/20 to-transparent text-[#8CBC67] border-l-2 border-[#8CBC67]"
+                    : "hover:text-white hover:bg-white/5"
+                }`}
+              >
+                <div className="flex items-center space-x-3">
+                  <FolderTree size={18} className={pathname?.startsWith("/admin/categories") ? "text-[#8CBC67]" : "text-[#6B706C]"} />
+                  <span>Category Management</span>
+                </div>
+                {categoriesOpen ? <ChevronDown size={14} className="text-[#8CBC67]" /> : <ChevronRight size={14} className="text-[#6B706C]" />}
+              </button>
+
+              {categoriesOpen && (
+                <div className="pl-8 pr-2 py-1 space-y-1">
+                  {categorySubItems.map((sub) => {
+                    const isSubActive = pathname === sub.href;
+                    return (
+                      <Link
+                        key={sub.name}
+                        href={sub.href}
+                        className={`block px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                          isSubActive
+                            ? "text-[#8CBC67] font-semibold bg-white/5"
+                            : "text-[#8A8F8B] hover:text-white hover:bg-white/5"
+                        }`}
+                      >
+                        {sub.name}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Remaining items: Gallery, Coupons, Reviews, Analytics, Finance, Staff, Settings */}
+            {navItems.slice(4).map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
               return (

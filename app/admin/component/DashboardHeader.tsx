@@ -63,7 +63,7 @@ export default function DashboardHeader({
           </div>
 
           <h2 className="font-serif text-2xl sm:text-3xl font-bold">
-            Welcome back, Super Admin
+              , Super Admin
           </h2>
 
           <p className="text-neutral-300 text-xs sm:text-sm font-light">
