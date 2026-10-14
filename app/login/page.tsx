@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Lock, Mail, ArrowRight, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { API_BASE } from "@/app/lib/api";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("superadmin@partysquare.com");
@@ -16,7 +17,7 @@ export default function LoginPage() {
     setLoading(true);
     
     try {
-      const res = await fetch("http://localhost:5000/api/super-admin/login", {
+      const res = await fetch(`${API_BASE}/api/super-admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

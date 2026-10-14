@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { getAdminToken } from "@/app/lib/api";
+import { getAdminToken, API_BASE } from "@/app/lib/api";
 import {
   LayoutDashboard,
   CalendarCheck,
@@ -61,7 +61,7 @@ export default function AdminLayout({
 
     const verifySession = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/super-admin/dashboard", {
+        const res = await fetch(`${API_BASE}/api/super-admin/dashboard`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) {

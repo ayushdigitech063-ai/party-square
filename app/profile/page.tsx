@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 
-import { fetchMyBookings, fetchBookingsByPhone } from "@/app/lib/api";
+import { fetchMyBookings, fetchBookingsByPhone, API_BASE } from "@/app/lib/api";
 import LoginModal from "@/app/components/LoginModal";
 
 export default function ProfilePage() {
@@ -59,7 +59,7 @@ export default function ProfilePage() {
     if (activeToken) {
       try {
         // 1. Fetch user info
-        const profileRes = await fetch("http://localhost:5000/api/auth/profile", {
+        const profileRes = await fetch(`${API_BASE}/api/auth/profile`, {
           headers: { Authorization: `Bearer ${activeToken}` },
         });
         if (profileRes.ok) {

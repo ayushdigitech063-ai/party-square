@@ -1,6 +1,6 @@
 // Centralized API client for Party Square frontend & admin
 
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/\/$/, "");
+export const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "https://decoration-backend-qtx7.onrender.com").replace(/\/$/, "");
 
 export function getAdminToken(): string | null {
   if (typeof window === "undefined") return null;

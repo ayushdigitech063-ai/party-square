@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { API_BASE } from "@/app/lib/api";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -52,7 +53,7 @@ export default function LoginModal({
     setErrorMsg("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/otp/send", {
+      const res = await fetch(`${API_BASE}/api/auth/otp/send`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone: mobile }),
@@ -85,7 +86,7 @@ export default function LoginModal({
     setErrorMsg("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/otp/verify", {
+      const res = await fetch(`${API_BASE}/api/auth/otp/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone: mobile, otp }),
@@ -119,7 +120,7 @@ export default function LoginModal({
     setErrorMsg("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
+      const res = await fetch(`${API_BASE}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, phone: mobile }),
