@@ -155,11 +155,37 @@ function PaymentContent() {
     resolveProduct();
   }, [productId, product, paramName, paramPrice, paramImage]);
 
-  // Sync city only, keep customer inputs blank for fresh entry
+  // Sync city and auto-load logged in customer details
   useEffect(() => {
     if (selectedCity) {
       setCity(selectedCity);
     }
+
+    const checkLogin = () => {
+      const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+      const userStr = typeof window !== "undefined" ? localStorage.getItem("user") : null;
+      if (token) {
+        setIsLoggedIn(true);
+        if (userStr) {
+          try {
+            const u = JSON.parse(userStr);
+            if (u.name) setCustomerName((prev) => prev || u.name);
+            if (u.phone) setCustomerPhone((prev) => prev || u.phone);
+            if (u.email) setCustomerEmail((prev) => prev || u.email);
+          } catch (e) {}
+        }
+      } else {
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkLogin();
+    window.addEventListener("auth-changed", checkLogin);
+    window.addEventListener("storage", checkLogin);
+    return () => {
+      window.removeEventListener("auth-changed", checkLogin);
+      window.removeEventListener("storage", checkLogin);
+    };
   }, [selectedCity]);
 
   // Loading product state
@@ -311,6 +337,13 @@ function PaymentContent() {
   // Pay and Confirm Booking
   const handlePayNow = async () => {
     setPaymentMsg(null);
+
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    if (!token) {
+      toast.error("Please login to proceed with your booking", { id: "payment-login-req" });
+      setShowLoginModal(true);
+      return;
+    }
 
     const validationError = validatePayment();
     if (validationError) {
@@ -499,6 +532,41 @@ function PaymentContent() {
                   <p className="text-xs text-[#6B706C]">Your booking & invoice will be linked to this contact</p>
                 </div>
               </div>
+
+              {!isLoggedIn ? (
+                <div className="mt-4 p-3.5 rounded-2xl bg-[#EEF6EB] border border-[#8CBC67]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-full bg-[#8CBC67] text-white flex items-center justify-center shrink-0">
+                      <Lock size={15} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-[#202522]">Login Required to Book</p>
+                      <p className="text-[11px] text-[#6B706C]">Login to auto-fill details and confirm your slot instantly</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowLoginModal(true)}
+                    className="px-4 py-2 rounded-full bg-[#8CBC67] hover:bg-[#7AB055] text-white text-xs font-bold transition shadow-sm shrink-0 cursor-pointer text-center"
+                  >
+                    Login / Register
+                  </button>
+                </div>
+              ) : (
+                <div className="mt-4 p-3 rounded-2xl bg-[#EEF6EB]/60 border border-[#8CBC67]/20 flex items-center justify-between gap-2 text-xs">
+                  <div className="flex items-center gap-2 text-[#202522]">
+                    <CheckCircle2 size={16} className="text-[#8CBC67] shrink-0" />
+                    <span>Logged in as <strong>{customerName || "Customer"}</strong> {customerPhone ? `(+91 ${customerPhone})` : ""}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowLoginModal(true)}
+                    className="text-[11px] text-[#8CBC67] font-semibold hover:underline cursor-pointer shrink-0"
+                  >
+                    Switch Account
+                  </button>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
                 <div>
@@ -1119,6 +1187,17 @@ function PaymentContent() {
       <LoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
+        redirectTo={null}
+        onSuccess={(loggedUser) => {
+          setIsLoggedIn(true);
+          setShowLoginModal(false);
+          if (loggedUser) {
+            if (loggedUser.name) setCustomerName(loggedUser.name);
+            if (loggedUser.phone) setCustomerPhone(loggedUser.phone);
+            if (loggedUser.email) setCustomerEmail(loggedUser.email);
+          }
+          toast.success("Logged in successfully! You can now complete your booking.");
+        }}
       />
     </div>
   );

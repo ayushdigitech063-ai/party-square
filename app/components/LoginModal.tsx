@@ -16,11 +16,15 @@ import { API_BASE } from "@/app/lib/api";
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess?: (user: any) => void;
+  redirectTo?: string | null;
 }
 
 export default function LoginModal({
   isOpen,
   onClose,
+  onSuccess,
+  redirectTo = "/profile",
 }: LoginModalProps) {
   const [view, setView] = useState<"login" | "register">("login");
   const [step, setStep] = useState<"phone" | "otp">("phone");
@@ -99,9 +103,14 @@ export default function LoginModal({
         if (typeof window !== "undefined") {
           localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
+          window.dispatchEvent(new Event("auth-changed"));
         }
         toast.success("Login successful! Welcome " + (data.user?.name || "Customer"));
-        router.push("/profile");
+        if (onSuccess) {
+          onSuccess(data.user);
+        } else if (redirectTo) {
+          router.push(redirectTo);
+        }
         handleClose();
       } else {
         toast.error(data.message || "Invalid OTP");
@@ -128,9 +137,26 @@ export default function LoginModal({
       const data = await res.json();
 
       if (res.ok) {
-        toast.success("Registration successful! Please login.");
-        setView("login");
-        setStep("phone");
+        if (data.token && data.user) {
+          document.cookie = `token=${data.token}; path=/; max-age=2592000;`;
+          document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/; max-age=2592000;`;
+          if (typeof window !== "undefined") {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
+            window.dispatchEvent(new Event("auth-changed"));
+          }
+          toast.success("Account created! Welcome " + (data.user?.name || "Customer"));
+          if (onSuccess) {
+            onSuccess(data.user);
+          } else if (redirectTo) {
+            router.push(redirectTo);
+          }
+          handleClose();
+        } else {
+          toast.success("Registration successful! Please login.");
+          setView("login");
+          setStep("phone");
+        }
       } else {
         toast.error(data.message || "Failed to register");
         setErrorMsg(data.message || "Failed to register");

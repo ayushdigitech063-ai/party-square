@@ -32,6 +32,8 @@ import { useWishlist } from "@/app/context/wishlistcontext";
 import ProductCard from "@/app/components/ProductCard";
 import AddOnSection from "@/app/components/AddOneSection";
 import { fetchProductByIdOrSlug } from "@/app/lib/api";
+import LoginModal from "@/app/components/LoginModal";
+import toast from "react-hot-toast";
 
 /*
  * Delivery charge applied after the pincode is checked.
@@ -111,6 +113,7 @@ export default function ProductDetailPage() {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
   const [calendarViewDate, setCalendarViewDate] = useState(() => new Date());
+  const [showLoginModal, setShowLoginModal] = useState(false);
  
   useEffect(() => {
     const list = [];
@@ -251,6 +254,13 @@ export default function ProductDetailPage() {
   /* ---------------- BOOK NOW ---------------- */
 
   const handleBookNow = (foundItem: any) => {
+    const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    if (!token) {
+      toast("Please login to proceed with your booking", { icon: "🔒" });
+      setShowLoginModal(true);
+      return;
+    }
+
     // date / pincode are added only when the user has chosen them
     const extra = `${selectedDate ? `&date=${selectedDate}` : ""}${pincodeChecked ? `&pincode=${pincode}` : ""}${selectedSlot ? `&slot=${selectedSlot === "Custom Time" ? customTime : selectedSlot}` : ""}${cityParam ? `&city=${encodeURIComponent(cityParam)}` : ""}`;
 
@@ -1231,6 +1241,22 @@ export default function ProductDetailPage() {
           </div>
         </div>
       )}
+
+      {/* Login Modal for unauthenticated Book Now clicks */}
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        redirectTo={null}
+        onSuccess={() => {
+          setShowLoginModal(false);
+          if (foundItem) {
+            const extra = `${selectedDate ? `&date=${selectedDate}` : ""}${pincodeChecked ? `&pincode=${pincode}` : ""}${selectedSlot ? `&slot=${selectedSlot === "Custom Time" ? customTime : selectedSlot}` : ""}${cityParam ? `&city=${encodeURIComponent(cityParam)}` : ""}`;
+            router.push(
+              `/payment-detail?productId=${encodeURIComponent(foundItem.id)}${extra}`,
+            );
+          }
+        }}
+      />
     </div>
   );
 }
