@@ -507,22 +507,22 @@ function PaymentContent() {
   // ============================================================
   return (
     <div className="min-h-screen bg-[#FCFBF7] text-[#202522]">
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-8 md:py-10">
         {/* Navigation Breadcrumb */}
-        <div className="mb-6 flex items-center gap-2 text-xs text-[#6B706C]">
+        <div className="mb-4 sm:mb-6 flex items-center gap-2 text-xs text-[#6B706C]">
           <Link href="/" className="hover:text-[#202522] transition">Home</Link>
           <span>/</span>
           <span>Checkout & Booking</span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_390px] gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_390px] gap-6 lg:gap-8">
           {/* ====================================================
               LEFT COLUMN: CUSTOMER, VENUE & PAYMENT DETAILS
           ==================================================== */}
           <div className="space-y-6">
 
             {/* 1. Customer Contact Details */}
-            <section className="bg-white rounded-3xl border border-[#E8E8E3] shadow-sm p-6 sm:p-7">
+            <section className="bg-white rounded-2xl sm:rounded-3xl border border-[#E8E8E3] shadow-sm p-4 sm:p-7">
               <div className="flex items-center gap-3 pb-5 border-b border-[#E8E8E3]">
                 <div className="w-10 h-10 rounded-2xl bg-[#EEF6EB] flex items-center justify-center text-[#8CBC67]">
                   <User size={20} />
@@ -628,7 +628,7 @@ function PaymentContent() {
             </section>
 
             {/* 2. Event & Venue Details */}
-            <section className="bg-white rounded-3xl border border-[#E8E8E3] shadow-sm p-6 sm:p-7">
+            <section className="bg-white rounded-2xl sm:rounded-3xl border border-[#E8E8E3] shadow-sm p-4 sm:p-7">
               <div className="flex items-center gap-3 pb-5 border-b border-[#E8E8E3]">
                 <div className="w-10 h-10 rounded-2xl bg-[#EEF6EB] flex items-center justify-center text-[#8CBC67]">
                   <Calendar size={20} />
@@ -734,7 +734,7 @@ function PaymentContent() {
             </section>
 
             {/* 3. Payment Plan (50% Advance vs Full) */}
-            <section className="bg-white rounded-3xl border border-[#E8E8E3] shadow-sm p-6 sm:p-7">
+            <section className="bg-white rounded-2xl sm:rounded-3xl border border-[#E8E8E3] shadow-sm p-4 sm:p-7">
               <div className="flex items-center justify-between pb-4 border-b border-[#E8E8E3]">
                 <div>
                   <h2 className="text-base font-bold text-[#202522]">3. Select Payment Plan</h2>
@@ -804,13 +804,13 @@ function PaymentContent() {
             </section>
 
             {/* 4. Payment Method Options */}
-            <section className="bg-white rounded-3xl border border-[#E8E8E3] shadow-sm overflow-hidden">
-              <div className="p-6 border-b border-[#E8E8E3]">
+            <section className="bg-white rounded-2xl sm:rounded-3xl border border-[#E8E8E3] shadow-sm overflow-hidden">
+              <div className="p-4 sm:p-6 border-b border-[#E8E8E3]">
                 <h2 className="text-base font-bold text-[#202522]">4. Payment Method</h2>
                 <p className="text-xs text-[#6B706C] mt-0.5">Select how you want to pay</p>
               </div>
 
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {/* UPI */}
                   <button

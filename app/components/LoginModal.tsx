@@ -178,7 +178,7 @@ export default function LoginModal({
       />
 
       {/* ================= LOGIN MODAL ================= */}
-      <div className="relative z-10 w-full max-w-[430px] overflow-hidden rounded-[26px] bg-[#FFFFFF] shadow-[0_25px_80px_rgba(50,35,20,0.25)] border border-[#E9D7AE]">
+      <div className="relative z-10 w-full max-w-[430px] max-h-[92vh] overflow-y-auto rounded-[24px] sm:rounded-[26px] bg-[#FFFFFF] shadow-[0_25px_80px_rgba(50,35,20,0.25)] border border-[#E9D7AE]">
 
         {/* Decorative top glow */}
         <div className="absolute -top-20 -right-20 h-44 w-44 rounded-full bg-[#F5C542]/20 blur-3xl pointer-events-none" />

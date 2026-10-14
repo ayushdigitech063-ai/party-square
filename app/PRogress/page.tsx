@@ -89,43 +89,43 @@ export default function ProgressBanner() {
   }
 
   return (
-    <section className="relative bg-[#FCFBF7] py-20 px-6 md:px-16 overflow-hidden border-y border-[#E8E8E3]/80">
+    <section className="relative bg-[#FCFBF7] py-12 sm:py-20 px-4 sm:px-6 md:px-16 overflow-hidden border-y border-[#E8E8E3]/80">
       
       {/* Background Animated Gradient Glow */}
       <div className="absolute top-1/2 -left-20 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-red-500/20 via-[#8CBC67]/30 to-yellow-400/20 rounded-full blur-[140px] pointer-events-none animate-pulse" />
       <div className="absolute top-10 right-10 w-96 h-96 bg-gradient-to-br from-yellow-500/20 to-red-400/15 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto relative z-10 space-y-10">
+      <div className="max-w-7xl mx-auto relative z-10 space-y-8 sm:space-y-10">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-[#8CBC67]/60 pb-8">
-          <div className="space-y-3 max-w-2xl">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 border-b border-[#8CBC67]/60 pb-6 sm:pb-8">
+          <div className="space-y-2.5 max-w-2xl">
             {data.badge && (
               <div className="inline-flex items-center space-x-2 bg-[#F7D6C7]/90 border border-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-bold text-[#202522] shadow-sm">
                 <Sparkles size={13} className="text-[#202522]" />
                 <span>{data.badge}</span>
               </div>
             )}
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-neutral-950">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-bold text-neutral-950">
               {title}
             </h2>
-            <p className="text-[#202522] text-sm font-medium leading-relaxed">
+            <p className="text-[#202522] text-xs sm:text-sm font-medium leading-relaxed">
               {subtitle}
             </p>
           </div>
 
           <div className="flex items-center space-x-3 shrink-0">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#202522] bg-[#EEF6EB] px-3 py-1.5 rounded-lg border border-[#8CBC67]">
+            <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#202522] bg-[#EEF6EB] px-3 py-1.5 rounded-lg border border-[#8CBC67]">
               Interactive Preview
             </span>
           </div>
         </div>
 
         {/* Main Layout: Video + Feature Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
           
           {/* Left Side: Clean Video Player */}
-          <div className="lg:col-span-7 relative rounded-3xl overflow-hidden shadow-2xl border-2 border-[#8CBC67]/80 bg-neutral-950 group min-h-[420px] lg:min-h-[500px]">
+          <div className="lg:col-span-7 relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-2 border-[#8CBC67]/80 bg-neutral-950 group min-h-[260px] sm:min-h-[380px] lg:min-h-[500px] aspect-video lg:aspect-auto">
             <video
               ref={videoRef}
               key={data.videoUrl}

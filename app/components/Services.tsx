@@ -102,17 +102,17 @@ export default function Services() {
   const { badge, description, flagship, otherServices, guarantees } = data;
 
   return (
-    <section className="relative bg-gradient-to-b from-[#FAF7F2] via-[#FDF5F2] to-[#F9EBEA] py-28 px-6 md:px-16 text-[#241C15] overflow-hidden border-t border-red-200/40">
+    <section className="relative bg-gradient-to-b from-[#FAF7F2] via-[#FDF5F2] to-[#F9EBEA] py-14 sm:py-20 md:py-28 px-4 sm:px-6 md:px-16 text-[#241C15] overflow-hidden border-t border-red-200/40">
       
       {/* Soft Luxury Background Glows */}
       <div className="absolute top-10 left-10 w-96 h-96 bg-red-200/30 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#D7A84B]/30 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
           
           {/* Left: heading & Expanded Content */}
-          <div className="lg:col-span-4 lg:sticky lg:top-28 space-y-6">
+          <div className="lg:col-span-4 lg:sticky lg:top-28 space-y-4 sm:space-y-6">
             {badge && (
               <div className="inline-flex items-center space-x-2 bg-red-100/80 border border-red-300/60 px-3.5 py-1 rounded-full text-xs font-bold text-red-950 shadow-sm">
                 <Sparkles size={13} className="text-red-700" />
@@ -120,7 +120,7 @@ export default function Services() {
               </div>
             )}
 
-            <h2 className="text-4xl sm:text-5xl font-serif font-normal leading-[1.15] text-[#241C15]">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-normal leading-[1.15] text-[#241C15]">
               {subtitle}
             </h2>
 

@@ -410,15 +410,15 @@ export default function ProductDetailPage() {
           ================================================== */}
 
           <div className="lg:col-span-7">
-            <div className="grid grid-cols-12 gap-4">
+            <div className="flex flex-col-reverse sm:grid sm:grid-cols-12 gap-3 sm:gap-4">
               {/* THUMBNAILS */}
 
-              <div className="col-span-2 flex flex-col gap-3">
+              <div className="sm:col-span-2 flex sm:flex-col flex-row gap-2 sm:gap-3 overflow-x-auto sm:overflow-visible pb-1 sm:pb-0 scrollbar-none">
                 {galleryImages.slice(0, 5).map((imgUrl, idx) => (
                   <div
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`h-16 sm:h-[72px] rounded-xl overflow-hidden border bg-white cursor-pointer transition ${
+                    className={`w-14 h-14 sm:w-auto sm:h-[72px] shrink-0 rounded-xl overflow-hidden border bg-white cursor-pointer transition ${
                       activeImageIndex === idx
                         ? "border-[#8CBC67] ring-2 ring-[#8CBC67]/30 shadow-sm"
                         : "border-[#E8E8E3] hover:border-[#8CBC67]/50"
@@ -433,7 +433,7 @@ export default function ProductDetailPage() {
                 ))}
 
                 {galleryImages.length > 5 && (
-                  <div className="h-16 sm:h-[72px] rounded-xl bg-neutral-100 border border-[#E8E8E3] flex items-center justify-center text-xs font-semibold text-[#6B706C]">
+                  <div className="w-14 h-14 sm:w-auto sm:h-[72px] shrink-0 rounded-xl bg-neutral-100 border border-[#E8E8E3] flex items-center justify-center text-xs font-semibold text-[#6B706C]">
                     +{galleryImages.length - 5}
                   </div>
                 )}
@@ -441,7 +441,7 @@ export default function ProductDetailPage() {
 
               {/* MAIN IMAGE */}
 
-              <div className="col-span-10">
+              <div className="sm:col-span-10 w-full">
                 <div className="relative aspect-[16/16] rounded-3xl overflow-hidden bg-neutral-100 border border-amber-100 shadow-sm">
                   <img
                     src={galleryImages[activeImageIndex] || foundItem.image}
@@ -842,7 +842,7 @@ export default function ProductDetailPage() {
 
               {/* DATE CHIPS */}
 
-              <div className="mt-4 grid grid-cols-6 gap-2">
+              <div className="mt-4 grid grid-cols-3 sm:grid-cols-6 gap-2">
                 {dates.map((d) => (
                   <button
                     key={d.iso}
@@ -1083,25 +1083,24 @@ export default function ProductDetailPage() {
           FLOATING QUICK NAV
       ====================================================== */}
 
-      <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 bg-neutral-900/90 backdrop-blur-md rounded-full p-1.5 shadow-2xl">
+      <div className="fixed bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 bg-neutral-900/90 backdrop-blur-md rounded-full p-1 sm:p-1.5 shadow-2xl max-w-[calc(100vw-20px)] w-max border border-white/10">
         <button
           onClick={() =>{setActiveTab2("overview"); window.scrollTo({ top: 0, behavior: "smooth" })}}
-          className={`px-4 py-2 rounded-full text-neutral-900 text-xs font-bold cursor-pointer ${activeTab2 === 'overview' ? "bg-white text-neutral-900" : "text-white/90 hover:text-white"}`}
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-bold cursor-pointer transition ${activeTab2 === 'overview' ? "bg-white text-neutral-900" : "text-white/80 hover:text-white"}`}
         >
           Overview
         </button>
 
         <button
           onClick={scrollToAddons}
-          className={`px-4 py-2 rounded-full text-nautral-900 text-xs font-bold cursor-pointer ${activeTab2 === 'addons' ? "bg-white text-neutral-900"
-      : "text-white/90 hover:text-white"}`}
+          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-bold cursor-pointer transition ${activeTab2 === 'addons' ? "bg-white text-neutral-900" : "text-white/80 hover:text-white"}`}
         >
           Add-ons
         </button>
 
         <button
           onClick={() => handleBookNow(foundItem)}
-          className="px-4 py-2 rounded-full bg-[#8CBC67] hover:bg-[#7AB055] text-white text-xs font-bold cursor-pointer transition"
+          className="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-[#8CBC67] hover:bg-[#7AB055] text-white text-xs font-bold cursor-pointer transition whitespace-nowrap shadow-md"
         >
           {formattedGrandTotal} → Book now
         </button>

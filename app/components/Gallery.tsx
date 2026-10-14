@@ -202,7 +202,7 @@ export default function Gallery() {
                     <div
                       key={item.id}
                       onClick={() => router.push(productUrl)}
-                      className="relative w-[275px] sm:w-[290px] h-[395px] flex-shrink-0 bg-white border border-[#E8E8E3] hover:border-[#8CBC67] rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group snap-start cursor-pointer select-none"
+                      className="relative w-[260px] sm:w-[290px] h-[390px] sm:h-[395px] flex-shrink-0 bg-white border border-[#E8E8E3] hover:border-[#8CBC67] rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group snap-start cursor-pointer select-none"
                     >
                       {/* 1. IMAGE CONTAINER */}
                       <div className="relative h-[255px] w-full overflow-hidden bg-[#EEF6EB] shrink-0 block">

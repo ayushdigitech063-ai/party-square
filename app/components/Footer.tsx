@@ -41,7 +41,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#FCFBF7]/65 text-[#202522] font-sans overflow-hidden border-t border-[#8CBC67] pt-20 pb-10 px-6 md:px-16 backdrop-blur-[2px]">
+    <footer className="relative bg-[#FCFBF7]/65 text-[#202522] font-sans overflow-hidden border-t border-[#8CBC67] pt-12 sm:pt-20 pb-8 sm:pb-10 px-4 sm:px-6 md:px-16 backdrop-blur-[2px]">
       {/* Background Image with balanced opacity so flowers are clearly visible */}
       <div
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat pointer-events-none opacity-50"
@@ -55,7 +55,7 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Top Newsletter / Call to Action Banner */}
-        <div className="bg-gradient-to-r from-[#EEF6EB]/90 to-[#EEF6EB]/90 backdrop-blur-md border border-[#8CBC67]/90 rounded-3xl p-8 md:p-12 mb-16 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-sm">
+        <div className="bg-gradient-to-r from-[#EEF6EB]/90 to-[#EEF6EB]/90 backdrop-blur-md border border-[#8CBC67]/90 rounded-3xl p-5 sm:p-8 md:p-12 mb-10 sm:mb-16 flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8 shadow-sm">
           <div className="space-y-2 text-center lg:text-left">
             <div className="inline-flex items-center space-x-2 bg-[#F7D6C7]/90 border border-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-bold text-[#202522] mb-1 shadow-sm">
               <Sparkles size={13} className="text-[#202522]" />

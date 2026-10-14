@@ -120,8 +120,8 @@ export default function Hero() {
 
       {/* ================= HERO SECTION CARD ================= */}
       {isEnabled && (
-        <div className="max-w-[1212px] mx-auto p-4 sm:p-6">
-          <div className="relative w-full h-[417px] rounded-[28px] overflow-hidden text-white shadow-xl">
+        <div className="max-w-[1212px] mx-auto p-3 sm:p-6">
+          <div className="relative w-full min-h-[440px] sm:min-h-[430px] md:h-[450px] rounded-[22px] sm:rounded-[28px] overflow-hidden text-white shadow-xl flex flex-col justify-center">
 
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
@@ -131,61 +131,61 @@ export default function Hero() {
                 alt="Decoration Background"
                 className="w-full h-full object-cover transition-all duration-1000 ease-in-out scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/35 to-black/10" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/20" />
             </div>
 
             {/* Hero Content */}
-            <div className="relative z-20 h-full flex flex-col justify-center px-8 sm:px-14">
+            <div className="relative z-20 h-full flex flex-col justify-center px-5 sm:px-10 md:px-14 py-8 sm:py-0">
               <div className="max-w-xl">
-                <p className="text-xs tracking-[0.2em] text-[#8CBC67] font-semibold mb-4 uppercase">
+                <p className="text-[10px] sm:text-xs tracking-[0.2em] text-[#8CBC67] font-bold mb-2.5 sm:mb-4 uppercase">
                   {currentSlide.subtitle}
                 </p>
-                <h1 className="text-4xl md:text-6xl font-serif font-bold leading-tight mb-6">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight mb-3 sm:mb-6">
                   {currentSlide.titleFirst} <br />
                   <span className="font-bold text-[#8CBC67]">{currentSlide.titleItalic}</span>
                 </h1>
-                <p className="text-gray-200 text-sm md:text-base leading-relaxed mb-8 max-w-md">
+                <p className="text-gray-200 text-xs sm:text-sm md:text-base leading-relaxed mb-6 sm:mb-8 max-w-md line-clamp-3 sm:line-clamp-none">
                   {currentSlide.description}
                 </p>
 
-                <div className="flex items-center space-x-4 sm:space-x-6 flex-wrap gap-y-2">
+                <div className="flex items-center space-x-3 sm:space-x-6 flex-wrap gap-y-3">
                   <Link
                     href={currentSlide.buttonLink || "/services"}
-                    className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-7 py-3.5 rounded-full font-semibold text-sm flex items-center space-x-3 transition shadow-md cursor-pointer"
+                    className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-semibold text-xs sm:text-sm flex items-center space-x-2 sm:space-x-3 transition shadow-md cursor-pointer"
                   >
                     <span>{currentSlide.buttonText || "Explore Our Services"}</span>
-                    <ArrowRight size={18} />
+                    <ArrowRight size={16} />
                   </Link>
 
                   <Link
                     href="/PRogress"
-                    className="flex items-center space-x-3 text-white group cursor-pointer"
+                    className="flex items-center space-x-2 sm:space-x-3 text-white group cursor-pointer"
                   >
-                    <span className="w-10 h-10 rounded-full border border-white/40 flex items-center justify-center group-hover:border-[#8CBC67] group-hover:bg-[#8CBC67]/10 transition">
-                      <Play size={14} className="fill-white ml-0.5" />
+                    <span className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-white/40 flex items-center justify-center group-hover:border-[#8CBC67] group-hover:bg-[#8CBC67]/10 transition">
+                      <Play size={12} className="fill-white ml-0.5" />
                     </span>
-                    <span className="text-sm font-medium tracking-wide">Watch Our Story</span>
+                    <span className="text-xs sm:text-sm font-medium tracking-wide">Watch Story</span>
                   </Link>
                 </div>
               </div>
             </div>
 
-            {/* Floating side arrows */}
+            {/* Floating side arrows - hidden on tiny mobile so they don't cover text */}
             {slides.length > 1 && (
               <>
                 <button
                   onClick={prevSlide}
                   aria-label="Previous slide"
-                  className="absolute left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/90 text-[#202522] flex items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
+                  className="hidden sm:flex absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/90 text-[#202522] items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
                 >
-                  <ChevronLeft size={20} />
+                  <ChevronLeft size={18} />
                 </button>
                 <button
                   onClick={nextSlide}
                   aria-label="Next slide"
-                  className="absolute right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/90 text-[#202522] flex items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
+                  className="hidden sm:flex absolute right-4 sm:right-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/90 text-[#202522] items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
                 >
-                  <ChevronRight size={20} />
+                  <ChevronRight size={18} />
                 </button>
 
                 {/* Dot pagination */}

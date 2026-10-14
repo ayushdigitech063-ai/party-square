@@ -74,35 +74,35 @@ export default function MostLovedDecor() {
   const loopedItems = [...displayItems, ...displayItems];
 
   return (
-    <section className="relative bg-[#FCFBF7] text-[#202522] py-24 px-6 md:px-16 overflow-hidden font-sans border-t border-[#E8E8E3]">
+    <section className="relative bg-[#FCFBF7] text-[#202522] py-14 sm:py-20 md:py-24 px-4 sm:px-6 md:px-16 overflow-hidden font-sans border-t border-[#E8E8E3]">
       
       {/* Background Soft Ambient Warm Glows */}
       <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#EEF6EB]/20 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto relative z-10 space-y-12">
+      <div className="max-w-7xl mx-auto relative z-10 space-y-8 sm:space-y-12">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-[#E8E8E3] pb-8 text-center md:text-left">
-          <div className="space-y-3">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 border-b border-[#E8E8E3] pb-6 sm:pb-8 text-center md:text-left">
+          <div className="space-y-2.5 sm:space-y-3">
             {badge && (
-              <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#E8E8E3] px-4 py-1.5 rounded-full text-[#8CBC67] text-xs uppercase tracking-[0.25em] font-medium shadow-sm">
+              <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#E8E8E3] px-3.5 py-1 rounded-full text-[#8CBC67] text-xs uppercase tracking-[0.25em] font-medium shadow-sm">
                 <Sparkles size={13} />
                 <span>{badge}</span>
               </div>
             )}
             
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-light tracking-wide text-[#202522]">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-light tracking-wide text-[#202522]">
               {title}
             </h2>
-            <p className="text-[#6B706C] text-sm max-w-xl font-light">
+            <p className="text-[#6B706C] text-xs sm:text-sm max-w-xl font-light">
               {subtitle}
             </p>
           </div>
         </div>
 
         {/* Infinite Auto-Sliding Circular Track */}
-        <div className="relative w-full overflow-hidden py-4">
-          <div className="flex w-max animate-infinite-scroll hover:[animation-play-state:paused] gap-10">
+        <div className="relative w-full overflow-hidden py-3 sm:py-4">
+          <div className="flex w-max animate-infinite-scroll hover:[animation-play-state:paused] gap-6 sm:gap-10">
             {loopedItems.map((item, index) => (
               <div 
                 key={`${item.id || item.slug}-${index}`}
@@ -110,7 +110,7 @@ export default function MostLovedDecor() {
                 className="flex flex-col items-center group cursor-pointer"
               >
                 {/* Circular Image Card */}
-                <div className="w-[150px] h-[150px] rounded-full overflow-hidden border-4 border-[#E8E8E3] group-hover:border-[#8CBC67] shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 relative bg-white shrink-0">
+                <div className="w-[125px] h-[125px] sm:w-[150px] sm:h-[150px] rounded-full overflow-hidden border-4 border-[#E8E8E3] group-hover:border-[#8CBC67] shadow-[0_10px_30px_rgba(0,0,0,0.08)] transition-all duration-300 relative bg-white shrink-0">
                   <img 
                     src={item.image} 
                     alt={item.name}

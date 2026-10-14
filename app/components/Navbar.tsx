@@ -582,29 +582,38 @@ export default function Navbar() {
             />
           </form>
 
-          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2.5 shrink-0">
+            {/* Mobile Location selector */}
+            <button
+              onClick={() => setIsCityModalOpen(true)}
+              aria-label="Select City"
+              className="sm:hidden flex items-center gap-1 h-8 px-2 rounded-full border border-[#E8E8E3] text-[11px] font-semibold text-[#202522] hover:border-[#8CBC67] transition-colors"
+            >
+              <MapPin size={12} className="text-[#8CBC67] shrink-0" />
+              <span className="max-w-[60px] truncate">{selectedCity}</span>
+            </button>
+
             <button
               onClick={() => setSearchOpen((v) => !v)}
               aria-label="Search"
-              className="md:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
+              className="md:hidden w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
             >
-              {searchOpen ? <X size={17} /> : <Search size={17} />}
+              {searchOpen ? <X size={15} /> : <Search size={15} />}
             </button>
 
             {/* Location selector trigger on navbar */}
             <div className="relative hidden sm:block" ref={locationRef}>
-           <button
-  onClick={() => setIsCityModalOpen(true)}
-  className="flex items-center gap-1.5 h-10 px-3.5 rounded-full border border-[#E8E8E3] text-[15px] font-medium text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
->
-  <MapPin size={16} className="text-[#8CBC67] shrink-0" />
-  <span className="whitespace-nowrap">{selectedCity}</span>
-  <ChevronDown
-    size={15}
-    className={`transition-transform shrink-0 ${locationOpen ? "rotate-180" : ""}`}
-  />
-</button>
-
+              <button
+                onClick={() => setIsCityModalOpen(true)}
+                className="flex items-center gap-1.5 h-10 px-3.5 rounded-full border border-[#E8E8E3] text-[15px] font-medium text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
+              >
+                <MapPin size={16} className="text-[#8CBC67] shrink-0" />
+                <span className="whitespace-nowrap">{selectedCity}</span>
+                <ChevronDown
+                  size={15}
+                  className={`transition-transform shrink-0 ${locationOpen ? "rotate-180" : ""}`}
+                />
+              </button>
             </div>
 <Link
   href="/basket"

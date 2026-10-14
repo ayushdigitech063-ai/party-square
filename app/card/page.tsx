@@ -138,7 +138,7 @@ const CarouselProductCard = ({
   return (
     <div
       onClick={() => openProductDetailPage(item)}
-      className="relative w-[275px] sm:w-[290px] h-[395px] flex-shrink-0 bg-white border border-[#E8E8E3] hover:border-[#8CBC67] rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group snap-start cursor-pointer select-none"
+      className="relative w-[260px] sm:w-[290px] h-[390px] sm:h-[395px] flex-shrink-0 bg-white border border-[#E8E8E3] hover:border-[#8CBC67] rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group snap-start cursor-pointer select-none"
     >
       {/* 1. IMAGE CONTAINER */}
       <div className="relative h-[255px] w-full overflow-hidden bg-[#EEF6EB] shrink-0 block">
@@ -683,7 +683,7 @@ function CardContent() {
       ) : null}
 
       {/* 1. Wedding Gift Products Section */}
-      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-[#E8E8E3]/50">
+      <section className="py-12 sm:py-16 px-4 sm:px-8 md:px-16 max-w-7xl mx-auto border-t border-[#E8E8E3]/50">
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
           <span className="text-xs uppercase tracking-[0.3em] text-[#202522] font-bold bg-[#EEF6EB] px-4 py-1.5 rounded-full inline-block">
             Special Collection
@@ -728,7 +728,7 @@ function CardContent() {
       </section>
 
       {/* 2. Festivals Products Section */}
-      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-[#E8E8E3]/50">
+      <section className="py-12 sm:py-16 px-4 sm:px-8 md:px-16 max-w-7xl mx-auto border-t border-[#E8E8E3]/50">
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
           <span className="text-xs uppercase tracking-[0.3em] text-[#202522] font-bold bg-[#EEF6EB] px-4 py-1.5 rounded-full inline-block">
             Festive Vibes
@@ -773,7 +773,7 @@ function CardContent() {
       </section>
 
       {/* 3. Puja Section */}
-      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-[#E8E8E3]/50">
+      <section className="py-12 sm:py-16 px-4 sm:px-8 md:px-16 max-w-7xl mx-auto border-t border-[#E8E8E3]/50">
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
           <span className="text-xs uppercase tracking-[0.3em] text-[#202522] font-bold bg-[#EEF6EB] px-4 py-1.5 rounded-full inline-block">
             Sacred & Devotional
@@ -818,7 +818,7 @@ function CardContent() {
       </section>
 
       {/* 4. Esthetic Products Section */}
-      <section className="py-16 px-6 md:px-16 max-w-7xl mx-auto border-t border-[#E8E8E3]/50 pb-20">
+      <section className="py-12 sm:py-16 px-4 sm:px-8 md:px-16 max-w-7xl mx-auto border-t border-[#E8E8E3]/50 pb-20">
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
           <span className="text-xs uppercase tracking-[0.3em] text-[#202522] font-bold bg-[#EEF6EB] px-4 py-1.5 rounded-full inline-block">
             Modern Elegance
