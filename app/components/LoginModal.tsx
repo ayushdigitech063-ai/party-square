@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import {
@@ -10,6 +10,7 @@ import {
   LoaderCircle,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -94,10 +95,15 @@ export default function LoginModal({
       if (res.ok) {
         document.cookie = `token=${data.token}; path=/; max-age=2592000;`;
         document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/; max-age=2592000;`;
-        alert("Login successful! Welcome " + data.user.name);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("user", JSON.stringify(data.user));
+        }
+        toast.success("Login successful! Welcome " + (data.user?.name || "Customer"));
         router.push("/profile");
         handleClose();
       } else {
+        toast.error(data.message || "Invalid OTP");
         setErrorMsg(data.message || "Invalid OTP");
       }
     } catch (err) {
@@ -121,10 +127,11 @@ export default function LoginModal({
       const data = await res.json();
 
       if (res.ok) {
-        alert("Registration successful! Please login.");
+        toast.success("Registration successful! Please login.");
         setView("login");
         setStep("phone");
       } else {
+        toast.error(data.message || "Failed to register");
         setErrorMsg(data.message || "Failed to register");
       }
     } catch (err) {

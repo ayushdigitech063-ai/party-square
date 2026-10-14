@@ -1,16 +1,69 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronDown, MessageCircle, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { faqData } from "../data/faqData";
+import { faqData as fallbackFaqData } from "../data/faqData";
+import { fetchHomePageSection } from "../lib/api";
+
+interface FAQItem {
+  id?: number | string;
+  question: string;
+  answer: string;
+}
+
+interface FAQData {
+  badge?: string;
+  heading?: string;
+  description?: string;
+  items: FAQItem[];
+}
 
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [isEnabled, setIsEnabled] = useState(true);
+  const [badge, setBadge] = useState("Frequently Asked Questions");
+  const [heading, setHeading] = useState("Everything You Need to Know");
+  const [description, setDescription] = useState(
+    "Find answers to the most common questions about our decorations, bookings, customization, and celebrations."
+  );
+  const [faqs, setFaqs] = useState<FAQItem[]>(fallbackFaqData as any);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function loadFaqs() {
+      try {
+        const sec = await fetchHomePageSection<FAQData>("faqs");
+        if (isMounted && sec) {
+          if (typeof sec.isEnabled === "boolean") {
+            setIsEnabled(sec.isEnabled);
+          }
+          if (sec.contentData) {
+            if (sec.contentData.badge) setBadge(sec.contentData.badge);
+            if (sec.contentData.heading) setHeading(sec.contentData.heading);
+            if (sec.contentData.description) setDescription(sec.contentData.description);
+            if (Array.isArray(sec.contentData.items) && sec.contentData.items.length > 0) {
+              setFaqs(sec.contentData.items);
+            }
+          }
+        }
+      } catch (e) {
+        // Fallback default retained
+      }
+    }
+    loadFaqs();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  if (!isEnabled) {
+    return null;
+  }
 
   return (
     <section className="bg-[#FCFBF7] px-4 py-16 sm:px-6 lg:px-8">
@@ -18,29 +71,32 @@ const FAQSection = () => {
 
         {/* Heading */}
         <div className="mx-auto mb-10 max-w-3xl text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D7A84B]/30 bg-white px-4 py-2 text-sm font-medium text-[#8A6A32]">
-            <Sparkles className="h-4 w-4" />
-            Frequently Asked Questions
-          </div>
+          {badge && (
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D7A84B]/30 bg-white px-4 py-2 text-sm font-medium text-[#8A6A32]">
+              <Sparkles className="h-4 w-4" />
+              {badge}
+            </div>
+          )}
 
           <h2 className="text-3xl font-semibold tracking-tight text-[#29251F] sm:text-4xl lg:text-5xl">
-            Everything You Need to Know
+            {heading}
           </h2>
 
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#756F66] sm:text-base">
-            Find answers to the most common questions about our decorations,
-            bookings, customization, and celebrations.
-          </p>
+          {description && (
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#756F66] sm:text-base">
+              {description}
+            </p>
+          )}
         </div>
 
         {/* FAQ List */}
         <div className="mx-auto max-w-4xl space-y-4">
-          {faqData.map((faq, index) => {
+          {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
 
             return (
               <div
-                key={faq.question}
+                key={faq.question || index}
                 className={`overflow-hidden rounded-[24px] border bg-white transition-all duration-300 ${
                   isOpen
                     ? "border-[#D7A84B]/50 shadow-[0_10px_35px_rgba(197,160,89,0.10)]"

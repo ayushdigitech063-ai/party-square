@@ -18,6 +18,8 @@ import {
   MapPin,
   Check,
   ChevronRight,
+  ChevronLeft,
+  X,
   ShieldCheck,
   Clock,
   Camera,
@@ -42,7 +44,7 @@ const toISO = (d: Date) =>
     d.getDate(),
   ).padStart(2, "0")}`;
 
-const toNumber = (v: any) => Number(String(v ?? "").replace(/[â‚¹,\s]/g, "")) || 0;
+const toNumber = (v: any) => Number(String(v ?? "").replace(/[₹,\s]/g, "")) || 0;
 
 const INCLUDED_ITEMS = [
   "Premium product / decoration",
@@ -107,6 +109,8 @@ export default function ProductDetailPage() {
   >([]);
   const [activeTab2 , setActiveTab2] = useState<"overview" | "addons">("overview");
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
+  const [calendarViewDate, setCalendarViewDate] = useState(() => new Date());
  
   useEffect(() => {
     const list = [];
@@ -127,7 +131,10 @@ export default function ProductDetailPage() {
     setDates(list);
   }, []);
 
-  const productId = Array.isArray(params?.id) ? params.id[0] : params?.id;
+  const rawParam = params?.product || params?.id;
+  const productId = Array.isArray(rawParam) ? rawParam[0] : rawParam;
+  const cityParam = Array.isArray(params?.city) ? params.city[0] : params?.city;
+  const categoryParam = Array.isArray(params?.category) ? params.category[0] : params?.category;
   const [liveProduct, setLiveProduct] = useState<any>(null);
   const [fetchingLive, setFetchingLive] = useState(true);
 
@@ -160,7 +167,13 @@ export default function ProductDetailPage() {
 
     return allProducts.find(
       (product) =>
-        String(product.id) === String(productId) || product.slug === productId,
+        String(product.id).toLowerCase() === String(productId).toLowerCase() ||
+        product.slug?.toLowerCase() === String(productId).toLowerCase() ||
+        (product.name &&
+          product.name
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/(^-|-$)/g, "") === String(productId).toLowerCase()),
     );
   }, [liveProduct, productId]);
 
@@ -239,7 +252,7 @@ export default function ProductDetailPage() {
 
   const handleBookNow = (foundItem: any) => {
     // date / pincode are added only when the user has chosen them
-    const extra = `${selectedDate ? `&date=${selectedDate}` : ""}${pincodeChecked ? `&pincode=${pincode}` : ""}${selectedSlot ? `&slot=${selectedSlot === "Custom Time" ? customTime : selectedSlot}` : ""}`;
+    const extra = `${selectedDate ? `&date=${selectedDate}` : ""}${pincodeChecked ? `&pincode=${pincode}` : ""}${selectedSlot ? `&slot=${selectedSlot === "Custom Time" ? customTime : selectedSlot}` : ""}${cityParam ? `&city=${encodeURIComponent(cityParam)}` : ""}`;
 
     router.push(
       `/payment-detail?productId=${encodeURIComponent(foundItem.id)}${extra}`,
@@ -298,14 +311,45 @@ export default function ProductDetailPage() {
     return list.length > 0 ? list : [foundItem?.image || "/birthdaydesign.png"];
   })();
 
+  // Calendar Modal calculations
+  const calendarYear = calendarViewDate.getFullYear();
+  const calendarMonth = calendarViewDate.getMonth();
+  const firstDayOfWeek = new Date(calendarYear, calendarMonth, 1).getDay();
+  const totalDaysInMonth = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+  const todayIso = toISO(new Date());
+
+  const isCurrentOrPastMonth = (() => {
+    const now = new Date();
+    return (
+      calendarYear < now.getFullYear() ||
+      (calendarYear === now.getFullYear() && calendarMonth <= now.getMonth())
+    );
+  })();
+
+  const handlePrevMonth = () => {
+    if (!isCurrentOrPastMonth) {
+      setCalendarViewDate(new Date(calendarYear, calendarMonth - 1, 1));
+    }
+  };
+
+  const handleNextMonth = () => {
+    setCalendarViewDate(new Date(calendarYear, calendarMonth + 1, 1));
+  };
+
+  const handleSelectDateFromCalendar = (dayNumber: number) => {
+    const selected = new Date(calendarYear, calendarMonth, dayNumber);
+    const iso = toISO(selected);
+    setSelectedDate(iso);
+    setIsCalendarModalOpen(false);
+  };
+
   /* ---------------- PAGE ---------------- */
 
   return (
     <div className="min-h-screen bg-[#FAF7F2] text-[#1A1A1A] font-sans">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-28">
         {/* BREADCRUMB */}
-
-        <div className="flex items-center gap-2 text-xs sm:text-sm text-neutral-500 mb-6">
+        <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-neutral-500 mb-6 flex-wrap">
           <button
             onClick={() => router.back()}
             className="flex items-center gap-1 hover:text-amber-800 transition"
@@ -314,15 +358,36 @@ export default function ProductDetailPage() {
             Back
           </button>
 
-          <span>â€º</span>
+          <ChevronRight size={13} className="text-neutral-400 shrink-0" />
 
           <Link href="/" className="hover:text-amber-800 transition">
             Home
           </Link>
 
-          <span>â€º</span>
+          {cityParam && (
+            <>
+              <ChevronRight size={13} className="text-neutral-400 shrink-0" />
+              <Link href={`/${cityParam.toLowerCase()}`} className="hover:text-amber-800 transition capitalize">
+                {cityParam}
+              </Link>
+            </>
+          )}
 
-          <span className="text-neutral-900 font-medium truncate">
+          {categoryParam && (
+            <>
+              <ChevronRight size={13} className="text-neutral-400 shrink-0" />
+              <Link
+                href={cityParam ? `/${cityParam.toLowerCase()}/${categoryParam.toLowerCase()}` : `/services/${categoryParam.toLowerCase()}`}
+                className="hover:text-amber-800 transition capitalize"
+              >
+                {categoryParam.replace(/-/g, " ")}
+              </Link>
+            </>
+          )}
+
+          <ChevronRight size={13} className="text-neutral-400 shrink-0" />
+
+          <span className="text-neutral-900 font-medium truncate max-w-xs sm:max-w-md">
             {foundItem.name}
           </span>
         </div>
@@ -488,7 +553,7 @@ export default function ProductDetailPage() {
               {activeTab === "included" && (
                 <div id="included" className="mt-4">
                   <p className="text-sm text-neutral-500">
-                    Everything below arrives with your booking â€” nothing to
+                    Everything below arrives with your booking — nothing to
                     arrange yourself.
                   </p>
 
@@ -754,7 +819,7 @@ export default function ProductDetailPage() {
                 <p className="mt-2 text-xs font-semibold text-emerald-700">
                   {deliveryCharge > 0
                     ? `For this pincode you have to pay delivery charge of Rs ${deliveryCharge}`
-                    : "Service available in your area â€” free delivery for this pincode"}
+                    : "Service available in your area — free delivery for this pincode"}
                 </p>
               )}
 
@@ -788,17 +853,29 @@ export default function ProductDetailPage() {
                   </button>
                 ))}
 
-                {/* MORE (native date picker) */}
-
-                <label
-                  className={`relative h-[66px] rounded-xl border border-dashed flex flex-col items-center justify-center cursor-pointer transition ${
+                {/* MORE (calendar picker modal) */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (selectedDate) {
+                      const parsed = new Date(selectedDate);
+                      if (!isNaN(parsed.getTime())) {
+                        setCalendarViewDate(new Date(parsed.getFullYear(), parsed.getMonth(), 1));
+                      }
+                    } else {
+                      setCalendarViewDate(new Date());
+                    }
+                    setIsCalendarModalOpen(true);
+                  }}
+                  className={`h-[66px] rounded-xl border border-dashed flex flex-col items-center justify-center transition cursor-pointer select-none ${
                     isCustomDate
-                      ? "border-amber-700 bg-amber-50 ring-1 ring-amber-700"
-                      : "border-neutral-300 hover:border-amber-400"
+                      ? "border-amber-700 bg-amber-50 ring-1 ring-amber-700 text-amber-900"
+                      : "border-neutral-300 hover:border-amber-500 text-neutral-700 hover:bg-amber-50/40"
                   }`}
+                  title="Choose from calendar"
                 >
-                  <Calendar size={16} className="text-neutral-700" />
-                  <span className="text-[10px] font-semibold text-neutral-600 mt-1">
+                  <Calendar size={16} className={isCustomDate ? "text-amber-800" : "text-neutral-700"} />
+                  <span className="text-[10px] font-bold text-neutral-700 mt-1">
                     {isCustomDate
                       ? new Date(selectedDate).toLocaleDateString("en-IN", {
                           day: "numeric",
@@ -806,15 +883,11 @@ export default function ProductDetailPage() {
                         })
                       : "More"}
                   </span>
-                  <input
-                    type="date"
-                    min={dates[0]?.iso}
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    />
-                  </label>
-                </div>
+                  <span className="text-[9px] text-neutral-400 font-medium">
+                    {isCustomDate ? "Change" : "Dates"}
+                  </span>
+                </button>
+              </div>
 
                 {/* TIME SLOT */}
                 <div className="mt-5">
@@ -882,7 +955,7 @@ export default function ProductDetailPage() {
                     Add-ons & more
                   </p>
                   <p className="text-xs text-neutral-500">
-                    Complete your celebration Â· same visit
+                    Complete your celebration • same visit
                   </p>
                 </div>
 
@@ -897,7 +970,7 @@ export default function ProductDetailPage() {
                 <div className="flex justify-between gap-3 text-neutral-700">
                   <span className="truncate">
                     {foundItem.name}
-                    {quantity > 1 ? ` Ã— ${quantity}` : ""}
+                    {quantity > 1 ? ` × ${quantity}` : ""}
                   </span>
                   <span className="font-semibold shrink-0">
                     {formattedTotalPrice}
@@ -912,7 +985,7 @@ export default function ProductDetailPage() {
                         Checked for {pincode}
                       </span>
                     </span>
-                    <span className="font-semibold">â‚¹{deliveryCharge}</span>
+                    <span className="font-semibold">₹{deliveryCharge}</span>
                   </div>
                 )}
               </div>
@@ -959,16 +1032,16 @@ export default function ProductDetailPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
                 <button
                   onClick={handleAddToCart}
-                  className="h-12 rounded-xl border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-900 font-bold text-sm flex items-center justify-center gap-2 transition cursor-pointer"
+                  className="h-12 rounded-full border border-[#E8E8E3] hover:border-[#8CBC67] bg-white hover:bg-[#EEF6EB]/60 text-[#202522] font-bold text-sm flex items-center justify-center gap-2 transition cursor-pointer"
                 >
-                  <ShoppingBag size={17} />
+                  <ShoppingBag size={17} className="text-[#8CBC67]" />
 
                   <span>Add to Basket</span>
                 </button>
 
                 <button
                   onClick={() => handleBookNow(foundItem)}
-                  className="h-12 rounded-xl bg-[#8CBC67] hover:bg-[#7AB055] text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-md hover:shadow-lg cursor-pointer"
+                  className="h-12 rounded-full bg-[#8CBC67] hover:bg-[#7AB055] text-white font-bold text-sm flex items-center justify-center gap-2 transition shadow-md hover:shadow-lg cursor-pointer"
                 >
                   <Calendar size={17} />
 
@@ -979,7 +1052,7 @@ export default function ProductDetailPage() {
               {/* CHECKOUT MESSAGE */}
 
               <p className="text-center text-xs text-neutral-400 mt-4">
-                Secure checkout Â· Guaranteed satisfaction
+                Secure checkout • Guaranteed satisfaction
               </p>
             </div>
           </div>
@@ -1023,6 +1096,141 @@ export default function ProductDetailPage() {
           {formattedGrandTotal} → Book now
         </button>
       </div>
+
+      {/* =====================================================
+          CALENDAR POPUP MODAL (FUTURE DATES PICKER)
+      ====================================================== */}
+      {isCalendarModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-amber-100 relative animate-in zoom-in-95 duration-150">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-neutral-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center text-amber-800">
+                  <Calendar size={16} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-sm text-neutral-900">Select Event Date</h4>
+                  <p className="text-[11px] text-neutral-500">Pick any upcoming booking date</p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsCalendarModalOpen(false)}
+                className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-600 transition cursor-pointer"
+                title="Close"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Month & Year Navigator */}
+            <div className="flex items-center justify-between py-4">
+              <button
+                type="button"
+                onClick={handlePrevMonth}
+                disabled={isCurrentOrPastMonth}
+                className="w-8 h-8 rounded-xl border border-neutral-200 flex items-center justify-center text-neutral-700 hover:bg-neutral-50 disabled:opacity-30 disabled:cursor-not-allowed transition cursor-pointer"
+                title="Previous Month"
+              >
+                <ChevronLeft size={16} />
+              </button>
+
+              <span className="font-serif font-bold text-neutral-900 text-sm">
+                {calendarViewDate.toLocaleDateString("en-IN", {
+                  month: "long",
+                  year: "numeric",
+                })}
+              </span>
+
+              <button
+                type="button"
+                onClick={handleNextMonth}
+                className="w-8 h-8 rounded-xl border border-neutral-200 flex items-center justify-center text-neutral-700 hover:bg-neutral-50 transition cursor-pointer"
+                title="Next Month"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
+
+            {/* Days of Week Header */}
+            <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-bold uppercase text-neutral-400 mb-2">
+              {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
+                <div key={day} className="py-1">
+                  {day}
+                </div>
+              ))}
+            </div>
+
+            {/* Days Grid */}
+            <div className="grid grid-cols-7 gap-1 text-center">
+              {Array.from({ length: firstDayOfWeek }).map((_, i) => (
+                <div key={`empty-${i}`} className="h-9 w-9" />
+              ))}
+
+              {Array.from({ length: totalDaysInMonth }).map((_, i) => {
+                const dayNumber = i + 1;
+                const dObj = new Date(calendarYear, calendarMonth, dayNumber);
+                const dIso = toISO(dObj);
+                const isPast = dIso < todayIso;
+                const isSelected = selectedDate === dIso;
+                const isToday = dIso === todayIso;
+
+                if (isPast) {
+                  return (
+                    <div
+                      key={dayNumber}
+                      className="h-9 w-9 flex items-center justify-center text-neutral-300 text-xs cursor-not-allowed mx-auto"
+                    >
+                      {dayNumber}
+                    </div>
+                  );
+                }
+
+                return (
+                  <button
+                    key={dayNumber}
+                    type="button"
+                    onClick={() => handleSelectDateFromCalendar(dayNumber)}
+                    className={`h-9 w-9 rounded-xl flex items-center justify-center text-xs font-bold transition mx-auto cursor-pointer ${
+                      isSelected
+                        ? "bg-amber-800 text-white shadow-md ring-2 ring-amber-800/30 font-extrabold"
+                        : isToday
+                          ? "border border-amber-600 bg-amber-50 text-amber-900 hover:bg-amber-100"
+                          : "hover:bg-amber-50 text-neutral-800"
+                    }`}
+                  >
+                    {dayNumber}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Modal Bottom Actions */}
+            <div className="flex items-center justify-between pt-4 mt-4 border-t border-neutral-100 text-xs">
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedDate(todayIso);
+                  setIsCalendarModalOpen(false);
+                }}
+                className="text-amber-800 font-semibold hover:underline cursor-pointer"
+              >
+                Select Today
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setIsCalendarModalOpen(false)}
+                className="px-5 py-2 rounded-xl bg-neutral-900 text-white font-bold text-xs hover:bg-black transition cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,18 +1,77 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Sparkles, X, ArrowRight } from "lucide-react";
-import { Product } from "../types/product";
 import { useRouter } from "next/navigation";
 import { decorationItems } from "../data/decorationThemeData";
+import { fetchHomePageSection } from "../lib/api";
+
+interface MostLovedItem {
+  id?: number | string;
+  name: string;
+  image: string;
+  price?: string | number;
+  slug: string;
+  subcategory?: string;
+  description?: string;
+}
+
+interface MostLovedData {
+  badge?: string;
+  items: MostLovedItem[];
+}
 
 export default function MostLovedDecor() {
-  const [selectedItem, setSelectedItem] = useState<typeof decorationItems[0] | null>(null);
+  const [selectedItem, setSelectedItem] = useState<any | null>(null);
+  const [isEnabled, setIsEnabled] = useState(true);
+  const [badge, setBadge] = useState("Our Speciality");
+  const [title, setTitle] = useState("Most Loved Decorations");
+  const [subtitle, setSubtitle] = useState(
+    "Explore our curated themes. Click on any circular picture to view full decoration details."
+  );
+  const [items, setItems] = useState<MostLovedItem[]>(decorationItems as any);
   const router = useRouter();
-    const openDetailPage = (item : any) =>{
-           router.push(`/card/${item.slug}`);
-    }
 
+  useEffect(() => {
+    let isMounted = true;
+    async function loadData() {
+      try {
+        const sec = await fetchHomePageSection<MostLovedData>("most_loved_decor");
+        if (isMounted && sec) {
+          if (typeof sec.isEnabled === "boolean") {
+            setIsEnabled(sec.isEnabled);
+          }
+          if (sec.title) setTitle(sec.title);
+          if (sec.subtitle) setSubtitle(sec.subtitle);
+          if (sec.contentData) {
+            if (sec.contentData.badge) setBadge(sec.contentData.badge);
+            if (Array.isArray(sec.contentData.items) && sec.contentData.items.length > 0) {
+              setItems(sec.contentData.items);
+            }
+          }
+        }
+      } catch (e) {
+        // Fallback default retained
+      }
+    }
+    loadData();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const openDetailPage = (item: any) => {
+    const slug = item.slug || "birthday-celebration";
+    router.push(`/card/${slug.replace(/^\/card\//, "")}`);
+  };
+
+  if (!isEnabled) {
+    return null;
+  }
+
+  // Ensure there are enough items for smooth infinite loop
+  const displayItems = items.length > 0 ? items : (decorationItems as any);
+  const loopedItems = [...displayItems, ...displayItems];
 
   return (
     <section className="relative bg-[#FCFBF7] text-[#202522] py-24 px-6 md:px-16 overflow-hidden font-sans border-t border-[#E8E8E3]">
@@ -25,16 +84,18 @@ export default function MostLovedDecor() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-[#E8E8E3] pb-8 text-center md:text-left">
           <div className="space-y-3">
-            <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#E8E8E3] px-4 py-1.5 rounded-full text-[#8CBC67] text-xs uppercase tracking-[0.25em] font-medium shadow-sm">
-              <Sparkles size={13} />
-              <span>Our Speciality</span>
-            </div>
+            {badge && (
+              <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#E8E8E3] px-4 py-1.5 rounded-full text-[#8CBC67] text-xs uppercase tracking-[0.25em] font-medium shadow-sm">
+                <Sparkles size={13} />
+                <span>{badge}</span>
+              </div>
+            )}
             
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-light tracking-wide text-[#202522]">
-              Most Loved <span className="italic font-normal text-[#8CBC67]">Decorations</span>
+              {title}
             </h2>
             <p className="text-[#6B706C] text-sm max-w-xl font-light">
-              Explore our curated themes. Click on any circular picture to view full decoration details.
+              {subtitle}
             </p>
           </div>
         </div>
@@ -42,10 +103,9 @@ export default function MostLovedDecor() {
         {/* Infinite Auto-Sliding Circular Track */}
         <div className="relative w-full overflow-hidden py-4">
           <div className="flex w-max animate-infinite-scroll hover:[animation-play-state:paused] gap-10">
-            {/* Render items twice to create seamless infinite loop effect */}
-            {[...decorationItems, ...decorationItems].map((item, index) => (
+            {loopedItems.map((item, index) => (
               <div 
-                key={`${item.id}-${index}`}
+                key={`${item.id || item.slug}-${index}`}
                 onClick={() => openDetailPage(item)}
                 className="flex flex-col items-center group cursor-pointer"
               >
@@ -64,12 +124,14 @@ export default function MostLovedDecor() {
                   </div>
                 </div>
 
-                {/* Title Below Circle */}
-                <div className="mt-4 text-center space-y-0.5">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-[#8CBC67] font-semibold block">
-                    {item.subcategory}
-                  </span>
-                  <h3 className="text-base font-serif text-[#202522] group-hover:text-[#8CBC67] transition-colors">
+                {/* Title & Price Below Circle */}
+                <div className="mt-4 text-center space-y-0.5 max-w-[150px]">
+                  {item.price && (
+                    <span className="text-[11px] font-bold text-[#8CBC67] block">
+                      {typeof item.price === "number" ? `₹${item.price.toLocaleString("en-IN")}` : item.price}
+                    </span>
+                  )}
+                  <h3 className="text-sm font-serif font-semibold text-[#202522] group-hover:text-[#8CBC67] transition-colors truncate">
                     {item.name}
                   </h3>
                 </div>
@@ -95,61 +157,6 @@ export default function MostLovedDecor() {
           animation: infiniteScroll 35s linear infinite;
         }
       `}</style>
-
-      {/* Interactive Detail Modal */}
-      {selectedItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
-          <div className="relative bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl text-[#202522] p-6 sm:p-8 pt-14 space-y-6">
-            
-            {/* Properly Positioned Close Button */}
-            <button 
-              onClick={() => openDetailPage(selectedItem)}
-              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-[#F4EFE6] border border-[#D9CEB3] text-[#8CBC67] hover:bg-[#EBE2D0] flex items-center justify-center transition shadow-sm cursor-pointer"
-            >
-              <X size={18} />
-            </button>
-
-            {/* Modal Image */}
-            <div className="w-full h-60 rounded-2xl overflow-hidden relative border border-[#D9CEB3]">
-              <img 
-                src={selectedItem.image} 
-                alt={selectedItem.name} 
-                className="w-full h-full object-cover"
-              />
-              <span className="absolute bottom-4 left-4 text-xs tracking-widest text-[#8CBC67] uppercase font-medium bg-[#FFFFFF]/90 px-3 py-1 rounded-full backdrop-blur-md shadow-sm">
-                {selectedItem.subcategory}
-              </span>
-            </div>
-
-            {/* Modal Content */}
-            <div className="space-y-3">
-              <h3 className="text-2xl font-serif text-[#202522]">
-                {selectedItem.name}
-              </h3>
-              <p className="text-[#4A4A4A] text-sm leading-relaxed font-light">
-                {selectedItem.description}
-              </p>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex items-center space-x-4 pt-2">
-              <button 
-                onClick={() => setSelectedItem(null)}
-                className="flex-1 bg-[#8CBC67] text-white py-3 rounded-full font-medium text-sm hover:bg-[#72571D] transition shadow-md cursor-pointer"
-              >
-                Book This Theme
-              </button>
-              <button 
-                onClick={() => setSelectedItem(null)}
-                className="px-6 py-3 rounded-full border border-[#D9CEB3] hover:border-[#8CBC67] text-sm text-[#4A4A4A] transition cursor-pointer"
-              >
-                Close
-              </button>
-            </div>
-
-          </div>
-        </div>
-      )}
     </section>
   );
 }

@@ -19,7 +19,8 @@ import {
   ArrowUpDown,
   Tag,
   Layers,
-  Image as ImageIcon
+  Image as ImageIcon,
+  MapPin
 } from "lucide-react";
 import toast from "react-hot-toast";
 import {
@@ -27,8 +28,10 @@ import {
   deleteProduct,
   fetchCategories,
   fetchSubcategories,
+  fetchCities,
   ProductItem,
-  CategoryItem
+  CategoryItem,
+  CityItem
 } from "@/app/lib/api";
 import ProductForm from "./ProductForm";
 
@@ -45,6 +48,7 @@ export default function AdminProductsPage() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("");
+  const [cityFilter, setCityFilter] = useState<string>("All");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("newest");
 
@@ -54,9 +58,10 @@ export default function AdminProductsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
 
-  // Category and subcategory filter dropdown options
+  // Category, subcategory, and cities filter dropdown options
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [subcategories, setSubcategories] = useState<CategoryItem[]>([]);
+  const [citiesList, setCitiesList] = useState<CityItem[]>([]);
 
   // Delete Confirmation Modal State
   const [deleteTarget, setDeleteTarget] = useState<ProductItem | null>(null);
@@ -94,6 +99,19 @@ export default function AdminProductsPage() {
     loadSubs();
   }, [selectedCategory]);
 
+  // Load Active Cities for filter dropdown
+  useEffect(() => {
+    async function loadCities() {
+      try {
+        const data = await fetchCities(false);
+        setCitiesList(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Failed to load cities for admin filter", err);
+      }
+    }
+    loadCities();
+  }, []);
+
   // Main Products Fetch
   const loadProducts = useCallback(async () => {
     try {
@@ -107,6 +125,7 @@ export default function AdminProductsPage() {
         category: selectedCategory || undefined,
         subcategory: selectedSubcategory || undefined,
         status: statusFilter !== "all" ? statusFilter : undefined,
+        city: cityFilter !== "All" ? cityFilter : undefined,
         sort: sortBy,
       };
 
@@ -120,7 +139,7 @@ export default function AdminProductsPage() {
     } finally {
       setLoading(false);
     }
-  }, [page, limit, search, selectedCategory, selectedSubcategory, statusFilter, sortBy]);
+  }, [page, limit, search, selectedCategory, selectedSubcategory, statusFilter, cityFilter, sortBy]);
 
   useEffect(() => {
     loadProducts();
@@ -174,7 +193,7 @@ export default function AdminProductsPage() {
 
       {/* Filters & Search Toolbar */}
       <div className="bg-white border border-[#E8E8E3] p-5 rounded-3xl shadow-sm space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           {/* Search */}
           <div className="relative">
             <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#6B706C]" />
@@ -227,6 +246,25 @@ export default function AdminProductsPage() {
               {subcategories.map((s) => (
                 <option key={s._id} value={s._id}>
                   {s.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* City Filter */}
+          <div>
+            <select
+              value={cityFilter}
+              onChange={(e) => {
+                setCityFilter(e.target.value);
+                setPage(1);
+              }}
+              className="w-full px-3 py-2.5 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-xs text-[#202522] focus:outline-none"
+            >
+              <option value="All">All Cities</option>
+              {citiesList.map((c) => (
+                <option key={c._id} value={c.name}>
+                  {c.name}
                 </option>
               ))}
             </select>
@@ -333,6 +371,7 @@ export default function AdminProductsPage() {
                 <tr className="border-b border-[#E8E8E3] bg-[#FCFBF7] text-[#6B706C] uppercase font-bold tracking-wider">
                   <th className="py-4 px-6">Product</th>
                   <th className="py-4 px-6">Category / Subcategory</th>
+                  <th className="py-4 px-6">Available Cities</th>
                   <th className="py-4 px-6">Price</th>
                   <th className="py-4 px-6 text-center">Stock</th>
                   <th className="py-4 px-6 text-center">Status</th>
@@ -402,6 +441,32 @@ export default function AdminProductsPage() {
                             </p>
                           )}
                         </div>
+                      </td>
+
+                      {/* Available Cities */}
+                      <td className="py-4 px-6">
+                        {(!prod.availableCities || prod.availableCities.length === 0 || prod.availableCities.includes("All")) ? (
+                          <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#EEF6EB] text-emerald-800">
+                            <MapPin size={10} />
+                            <span>All Cities</span>
+                          </span>
+                        ) : (
+                          <div className="flex flex-wrap gap-1 max-w-[170px]">
+                            {prod.availableCities.slice(0, 2).map((cityName) => (
+                              <span
+                                key={cityName}
+                                className="inline-block bg-neutral-100 text-neutral-800 px-2 py-0.5 rounded text-[10px] font-medium"
+                              >
+                                {cityName}
+                              </span>
+                            ))}
+                            {prod.availableCities.length > 2 && (
+                              <span className="inline-block bg-neutral-200 text-neutral-700 px-1.5 py-0.5 rounded text-[9px] font-bold">
+                                +{prod.availableCities.length - 2}
+                              </span>
+                            )}
+                          </div>
+                        )}
                       </td>
 
                       {/* Pricing */}

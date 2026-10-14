@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -25,8 +25,14 @@ export default function LoginPage() {
       const data = await res.json();
       
       if (data.success) {
+        // 4 Hours Session Expiration
+        const SESSION_DURATION_MS = 4 * 60 * 60 * 1000;
+        const expiresAt = Date.now() + SESSION_DURATION_MS;
+
         localStorage.setItem("adminToken", data.token);
-        document.cookie = `adminToken=${data.token}; path=/; max-age=86400; SameSite=Lax`;
+        localStorage.setItem("adminExpiresAt", String(expiresAt));
+        document.cookie = `adminToken=${data.token}; path=/; max-age=14400; SameSite=Lax`;
+
         toast.success("Login successful! Redirecting to dashboard...");
         router.push("/admin");
       } else {

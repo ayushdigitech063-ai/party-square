@@ -14,7 +14,9 @@ import {
   AlertCircle,
   Tag,
   ArrowUpDown,
-  Sparkles
+  Sparkles,
+  MapPin,
+  ArrowRight
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -25,6 +27,7 @@ import {
 } from "../data/allCollections";
 import { useCart } from "@/app/context/CartContext";
 import { useWishlist } from "../context/wishlistcontext";
+import { useCity } from "../context/CityContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import HeartButton from "../components/HeartButton";
 import ProductCard from "../components/ProductCard";
@@ -65,12 +68,12 @@ const RatingRow = ({ item }: { item: any }) => {
   if (rating <= 0) return null;
   return (
     <div className="flex items-center space-x-1.5">
-      <span className="inline-flex items-center space-x-1 bg-emerald-600 text-white text-[11px] font-bold px-1.5 py-0.5 rounded">
+      <span className="inline-flex items-center space-x-1 bg-emerald-600 text-white text-[10px] font-medium px-1.5 py-0.5 rounded">
         <span>{rating.toFixed(1)}</span>
-        <Star size={10} className="fill-white" />
+        <Star size={9} className="fill-white" />
       </span>
       {reviewCount > 0 && (
-        <span className="text-[11px] text-[#6B706C]">
+        <span className="text-[10px] text-[#6B706C]">
           ({reviewCount.toLocaleString("en-IN")} reviews)
         </span>
       )}
@@ -80,30 +83,173 @@ const RatingRow = ({ item }: { item: any }) => {
 
 const PriceBlock = ({ item }: { item: any }) => {
   const { salePrice, originalPrice, hasDiscount } = getPricing(item);
-  if (!hasDiscount) {
-    return (
-      <span className="text-[#202522] font-bold text-sm">₹{item.price}</span>
-    );
-  }
   return (
-    <div className="flex flex-col leading-tight">
+    <div>
+      <span className="text-[10px] uppercase tracking-wider text-gray-400 block font-medium">
+        Starts at
+      </span>
       <div className="flex items-baseline space-x-1.5">
-        <span className="text-[#202522] font-bold text-sm">
+        <span className="text-sm sm:text-base font-semibold text-gray-950">
           ₹{salePrice.toLocaleString("en-IN")}
         </span>
-        <span className="text-[#6B706C] text-xs line-through">
-          ₹{originalPrice.toLocaleString("en-IN")}
-        </span>
+        {hasDiscount && (
+          <span className="text-xs text-gray-400 line-through">
+            ₹{originalPrice.toLocaleString("en-IN")}
+          </span>
+        )}
       </div>
-      <span className="text-[11px] font-semibold text-emerald-700">
-        You save ₹{(originalPrice - salePrice).toLocaleString("en-IN")}
-      </span>
+      {hasDiscount && (
+        <span className="text-[11px] font-semibold text-emerald-700 block">
+          You save ₹{(originalPrice - salePrice).toLocaleString("en-IN")}
+        </span>
+      )}
     </div>
   );
 };
 
-export default function CardPage() {
+const CarouselProductCard = ({
+  item,
+  isInWishlist,
+  toggleWishlist,
+  openProductDetailPage,
+}: {
+  item: any;
+  isInWishlist: (id: string) => boolean;
+  toggleWishlist: (product: any) => void;
+  openProductDetailPage: (product: any) => void;
+}) => {
+  const { selectedCity } = useCity();
+  const likedStatus = isInWishlist(item.id || item._id);
+  const { salePrice, originalPrice, hasDiscount } = getPricing(item);
+
+  const citySlug = (selectedCity || "jaipur").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const catName =
+    typeof item.category === "string"
+      ? item.category
+      : item.category?.slug || item.category?.name || "decorations";
+  const categorySlug =
+    catName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "") || "decorations";
+  const productSlug = (item.slug || item.id || item._id).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const productUrl = `/${citySlug}/${categorySlug}/${productSlug}`;
+
+  return (
+    <div
+      onClick={() => openProductDetailPage(item)}
+      className="relative w-[275px] sm:w-[290px] h-[395px] flex-shrink-0 bg-white border border-[#E8E8E3] hover:border-[#8CBC67] rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group snap-start cursor-pointer select-none"
+    >
+      {/* 1. IMAGE CONTAINER */}
+      <div className="relative h-[255px] w-full overflow-hidden bg-[#EEF6EB] shrink-0 block">
+        <img
+          src={item.image}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover blur-lg scale-110 opacity-30"
+        />
+        <img
+          src={item.image}
+          alt={item.name}
+          className="relative w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+
+        <DiscountBadge item={item} />
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleWishlist(item);
+          }}
+          aria-label={likedStatus ? "Remove from wishlist" : "Add to wishlist"}
+          className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer z-10"
+        >
+          <Heart
+            size={16}
+            className={likedStatus ? "fill-rose-500 text-rose-500" : "text-gray-700"}
+          />
+        </button>
+      </div>
+
+      {/* 2. BASE CARD BODY (Image + Pura Name + Starts at price) */}
+      <div className="p-3.5 flex flex-col justify-between flex-1 bg-white">
+        <Link href={productUrl} className="block">
+          <h3 className="font-serif text-[15px] sm:text-base font-semibold text-gray-950 hover:text-[#8CBC67] transition line-clamp-2 leading-snug">
+            {item.name}
+          </h3>
+        </Link>
+
+        <div className="pt-2 border-t border-[#E8E8E3] flex items-center justify-between">
+          <div>
+            <span className="text-[10px] uppercase tracking-wider text-gray-400 block font-medium">
+              Starts at
+            </span>
+            <span className="text-base font-bold text-gray-950">
+              ₹{salePrice.toLocaleString("en-IN")}
+            </span>
+          </div>
+          <span className="text-[11px] font-medium text-[#8CBC67] bg-[#EEF6EB] px-2.5 py-1 rounded-full flex items-center gap-1 group-hover:bg-[#8CBC67] group-hover:text-white transition">
+            <span>Details</span>
+            <ChevronRight size={12} />
+          </span>
+        </div>
+      </div>
+
+      {/* 3. HOVER SLIDE-UP DRAWER (Cursor aane par niche se smooth open hoga) */}
+      <div
+        className="absolute inset-x-0 bottom-0 bg-white/98 backdrop-blur-md p-4 rounded-b-2xl border-t border-[#E8E8E3] shadow-2xl transition-all duration-300 ease-out z-20 flex flex-col justify-between opacity-0 invisible translate-y-6 pointer-events-none group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:pointer-events-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="space-y-1.5">
+          <Link href={productUrl}>
+            <h4 className="font-serif text-[15px] font-bold text-gray-950 hover:text-[#8CBC67] transition leading-snug">
+              {item.name}
+            </h4>
+          </Link>
+          <p className="text-xs text-gray-600 line-clamp-3 leading-relaxed mt-1">
+            {item.description}
+          </p>
+        </div>
+
+        <div className="pt-3 mt-2 border-t border-[#E8E8E3] flex items-center justify-between gap-2">
+          <div>
+            <span className="text-[10px] uppercase tracking-wider text-gray-400 block font-medium">
+              Starts at
+            </span>
+            <div className="flex items-baseline space-x-1.5">
+              <span className="text-base font-bold text-gray-950">
+                ₹{salePrice.toLocaleString("en-IN")}
+              </span>
+              {hasDiscount && (
+                <span className="text-xs text-gray-400 line-through">
+                  ₹{originalPrice.toLocaleString("en-IN")}
+                </span>
+              )}
+            </div>
+            {hasDiscount && (
+              <span className="text-[11px] font-semibold text-emerald-700 block">
+                You save ₹{(originalPrice - salePrice).toLocaleString("en-IN")}
+              </span>
+            )}
+          </div>
+
+          <button
+            onClick={() => openProductDetailPage(item)}
+            className="bg-[#8CBC67] hover:bg-[#7AB055] text-white text-[11px] font-bold uppercase px-4 py-2.5 rounded-full transition shadow-md inline-flex items-center gap-1.5 shrink-0 cursor-pointer"
+          >
+            <span>Book</span>
+            <ArrowRight size={12} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+function CardContent() {
   const { addToCart } = useCart();
+  const { selectedCity, setIsCityModalOpen } = useCity();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
@@ -113,6 +259,7 @@ export default function CardPage() {
   const festivalRef = useRef<HTMLDivElement>(null);
   const pujaRef = useRef<HTMLDivElement>(null);
   const estheticRef = useRef<HTMLDivElement>(null);
+
 
   // Dynamic Storefront Filter State
   const initialCategory = searchParams.get("category") || "";
@@ -205,10 +352,10 @@ export default function CardPage() {
     async function loadCurated() {
       try {
         const [wRes, fRes, pRes, eRes] = await Promise.all([
-          fetchProducts({ category: "wedding", limit: 12 }),
-          fetchProducts({ category: "festivals", limit: 12 }),
-          fetchProducts({ category: "puja", limit: 12 }),
-          fetchProducts({ category: "esthetic", limit: 12 })
+          fetchProducts({ category: "wedding", city: selectedCity, limit: 12 }),
+          fetchProducts({ category: "festivals", city: selectedCity, limit: 12 }),
+          fetchProducts({ category: "puja", city: selectedCity, limit: 12 }),
+          fetchProducts({ category: "esthetic", city: selectedCity, limit: 12 })
         ]);
 
         if (wRes.products && wRes.products.length > 0) {
@@ -228,7 +375,7 @@ export default function CardPage() {
       }
     }
     loadCurated();
-  }, []);
+  }, [selectedCity]);
 
   // Fetch products when user searches or filters
   const isFiltering = !!(search.trim() || selectedCategory || selectedSubcategory || priceRange !== "all" || sortBy !== "newest");
@@ -247,6 +394,7 @@ export default function CardPage() {
         search: search.trim() || undefined,
         category: selectedCategory || undefined,
         subcategory: selectedSubcategory || undefined,
+        city: selectedCity,
         sort: sortBy,
         page,
         limit: 12,
@@ -275,7 +423,7 @@ export default function CardPage() {
     } finally {
       setLoadingFiltered(false);
     }
-  }, [isFiltering, search, selectedCategory, selectedSubcategory, sortBy, priceRange, page]);
+  }, [isFiltering, search, selectedCategory, selectedSubcategory, selectedCity, sortBy, priceRange, page]);
 
   useEffect(() => {
     runDynamicFilter();
@@ -302,7 +450,18 @@ export default function CardPage() {
   };
 
   const openProductDetailPage = (item: any) => {
-    router.push(`/card/${item.slug || item.id}`);
+    const citySlug = (selectedCity || "jaipur").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    const catName =
+      typeof item.category === "string"
+        ? item.category
+        : item.category?.slug || item.category?.name || "decorations";
+    const categorySlug =
+      catName
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "") || "decorations";
+    const productSlug = (item.slug || item.id || item._id).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    router.push(`/${citySlug}/${categorySlug}/${productSlug}`);
   };
 
   return (
@@ -325,6 +484,22 @@ export default function CardPage() {
 
           {/* Interactive Search & Filter Bar */}
           <div className="bg-white border border-[#E8E8E3] rounded-3xl p-4 sm:p-6 shadow-md max-w-5xl mx-auto space-y-4">
+            {/* Location strip */}
+            <div className="flex items-center justify-between pb-3 border-b border-[#E8E8E3] text-xs">
+              <div className="flex items-center space-x-2 text-[#202522]">
+                <MapPin size={15} className="text-[#8CBC67]" />
+                <span className="font-medium text-[#6B706C]">Deliver & Decorate in:</span>
+                <span className="font-bold text-[#202522]">{selectedCity}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsCityModalOpen(true)}
+                className="text-xs font-bold text-[#8CBC67] hover:underline cursor-pointer flex items-center space-x-1"
+              >
+                <span>Change City</span>
+              </button>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {/* Product Search */}
               <div className="relative">
@@ -526,55 +701,13 @@ export default function CardPage() {
           className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory"
         >
           {weddingItems.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => openProductDetailPage(item)}
-              className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start cursor-pointer"
-            >
-              <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 block">
-                <img
-                  src={item.image}
-                  alt=""
-                  aria-hidden="true"
-                  className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-60"
-                />
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="relative w-full h-full object-contain group-hover:scale-105 transition duration-500"
-                />
-                <DiscountBadge item={item} />
-                <HeartButton
-                  product={item}
-                  isInWishlist={isInWishlist}
-                  toggleWishlist={toggleWishlist}
-                />
-              </div>
-              <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
-                <div className="space-y-1">
-                  <Link href={`/card/${item.slug || item.id}`}>
-                    <h3 className="font-serif text-sm font-bold text-[#202522] line-clamp-1 hover:text-[#202522] transition">
-                      {item.name}
-                    </h3>
-                  </Link>
-                  <RatingRow item={item} />
-                  <p className="text-[#6B706C] text-xs leading-relaxed font-light line-clamp-2">
-                    {item.description}
-                  </p>
-                </div>
-                <div className="pt-3 border-t border-[#E8E8E3] flex items-center justify-between">
-                  <PriceBlock item={item} />
-                  <div className="flex items-center space-x-1.5">
-                    <button
-                      onClick={() => openProductDetailPage(item)}
-                      className="bg-[#8CBC67] text-[#FCFBF7] px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-[#7AB055] transition shadow"
-                    >
-                      Book
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <CarouselProductCard
+              key={item.id || item._id}
+              item={item}
+              isInWishlist={isInWishlist}
+              toggleWishlist={toggleWishlist}
+              openProductDetailPage={openProductDetailPage}
+            />
           ))}
         </div>
 
@@ -613,55 +746,13 @@ export default function CardPage() {
           className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory"
         >
           {festivalItems.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => openProductDetailPage(item)}
-              className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start cursor-pointer"
-            >
-              <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 block">
-                <img
-                  src={item.image}
-                  alt=""
-                  aria-hidden="true"
-                  className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-60"
-                />
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="relative w-full h-full object-contain group-hover:scale-105 transition duration-500"
-                />
-                <DiscountBadge item={item} />
-                <HeartButton
-                  product={item}
-                  isInWishlist={isInWishlist}
-                  toggleWishlist={toggleWishlist}
-                />
-              </div>
-              <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
-                <div className="space-y-1">
-                  <Link href={`/card/${item.slug || item.id}`}>
-                    <h3 className="font-serif text-sm font-bold text-[#202522] line-clamp-1 hover:text-[#202522] transition">
-                      {item.name}
-                    </h3>
-                  </Link>
-                  <RatingRow item={item} />
-                  <p className="text-[#6B706C] text-xs leading-relaxed font-light line-clamp-2">
-                    {item.description}
-                  </p>
-                </div>
-                <div className="pt-3 border-t border-[#E8E8E3] flex items-center justify-between">
-                  <PriceBlock item={item} />
-                  <div className="flex items-center space-x-1.5">
-                    <button
-                      onClick={() => openProductDetailPage(item)}
-                      className="bg-[#8CBC67] text-[#FCFBF7] px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-[#7AB055] transition shadow"
-                    >
-                      Book
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <CarouselProductCard
+              key={item.id || item._id}
+              item={item}
+              isInWishlist={isInWishlist}
+              toggleWishlist={toggleWishlist}
+              openProductDetailPage={openProductDetailPage}
+            />
           ))}
         </div>
 
@@ -700,55 +791,13 @@ export default function CardPage() {
           className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory"
         >
           {pujaItems.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => openProductDetailPage(item)}
-              className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start cursor-pointer"
-            >
-              <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 block">
-                <img
-                  src={item.image}
-                  alt=""
-                  aria-hidden="true"
-                  className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-60"
-                />
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="relative w-full h-full object-contain group-hover:scale-105 transition duration-500"
-                />
-                <DiscountBadge item={item} />
-                <HeartButton
-                  product={item}
-                  isInWishlist={isInWishlist}
-                  toggleWishlist={toggleWishlist}
-                />
-              </div>
-              <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
-                <div className="space-y-1">
-                  <Link href={`/card/${item.slug || item.id}`}>
-                    <h3 className="font-serif text-sm font-bold text-[#202522] line-clamp-1 hover:text-[#202522] transition">
-                      {item.name}
-                    </h3>
-                  </Link>
-                  <RatingRow item={item} />
-                  <p className="text-[#6B706C] text-xs leading-relaxed font-light line-clamp-2">
-                    {item.description}
-                  </p>
-                </div>
-                <div className="pt-3 border-t border-[#E8E8E3] flex items-center justify-between">
-                  <PriceBlock item={item} />
-                  <div className="flex items-center space-x-1.5">
-                    <button
-                      onClick={() => openProductDetailPage(item)}
-                      className="bg-[#8CBC67] text-[#FCFBF7] px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-[#7AB055] transition shadow"
-                    >
-                      Book
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <CarouselProductCard
+              key={item.id || item._id}
+              item={item}
+              isInWishlist={isInWishlist}
+              toggleWishlist={toggleWishlist}
+              openProductDetailPage={openProductDetailPage}
+            />
           ))}
         </div>
 
@@ -787,55 +836,13 @@ export default function CardPage() {
           className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory"
         >
           {estheticItems.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => openProductDetailPage(item)}
-              className="min-w-[240px] sm:min-w-[250px] max-w-[250px] flex-shrink-0 bg-white border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 flex flex-col justify-between group snap-start cursor-pointer"
-            >
-              <div className="relative aspect-square w-full overflow-hidden bg-neutral-100 block">
-                <img
-                  src={item.image}
-                  alt=""
-                  aria-hidden="true"
-                  className="absolute inset-0 w-full h-full object-cover blur-xl scale-110 opacity-60"
-                />
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="relative w-full h-full object-contain group-hover:scale-105 transition duration-500"
-                />
-                <DiscountBadge item={item} />
-                <HeartButton
-                  product={item}
-                  isInWishlist={isInWishlist}
-                  toggleWishlist={toggleWishlist}
-                />
-              </div>
-              <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
-                <div className="space-y-1">
-                  <Link href={`/card/${item.slug || item.id}`}>
-                    <h3 className="font-serif text-sm font-bold text-[#202522] line-clamp-1 hover:text-[#202522] transition">
-                      {item.name}
-                    </h3>
-                  </Link>
-                  <RatingRow item={item} />
-                  <p className="text-[#6B706C] text-xs leading-relaxed font-light line-clamp-2">
-                    {item.description}
-                  </p>
-                </div>
-                <div className="pt-3 border-t border-[#E8E8E3] flex items-center justify-between">
-                  <PriceBlock item={item} />
-                  <div className="flex items-center space-x-1.5">
-                    <button
-                      onClick={() => openProductDetailPage(item)}
-                      className="bg-[#8CBC67] text-[#FCFBF7] px-3 py-1.5 rounded-full font-bold text-xs uppercase tracking-wider hover:bg-[#7AB055] transition shadow"
-                    >
-                      Book
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <CarouselProductCard
+              key={item.id || item._id}
+              item={item}
+              isInWishlist={isInWishlist}
+              toggleWishlist={toggleWishlist}
+              openProductDetailPage={openProductDetailPage}
+            />
           ))}
         </div>
 
@@ -855,5 +862,19 @@ export default function CardPage() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function CardPage() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center">
+          <Loader2 className="animate-spin text-amber-700" size={32} />
+        </div>
+      }
+    >
+      <CardContent />
+    </React.Suspense>
   );
 }

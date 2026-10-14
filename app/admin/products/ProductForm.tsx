@@ -13,17 +13,21 @@ import {
   CheckCircle,
   AlertCircle,
   Sparkles,
-  X
+  X,
+  MapPin,
+  Check
 } from "lucide-react";
 import toast from "react-hot-toast";
 import {
   fetchCategories,
   fetchSubcategories,
+  fetchCities,
   createProduct,
   updateProduct,
   uploadImage,
   ProductItem,
-  CategoryItem
+  CategoryItem,
+  CityItem
 } from "@/app/lib/api";
 
 interface ProductFormProps {
@@ -96,6 +100,13 @@ export default function ProductForm({
 
   const [badge, setBadge] = useState(initialData?.badge || "Verified Quality Product");
 
+  // Available Cities
+  const [availableCities, setAvailableCities] = useState<string[]>(
+    initialData?.availableCities || []
+  );
+  const [allCities, setAllCities] = useState<CityItem[]>([]);
+  const [loadingCities, setLoadingCities] = useState(false);
+
   // Loading & Submission State
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingSubs, setLoadingSubs] = useState(false);
@@ -145,6 +156,22 @@ export default function ProductForm({
 
     loadSubs();
   }, [selectedCategory]);
+
+  // 3. Fetch Serviceable Cities
+  useEffect(() => {
+    async function loadCitiesList() {
+      try {
+        setLoadingCities(true);
+        const data = await fetchCities(false);
+        setAllCities(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Failed to load cities for product form", err);
+      } finally {
+        setLoadingCities(false);
+      }
+    }
+    loadCitiesList();
+  }, []);
 
   // Handle Parent Category Change explicitly
   const handleCategoryChange = (newCatId: string) => {
@@ -272,6 +299,7 @@ export default function ProductForm({
         notIncluded: notIncludedList,
         cancellationPolicy: cancellationPolicy.trim(),
         badge: badge.trim(),
+        availableCities,
       };
 
       if (isEdit && initialData?._id) {
@@ -546,6 +574,123 @@ export default function ProductForm({
                 Populates automatically based on the chosen parent category
               </span>
             </div>
+          </div>
+        </div>
+
+        {/* City Coverage & Availability */}
+        <div className="bg-white border border-[#E8E8E3] rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-3 border-b border-[#E8E8E3]">
+            <div className="flex items-center space-x-3">
+              <div className="w-9 h-9 rounded-xl bg-[#EEF6EB] text-[#8CBC67] flex items-center justify-center font-bold">
+                <MapPin size={18} />
+              </div>
+              <div>
+                <h2 className="font-serif text-lg font-bold text-[#202522]">
+                  City Coverage & Availability
+                </h2>
+                <p className="text-xs text-[#6B706C]">
+                  Select the cities where this decoration is serviceable and live for customer booking.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <button
+                type="button"
+                onClick={() => setAvailableCities([])}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+                  availableCities.length === 0
+                    ? "bg-[#8CBC67] text-white shadow-xs"
+                    : "bg-neutral-100 hover:bg-neutral-200 text-[#202522]"
+                }`}
+              >
+                All Cities (Pan-India)
+              </button>
+              <button
+                type="button"
+                onClick={() => setAvailableCities(allCities.map((c) => c.name))}
+                className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-neutral-100 hover:bg-neutral-200 text-[#202522] transition cursor-pointer"
+              >
+                Select All
+              </button>
+              {availableCities.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setAvailableCities([])}
+                  className="px-2.5 py-1.5 rounded-xl text-xs font-semibold text-neutral-500 hover:text-red-600 transition cursor-pointer"
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-bold text-[#202522] uppercase tracking-wider">
+                Serviceable Cities
+              </span>
+              <span className="text-xs font-semibold text-[#8CBC67]">
+                {availableCities.length === 0
+                  ? "Available in All Cities (Pan-India)"
+                  : `${availableCities.length} of ${allCities.length} cities selected`}
+              </span>
+            </div>
+
+            {loadingCities ? (
+              <div className="p-8 text-center text-xs text-[#6B706C]">
+                <Loader2 size={18} className="animate-spin mx-auto text-[#8CBC67] mb-2" />
+                Loading cities...
+              </div>
+            ) : allCities.length === 0 ? (
+              <p className="text-xs text-[#6B706C]">
+                No specific cities configured. The product will be available across all cities by default.
+              </p>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
+                {allCities.map((c) => {
+                  const isChecked =
+                    availableCities.length === 0 ||
+                    availableCities.includes(c.name) ||
+                    availableCities.includes("All");
+
+                  const toggleCity = () => {
+                    if (availableCities.length === 0) {
+                      // Currently Pan-India; unchecking this city means selecting all other cities
+                      setAvailableCities(allCities.map((item) => item.name).filter((name) => name !== c.name));
+                    } else if (availableCities.includes(c.name)) {
+                      setAvailableCities(availableCities.filter((name) => name !== c.name));
+                    } else {
+                      setAvailableCities([...availableCities, c.name]);
+                    }
+                  };
+
+                  return (
+                    <button
+                      key={c._id}
+                      type="button"
+                      onClick={toggleCity}
+                      className={`flex items-center space-x-2.5 p-3 rounded-xl border text-left transition cursor-pointer ${
+                        isChecked
+                          ? "bg-[#EEF6EB] border-[#8CBC67] text-[#202522] font-semibold"
+                          : "bg-white border-[#E8E8E3] text-[#6B706C] hover:border-neutral-300"
+                      }`}
+                    >
+                      <div
+                        className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border transition ${
+                          isChecked
+                            ? "bg-[#8CBC67] border-[#8CBC67] text-white"
+                            : "border-neutral-300 bg-white"
+                        }`}
+                      >
+                        {isChecked && <Check size={12} strokeWidth={3} />}
+                      </div>
+                      <span className="text-xs truncate">{c.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 

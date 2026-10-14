@@ -1,12 +1,32 @@
-﻿"use client";
+"use client";
 
-import React from "react";
-import { Sparkles, Heart, Award, CheckCircle2, ArrowRight, Calendar, Building2, Baby, Flame, PartyPopper, Home, Flag, Gift, Sun } from "lucide-react";
+import React, { useState } from "react";
+import { Sparkles, Heart, Award, CheckCircle2, ArrowRight, Calendar, Building2, Baby, Flame, PartyPopper, Home, Flag, Gift, Sun, ChevronDown } from "lucide-react";
 import Link from "next/link";
+import { useWishlist } from "@/app/context/wishlistcontext";
+import ProductCard from "@/app/components/ProductCard";
+import ProductSort from "@/app/components/ProductSort";
+import { decorationItems } from "@/app/data/decorationThemeData";
 
 export default function AboutPage() {
+  const { toggleWishlist, isInWishlist } = useWishlist();
+  const [sortBy, setSortBy] = useState<"recommended" | "price-low" | "price-high">("recommended");
+
+  const getPrice = (price: string | number) => {
+    if (typeof price === "number") return price;
+    const value = Number(String(price).replace(/[₹,]/g, "").trim());
+    return Number.isNaN(value) ? Infinity : value;
+  };
+
+  const sortedProducts = [...decorationItems].sort((a, b) => {
+    if (sortBy === "price-low") return getPrice(a.price) - getPrice(b.price);
+    if (sortBy === "price-high") return getPrice(b.price) - getPrice(a.price);
+    return 0;
+  });
+
+  const productsToDisplay = sortBy === "recommended" ? decorationItems : sortedProducts;
   return (
-    <div className="w-full bg-[#F3EFE9] font-sans text-[#202522] selection:bg-[#DFBC71] selection:text-[#202522] overflow-hidden">
+    <div className="w-full bg-[#F3EFE9] font-sans text-[#202522] selection:bg-[#8CBC67] selection:text-white overflow-hidden">
       
       {/* ================= TOP HERO BANNER (With home2.png full-width & height) ================= */}
       <section className="relative w-full h-[60vh] md:h-[70vh] min-h-[450px] flex items-center justify-center overflow-hidden">
@@ -23,14 +43,14 @@ export default function AboutPage() {
 
         {/* Content */}
         <div className="max-w-5xl mx-auto px-6 text-center relative z-10 space-y-4 pt-10">
-          <div className="inline-flex items-center space-x-2 bg-black/40 backdrop-blur-md border border-[#D7A84B]/60 px-4 py-1.5 rounded-full text-[#DFBC71] text-xs uppercase tracking-[0.25em] font-medium shadow-lg">
-            <Sparkles size={13} />
+          <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 backdrop-blur-md border border-[#8CBC67]/50 px-4 py-1.5 rounded-full text-[#8CBC67] text-xs uppercase tracking-[0.25em] font-semibold shadow-lg">
+            <Sparkles size={13} className="text-[#8CBC67]" />
             <span>The Party Square Legacy</span>
           </div>
           
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light tracking-wide text-white drop-shadow-md">
             Crafting Elegance, <br />
-            <span className="italic font-normal text-[#DFBC71]">Defining Memories</span>
+            <span className="italic font-normal text-[#8CBC67]">Defining Memories</span>
           </h1>
 
           <p className="text-neutral-200 text-sm md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
@@ -71,7 +91,7 @@ export default function AboutPage() {
           {/* Right: Story Text */}
           <div className="space-y-6">
             <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#E8E8E3] px-3.5 py-1 rounded-full text-[#8CBC67] text-xs uppercase tracking-widest font-medium">
-              <Heart size={12} className="text-[#D7A84B]" />
+              <Heart size={12} className="text-[#8CBC67]" />
               <span>Passionate Decorators</span>
             </div>
 
@@ -91,14 +111,14 @@ export default function AboutPage() {
                 "End-to-End Execution"
               ].map((feature, idx) => (
                 <div key={idx} className="flex items-center space-x-3">
-                  <CheckCircle2 size={18} className="text-[#D7A84B] shrink-0" />
+                  <CheckCircle2 size={18} className="text-[#8CBC67] shrink-0" />
                   <span className="text-sm font-medium text-[#202522]">{feature}</span>
                 </div>
               ))}
             </div>
 
             <div className="pt-4">
-              <Link href="/services" className="bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-[#202522] px-8 py-3.5 rounded-full font-bold text-sm inline-flex items-center space-x-2 hover:brightness-105 transition shadow-md">
+              <Link href="/services" className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-8 py-3.5 rounded-full font-bold text-sm inline-flex items-center space-x-2 transition shadow-md">
                 <span>Discover Our Services</span>
                 <ArrowRight size={16} />
               </Link>
@@ -139,7 +159,7 @@ export default function AboutPage() {
       <section className="py-24 px-6 md:px-16 max-w-7xl mx-auto space-y-16">
         <div className="text-center space-y-3 max-w-3xl mx-auto">
           <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#E8E8E3] px-3.5 py-1 rounded-full text-[#8CBC67] text-xs uppercase tracking-widest font-medium">
-            <Sparkles size={13} className="text-[#D7A84B]" />
+            <Sparkles size={13} className="text-[#8CBC67]" />
             <span>Our Specialized Domains</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-serif text-[#202522]">
@@ -157,7 +177,7 @@ export default function AboutPage() {
           <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
             <div className="relative h-64 overflow-hidden">
               <img src="/coprateoffice.png" alt="Corporate Office Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#D7A84B]/30">
+              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
                 <Building2 size={13} /> Corporate Events
               </div>
             </div>
@@ -173,7 +193,7 @@ export default function AboutPage() {
           <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
             <div className="relative h-64 overflow-hidden">
               <img src="/aniversarry5.png" alt="Anniversary Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#D7A84B]/30">
+              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
                 <Calendar size={13} /> Milestone Anniversaries
               </div>
             </div>
@@ -189,7 +209,7 @@ export default function AboutPage() {
           <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
             <div className="relative h-64 overflow-hidden">
               <img src="/childbirthday3.png" alt="Kids Birthday Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#D7A84B]/30">
+              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
                 <Baby size={13} /> Kids Birthdays
               </div>
             </div>
@@ -205,7 +225,7 @@ export default function AboutPage() {
           <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
             <div className="relative h-64 overflow-hidden">
               <img src="/bgpic.png" alt="Candlelight Dinner Setup" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#D7A84B]/30">
+              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
                 <Flame size={13} /> Candlelight & Intimate
               </div>
             </div>
@@ -224,7 +244,7 @@ export default function AboutPage() {
       <section className="py-24 px-6 md:px-16 max-w-7xl mx-auto space-y-16 bg-[#FAF6EE] rounded-[40px] border border-[#E8E8E3] my-12">
         <div className="text-center space-y-3 max-w-3xl mx-auto">
           <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#E8E8E3] px-3.5 py-1 rounded-full text-[#8CBC67] text-xs uppercase tracking-widest font-medium">
-            <Heart size={13} className="text-[#D7A84B]" />
+            <Heart size={13} className="text-[#8CBC67]" />
             <span>Royal Weddings & Pre-Wedding Rituals</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-serif text-[#202522]">
@@ -241,7 +261,7 @@ export default function AboutPage() {
           <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
             <div className="relative h-64 overflow-hidden">
               <img src="/wedding5.png" alt="Royal Wedding Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#D7A84B]/30">
+              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
                 <Heart size={13} /> Royal Weddings
               </div>
             </div>
@@ -257,7 +277,7 @@ export default function AboutPage() {
           <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
             <div className="relative h-64 overflow-hidden">
               <img src="/haldiprogramdecoration.png" alt="Haldi Program Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#D7A84B]/30">
+              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
                 <Sun size={13} /> Haldi Rituals
               </div>
             </div>
@@ -273,7 +293,7 @@ export default function AboutPage() {
           <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
             <div className="relative h-64 overflow-hidden">
               <img src="/mehandidecoration.png" alt="Mehandi Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#D7A84B]/30">
+              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
                 <Sparkles size={13} /> Mehandi Celebration
               </div>
             </div>
@@ -288,119 +308,58 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ================= FESTIVE & SPECIAL OCCASIONS SHOWCASE (Diwali, Christmas, New Year, Independence Day, Welcome Baby, Home Decor) ================= */}
-      <section className="py-24 px-6 md:px-16 max-w-7xl mx-auto space-y-16">
-        <div className="text-center space-y-3 max-w-3xl mx-auto">
-          <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#E8E8E3] px-3.5 py-1 rounded-full text-[#8CBC67] text-xs uppercase tracking-widest font-medium">
-            <PartyPopper size={13} className="text-[#D7A84B]" />
-            <span>Festivals & Special Milestones</span>
+
+
+      {/* ================= THEME DECORATION PRODUCTS SECTION ================= */}
+      <section className="py-20 px-6 max-w-7xl mx-auto border-t border-[#E8E8E3]/60">
+        <div className="relative mb-12">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            {/* LEFT - Heading */}
+            <div className="text-left">
+              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
+                Specialized Catalog
+              </span>
+              <div className="flex items-baseline gap-3 mt-1">
+                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522]">
+                  Theme Decoration Products
+                </h2>
+                <span className="text-[#6B706C] text-2xl">|</span>
+                <span className="text-[#6B706C] text-2xl">
+                  {productsToDisplay.length} Items
+                </span>
+              </div>
+              <p className="text-[#6B706C] text-sm font-light mt-2 max-w-2xl">
+                Explore our signature themed decoration packages curated for milestone birthdays, romantic surprises, royal festivals, and grand celebrations.
+              </p>
+            </div>
+
+            {/* RIGHT - Sort */}
+            <div className="shrink-0">
+              <ProductSort value={sortBy} onChange={setSortBy} />
+            </div>
           </div>
-          <h2 className="text-3xl md:text-5xl font-serif text-[#202522]">
-            Celebrating Every Season in <span className="italic text-[#8CBC67]">Splendor</span>
-          </h2>
-          <p className="text-[#6B706C] text-sm md:text-base font-light leading-relaxed">
-            From festive lights to welcoming new family members, discover our specialized themed decor solutions.
-          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          
-          {/* Diwali */}
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-56 overflow-hidden">
-              <img src="/diwali.png" alt="Diwali Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#D7A84B]/30">
-                <Flame size={13} /> Diwali Festive
-              </div>
-            </div>
-            <div className="p-6 space-y-2">
-              <h3 className="text-xl font-serif text-[#202522]">Radiant Diwali Decor</h3>
-              <p className="text-[#6B706C] text-xs font-light leading-relaxed">
-                Traditional diyas, grand floral rangolis, golden lighting, and warm festive backdrops for homes and commercial offices.
-              </p>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {productsToDisplay.slice(0, 8).map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              isInWishlist={isInWishlist}
+              toggleWishlist={toggleWishlist}
+            />
+          ))}
+        </div>
 
-          {/* Home Decoration */}
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-56 overflow-hidden">
-              <img src="/homedecoration.png" alt="Home Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#D7A84B]/30">
-                <Home size={13} /> Home Styling
-              </div>
-            </div>
-            <div className="p-6 space-y-2">
-              <h3 className="text-xl font-serif text-[#202522]">Bespoke Home Makeovers</h3>
-              <p className="text-[#6B706C] text-xs font-light leading-relaxed">
-                Elevating living spaces with aesthetic floral arrangements, ambient lighting, and elegant corners tailored for housewarmings.
-              </p>
-            </div>
-          </div>
-
-          {/* Christmas */}
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-56 overflow-hidden">
-              <img src="/crismasdecoration1.png" alt="Christmas Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#D7A84B]/30">
-                <Gift size={13} /> Christmas Joy
-              </div>
-            </div>
-            <div className="p-6 space-y-2">
-              <h3 className="text-xl font-serif text-[#202522]">Winter Wonderland Christmas</h3>
-              <p className="text-[#6B706C] text-xs font-light leading-relaxed">
-                Custom decorated Christmas trees, snowy themes, fairy lights, and cozy festive corners that capture holiday magic.
-              </p>
-            </div>
-          </div>
-
-          {/* New Year Party */}
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-56 overflow-hidden">
-              <img src="/newyearparty.png" alt="New Year Party Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#D7A84B]/30">
-                <PartyPopper size={13} /> New Year Bash
-              </div>
-            </div>
-            <div className="p-6 space-y-2">
-              <h3 className="text-xl font-serif text-[#202522]">Glamorous New Year Parties</h3>
-              <p className="text-[#6B706C] text-xs font-light leading-relaxed">
-                Glittering metallic backdrops, balloon installations, champagne-themed setups, and high-energy party environments.
-              </p>
-            </div>
-          </div>
-
-          {/* Independence Day */}
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-56 overflow-hidden">
-              <img src="/indepencedaydecoration.png" alt="Independence Day Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#D7A84B]/30">
-                <Flag size={13} /> National Pride
-              </div>
-            </div>
-            <div className="p-6 space-y-2">
-              <h3 className="text-xl font-serif text-[#202522]">Patriotic & National Events</h3>
-              <p className="text-[#6B706C] text-xs font-light leading-relaxed">
-                Tricolor floral installations, themed backdrops, and respectful patriotic setups for institutions, schools, and corporate offices.
-              </p>
-            </div>
-          </div>
-
-          {/* Welcome Baby */}
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-56 overflow-hidden">
-              <img src="/welcomebabaydecoration.png" alt="Welcome Baby Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#DFBC71] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#D7A84B]/30">
-                <Baby size={13} /> New Arrival
-              </div>
-            </div>
-            <div className="p-6 space-y-2">
-              <h3 className="text-xl font-serif text-[#202522]">Welcome Baby & Cradle Ceremonies</h3>
-              <p className="text-[#6B706C] text-xs font-light leading-relaxed">
-                Soft pastel balloon arches, teddy-themed props, and delicate floral settings to welcome your newborn home with warmth and love.
-              </p>
-            </div>
-          </div>
-
+        {/* VIEW MORE PRODUCTS BUTTON */}
+        <div className="text-center mt-12">
+          <Link
+            href="/services/all-products"
+            className="inline-flex items-center space-x-2 bg-white hover:bg-neutral-950 hover:text-white text-neutral-950 font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-wider transition shadow-sm border border-[#E8E8E3]"
+          >
+            <span>View More Products</span>
+            <ArrowRight size={14} />
+          </Link>
         </div>
       </section>
 
@@ -408,7 +367,7 @@ export default function AboutPage() {
       <section className="py-24 px-6 md:px-16 max-w-7xl mx-auto text-center space-y-16 border-t border-[#E8E8E3]/60">
         <div className="space-y-3 max-w-2xl mx-auto">
           <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#E8E8E3] px-3.5 py-1 rounded-full text-[#8CBC67] text-xs uppercase tracking-widest font-medium">
-            <Award size={13} className="text-[#D7A84B]" />
+            <Award size={13} className="text-[#8CBC67]" />
             <span>Why Choose Us</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-serif text-[#202522]">
@@ -421,9 +380,9 @@ export default function AboutPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] p-8 rounded-3xl space-y-4 shadow-sm hover:border-[#D7A84B] transition">
+          <div className="bg-[#FFFFFF] border border-[#E8E8E3] p-8 rounded-3xl space-y-4 shadow-sm hover:border-[#8CBC67] transition">
             <div className="w-14 h-14 rounded-2xl bg-[#EEF6EB] text-[#8CBC67] flex items-center justify-center mx-auto text-2xl font-serif">
-              âœ¨
+              ✦
             </div>
             <h3 className="text-xl font-serif text-[#202522]">Unmatched Creativity</h3>
             <p className="text-[#6B706C] text-sm font-light leading-relaxed">
@@ -431,9 +390,9 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] p-8 rounded-3xl space-y-4 shadow-sm hover:border-[#D7A84B] transition">
+          <div className="bg-[#FFFFFF] border border-[#E8E8E3] p-8 rounded-3xl space-y-4 shadow-sm hover:border-[#8CBC67] transition">
             <div className="w-14 h-14 rounded-2xl bg-[#EEF6EB] text-[#8CBC67] flex items-center justify-center mx-auto text-2xl font-serif">
-              ðŸŒ¿
+              🌿
             </div>
             <h3 className="text-xl font-serif text-[#202522]">Premium Quality Florals</h3>
             <p className="text-[#6B706C] text-sm font-light leading-relaxed">
@@ -441,9 +400,9 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] p-8 rounded-3xl space-y-4 shadow-sm hover:border-[#D7A84B] transition">
+          <div className="bg-[#FFFFFF] border border-[#E8E8E3] p-8 rounded-3xl space-y-4 shadow-sm hover:border-[#8CBC67] transition">
             <div className="w-14 h-14 rounded-2xl bg-[#EEF6EB] text-[#8CBC67] flex items-center justify-center mx-auto text-2xl font-serif">
-              â±ï¸
+              ⏱️
             </div>
             <h3 className="text-xl font-serif text-[#202522]">On-Time Execution</h3>
             <p className="text-[#6B706C] text-sm font-light leading-relaxed">

@@ -4,7 +4,35 @@ const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").re
 
 export function getAdminToken(): string | null {
   if (typeof window === "undefined") return null;
-  return localStorage.getItem("adminToken");
+
+  const sanitize = (val: string | null | undefined): string | null => {
+    if (!val) return null;
+    const trimmed = String(val).trim();
+    if (!trimmed || trimmed === "undefined" || trimmed === "null" || trimmed === "[object Object]") return null;
+    return trimmed;
+  };
+
+  // Check if admin session has expired (e.g. 4 hours timeout)
+  const expiresAt = localStorage.getItem("adminExpiresAt");
+  if (expiresAt && Date.now() > Number(expiresAt)) {
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminExpiresAt");
+    document.cookie = "adminToken=; path=/; max-age=0";
+    return null;
+  }
+
+  const localAdmin = sanitize(localStorage.getItem("adminToken"));
+  if (localAdmin) return localAdmin;
+
+  const cookieAdmin = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("adminToken="))
+    ?.split("=")[1];
+  const sanitizedCookieAdmin = sanitize(cookieAdmin ? decodeURIComponent(cookieAdmin) : null);
+  if (sanitizedCookieAdmin) return sanitizedCookieAdmin;
+
+  // Strict: Never fall back to customer user token for admin operations
+  return null;
 }
 
 function getAuthHeaders(isFormData = false): HeadersInit {
@@ -13,7 +41,7 @@ function getAuthHeaders(isFormData = false): HeadersInit {
     headers["Content-Type"] = "application/json";
   }
   const token = getAdminToken();
-  if (token) {
+  if (token && token.length > 10) {
     headers["Authorization"] = `Bearer ${token}`;
   }
   return headers;
@@ -283,6 +311,19 @@ export async function uploadImage(file: File): Promise<{ url: string; public_id:
   return handleResponse<{ url: string; public_id: string; message: string }>(res);
 }
 
+export async function uploadMedia(file: File): Promise<{ url: string; public_id: string; message: string }> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch(`${API_BASE}/api/upload`, {
+    method: "POST",
+    headers: getAuthHeaders(true),
+    body: formData,
+  });
+  return handleResponse<{ url: string; public_id: string; message: string }>(res);
+}
+
+
 // ==========================================
 // DASHBOARD STATS API
 // ==========================================
@@ -310,7 +351,10 @@ export interface DashboardOverview {
   };
 }
 
-export async function fetchDashboardOverview(): Promise<DashboardOverview> {
+export async function fetchDashboardOverview(): Promise<DashboardOverview | null> {
+  const token = getAdminToken();
+  if (!token) return null;
+
   const res = await fetch(`${API_BASE}/api/super-admin/dashboard`, {
     method: "GET",
     headers: getAuthHeaders(),
@@ -345,4 +389,444 @@ export async function createBookingLead(payload: LeadBookingPayload): Promise<an
   });
   return handleResponse(res);
 }
+
+export interface CreateBookingPayload {
+  productName: string;
+  productId?: string;
+  productImage?: string;
+  city?: string;
+  eventDate: string;
+  eventTimeSlot?: string;
+  deliveryAddress?: string;
+  specialRequests?: string;
+  totalAmount: number;
+  advanceAmountPaid?: number;
+  onSiteAmountPending?: number;
+  paymentMethod?: string;
+  customerPhone?: string;
+  customerName?: string;
+  customerEmail?: string;
+}
+
+export async function createBooking(payload: CreateBookingPayload): Promise<{
+  success: boolean;
+  booking: any;
+  token?: string;
+  user?: any;
+}> {
+  const token = typeof window !== "undefined" ? (localStorage.getItem("token") || getAdminToken()) : null;
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+
+  const res = await fetch(`${API_BASE}/api/bookings`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(payload),
+  });
+  return handleResponse(res);
+}
+
+export async function fetchMyBookings(): Promise<any[]> {
+  const token = typeof window !== "undefined" ? (localStorage.getItem("token") || getAdminToken()) : null;
+  const headers: Record<string, string> = {};
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+
+  const res = await fetch(`${API_BASE}/api/bookings/my`, {
+    method: "GET",
+    headers,
+    cache: "no-store",
+  });
+  return handleResponse(res);
+}
+
+export async function fetchBookingsByPhone(phone: string): Promise<any[]> {
+  const res = await fetch(`${API_BASE}/api/bookings/by-phone/${encodeURIComponent(phone)}`, {
+    method: "GET",
+    cache: "no-store",
+  });
+  return handleResponse(res);
+}
+
+export async function fetchAllBookings(): Promise<any[]> {
+  const res = await fetch(`${API_BASE}/api/bookings`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+    cache: "no-store",
+  });
+  return handleResponse(res);
+}
+
+export async function updateBookingStatus(id: string, bookingStatus: string): Promise<any> {
+  const res = await fetch(`${API_BASE}/api/bookings/${id}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ bookingStatus }),
+  });
+  return handleResponse(res);
+}
+
+export async function deleteBooking(id: string): Promise<any> {
+  const res = await fetch(`${API_BASE}/api/bookings/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  return handleResponse(res);
+}
+
+// ==========================================
+// CITIES API
+// ==========================================
+
+export interface CityFaq {
+  question: string;
+  answer: string;
+  _id?: string;
+}
+
+export interface CityItem {
+  _id: string;
+  name: string;
+  slug?: string;
+  state?: string;
+  icon?: string;
+  isActive: boolean;
+  isPopular: boolean;
+  order: number;
+  metaTitle?: string;
+  metaDescription?: string;
+  keywords?: string[];
+  heading?: string;
+  subheading?: string;
+  content?: string;
+  serviceAreas?: string[];
+  faqs?: CityFaq[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export async function fetchCities(all = false): Promise<CityItem[]> {
+  const query = all ? "?all=true" : "";
+  const res = await fetch(`${API_BASE}/api/cities${query}`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+    cache: "no-store",
+  });
+  return handleResponse<CityItem[]>(res);
+}
+
+export async function fetchCityBySlugOrId(idOrSlug: string): Promise<CityItem | null> {
+  try {
+    const res = await fetch(`${API_BASE}/api/cities/${encodeURIComponent(idOrSlug)}`, {
+      method: "GET",
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    return handleResponse<CityItem>(res);
+  } catch {
+    return null;
+  }
+}
+
+export async function createCity(data: Partial<CityItem>): Promise<CityItem> {
+  const res = await fetch(`${API_BASE}/api/cities`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse<CityItem>(res);
+}
+
+export async function updateCity(id: string, data: Partial<CityItem>): Promise<CityItem> {
+  const res = await fetch(`${API_BASE}/api/cities/${id}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse<CityItem>(res);
+}
+
+export async function deleteCity(id: string): Promise<{ message: string }> {
+  const res = await fetch(`${API_BASE}/api/cities/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  return handleResponse<{ message: string }>(res);
+}
+
+// ==========================================
+// CUSTOMERS / USERS API
+// ==========================================
+
+export interface CustomerUser {
+  _id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  role: string;
+  authProvider?: string;
+  isProfileComplete?: boolean;
+  createdAt: string;
+  bookingsCount: number;
+  latestBooking?: {
+    bookingId: string;
+    productName: string;
+    eventDate: string;
+    totalAmount: number;
+    advanceAmountPaid: number;
+    paymentStatus: string;
+    bookingStatus: string;
+    createdAt: string;
+  } | null;
+}
+
+export async function fetchCustomers(): Promise<CustomerUser[]> {
+  const res = await fetch(`${API_BASE}/api/super-admin/users`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+    cache: "no-store",
+  });
+  return handleResponse<CustomerUser[]>(res);
+}
+
+export interface PricingPackage {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  isPopular?: boolean;
+  pageTarget: string;
+  features?: string[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export async function fetchPackages(pageTarget?: string): Promise<PricingPackage[]> {
+  const url = pageTarget
+    ? `${API_BASE}/api/packages?pageTarget=${encodeURIComponent(pageTarget)}`
+    : `${API_BASE}/api/packages`;
+  const res = await fetch(url, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    cache: "no-store",
+  });
+  return handleResponse<PricingPackage[]>(res);
+}
+
+export async function createPackage(data: Partial<PricingPackage>): Promise<PricingPackage> {
+  const res = await fetch(`${API_BASE}/api/packages`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse<PricingPackage>(res);
+}
+
+export async function updatePackage(id: string, data: Partial<PricingPackage>): Promise<PricingPackage> {
+  const res = await fetch(`${API_BASE}/api/packages/${id}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse<PricingPackage>(res);
+}
+
+export async function deletePackage(id: string): Promise<{ message: string }> {
+  const res = await fetch(`${API_BASE}/api/packages/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  return handleResponse<{ message: string }>(res);
+}
+
+// ==========================================
+// GALLERY SHOWCASE API
+// ==========================================
+
+export interface GalleryItem {
+  _id: string;
+  title: string;
+  image: string;
+  pageTarget: string;
+  category?: string;
+  order?: number;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export async function fetchGalleryItems(pageTarget?: string): Promise<GalleryItem[]> {
+  const url = pageTarget
+    ? `${API_BASE}/api/gallery?pageTarget=${encodeURIComponent(pageTarget)}`
+    : `${API_BASE}/api/gallery`;
+  const res = await fetch(url, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    cache: "no-store",
+  });
+  return handleResponse<GalleryItem[]>(res);
+}
+
+export async function fetchAdminGalleryItems(pageTarget?: string): Promise<GalleryItem[]> {
+  const url = pageTarget
+    ? `${API_BASE}/api/gallery/admin?pageTarget=${encodeURIComponent(pageTarget)}`
+    : `${API_BASE}/api/gallery/admin`;
+  const res = await fetch(url, {
+    method: "GET",
+    headers: getAuthHeaders(),
+    cache: "no-store",
+  });
+  return handleResponse<GalleryItem[]>(res);
+}
+
+export async function createGalleryItem(data: Partial<GalleryItem>): Promise<GalleryItem> {
+  const res = await fetch(`${API_BASE}/api/gallery`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse<GalleryItem>(res);
+}
+
+export async function updateGalleryItem(id: string, data: Partial<GalleryItem>): Promise<GalleryItem> {
+  const res = await fetch(`${API_BASE}/api/gallery/${id}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse<GalleryItem>(res);
+}
+
+export async function deleteGalleryItem(id: string): Promise<{ message: string }> {
+  const res = await fetch(`${API_BASE}/api/gallery/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  return handleResponse<{ message: string }>(res);
+}
+
+// ==========================================
+// HOMEPAGE SECTIONS API
+// ==========================================
+
+export interface HomePageSection<T = any> {
+  _id?: string;
+  sectionKey: string;
+  title: string;
+  subtitle?: string;
+  order: number;
+  isEnabled: boolean;
+  contentData: T;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export async function fetchHomePageSections(): Promise<HomePageSection[]> {
+  const res = await fetch(`${API_BASE}/api/homepage`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    cache: "no-store",
+  });
+  const data = await handleResponse<any>(res);
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(data?.sections)) return data.sections;
+  return [];
+}
+
+export async function fetchHomePageSection<T = any>(sectionKey: string): Promise<HomePageSection<T>> {
+  const res = await fetch(`${API_BASE}/api/homepage/sections/${encodeURIComponent(sectionKey)}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    cache: "no-store",
+  });
+  return handleResponse<HomePageSection<T>>(res);
+}
+
+export async function updateHomePageSection<T = any>(
+  sectionKey: string,
+  payload: Partial<HomePageSection<T>>
+): Promise<HomePageSection<T>> {
+  const res = await fetch(`${API_BASE}/api/homepage/sections/${encodeURIComponent(sectionKey)}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(payload),
+  });
+  return handleResponse<HomePageSection<T>>(res);
+}
+
+// ==========================================
+// ANALYTICS & REPORTS API
+// ==========================================
+
+export interface AnalyticsMetrics {
+  totalBookings: number;
+  successfulEvents: number;
+  completedCount: number;
+  confirmedCount: number;
+  inProgressCount: number;
+  pendingCount: number;
+  cancelledCount: number;
+  totalRevenue: number;
+  advanceCollected: number;
+  pendingOnSite: number;
+  averageBookingValue: number;
+  completionRate: string;
+  growthRate: string;
+  clientSatisfaction: string;
+  totalReviews: number;
+}
+
+export interface AnalyticsTheme {
+  name: string;
+  bookings: number;
+  revenue: number;
+  advance: number;
+  city?: string;
+  image?: string;
+}
+
+export interface AnalyticsCity {
+  city: string;
+  bookings: number;
+  revenue: number;
+}
+
+export interface AnalyticsPayment {
+  method: string;
+  count: number;
+}
+
+export interface AnalyticsRecentBooking {
+  bookingId: string;
+  customerName: string;
+  customerPhone?: string;
+  productName: string;
+  city?: string;
+  totalAmount: number;
+  advanceAmountPaid: number;
+  bookingStatus: string;
+  paymentStatus: string;
+  eventDate: string;
+  createdAt?: string;
+}
+
+export interface AnalyticsReport {
+  metrics: AnalyticsMetrics;
+  topThemes: AnalyticsTheme[];
+  cityBreakdown: AnalyticsCity[];
+  paymentBreakdown: AnalyticsPayment[];
+  recentBookings: AnalyticsRecentBooking[];
+}
+
+export async function fetchAnalyticsReport(): Promise<AnalyticsReport> {
+  const res = await fetch(`${API_BASE}/api/super-admin/analytics`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+    cache: "no-store",
+  });
+  return handleResponse<AnalyticsReport>(res);
+}
+
+
+
 

@@ -92,7 +92,7 @@ export default function Hero() {
               </p>
 
               <div className="flex items-center space-x-6">
-                <button className="bg-[#D7A84B] text-black px-7 py-3.5 rounded-full font-semibold text-sm flex items-center space-x-3 hover:bg-[#8CBC67] transition shadow-md cursor-pointer">
+                <button className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-7 py-3.5 rounded-full font-semibold text-sm flex items-center space-x-3 transition shadow-md cursor-pointer">
                   <span>Explore Our Services</span>
                   <ArrowRight size={18} />
                 </button>

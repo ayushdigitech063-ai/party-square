@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { getAdminToken } from "@/app/lib/api";
 import {
   LayoutDashboard,
   CalendarCheck,
@@ -24,7 +25,10 @@ import {
   Package as PackageIcon,
   FolderTree,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  MapPin,
+  Home as HomeIcon,
+  Loader2
 } from "lucide-react";
 
 export default function AdminLayout({
@@ -37,17 +41,54 @@ export default function AdminLayout({
   const pathname = usePathname();
   const router = useRouter();
 
+  const [authChecking, setAuthChecking] = useState(true);
+
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminExpiresAt");
     document.cookie = "adminToken=; path=/; max-age=0";
     router.push("/login");
   };
+
+  // Auth protection guard with real-time session & backend verification
+  useEffect(() => {
+    const token = getAdminToken();
+    if (!token) {
+      setAuthChecking(false);
+      router.push("/login");
+      return;
+    }
+
+    const verifySession = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/super-admin/dashboard", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) {
+          // Token expired or invalid on backend
+          localStorage.removeItem("adminToken");
+          localStorage.removeItem("adminExpiresAt");
+          document.cookie = "adminToken=; path=/; max-age=0";
+          router.push("/login");
+        } else {
+          setAuthChecking(false);
+        }
+      } catch (err) {
+        setAuthChecking(false);
+      }
+    };
+
+    verifySession();
+  }, [pathname, router]);
 
   const [productsOpen, setProductsOpen] = useState(
     pathname?.startsWith("/admin/products") ?? false
   );
   const [categoriesOpen, setCategoriesOpen] = useState(
     pathname?.startsWith("/admin/categories") ?? false
+  );
+  const [homePageOpen, setHomePageOpen] = useState(
+    pathname?.startsWith("/admin/homepage") ?? false
   );
 
   const productSubItems = [
@@ -61,11 +102,23 @@ export default function AdminLayout({
     { name: "Subcategories", href: "/admin/categories/subcategories" },
   ];
 
+  const homePageSubItems = [
+    { name: "All Sections Hub", href: "/admin/homepage" },
+    { name: "📢 Announcement Bar", href: "/admin/homepage/announcement" },
+    { name: "🖼️ Hero Banner Slider", href: "/admin/homepage/hero" },
+    { name: "🎥 Video Showcase", href: "/admin/homepage/video-showcase" },
+    { name: "❤️ Most Loved Decor", href: "/admin/homepage/most-loved" },
+    { name: "🛠️ Signature Services", href: "/admin/homepage/services" },
+    { name: "📊 Stats & USP Bar", href: "/admin/homepage/stats" },
+    { name: "❓ FAQ Section", href: "/admin/homepage/faqs" },
+  ];
+
   const navItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Bookings", href: "/admin/bookings", icon: CalendarCheck },
     { name: "Customers", href: "/admin/customers", icon: Users },
-    { name: "Themes & Packages", href: "/admin/themes", icon: LayoutDashboard },
+    { name: "Pricing Packages", href: "/admin/packages", icon: PackageIcon },
+    { name: "Cities", href: "/admin/cities", icon: MapPin },
     { name: "Gallery Manager", href: "/admin/gallery", icon: Image },
     { name: "Coupons", href: "/admin/coupons", icon: Ticket },
     { name: "Reviews & Ratings", href: "/admin/reviews", icon: Star },
@@ -74,6 +127,17 @@ export default function AdminLayout({
     { name: "Staff Management", href: "/admin/staff", icon: Users2 },
     { name: "Settings", href: "/admin/settings", icon: Settings },
   ];
+
+  if (authChecking) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#FCFBF7] space-y-3">
+        <Loader2 className="animate-spin text-[#8CBC67]" size={32} />
+        <p className="text-xs text-[#6B706C] font-semibold tracking-wide">
+          Verifying security credentials...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#FCFBF7] text-[#202522] font-sans flex selection:bg-[#8CBC67] selection:text-neutral-950">
@@ -226,6 +290,46 @@ export default function AdminLayout({
               )}
             </div>
 
+            {/* HOME PAGE SECTIONS GROUP */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setHomePageOpen((prev) => !prev)}
+                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all ${
+                  pathname?.startsWith("/admin/homepage")
+                    ? "bg-gradient-to-r from-[#8CBC67]/20 to-transparent text-[#8CBC67] border-l-2 border-[#8CBC67]"
+                    : "hover:text-white hover:bg-white/5"
+                }`}
+              >
+                <div className="flex items-center space-x-3">
+                  <HomeIcon size={18} className={pathname?.startsWith("/admin/homepage") ? "text-[#8CBC67]" : "text-[#6B706C]"} />
+                  <span>Home Page</span>
+                </div>
+                {homePageOpen ? <ChevronDown size={14} className="text-[#8CBC67]" /> : <ChevronRight size={14} className="text-[#6B706C]" />}
+              </button>
+
+              {homePageOpen && (
+                <div className="pl-8 pr-2 py-1 space-y-1">
+                  {homePageSubItems.map((sub) => {
+                    const isSubActive = pathname === sub.href;
+                    return (
+                      <Link
+                        key={sub.name}
+                        href={sub.href}
+                        className={`block px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                          isSubActive
+                            ? "text-[#8CBC67] font-semibold bg-white/5"
+                            : "text-[#8A8F8B] hover:text-white hover:bg-white/5"
+                        }`}
+                      >
+                        {sub.name}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
             {/* Remaining items: Gallery, Coupons, Reviews, Analytics, Finance, Staff, Settings */}
             {navItems.slice(4).map((item) => {
               const Icon = item.icon;
@@ -249,15 +353,25 @@ export default function AdminLayout({
         </div>
 
         {/* Sidebar Footer */}
-        <div className="p-4 space-y-4">
-          <div className="flex items-center space-x-3 px-2 pt-4 border-t border-white/10">
-            <div className="w-8 h-8 rounded-full bg-[#EEF6EB] text-[#202522] flex items-center justify-center font-bold text-xs">
-              SA
+        <div className="p-4 space-y-3">
+          <div className="flex items-center justify-between px-2 pt-3 border-t border-white/10">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 rounded-full bg-[#EEF6EB] text-[#202522] flex items-center justify-center font-bold text-xs">
+                SA
+              </div>
+              <div>
+                <p className="text-xs font-bold text-white">Super Admin</p>
+                <p className="text-[10px] text-[#6B706C]">admin@partysquare.com</p>
+              </div>
             </div>
-            <div>
-              <p className="text-xs font-bold text-white">Super Admin</p>
-              <p className="text-[10px] text-[#6B706C]">admin@partysquare.com</p>
-            </div>
+
+            <button
+              onClick={handleLogout}
+              className="p-2 rounded-xl text-neutral-400 hover:text-red-400 hover:bg-white/10 transition cursor-pointer"
+              title="Logout from Admin"
+            >
+              <LogOut size={16} />
+            </button>
           </div>
         </div>
       </aside>
@@ -321,7 +435,7 @@ export default function AdminLayout({
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 p-6 lg:p-8 bg-[#FCFBF7] mt-16">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-[#FCFBF7] mt-16 w-full">
           {children}
         </main>
       </div>

@@ -33,15 +33,44 @@ export default function AdminDashboard() {
   const [overview, setOverview] = useState<DashboardOverview | null>(null);
 
   useEffect(() => {
-    async function loadStats() {
+    async function loadData() {
       try {
         const data = await fetchDashboardOverview();
-        setOverview(data);
-      } catch (err) {
-        console.error("Dashboard overview stats error:", err);
+        if (data) {
+          setOverview(data);
+        }
+      } catch (err: any) {
+        console.warn("Dashboard overview stats not loaded:", err?.message);
+      }
+
+      try {
+        const liveBookings = await fetchAllBookings();
+        if (Array.isArray(liveBookings) && liveBookings.length > 0) {
+          const mapped: Booking[] = liveBookings.map((b) => {
+            const rawStatus = (b.bookingStatus || "Confirmed").toLowerCase();
+            let status: Status = "Confirmed";
+            if (rawStatus === "pending") status = "Pending";
+            else if (rawStatus === "completed") status = "Completed";
+            else if (rawStatus === "cancelled") status = "Cancelled";
+
+            return {
+              id: b.bookingId || b._id?.slice(-7) || "BK-000",
+              customer: b.customerName || b.user?.name || "Customer",
+              theme: b.productName || b.theme || "Decoration",
+              date: b.eventDate ? new Date(b.eventDate).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }) : "Upcoming",
+              amount: b.totalAmount ? `₹${Number(b.totalAmount).toLocaleString("en-IN")}` : "₹5,000",
+              status,
+              deposit: b.advanceAmountPaid ? `₹${Number(b.advanceAmountPaid).toLocaleString("en-IN")}` : "₹2,500",
+              venue: b.deliveryAddress || b.city || "Venue",
+            };
+          });
+          setBookings(mapped);
+        }
+      } catch (err: any) {
+        console.warn("Live bookings not loaded on overview:", err?.message);
       }
     }
-    loadStats();
+    loadData();
   }, []);
 
   // =========================

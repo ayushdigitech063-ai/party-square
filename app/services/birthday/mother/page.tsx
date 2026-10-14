@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Heart,
@@ -11,6 +11,7 @@ import {
   Star,
 } from "lucide-react";
 import { motherbirthdayProducts } from "@/app/data/motherBirthdayProduct";
+import { fetchPackages, fetchGalleryItems } from "@/app/lib/api";
 import { useWishlist } from "../../../context/wishlistcontext";
 import ProductCard from "@/app/components/ProductCard";
 import ProductSort from "@/app/components/ProductSort";
@@ -18,45 +19,91 @@ import FAQSection from "@/app/components/FAQSection";
 
 export default function MotherBirthdayPage() {
   // Gallery images for mother's special decor
-  const motherGallery = [
+  const DEFAULT_MOTHER_GALLERY = [
     "/motherbirthday.png",
     "/motherbirthdaymom.png",
     "/motherbirthdaymom1.png",
     "/motherbirthdaymom2.png",
   ];
+  const [motherGallery, setMotherGallery] = useState(DEFAULT_MOTHER_GALLERY);
+
+  useEffect(() => {
+    async function loadDynamicMotherGallery() {
+      try {
+        const data = await fetchGalleryItems("birthday-mother");
+        if (Array.isArray(data) && data.length > 0) {
+          setMotherGallery(data.map((item) => item.image));
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic mother gallery:", err);
+      }
+    }
+    loadDynamicMotherGallery();
+  }, []);
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
   const [sortBy, setSortBy] = useState<
     "recommended" | "price-low" | "price-high"
   >("recommended");
 
   // Compact & Elegant Birthday Packages
-  const motherPackages = [
+  const DEFAULT_MOTHER_PACKAGES = [
     {
-      id: 1,
-      image: "/motherbirthday.png",
-      name: "Graceful Floral Arch",
-      price: "₹4,999",
-      desc: "Soft pastel floral arrangements paired with warm fairy lights and elegant cake table styling.",
+      id: "1",
+      image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&auto=format&fit=crop&q=60",
+      name: "Rose Gold Grace",
+      price: "₹3,999",
+      rawPrice: 3999,
+      desc: "Delicate pastel & rose gold balloons, LED warm lights, and elegant customized backdrop.",
+      popular: false,
     },
     {
-      id: 2,
-      image: "/motherbirthdaymom.png",
-      name: "Queen Mother Milestone",
-      price: "₹7,999",
+      id: "2",
+      image: "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=60",
+      name: "Golden Empress Canopy",
+      price: "₹7,499",
+      rawPrice: 7499,
       popular: true,
-      desc: "Grand backdrop styling with luxurious drapes, metallic balloon accents & memory photo corner.",
+      desc: "Flowing satin fabric canopy, fairy lights, metallic gold accents, and a personalized neon sign.",
     },
     {
-      id: 3,
-      image: "/motherbirthdaymom1.png",
-      name: "Family Celebration Bundle",
+      id: "3",
+      image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=800&auto=format&fit=crop&q=60",
+      name: "Royal Violet Symphony",
       price: "₹11,999",
-      desc: "Complete luxury transformation including entrance pathway decor, cold pyros & LED setup.",
+      rawPrice: 11999,
+      desc: "Grand floral arch with organic purple & chrome balloon clusters, shimmer wall, and marquee numbers.",
+      popular: false,
     },
   ];
 
+  const [motherPackages, setMotherPackages] = useState(DEFAULT_MOTHER_PACKAGES);
+
+  useEffect(() => {
+    async function loadDynamicMotherPackages() {
+      try {
+        const data = await fetchPackages("birthday-mother");
+        if (Array.isArray(data) && data.length > 0) {
+          setMotherPackages(
+            data.map((p) => ({
+              id: p._id,
+              image: p.image || "/motherbirthday.png",
+              name: p.name,
+              price: `₹${Number(p.price).toLocaleString("en-IN")}`,
+              rawPrice: p.price,
+              popular: !!p.isPopular,
+              desc: p.description,
+            }))
+          );
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic mother packages:", err);
+      }
+    }
+    loadDynamicMotherPackages();
+  }, []);
+
   // Active hover state for interactive cards feedback
-  const [activeCard, setActiveCard] = useState<number | null>(null);
+  const [activeCard, setActiveCard] = useState<any | null>(null);
   const getPrice = (price: string | number) => {
     if (typeof price === "number") return price;
 
@@ -83,7 +130,7 @@ export default function MotherBirthdayPage() {
     sortBy === "recommended" ? motherbirthdayProducts : sortedProducts;
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans selection:bg-[#D7A84B] selection:text-white">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans selection:bg-[#8CBC67] selection:text-white">
       {/* ================= HERO SECTION WITH motherbirthdayhome.png ================= */}
       <section className="relative h-[350px] flex items-center justify-center overflow-hidden text-white">
         <div
@@ -101,14 +148,14 @@ export default function MotherBirthdayPage() {
 
         <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 w-full">
           <div className="max-w-2xl space-y-6">
-            <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/20 border border-[#D7A84B]/50 px-4 py-2 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-lg">
-              <Heart size={14} className="text-rose-400 fill-rose-400" />
+            <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-4 py-2 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-lg">
+              <Heart size={14} className="text-[#8CBC67] fill-[#8CBC67]" />
               <span>Mother's Special Tribute Celebration</span>
             </div>
 
             <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.15] drop-shadow-md">
               Celebrate the Woman Who{" "}
-              <span className="text-[#DFBC71] italic font-normal">
+              <span className="text-[#8CBC67] italic font-normal">
                 Gave You Everything
               </span>
             </h1>
@@ -122,7 +169,7 @@ export default function MotherBirthdayPage() {
             <div className="flex flex-wrap gap-4 pt-4">
               <Link
                 href="/contact"
-                className="group relative bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-2xl hover:shadow-[#D7A84B]/30 hover:scale-105 transition-all duration-300 flex items-center space-x-2 overflow-hidden"
+                className="group relative bg-[#8CBC67] hover:bg-[#7AB055] text-white px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:shadow-[#8CBC67]/30 hover:scale-105 transition-all duration-300 flex items-center space-x-2 overflow-hidden cursor-pointer"
               >
                 <span className="relative z-10">Book Mother's Decor</span>
                 <ArrowRight
@@ -206,7 +253,7 @@ export default function MotherBirthdayPage() {
 
               <div>
                 <Link
-                  href="/contact"
+                  href={`/payment-detail?productId=${pkg.id}&name=${encodeURIComponent(pkg.name)}&price=${pkg.rawPrice || String(pkg.price).replace(/[^0-9]/g, '')}&image=${encodeURIComponent(pkg.image)}`}
                   className={`w-full block text-center py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                     pkg.popular
                       ? "bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 hover:shadow-lg hover:scale-[1.02]"

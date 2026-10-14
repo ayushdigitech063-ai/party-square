@@ -1,4 +1,4 @@
-﻿
+
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -28,6 +28,7 @@ import CityModal from "./CityModal"; // <-- CityModal import kiya hai (apne fold
 import { useWishlist } from "../context/wishlistcontext";
 import LoginModal from "./LoginModal";
 import { useCart } from "../context/CartContext"; // path apne folder ke hisaab se adjust karein
+import { useCity } from "../context/CityContext";
 
 const CITIES = [
   "Delhi",
@@ -185,7 +186,7 @@ function DropdownPill({
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [coords, setCoords] = useState<{ top: number } | null>(null);
-  const [activeChild, setActiveChild] = useState<DropdownChild>(children[0]);
+  const [activeChild, setActiveChild] = useState<DropdownChild | null>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -202,6 +203,7 @@ function DropdownPill({
 
   const finalizeClose = () => {
     setVisible(false);
+    setActiveChild(null);
     window.setTimeout(() => setOpen(false), 120);
   };
 
@@ -228,7 +230,7 @@ function DropdownPill({
         : anchor.getBoundingClientRect().bottom + 8;
       setCoords({ top });
     }
-    setActiveChild(children[0]);
+    setActiveChild(null);
     setOpen(true);
     requestAnimationFrame(() => setVisible(true));
   };
@@ -322,6 +324,7 @@ function DropdownPill({
                       href={child.href}
                       onClick={close}
                       onMouseEnter={() => setActiveChild(child)}
+                      onMouseLeave={() => setActiveChild(null)}
                       onFocus={() => setActiveChild(child)}
                       className={`block px-3 py-2 sm:py-2.5 rounded-lg text-sm sm:text-[15px] transition-colors ${
                         childActive
@@ -339,7 +342,7 @@ function DropdownPill({
             </ul>
           </div>
 
-          {/* Right â€” image cards for the same items */}
+          {/* Right — image cards for the same items */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 content-start">
             {children.map((child) => {
               const isPreviewed = activeChild?.href === child.href;
@@ -349,6 +352,7 @@ function DropdownPill({
                   href={child.href}
                   onClick={close}
                   onMouseEnter={() => setActiveChild(child)}
+                  onMouseLeave={() => setActiveChild(null)}
                   onFocus={() => setActiveChild(child)}
                   className="group block focus:outline-none"
                 >
@@ -356,7 +360,7 @@ function DropdownPill({
                     className={`relative w-[160px] h-[120px] mx-auto rounded-xl overflow-hidden bg-neutral-100 ring-2 ring-offset-2 transition-all duration-200 ${
                       isPreviewed
                         ? "ring-[#8CBC67] shadow-lg"
-                        : "ring-transparent group-hover:ring-amber-300"
+                        : "ring-transparent group-hover:ring-[#8CBC67]/50"
                     }`}
                   >
                     {child.image ? (
@@ -399,21 +403,21 @@ function DropdownPill({
         onMouseLeave={scheduleClose}
         className={`shrink-0 flex items-stretch rounded-full border overflow-hidden transition-colors ${
           isActive || open
-            ? "bg-[#8CBC67] border-[#8CBC67] shadow-sm"
-            : "bg-white border-[#E8E8E3] hover:border-[#8CBC67]"
+            ? "bg-[#EEF6EB] border-[#8CBC67] shadow-xs"
+            : "bg-white border-[#E8E8E3] hover:border-[#8CBC67] hover:bg-[#EEF6EB]/50"
         }`}
       >
         <Link
           href={href}
           className={`flex items-center gap-1.5 sm:gap-2 pl-3 sm:pl-4 pr-2 sm:pr-2.5 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
             isActive || open
-              ? "text-white"
-              : "text-[#202522] hover:text-[#202522] hover:bg-[#EEF6EB]"
+              ? "text-[#202522] font-semibold"
+              : "text-[#202522] hover:text-[#202522]"
           }`}
         >
           <Icon
             size={16}
-            className={isActive || open ? "text-white" : "text-[#8CBC67]"}
+            className="text-[#8CBC67]"
           />
           {label}
         </Link>
@@ -425,13 +429,13 @@ function DropdownPill({
           aria-label={`Toggle ${label} menu`}
           className={`flex items-center pl-1.5 pr-3 sm:pr-3.5 py-2 border-l transition-colors ${
             isActive || open
-              ? "border-white/30 text-white"
-              : "border-[#E8E8E3] text-[#6B706C] hover:text-[#202522] hover:bg-[#EEF6EB]"
+              ? "border-[#8CBC67]/30 text-[#8CBC67]"
+              : "border-[#E8E8E3] text-[#6B706C] hover:text-[#202522] hover:bg-[#EEF6EB]/50"
           }`}
         >
           <ChevronDown
             size={14}
-            className={`transition-transform ${open ? "rotate-180" : ""}`}
+            className={`transition-transform duration-200 ${open ? "rotate-180 text-[#8CBC67]" : "text-[#6B706C]"}`}
           />
         </button>
 
@@ -454,18 +458,18 @@ function DropdownPill({
         aria-expanded={open}
         className={`flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-2 text-sm font-medium whitespace-nowrap border transition-colors ${
           isActive || open
-            ? "bg-[#8CBC67] text-white border-[#8CBC67] shadow-sm"
-            : "bg-white text-[#202522] border-[#E8E8E3] hover:border-[#8CBC67] hover:text-[#202522] hover:bg-[#EEF6EB]"
+            ? "bg-[#EEF6EB] text-[#202522] border-[#8CBC67] font-semibold shadow-xs"
+            : "bg-white text-[#202522] border-[#E8E8E3] hover:border-[#8CBC67] hover:text-[#202522] hover:bg-[#EEF6EB]/50"
         }`}
       >
         <Icon
           size={16}
-          className={isActive || open ? "text-white" : "text-[#8CBC67]"}
+          className="text-[#8CBC67]"
         />
         {label}
         <ChevronDown
           size={14}
-          className={`transition-transform ${open ? "rotate-180" : ""}`}
+          className={`transition-transform duration-200 ${open ? "rotate-180 text-[#8CBC67]" : "text-[#6B706C]"}`}
         />
       </button>
 
@@ -476,21 +480,37 @@ function DropdownPill({
 
 export default function Navbar() {
   const { wishlist } = useWishlist();
-  const { cartCount } = useCart(); // ðŸ‘ˆ naya
+  const { cartCount } = useCart();
+  const {
+    selectedCity,
+    setSelectedCity,
+    isCityModalOpen,
+    setIsCityModalOpen,
+    cityNames,
+  } = useCity();
+
   const [locationOpen, setLocationOpen] = useState(false);
-  const [selectedCity, setSelectedCity] = useState("Delhi");
   const [loginopen, setLoginOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("Profile");
 
   useEffect(() => {
     const token = document.cookie.split("; ").find(row => row.startsWith("token="))?.split("=")[1];
-    if (token) {
+    const localToken = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    if (token || localToken) {
       setIsLoggedIn(true);
       const userCookie = document.cookie.split("; ").find(row => row.startsWith("user="))?.split("=")[1];
+      const localUser = typeof window !== "undefined" ? localStorage.getItem("user") : null;
       if (userCookie) {
         try {
           const userObj = JSON.parse(decodeURIComponent(userCookie));
+          if (userObj && userObj.name) {
+            setUserName(userObj.name);
+          }
+        } catch(e) {}
+      } else if (localUser) {
+        try {
+          const userObj = JSON.parse(localUser);
           if (userObj && userObj.name) {
             setUserName(userObj.name);
           }
@@ -499,25 +519,21 @@ export default function Navbar() {
     }
   }, []);
 
-  // State for controlling the popup automatically on website load
-  const [isCityModalOpen, setIsCityModalOpen] = useState(false);
-
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-
 
   const locationRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
-  // Automatically open the city selection popup when website loads
+  // Automatically open the city selection popup on first visit
   useEffect(() => {
     const hasSeenCityModal = localStorage.getItem("hasSeenCityModal");
     if (!hasSeenCityModal) {
       setIsCityModalOpen(true);
       localStorage.setItem("hasSeenCityModal", "true");
     }
-  }, []);
+  }, [setIsCityModalOpen]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -545,7 +561,7 @@ export default function Navbar() {
         isOpen={isCityModalOpen}
         onClose={() => setIsCityModalOpen(false)}
         onSelectCity={(city) => setSelectedCity(city)}
-        cities={CITIES}
+        cities={cityNames}
       />
 
       <nav className="w-full bg-white border-b border-[#E8E8E3] sticky top-0 z-30">
@@ -635,8 +651,9 @@ export default function Navbar() {
                     <div className="px-4 py-2 border-b border-gray-50 mb-1">
                       <p className="text-sm font-bold text-gray-900 truncate">{userName}</p>
                     </div>
+                    <Link href="/profile" className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-[#EEF6EB] hover:text-[#8CBC67] transition">My Bookings</Link>
                     <Link href="/profile" className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-[#EEF6EB] hover:text-[#8CBC67] transition">My Profile</Link>
-                    <button onClick={() => { document.cookie = "token=; path=/; max-age=0;"; document.cookie = "user=; path=/; max-age=0;"; window.location.href = "/"; }} className="w-full text-left block px-4 py-2 text-sm font-medium text-red-600 hover:bg-[#F7D6C7] transition">Logout</button>
+                    <button onClick={() => { document.cookie = "token=; path=/; max-age=0;"; document.cookie = "user=; path=/; max-age=0;"; window.location.href = "/"; }} className="w-full text-left block px-4 py-2 text-sm font-medium text-red-600 hover:bg-[#F7D6C7] transition cursor-pointer">Logout</button>
                   </div>
                 </div>
               ) : (
@@ -691,13 +708,13 @@ export default function Navbar() {
                     href={href}
                     className={`shrink-0 flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-2 text-sm font-medium whitespace-nowrap border transition-colors ${
                       isActive
-                        ? "bg-[#8CBC67] text-white border-[#8CBC67] shadow-sm"
-                        : "bg-white text-[#202522] border-[#E8E8E3] hover:border-[#8CBC67] hover:text-[#202522] hover:bg-[#EEF6EB]"
+                        ? "bg-[#EEF6EB] text-[#202522] border-[#8CBC67] font-semibold shadow-xs"
+                        : "bg-white text-[#202522] border-[#E8E8E3] hover:border-[#8CBC67] hover:text-[#202522] hover:bg-[#EEF6EB]/50"
                     }`}
                   >
                     <Icon
                       size={16}
-                      className={isActive ? "text-white" : "text-[#8CBC67]"}
+                      className="text-[#8CBC67]"
                     />
                     {label}
                   </Link>

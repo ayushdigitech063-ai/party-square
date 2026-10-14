@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 // jhdsbfhvb
 import React, { useState, useEffect } from "react";
 import {
@@ -14,8 +14,10 @@ import {
   Tag,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function BasketPage() {
+  const router = useRouter();
   const [cart, setCart] = useState<any[]>([]);
   const [selectedItem, setSelectedItem] = useState<any | null>(null);
   const [couponInput, setCouponInput] = useState("");
@@ -344,10 +346,14 @@ export default function BasketPage() {
           </div>
 
           <button
-            onClick={() =>
-              alert("Proceeding to checkout/booking confirmation!")
-            }
-            className="w-full bg-[#A0522D] hover:bg-[#202522] text-white font-bold py-4 rounded-full text-xs uppercase tracking-widest transition shadow-lg flex items-center justify-center space-x-2 cursor-pointer"
+            onClick={() => {
+              if (cart.length === 0) return;
+              const firstItem = cart[0];
+              const pId = firstItem.id || firstItem._id || "basket-order";
+              router.push(`/payment-detail?productId=${encodeURIComponent(pId)}`);
+            }}
+            disabled={cart.length === 0}
+            className="w-full bg-[#8CBC67] hover:bg-[#7AB055] text-white font-bold py-4 rounded-full text-xs uppercase tracking-widest transition shadow-lg flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50"
           >
             <span>Proceed to Checkout</span>
             <ArrowRight size={16} />

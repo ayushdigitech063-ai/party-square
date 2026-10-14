@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -12,6 +12,7 @@ import {
   Mail,
   MapPin,
 } from "lucide-react";
+import toast from "react-hot-toast";
 
 
 export default function Footer() {
@@ -91,11 +92,15 @@ export default function Footer() {
 
             {/* Subscribe Button */}
             <button
-              onClick={() =>{validateEmail(); 
-                alert(error ? "Please fix the errors before subscribing." : `Subscribed`);
+              onClick={() => {
+                if (!validateEmail()) {
+                  toast.error(error || "Please enter a valid email address");
+                  return;
+                }
+                toast.success("Subscribed successfully! Thank you.");
                 setEmail("");
               }}
-              className="bg-neutral-950 hover:bg-[#7AB055] text-white px-7 py-3.5 rounded-full text-sm font-bold transition flex items-center justify-center space-x-2 shadow-md h-fit"
+              className="bg-neutral-950 hover:bg-[#7AB055] text-white px-7 py-3.5 rounded-full text-sm font-bold transition flex items-center justify-center space-x-2 shadow-md h-fit cursor-pointer"
             >
               <span>Subscribe</span>
               <ArrowRight size={15} />

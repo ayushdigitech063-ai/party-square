@@ -51,7 +51,7 @@ export default function HomePage() {
     sortBy === "recommended" ? newYearCards : sortedProducts;
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans selection:bg-[#D7A84B] selection:text-white">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans selection:bg-[#8CBC67] selection:text-white">
       {/* ================= HERO / MAIN BANNER SECTION ================= */}
       <section className="relative h-[350px] flex items-center justify-center overflow-hidden text-white">
         <div
@@ -68,14 +68,14 @@ export default function HomePage() {
 
         <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 w-full">
           <div className="max-w-2xl space-y-6">
-            <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/20 border border-[#D7A84B]/50 px-4 py-2 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-lg">
-              <Sparkles size={14} className="text-[#DFBC71]" />
+            <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-4 py-2 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-lg">
+              <Sparkles size={14} className="text-[#8CBC67]" />
               <span>Elite Event & Party Decorators</span>
             </div>
 
             <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.15] drop-shadow-md">
               Transforming Every Space Into{" "}
-              <span className="text-[#DFBC71] italic font-normal">
+              <span className="text-[#8CBC67] italic font-normal">
                 Pure Magic
               </span>
             </h1>
@@ -89,7 +89,7 @@ export default function HomePage() {
             <div className="flex flex-wrap gap-4 pt-4">
               <Link
                 href="/contact"
-                className="group relative bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-2xl hover:scale-105 transition-all duration-300 flex items-center space-x-2"
+                className="group relative bg-[#8CBC67] hover:bg-[#7AB055] text-white px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:shadow-[#8CBC67]/30 hover:scale-105 transition-all duration-300 flex items-center space-x-2 cursor-pointer"
               >
                 <span>Book Your Event</span>
                 <ArrowRight
@@ -204,7 +204,7 @@ export default function HomePage() {
       {/* ================= SECTION 3: OUTSIDE LOOKING / OUTDOOR DECOR ================= */}
       <section className="py-24 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="text-xs uppercase tracking-[0.3em] text-[#D7A84B] font-bold flex items-center justify-center gap-1.5">
+          <span className="text-xs uppercase tracking-[0.3em] text-[#8CBC67] font-bold flex items-center justify-center gap-1.5">
             <Trees size={14} /> Open-Air & Lawns
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#202522]">

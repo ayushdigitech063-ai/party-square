@@ -15,7 +15,7 @@ export default function AdminReviews() {
   };
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
+    <div className="space-y-6 w-full">
       <div className="bg-white border border-[#E8E8E3]/80 p-6 rounded-3xl shadow-sm">
         <h2 className="font-serif text-2xl font-bold text-[#202522]">Customer Reviews & Ratings</h2>
         <p className="text-[#6B706C] text-xs font-light mt-1">Monitor testimonials and choose which reviews to showcase on the homepage.</p>

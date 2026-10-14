@@ -66,14 +66,14 @@ export default function FatherBirthdayPage() {
 
         <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 w-full">
           <div className="max-w-2xl space-y-6">
-            <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/20 border border-[#D7A84B]/50 px-4 py-2 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-lg">
-              <Shield size={14} className="text-[#DFBC71]" />
+            <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-4 py-2 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-lg">
+              <Shield size={14} className="text-[#8CBC67]" />
               <span>Father's Special Tribute Celebration</span>
             </div>
 
             <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.15] drop-shadow-md">
               Honor the Pillar of Strength Who{" "}
-              <span className="text-[#DFBC71] italic font-normal">
+              <span className="text-[#8CBC67] italic font-normal">
                 Built Your World
               </span>
             </h1>
@@ -87,7 +87,7 @@ export default function FatherBirthdayPage() {
             <div className="flex flex-wrap gap-4 pt-4">
               <Link
                 href="/contact"
-                className="group relative bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-2xl hover:scale-105 transition-all duration-300 flex items-center space-x-2"
+                className="group relative bg-[#8CBC67] hover:bg-[#7AB055] text-white px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:shadow-[#8CBC67]/30 hover:scale-105 transition-all duration-300 flex items-center space-x-2 cursor-pointer"
               >
                 <span>Book Father's Decor</span>
                 <ArrowRight
@@ -172,14 +172,14 @@ export default function FatherBirthdayPage() {
 
       {/* ================= FIXED LARGE BANNER CARD SECTION (card1.png) ================= */}
       <section className="py-16 px-6 max-w-7xl mx-auto">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 text-white shadow-2xl border border-[#D7A84B]/30">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#D7A84B]/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#D7A84B]/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 text-white shadow-2xl border border-[#8CBC67]/30">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#8CBC67]/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#8CBC67]/5 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 items-center p-8 sm:p-12 lg:p-16 gap-10">
             {/* Left Image Box */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-md aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl border border-[#D7A84B]/40 group">
+              <div className="relative w-full max-w-md aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl border border-[#8CBC67]/40 group">
                 <img
                   src="/card1.png"
                   alt="Father Grand Celebration"
@@ -187,7 +187,7 @@ export default function FatherBirthdayPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent flex items-end p-6">
                   <div>
-                    <p className="text-[#DFBC71] text-xs font-semibold uppercase tracking-widest mb-1">
+                    <p className="text-[#8CBC67] text-xs font-semibold uppercase tracking-widest mb-1">
                       Elite Signature Setup
                     </p>
                     <p className="text-white font-serif text-xl font-medium">
@@ -200,14 +200,14 @@ export default function FatherBirthdayPage() {
 
             {/* Right Content Box */}
             <div className="lg:col-span-7 space-y-5">
-              <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/20 border border-[#D7A84B]/40 px-4 py-1.5 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase">
-                <Award size={13} className="text-[#DFBC71]" />
+              <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-4 py-1.5 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase">
+                <Award size={13} className="text-[#8CBC67]" />
                 <span>Celebrating A Lifetime of Guidance</span>
               </div>
 
               <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
                 Because His Silent Strength{" "}
-                <span className="text-[#DFBC71] italic">
+                <span className="text-[#8CBC67] italic">
                   Deserves the Grandest Stage
                 </span>
               </h2>
@@ -230,7 +230,7 @@ export default function FatherBirthdayPage() {
               <div className="pt-2 flex flex-wrap gap-4">
                 <Link
                   href="/contact"
-                  className="bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-xl hover:scale-105 transition-all duration-300 flex items-center space-x-2"
+                  className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-xl hover:shadow-[#8CBC67]/30 hover:scale-105 transition-all duration-300 flex items-center space-x-2 cursor-pointer"
                 >
                   <span>Book Grand Setup for Dad</span>
                   <ArrowRight size={15} />

@@ -3,10 +3,66 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Sparkles, CheckCircle, Star, Heart, ArrowRight, ShieldCheck } from "lucide-react";
+import { useWishlist } from "@/app/context/wishlistcontext";
+import ProductCard from "@/app/components/ProductCard";
+import ProductSort from "@/app/components/ProductSort";
+import { ringDecorationProducts } from "@/app/data/ringDecorationProducts";
+import { fetchPackages, fetchGalleryItems } from "@/app/lib/api";
+
+const DEFAULT_CEREMONY_CARDS = [
+  {
+    id: "1",
+    image: "/ceremanypic1.png",
+    title: "Floral Ring Arch Backdrop",
+    price: "₹12,999",
+    rawPrice: 12999,
+    desc: "A magnificent circular floral loop decorated with fresh roses, orchids, and warm fairy lighting for the perfect engagement backdrop."
+  },
+  {
+    id: "2",
+    image: "/ceremanypic2.png",
+    title: "Royal Couple Seating & Stage",
+    price: "₹18,999",
+    rawPrice: 18999,
+    desc: "Stunning couple sofa setup with rich velvet drapes, golden props, and grand chandelier lighting designed specifically for your special day."
+  },
+  {
+    id: "3",
+    image: "/ceremanypic3.png",
+    title: "Aisle & Entrance Pathway Decor",
+    price: "₹8,499",
+    rawPrice: 8499,
+    desc: "Magical entry walkway adorned with flower petals, pillar candles, and elegant cold pyro fountains to welcome the couple in style."
+  },
+  {
+    id: "4",
+    image: "/ceremanypic4.png",
+    title: "Intimate Garden Ring Setup",
+    price: "₹14,999",
+    rawPrice: 14999,
+    desc: "Open-air romantic canopy setup with hanging fairy lights, botanical greens, and pastel floral arrangements for outdoor celebrations."
+  }
+];
 
 export default function RingDecorationPage() {
+  const { toggleWishlist, isInWishlist } = useWishlist();
+  const [sortBy, setSortBy] = useState<"recommended" | "price-low" | "price-high">("recommended");
+
+  const getPrice = (price: string | number) => {
+    if (typeof price === "number") return price;
+    const value = Number(String(price).replace(/[₹,]/g, "").trim());
+    return Number.isNaN(value) ? Infinity : value;
+  };
+
+  const sortedProducts = [...ringDecorationProducts].sort((a, b) => {
+    if (sortBy === "price-low") return getPrice(a.price) - getPrice(b.price);
+    if (sortBy === "price-high") return getPrice(b.price) - getPrice(a.price);
+    return 0;
+  });
+
+  const productsToDisplay = sortBy === "recommended" ? ringDecorationProducts : sortedProducts;
   // Slider Data for the section below cards
-  const slideImages = [
+  const DEFAULT_SLIDE_IMAGES = [
     {
       image: "/ringceremany.png",
       title: "Royal Stage & Floral Canopy",
@@ -24,6 +80,28 @@ export default function RingDecorationPage() {
     }
   ];
 
+  const [slideImages, setSlideImages] = useState(DEFAULT_SLIDE_IMAGES);
+
+  useEffect(() => {
+    async function loadDynamicRingGallery() {
+      try {
+        const data = await fetchGalleryItems("ring-decoration");
+        if (Array.isArray(data) && data.length > 0) {
+          setSlideImages(
+            data.map((item) => ({
+              image: item.image,
+              title: item.title,
+              desc: item.category || "Exquisite setup with warm ambient lighting.",
+            }))
+          );
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic ring gallery:", err);
+      }
+    }
+    loadDynamicRingGallery();
+  }, []);
+
   const [currentSlide, setCurrentSlide] = useState(0);
 
   // Auto slide effect every 4 seconds
@@ -35,32 +113,31 @@ export default function RingDecorationPage() {
   }, [slideImages.length]);
 
   // Ceremony Cards Data
-  const ceremonyCards = [
-    {
-      image: "/ceremanypic1.png",
-      title: "Floral Ring Arch Backdrop",
-      price: "₹12,999",
-      desc: "A magnificent circular floral loop decorated with fresh roses, orchids, and warm fairy lighting for the perfect engagement backdrop."
-    },
-    {
-      image: "/ceremanypic2.png",
-      title: "Royal Couple Seating & Stage",
-      price: "₹18,999",
-      desc: "Stunning couple sofa setup with rich velvet drapes, golden props, and grand chandelier lighting designed specifically for your special day."
-    },
-    {
-      image: "/ceremanypic3.png",
-      title: "Aisle & Entrance Pathway Decor",
-      price: "₹8,499",
-      desc: "Magical entry walkway adorned with flower petals, pillar candles, and elegant cold pyro fountains to welcome the couple in style."
-    },
-    {
-      image: "/ceremanypic4.png",
-      title: "Intimate Garden Ring Setup",
-      price: "₹14,999",
-      desc: "Open-air romantic canopy setup with hanging fairy lights, botanical greens, and pastel floral arrangements for outdoor celebrations."
+  const [ceremonyCards, setCeremonyCards] = useState(DEFAULT_CEREMONY_CARDS);
+
+  useEffect(() => {
+    async function loadDynamicRingPackages() {
+      try {
+        const data = await fetchPackages("ring-decoration");
+        if (Array.isArray(data) && data.length > 0) {
+          setCeremonyCards(
+            data.map((p) => ({
+              id: p._id,
+              image: p.image || "/ceremanypic1.png",
+              title: p.name,
+              price: `₹${Number(p.price).toLocaleString("en-IN")}`,
+              rawPrice: p.price,
+              popular: !!p.isPopular,
+              desc: p.description,
+            }))
+          );
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic ring decoration packages:", err);
+      }
     }
-  ];
+    loadDynamicRingPackages();
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans">
@@ -76,13 +153,13 @@ export default function RingDecorationPage() {
         {/* Hero Content */}
         <div className="relative z-20 max-w-7xl mx-auto px-6 w-full text-center sm:text-left">
           <div className="max-w-2xl space-y-6">
-            <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/30 border border-[#D7A84B]/50 px-4 py-1.5 rounded-full text-[#DFBC71] text-xs font-semibold tracking-widest uppercase backdrop-blur-md">
-              <Sparkles size={13} />
+            <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-4 py-1.5 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md">
+              <Sparkles size={13} className="text-[#8CBC67]" />
               <span>Royal Ring Ceremony Specialists</span>
             </div>
 
             <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-md">
-              Where Forever Begins With A Ring
+              Where Forever Begins <span className="text-[#8CBC67] italic font-normal">With A Ring</span>
             </h1>
 
             <p className="text-neutral-200 text-sm sm:text-base leading-relaxed">
@@ -92,7 +169,7 @@ export default function RingDecorationPage() {
             <div className="flex flex-wrap gap-4 pt-2 justify-center sm:justify-start">
               <Link
                 href="/contact"
-                className="bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-[#202522] px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-wider shadow-xl hover:brightness-105 transition flex items-center space-x-2"
+                className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg hover:shadow-[#8CBC67]/30 transition-all flex items-center space-x-2 cursor-pointer"
               >
                 <span>Book Ring Ceremony</span>
                 <ArrowRight size={15} />
@@ -114,7 +191,7 @@ export default function RingDecorationPage() {
       {/* ================= CEREMONY CARDS GRID SECTION ================= */}
       <section className="py-20 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="text-xs uppercase tracking-[0.25em] text-[#D7A84B] font-bold">Exclusive Collections</span>
+          <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">Exclusive Collections</span>
           <h2 className="font-serif text-3xl sm:text-4xl font-bold">Ring Ceremony & Couple Decor Packages</h2>
           <p className="text-[#6B706C] text-sm">Explore our specialized packages crafted to make your ring exchange ceremony an absolute fairy tale.</p>
         </div>
@@ -131,14 +208,14 @@ export default function RingDecorationPage() {
                   alt={card.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
                 />
-                <div className="absolute top-4 right-4 bg-neutral-900/80 backdrop-blur-md text-[#DFBC71] text-xs font-bold px-3 py-1 rounded-full border border-[#D7A84B]/40 shadow">
+                <div className="absolute top-4 right-4 bg-[#202522]/90 backdrop-blur-md text-[#8CBC67] text-xs font-bold px-3 py-1 rounded-full border border-[#8CBC67]/30 shadow">
                   {card.price}
                 </div>
               </div>
 
               <div className="p-6 flex flex-col justify-between flex-grow space-y-4">
                 <div>
-                  <h3 className="font-serif text-lg font-bold text-[#202522] mb-2 group-hover:text-[#D7A84B] transition">
+                  <h3 className="font-serif text-lg font-bold text-[#202522] mb-2 group-hover:text-[#8CBC67] transition">
                     {card.title}
                   </h3>
                   <p className="text-[#6B706C] text-xs leading-relaxed">
@@ -147,8 +224,8 @@ export default function RingDecorationPage() {
                 </div>
 
                 <Link
-                  href="/contact"
-                  className="w-full block text-center py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#FAF8F5] border border-[#D7A84B]/40 text-[#202522] hover:bg-[#D7A84B] hover:text-white transition duration-300"
+                  href={`/payment-detail?productId=${card.id}&name=${encodeURIComponent(card.title)}&price=${card.rawPrice || String(card.price).replace(/[^0-9]/g, '')}&image=${encodeURIComponent(card.image)}`}
+                  className="w-full block text-center py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#EEF6EB] border border-[#8CBC67]/40 text-[#202522] hover:bg-[#8CBC67] hover:text-white transition duration-300"
                 >
                   Select Package
                 </Link>
@@ -158,11 +235,64 @@ export default function RingDecorationPage() {
         </div>
       </section>
 
+      {/* ================= RING CEREMONY PRODUCTS SECTION ================= */}
+      <section className="py-16 px-6 max-w-7xl mx-auto border-t border-[#E8DFD1]">
+        <div className="relative mb-12">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            {/* LEFT - Heading */}
+            <div className="text-left">
+              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
+                Ring Ceremony Collection
+              </span>
+              <div className="flex items-baseline gap-3 mt-1">
+                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522]">
+                  Ring Decoration Products
+                </h2>
+                <span className="text-[#6B706C] text-2xl">|</span>
+                <span className="text-[#6B706C] text-2xl">
+                  {productsToDisplay.length} Items
+                </span>
+              </div>
+              <p className="text-[#6B706C] text-sm font-light mt-2 max-w-2xl">
+                Discover bespoke floral arches, royal couple stages, cold pyro walkway arches, and romantic garden setups for an unforgettable engagement.
+              </p>
+            </div>
+
+            {/* RIGHT - Sort */}
+            <div className="shrink-0">
+              <ProductSort value={sortBy} onChange={setSortBy} />
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {productsToDisplay.slice(0, 8).map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              isInWishlist={isInWishlist}
+              toggleWishlist={toggleWishlist}
+            />
+          ))}
+        </div>
+
+        {/* VIEW MORE PRODUCTS BUTTON */}
+        <div className="text-center mt-12">
+          <Link
+            href="/services/ring-decoration/all-products"
+            className="inline-flex items-center space-x-2 bg-white hover:bg-neutral-950 hover:text-white text-neutral-950 font-bold px-8 py-3.5 rounded-full text-xs uppercase tracking-wider transition shadow-sm border border-[#E8DFD1]"
+          >
+            <span>View More Products</span>
+            <ArrowRight size={14} />
+          </Link>
+        </div>
+      </section>
+
       {/* ================= AUTOMATIC SLIDING GALLERY SECTION (MOVED BELOW CARDS) ================= */}
       <section className="py-20 bg-[#F5F1E9] border-t border-[#E8DFD1]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
-            <span className="text-xs uppercase tracking-[0.25em] text-[#D7A84B] font-bold">Visual Showcase</span>
+            <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">Visual Showcase</span>
             <h2 className="font-serif text-3xl font-bold">Highlights & Stage Inspirations</h2>
             <p className="text-[#6B706C] text-sm">Experience the grandeur of our previous setup themes through clear visual previews.</p>
           </div>
@@ -186,8 +316,8 @@ export default function RingDecorationPage() {
 
             {/* Slide Content */}
             <div className="p-8 sm:p-12 flex flex-col justify-center space-y-6 bg-white">
-              <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/10 border border-[#D7A84B]/30 px-3 py-1 rounded-full text-[#D7A84B] text-xs font-bold tracking-widest uppercase w-max">
-                <Sparkles size={13} />
+              <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#8CBC67]/40 px-3.5 py-1.5 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase w-max">
+                <Sparkles size={13} className="text-[#8CBC67]" />
                 <span>Featured Highlights</span>
               </div>
 
@@ -206,7 +336,7 @@ export default function RingDecorationPage() {
                     key={idx}
                     onClick={() => setCurrentSlide(idx)}
                     className={`h-2 rounded-full transition-all duration-300 ${
-                      idx === currentSlide ? "w-8 bg-[#D7A84B]" : "w-2 bg-neutral-300"
+                      idx === currentSlide ? "w-8 bg-[#8CBC67]" : "w-2 bg-neutral-300"
                     }`}
                   />
                 ))}
@@ -216,64 +346,7 @@ export default function RingDecorationPage() {
         </div>
       </section>
 
-      {/* ================= BOTTOM FEATURE BANNER (WITH cardcontainer.png) ================= */}
-      <section className="py-16 bg-white border-t border-[#E8DFD1]">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="bg-[#FAF8F5] rounded-3xl border border-[#E8DFD1] shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 items-center">
-            
-            {/* Left Content (Love Theme) */}
-            <div className="p-8 sm:p-12 space-y-6">
-              <div className="inline-flex items-center space-x-2 bg-[#D7A84B]/10 border border-[#D7A84B]/30 px-3 py-1 rounded-full text-[#D7A84B] text-xs font-bold tracking-widest uppercase">
-                <Heart size={13} className="text-rose-500 fill-rose-500" />
-                <span>Endless Romance</span>
-              </div>
 
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold leading-tight">
-                Designed With Love, <br /><span className="text-[#D7A84B]">Remembered Forever</span>
-              </h2>
-
-              <p className="text-[#6B706C] text-sm leading-relaxed">
-                Your engagement is the first milestone of a lifelong journey together. Our expert decorators pour passion into every petal, light, and corner to ensure your story is told with utmost elegance and grace.
-              </p>
-
-              <div className="space-y-3 pt-2">
-                <div className="flex items-center space-x-3 text-xs text-[#202522] font-medium">
-                  <CheckCircle size={16} className="text-[#D7A84B]" />
-                  <span>Customized Theme Consultation & 3D Preview</span>
-                </div>
-                <div className="flex items-center space-x-3 text-xs text-[#202522] font-medium">
-                  <CheckCircle size={16} className="text-[#D7A84B]" />
-                  <span>Fresh Imported Flowers & Organic Balloons</span>
-                </div>
-                <div className="flex items-center space-x-3 text-xs text-[#202522] font-medium">
-                  <CheckCircle size={16} className="text-[#D7A84B]" />
-                  <span>Punctual On-Site Setup & Dedicated Manager</span>
-                </div>
-              </div>
-
-              <div className="pt-4">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center space-x-2 bg-neutral-900 text-white hover:bg-[#D7A84B] hover:text-[#202522] transition px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-md"
-                >
-                  <span>Plan Your Engagement</span>
-                  <ArrowRight size={14} />
-                </Link>
-              </div>
-            </div>
-
-            {/* Right Image (cardcontainer.png) */}
-            <div className="relative h-80 lg:h-full min-h-[350px]">
-              <img
-                src="/cardcontainer.png"
-                alt="Love Theme Container"
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-          </div>
-        </div>
-      </section>
 
     </div>
   );
