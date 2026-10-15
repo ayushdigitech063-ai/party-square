@@ -613,14 +613,40 @@ export default function Navbar() {
             />
           </form>
 
-          {/* Mobile Right Controls: Search button + Hamburger Menu button (Matching reference screenshot) */}
-          <div className="flex md:hidden items-center gap-2 shrink-0">
+          {/* Mobile Right Controls: Wishlist + Basket + Search + Hamburger Menu */}
+          <div className="flex md:hidden items-center gap-1.5 sm:gap-2 shrink-0">
+            <Link
+              href="/wishlist"
+              aria-label={`Wishlist${wishlist.length > 0 ? `, ${wishlist.length} items` : ""}`}
+              className="relative w-9 h-9 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-center text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
+            >
+              <Heart size={16} />
+              {wishlist.length > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center border-2 border-white">
+                  {wishlist.length}
+                </span>
+              )}
+            </Link>
+
+            <Link
+              href="/basket"
+              aria-label="Basket"
+              className="relative w-9 h-9 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-center text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
+            >
+              <ShoppingBasket size={16} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center border-2 border-white">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+
             <button
               onClick={() => setSearchOpen((v) => !v)}
               aria-label="Search"
               className="w-9 h-9 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-center text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
             >
-              {searchOpen ? <X size={17} /> : <Search size={17} />}
+              {searchOpen ? <X size={16} /> : <Search size={16} />}
             </button>
 
             <button
@@ -628,7 +654,7 @@ export default function Navbar() {
               aria-label="Toggle Menu"
               className="w-9 h-9 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-center text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
             >
-              <Menu size={18} />
+              <Menu size={17} />
             </button>
           </div>
 
