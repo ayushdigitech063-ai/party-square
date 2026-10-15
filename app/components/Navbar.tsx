@@ -533,6 +533,30 @@ export default function Navbar() {
     setMobileMenuOpen(false);
   }, [pathname]);
 
+  // Lock background body scroll completely when mobile slide-over drawer is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      const scrollY = window.scrollY;
+      const prevOverflow = document.body.style.overflow;
+      const prevPosition = document.body.style.position;
+      const prevTop = document.body.style.top;
+      const prevWidth = document.body.style.width;
+
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+
+      return () => {
+        document.body.style.position = prevPosition;
+        document.body.style.top = prevTop;
+        document.body.style.width = prevWidth;
+        document.body.style.overflow = prevOverflow;
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [mobileMenuOpen]);
+
   // Automatically open the city selection popup on first visit
   useEffect(() => {
     const hasSeenCityModal = localStorage.getItem("hasSeenCityModal");
@@ -762,12 +786,16 @@ export default function Navbar() {
 
       {/* ================= MOBILE SLIDE-OVER DRAWER ================= */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[9999] md:hidden">
+        <div className="fixed inset-0 z-[9999] md:hidden overscroll-none select-none">
           <div
             onClick={() => setMobileMenuOpen(false)}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+            onTouchMove={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity touch-none"
           />
-          <div className="absolute right-0 top-0 bottom-0 w-[85%] max-w-[340px] bg-white shadow-2xl flex flex-col overflow-y-auto">
+          <div className="absolute right-0 top-0 bottom-0 w-[85%] max-w-[340px] bg-white shadow-2xl flex flex-col overflow-y-auto overscroll-contain select-text">
             {/* Drawer Header */}
             <div className="p-4 border-b border-[#E8E8E3] flex items-center justify-between">
               <div className="w-28 h-8 relative">

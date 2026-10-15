@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { X, MapPin, Check } from "lucide-react";
 import { useCity } from "@/app/context/CityContext";
 import { useRouter, usePathname } from "next/navigation";
@@ -93,6 +93,29 @@ export default function CityModal({
   };
 
   const availableCities = propCities && propCities.length > 0 ? propCities : cityNames;
+
+  useEffect(() => {
+    if (showModal) {
+      const scrollY = window.scrollY;
+      const prevOverflow = document.body.style.overflow;
+      const prevPosition = document.body.style.position;
+      const prevTop = document.body.style.top;
+      const prevWidth = document.body.style.width;
+
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+
+      return () => {
+        document.body.style.position = prevPosition;
+        document.body.style.top = prevTop;
+        document.body.style.width = prevWidth;
+        document.body.style.overflow = prevOverflow;
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [showModal]);
 
   if (!showModal) return null;
 
