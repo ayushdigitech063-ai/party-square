@@ -87,7 +87,24 @@ export default function AnnouncementBar() {
 
   return (
     <div className="relative w-full bg-[#132c20] text-white text-xs sm:text-sm font-medium z-40 border-b border-emerald-950/40 shadow-sm transition-all">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2 flex items-center justify-between gap-2 sm:gap-4 flex-wrap md:flex-nowrap">
+      {/* Mobile view: Clean single-line banner matching reference */}
+      <div className="sm:hidden px-3 py-2 flex items-center justify-center gap-1.5 text-center text-[11px] font-semibold text-emerald-50">
+        <span className="shrink-0 text-xs">🎁</span>
+        <span className="truncate">{data.text || DEFAULT_ANNOUNCEMENT.text}</span>
+        {data.showCoupon !== false && data.couponCode && (
+          <button
+            onClick={() => handleCopyCoupon(data.couponCode!)}
+            title="Click to copy coupon code"
+            className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/90 border border-emerald-600/40 text-[10px] font-mono text-emerald-200 hover:text-white transition"
+          >
+            <span>Use Code: <strong className="text-white font-bold">{data.couponCode}</strong></span>
+            {copied && <Check size={10} className="text-[#8CBC67]" />}
+          </button>
+        )}
+      </div>
+
+      {/* Desktop view */}
+      <div className="hidden sm:flex max-w-7xl mx-auto px-4 sm:px-6 py-2 items-center justify-between gap-4">
         
         {/* Left: Badge + Main Text */}
         <div className="flex items-center gap-2 sm:gap-3 flex-wrap min-w-0">
@@ -152,7 +169,6 @@ export default function AnnouncementBar() {
             <X size={14} />
           </button>
         </div>
-
       </div>
     </div>
   );

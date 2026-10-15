@@ -23,6 +23,8 @@ import {
   X,
   User,
   Heart,
+  Menu,
+  ChevronRight,
 } from "lucide-react";
 import CityModal from "./CityModal"; // <-- CityModal import kiya hai (apne folder path ke hisaab se adjust kar lein)
 import { useWishlist } from "../context/wishlistcontext";
@@ -521,10 +523,15 @@ export default function Navbar() {
 
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const locationRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   // Automatically open the city selection popup on first visit
   useEffect(() => {
@@ -582,27 +589,29 @@ export default function Navbar() {
             />
           </form>
 
-          <div className="flex items-center gap-1 sm:gap-2.5 shrink-0">
-            {/* Mobile Location selector */}
-            <button
-              onClick={() => setIsCityModalOpen(true)}
-              aria-label="Select City"
-              className="sm:hidden flex items-center gap-1 h-8 px-2 rounded-full border border-[#E8E8E3] text-[11px] font-semibold text-[#202522] hover:border-[#8CBC67] transition-colors"
-            >
-              <MapPin size={12} className="text-[#8CBC67] shrink-0" />
-              <span className="max-w-[60px] truncate">{selectedCity}</span>
-            </button>
-
+          {/* Mobile Right Controls: Search button + Hamburger Menu button (Matching reference screenshot) */}
+          <div className="flex md:hidden items-center gap-2 shrink-0">
             <button
               onClick={() => setSearchOpen((v) => !v)}
               aria-label="Search"
-              className="md:hidden w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
+              className="w-9 h-9 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-center text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
             >
-              {searchOpen ? <X size={15} /> : <Search size={15} />}
+              {searchOpen ? <X size={17} /> : <Search size={17} />}
             </button>
 
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              aria-label="Toggle Menu"
+              className="w-9 h-9 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-center text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
+            >
+              <Menu size={18} />
+            </button>
+          </div>
+
+          {/* Desktop Right Controls (All logic, profile and cart preserved) */}
+          <div className="hidden md:flex items-center gap-2.5 shrink-0">
             {/* Location selector trigger on navbar */}
-            <div className="relative hidden sm:block" ref={locationRef}>
+            <div className="relative" ref={locationRef}>
               <button
                 onClick={() => setIsCityModalOpen(true)}
                 className="flex items-center gap-1.5 h-10 px-3.5 rounded-full border border-[#E8E8E3] text-[15px] font-medium text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
@@ -615,25 +624,26 @@ export default function Navbar() {
                 />
               </button>
             </div>
-<Link
-  href="/basket"
-  aria-label="Basket"
-  className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
->
-  <ShoppingBasket size={18} />
-  {cartCount > 0 && (
-    <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-semibold flex items-center justify-center border-2 border-white">
-      {cartCount}
-    </span>
-  )}
-</Link>
+
+            <Link
+              href="/basket"
+              aria-label="Basket"
+              className="relative w-10 h-10 shrink-0 rounded-full border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
+            >
+              <ShoppingBasket size={18} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-semibold flex items-center justify-center border-2 border-white">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+
             <Link
               href="/wishlist"
               aria-label={`Wishlist${wishlist.length > 0 ? `, ${wishlist.length} items` : ""}`}
-              className="relative w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
+              className="relative w-10 h-10 shrink-0 rounded-full border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
             >
               <Heart size={18} />
-
               {wishlist.length > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center border-2 border-white">
                   {wishlist.length}
@@ -646,28 +656,28 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Chat on WhatsApp"
-              className="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:brightness-105 transition"
+              className="w-10 h-10 shrink-0 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:brightness-105 transition"
             >
               <WhatsAppIcon size={18} />
             </a>
 
             {isLoggedIn ? (
-                <div className="relative group">
-                  <Link href="/profile" className="h-9 w-9 sm:h-11 sm:w-11 shrink-0 rounded-full bg-[#F7D6C7] text-black flex items-center justify-center hover:bg-[#D7A84B] transition shadow-sm" aria-label="User Profile">
-                    <User size={20} />
-                  </Link>
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pt-2 pb-1">
-                    <div className="px-4 py-2 border-b border-gray-50 mb-1">
-                      <p className="text-sm font-bold text-gray-900 truncate">{userName}</p>
-                    </div>
-                    <Link href="/profile" className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-[#EEF6EB] hover:text-[#8CBC67] transition">My Bookings</Link>
-                    <Link href="/profile" className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-[#EEF6EB] hover:text-[#8CBC67] transition">My Profile</Link>
-                    <button onClick={() => { document.cookie = "token=; path=/; max-age=0;"; document.cookie = "user=; path=/; max-age=0;"; window.location.href = "/"; }} className="w-full text-left block px-4 py-2 text-sm font-medium text-red-600 hover:bg-[#F7D6C7] transition cursor-pointer">Logout</button>
+              <div className="relative group">
+                <Link href="/profile" className="h-11 w-11 shrink-0 rounded-full bg-[#F7D6C7] text-black flex items-center justify-center hover:bg-[#D7A84B] transition shadow-sm" aria-label="User Profile">
+                  <User size={20} />
+                </Link>
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pt-2 pb-1">
+                  <div className="px-4 py-2 border-b border-gray-50 mb-1">
+                    <p className="text-sm font-bold text-gray-900 truncate">{userName}</p>
                   </div>
+                  <Link href="/profile" className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-[#EEF6EB] hover:text-[#8CBC67] transition">My Bookings</Link>
+                  <Link href="/profile" className="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-[#EEF6EB] hover:text-[#8CBC67] transition">My Profile</Link>
+                  <button onClick={() => { document.cookie = "token=; path=/; max-age=0;"; document.cookie = "user=; path=/; max-age=0;"; window.location.href = "/"; }} className="w-full text-left block px-4 py-2 text-sm font-medium text-red-600 hover:bg-[#F7D6C7] transition cursor-pointer">Logout</button>
                 </div>
-              ) : (
-              <button onClick={()=> setLoginOpen(true)} className="h-9 sm:h-11 px-3 sm:px-6 shrink-0 rounded-full bg-[#F7D6C7] text-black text-sm sm:text-[15px] font-semibold flex items-center gap-1.5 sm:gap-2 whitespace-nowrap hover:bg-[#D7A84B] transition shadow-sm">
-                <span className="hidden sm:inline">Login</span>
+              </div>
+            ) : (
+              <button onClick={()=> setLoginOpen(true)} className="h-11 px-6 shrink-0 rounded-full bg-[#F7D6C7] text-black text-[15px] font-semibold flex items-center gap-2 whitespace-nowrap hover:bg-[#D7A84B] transition shadow-sm">
+                <span>Login</span>
                 <ArrowRight size={16} />
               </button>
             )}
@@ -693,53 +703,236 @@ export default function Navbar() {
           </div>
         )}
 
+        {/* Categories Bar with smooth scroll and right arrow */}
         <div className="relative border-t border-[#E8E8E3] bg-white">
-          <div className="pointer-events-none absolute left-0 top-0 h-full w-6 sm:w-10 bg-gradient-to-r from-white to-transparent z-10" />
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 flex items-center">
+            <div
+              ref={scrollRef}
+              className="flex-1 py-2.5 sm:py-3 flex items-center gap-2 sm:gap-2.5 overflow-x-auto scroll-smooth scrollbar-none"
+              style={{ scrollbarWidth: "none" }}
+            >
+              <style jsx>{`
+                div::-webkit-scrollbar {
+                  display: none;
+                }
+              `}</style>
 
-          <div
-            ref={scrollRef}
-            className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 py-2.5 sm:py-3 flex items-center gap-2 sm:gap-2.5 overflow-x-auto scroll-smooth"
-            style={{ scrollbarWidth: "none" }}
-          >
-            <style jsx>{`
-              div::-webkit-scrollbar {
-                display: none;
-              }
-            `}</style>
+              {NAV_PILLS.map((item) => {
+                if (item.type === "link") {
+                  const { label, href, icon: Icon } = item;
+                  const isActive = pathname === href;
+                  return (
+                    <Link
+                      key={label}
+                      href={href}
+                      className={`shrink-0 flex items-center gap-1.5 sm:gap-2 rounded-full px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-medium whitespace-nowrap border transition-colors ${
+                        isActive
+                          ? "bg-[#EEF6EB] text-[#202522] border-[#8CBC67] font-semibold shadow-xs"
+                          : "bg-white text-[#202522] border-[#E8E8E3] hover:border-[#8CBC67] hover:text-[#202522] hover:bg-[#EEF6EB]/50"
+                      }`}
+                    >
+                      <Icon
+                        size={15}
+                        className="text-[#8CBC67]"
+                      />
+                      {label}
+                    </Link>
+                  );
+                }
 
-            {NAV_PILLS.map((item) => {
-              if (item.type === "link") {
-                const { label, href, icon: Icon } = item;
-                const isActive = pathname === href;
                 return (
-                  <Link
-                    key={label}
-                    href={href}
-                    className={`shrink-0 flex items-center gap-1.5 sm:gap-2 rounded-full px-3 sm:px-4 py-2 text-sm font-medium whitespace-nowrap border transition-colors ${
-                      isActive
-                        ? "bg-[#EEF6EB] text-[#202522] border-[#8CBC67] font-semibold shadow-xs"
-                        : "bg-white text-[#202522] border-[#E8E8E3] hover:border-[#8CBC67] hover:text-[#202522] hover:bg-[#EEF6EB]/50"
-                    }`}
-                  >
-                    <Icon
-                      size={16}
-                      className="text-[#8CBC67]"
-                    />
-                    {label}
-                  </Link>
+                  <DropdownPill key={item.label} {...item} pathname={pathname} />
                 );
-              }
+              })}
+            </div>
 
-              return (
-                <DropdownPill key={item.label} {...item} pathname={pathname} />
-              );
-            })}
+            {/* Right Arrow button for categories (matching reference) */}
+            <button
+              onClick={() => {
+                if (scrollRef.current) scrollRef.current.scrollBy({ left: 180, behavior: "smooth" });
+              }}
+              aria-label="Scroll categories right"
+              className="shrink-0 ml-1.5 sm:ml-2 w-8 h-8 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] hover:bg-[#EEF6EB] hover:border-[#8CBC67] text-[#6B706C] hover:text-[#202522] flex items-center justify-center transition shadow-2xs cursor-pointer"
+            >
+              <ChevronRight size={15} />
+            </button>
           </div>
-
-          <div className="pointer-events-none absolute right-0 top-0 h-full w-6 sm:w-10 bg-gradient-to-l from-white to-transparent z-10" />
         </div>
       </nav>
-       <LoginModal isOpen={loginopen} onClose={() => setLoginOpen(false)} />
+
+      {/* ================= MOBILE SLIDE-OVER DRAWER ================= */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-[9999] md:hidden">
+          <div
+            onClick={() => setMobileMenuOpen(false)}
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+          />
+          <div className="absolute right-0 top-0 bottom-0 w-[85%] max-w-[340px] bg-white shadow-2xl flex flex-col overflow-y-auto">
+            {/* Drawer Header */}
+            <div className="p-4 border-b border-[#E8E8E3] flex items-center justify-between">
+              <div className="w-28 h-8 relative">
+                <Image src="/logo-full.png" alt="Party Square" fill className="object-contain" priority />
+              </div>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#FCFBF7] border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:text-black"
+                aria-label="Close menu"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Location Selector */}
+            <div className="p-4 border-b border-[#E8E8E3] bg-[#FCFBF7]">
+              <p className="text-[10px] uppercase font-bold text-[#6B706C] tracking-wider mb-1.5">Your Selected City</p>
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setIsCityModalOpen(true);
+                }}
+                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-[#E8E8E3] bg-white text-xs font-semibold text-[#202522] hover:border-[#8CBC67]"
+              >
+                <div className="flex items-center gap-2">
+                  <MapPin size={15} className="text-[#8CBC67]" />
+                  <span>{selectedCity}</span>
+                </div>
+                <span className="text-[#8CBC67] text-[11px] font-bold">Change City →</span>
+              </button>
+            </div>
+
+            {/* Quick Actions Row */}
+            <div className="p-4 grid grid-cols-3 gap-2 border-b border-[#E8E8E3]">
+              <Link
+                href="/basket"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex flex-col items-center justify-center p-2.5 rounded-xl border border-[#E8E8E3] bg-white hover:bg-[#EEF6EB] relative transition"
+              >
+                <ShoppingBasket size={18} className="text-[#202522]" />
+                {cartCount > 0 && (
+                  <span className="absolute top-1.5 right-2 min-w-[16px] h-[16px] px-1 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+                <span className="text-[11px] font-semibold mt-1">Basket</span>
+              </Link>
+
+              <Link
+                href="/wishlist"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex flex-col items-center justify-center p-2.5 rounded-xl border border-[#E8E8E3] bg-white hover:bg-[#EEF6EB] relative transition"
+              >
+                <Heart size={18} className="text-[#202522]" />
+                {wishlist.length > 0 && (
+                  <span className="absolute top-1.5 right-2 min-w-[16px] h-[16px] px-1 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">
+                    {wishlist.length}
+                  </span>
+                )}
+                <span className="text-[11px] font-semibold mt-1">Wishlist</span>
+              </Link>
+
+              <a
+                href="https://wa.me/910000000000"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex flex-col items-center justify-center p-2.5 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-800 transition"
+              >
+                <WhatsAppIcon size={18} />
+                <span className="text-[11px] font-semibold mt-1">WhatsApp</span>
+              </a>
+            </div>
+
+            {/* Profile / Login */}
+            <div className="p-4 border-b border-[#E8E8E3]">
+              {isLoggedIn ? (
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-10 h-10 rounded-full bg-[#F7D6C7] flex items-center justify-center font-bold text-sm">
+                      <User size={18} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-bold truncate">{userName}</p>
+                      <p className="text-[11px] text-[#6B706C]">Verified Customer</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <Link
+                      href="/profile"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="text-center py-2 px-3 rounded-lg bg-[#EEF6EB] text-[#202522] text-xs font-semibold hover:bg-[#8CBC67] hover:text-white transition"
+                    >
+                      My Bookings
+                    </Link>
+                    <button
+                      onClick={() => {
+                        document.cookie = "token=; path=/; max-age=0;";
+                        document.cookie = "user=; path=/; max-age=0;";
+                        window.location.href = "/";
+                      }}
+                      className="text-center py-2 px-3 rounded-lg bg-rose-50 text-rose-600 text-xs font-semibold hover:bg-rose-100 transition"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setLoginOpen(true);
+                  }}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#8CBC67] text-white text-xs font-bold shadow-md hover:bg-[#7AB055] transition"
+                >
+                  <User size={16} />
+                  <span>Login / Sign Up</span>
+                </button>
+              )}
+            </div>
+
+            {/* Navigation links & subcategories */}
+            <div className="p-4 flex-1 space-y-1">
+              <p className="text-[10px] uppercase font-bold text-[#6B706C] tracking-wider mb-2">Explore Services</p>
+              {NAV_PILLS.map((item) => {
+                if (item.type === "link") {
+                  return (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#202522] hover:bg-[#EEF6EB] hover:text-[#8CBC67] transition"
+                    >
+                      <item.icon size={16} className="text-[#8CBC67]" />
+                      <span>{item.label}</span>
+                    </Link>
+                  );
+                }
+                return (
+                  <div key={item.label} className="border-b border-[#E8E8E3]/60 pb-1">
+                    <div className="flex items-center justify-between px-3 py-2 text-sm font-semibold text-[#202522]">
+                      <div className="flex items-center gap-2.5">
+                        <item.icon size={16} className="text-[#8CBC67]" />
+                        <span>{item.label}</span>
+                      </div>
+                    </div>
+                    <div className="pl-8 pr-2 space-y-0.5 pb-2">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block py-1.5 px-2 rounded text-xs text-[#6B706C] hover:text-[#8CBC67] hover:bg-[#EEF6EB]/60 font-medium transition"
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+      <LoginModal isOpen={loginopen} onClose={() => setLoginOpen(false)} />
     </>
   );
 }

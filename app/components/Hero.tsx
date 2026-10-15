@@ -121,7 +121,7 @@ export default function Hero() {
       {/* ================= HERO SECTION CARD ================= */}
       {isEnabled && (
         <div className="max-w-[1212px] mx-auto p-3 sm:p-6">
-          <div className="relative w-full min-h-[440px] sm:min-h-[430px] md:h-[450px] rounded-[22px] sm:rounded-[28px] overflow-hidden text-white shadow-xl flex flex-col justify-center">
+          <div className="relative w-full min-h-[490px] sm:min-h-[440px] md:h-[450px] rounded-[24px] sm:rounded-[28px] overflow-hidden text-white shadow-xl flex flex-col justify-center">
 
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
@@ -131,27 +131,27 @@ export default function Hero() {
                 alt="Decoration Background"
                 className="w-full h-full object-cover transition-all duration-1000 ease-in-out scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/20" />
+              <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/85 via-black/55 to-black/25" />
             </div>
 
             {/* Hero Content */}
-            <div className="relative z-20 h-full flex flex-col justify-center px-5 sm:px-10 md:px-14 py-8 sm:py-0">
+            <div className="relative z-20 h-full flex flex-col justify-center px-6 sm:px-10 md:px-14 py-10 sm:py-0">
               <div className="max-w-xl">
-                <p className="text-[10px] sm:text-xs tracking-[0.2em] text-[#8CBC67] font-bold mb-2.5 sm:mb-4 uppercase">
+                <p className="text-[11px] sm:text-xs tracking-[0.2em] text-[#8CBC67] font-bold mb-2.5 sm:mb-4 uppercase">
                   {currentSlide.subtitle}
                 </p>
-                <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight mb-3 sm:mb-6">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight mb-3 sm:mb-6">
                   {currentSlide.titleFirst} <br />
                   <span className="font-bold text-[#8CBC67]">{currentSlide.titleItalic}</span>
                 </h1>
-                <p className="text-gray-200 text-xs sm:text-sm md:text-base leading-relaxed mb-6 sm:mb-8 max-w-md line-clamp-3 sm:line-clamp-none">
+                <p className="text-gray-200 text-xs sm:text-sm md:text-base leading-relaxed mb-6 sm:mb-8 max-w-md line-clamp-3 sm:line-clamp-none font-light">
                   {currentSlide.description}
                 </p>
 
                 <div className="flex items-center space-x-3 sm:space-x-6 flex-wrap gap-y-3">
                   <Link
                     href={currentSlide.buttonLink || "/services"}
-                    className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-semibold text-xs sm:text-sm flex items-center space-x-2 sm:space-x-3 transition shadow-md cursor-pointer"
+                    className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-5 sm:px-7 py-3 sm:py-3.5 rounded-full font-semibold text-xs sm:text-sm flex items-center space-x-2 sm:space-x-3 transition shadow-md cursor-pointer"
                   >
                     <span>{currentSlide.buttonText || "Explore Our Services"}</span>
                     <ArrowRight size={16} />
@@ -189,7 +189,7 @@ export default function Hero() {
                 </button>
 
                 {/* Dot pagination */}
-                <div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/30 backdrop-blur-sm px-3 py-2 rounded-full">
+                <div className="absolute bottom-5 sm:bottom-7 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/40 backdrop-blur-sm px-3 py-1.5 sm:py-2 rounded-full">
                   {slides.map((_, idx) => (
                     <button
                       key={idx}
