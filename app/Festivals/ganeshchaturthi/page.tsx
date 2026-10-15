@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -107,21 +107,21 @@ export default function GaneshChaturthi() {
   return (
     <div className="min-h-screen text-[#202522] font-sans bg-[#FCFBF7] selection:bg-[#8CBC67] selection:text-white overflow-x-hidden pb-20">
       {/* Hero Section */}
-      <section className="relative w-full h-[350px] px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[35px] shadow-2xl">
+      <section className="relative w-full min-h-[480px] sm:min-h-[520px] py-12 sm:py-16 px-4 sm:px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[28px] sm:rounded-[35px] shadow-2xl">
         <div
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat scale-100"
           style={{ backgroundImage: "url('/bg.png')" }}
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-950/50 to-neutral-950/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/95 via-neutral-950/70 to-neutral-950/40" />
         </div>
 
-        <div className="relative z-10 space-y-6 max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-5 py-2 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
-            <Sparkles size={15} className="text-[#8CBC67]" />
-            <span>Ganpati Bappa Morya â€¢ Festive Special 2026</span>
+        <div className="relative z-10 space-y-4 sm:space-y-6 max-w-4xl mx-auto px-4">
+          <div className="inline-flex items-center space-x-2 bg-black/60 border border-[#8CBC67]/50 px-4 py-1.5 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
+            <Sparkles size={14} className="text-[#8CBC67]" />
+            <span>Ganpati Bappa Morya • Festive Special 2026</span>
           </div>
 
-          <h1 className="font-serif text-4xl sm:text-7xl font-bold tracking-tight text-white drop-shadow-2xl">
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white drop-shadow-2xl">
             Divine{" "}
             <span className="text-[#8CBC67] italic font-normal">
               Ganesh Chaturthi
@@ -129,11 +129,30 @@ export default function GaneshChaturthi() {
             Decorations
           </h1>
 
-          <p className="text-neutral-200 text-sm sm:text-lg max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="text-neutral-200 text-xs sm:text-base max-w-2xl mx-auto leading-relaxed font-light">
             Welcome Lord Ganesha into your home with our breathtaking,
             handcrafted mandap and festive decoration setups. Pure devotion
             meets exquisite craftsmanship.
           </p>
+
+          <div className="flex flex-row items-center gap-2 sm:gap-4 pt-2 sm:pt-4 w-full justify-center max-w-md mx-auto">
+            <Link
+              href="/contact"
+              className="flex-1 sm:flex-initial bg-[#8CBC67] hover:bg-[#7AB055] text-white px-3 sm:px-8 py-3 rounded-full font-bold text-[11px] sm:text-xs uppercase tracking-wider shadow-lg hover:shadow-[#8CBC67]/30 transition flex items-center justify-center space-x-1.5 sm:space-x-2 cursor-pointer whitespace-nowrap"
+            >
+              <span>Book Mandap Decor</span>
+              <ArrowRight size={15} className="shrink-0" />
+            </Link>
+
+            <a
+              href="https://whatsapp.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 sm:flex-initial border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 px-3 sm:px-6 py-3 rounded-full font-semibold text-[11px] sm:text-xs uppercase tracking-wider transition flex items-center justify-center space-x-1.5 sm:space-x-2 whitespace-nowrap"
+            >
+              <span>Chat on WhatsApp</span>
+            </a>
+          </div>
         </div>
       </section>
 

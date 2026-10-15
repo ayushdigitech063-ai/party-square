@@ -28,7 +28,7 @@ export default function ChristmasPage() {
         <div className="relative z-10 space-y-6 max-w-4xl mx-auto px-4">
           <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-5 py-2 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
             <Sparkles size={15} className="text-[#8CBC67]" />
-            <span>Merry Christmas â€¢ Season of Joy & Magic 2026</span>
+            <span>Merry Christmas • Season of Joy & Magic 2026</span>
           </div>
           <h1 className="font-serif text-4xl sm:text-7xl font-bold tracking-tight text-white drop-shadow-2xl">
             Enchanting{" "}
@@ -194,6 +194,8 @@ export default function ChristmasPage() {
     </div>
   );
 }
+
+
 
 
 
