@@ -196,57 +196,57 @@ export default function MotherBirthdayPage() {
       </section>
 
       {/* ================= COMPACT & SLEEK CARDS SECTION ================= */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+      <section className="py-10 px-6 max-w-6xl mx-auto">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-2">
           <span className="text-xs uppercase tracking-[0.3em] text-[#D7A84B] font-bold">
             Bespoke Collections
           </span>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#202522]">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#202522]">
             Designed with Love & Elegance
           </h2>
-          <p className="text-[#6B706C] text-sm sm:text-base font-light">
+          <p className="text-[#6B706C] text-xs sm:text-sm">
             Compact, hand-picked themes crafted exclusively for mothers and
             milestone birthdays.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
           {motherPackages.map((pkg) => (
             <div
               key={pkg.id}
               onMouseEnter={() => setActiveCard(pkg.id)}
               onMouseLeave={() => setActiveCard(null)}
-              className={`group relative rounded-3xl bg-white transition-all duration-500 p-7 flex flex-col justify-between shadow-lg hover:shadow-2xl hover:-translate-y-2 border ${
+              className={`group relative rounded-2xl bg-white transition-all duration-300 p-4 sm:p-5 flex flex-col justify-between shadow-xs hover:shadow-lg border ${
                 pkg.popular
-                  ? "border-2 border-[#D7A84B] ring-4 ring-[#D7A84B]/10"
+                  ? "border-[#D7A84B] ring-1 ring-[#D7A84B]/30 shadow-md md:-translate-y-1"
                   : activeCard === pkg.id
-                    ? "border-[#D7A84B]/60 shadow-xl"
+                    ? "border-[#D7A84B]/60 shadow-md"
                     : "border-[#E8E8E3]/80"
               }`}
             >
               {pkg.popular && (
-                <div className="absolute -top-3.5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-md">
                   Most Preferred
                 </div>
               )}
 
               <div>
-                <div className="relative h-56 rounded-2xl overflow-hidden mb-6 bg-neutral-100 border border-[#E8E8E3]">
+                <div className="relative h-40 sm:h-44 rounded-xl overflow-hidden mb-4 bg-neutral-100 border border-[#E8E8E3]">
                   <img
                     src={pkg.image}
                     alt={pkg.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute top-3 right-3 bg-neutral-950/85 text-[#DFBC71] text-xs font-bold px-3.5 py-1.5 rounded-full backdrop-blur-md shadow-md border border-white/10">
+                  <div className="absolute top-3 right-3 bg-neutral-950/85 text-[#DFBC71] text-xs font-bold px-3 py-1 rounded-full backdrop-blur-md shadow-xs border border-white/10">
                     {pkg.price}
                   </div>
                 </div>
 
-                <h3 className="font-serif text-2xl font-bold text-[#202522] mb-2.5 group-hover:text-[#D7A84B] transition-colors">
+                <h3 className="font-serif text-base sm:text-lg font-bold text-[#202522] mb-1.5 group-hover:text-[#D7A84B] transition-colors leading-snug">
                   {pkg.name}
                 </h3>
-                <p className="text-[#6B706C] text-xs sm:text-sm leading-relaxed mb-6 font-light">
+                <p className="text-[#6B706C] text-xs leading-relaxed mb-4 font-light">
                   {pkg.desc}
                 </p>
               </div>
@@ -254,10 +254,10 @@ export default function MotherBirthdayPage() {
               <div>
                 <Link
                   href={`/payment-detail?productId=${pkg.id}&name=${encodeURIComponent(pkg.name)}&price=${pkg.rawPrice || String(pkg.price).replace(/[^0-9]/g, '')}&image=${encodeURIComponent(pkg.image)}`}
-                  className={`w-full block text-center py-3.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                  className={`w-full block text-center py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                     pkg.popular
-                      ? "bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 hover:shadow-lg hover:scale-[1.02]"
-                      : "bg-neutral-900 text-white hover:bg-[#D7A84B] hover:text-neutral-950 shadow-md"
+                      ? "bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-neutral-950 hover:shadow-md"
+                      : "bg-neutral-900 text-white hover:bg-[#D7A84B] hover:text-neutral-950 shadow-xs"
                   }`}
                 >
                   Select This Theme

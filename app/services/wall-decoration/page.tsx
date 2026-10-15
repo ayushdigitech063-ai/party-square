@@ -293,29 +293,29 @@ export default function WallDecorationPage() {
 
 
       {/* ================= PACKAGES SECTION WITH PROPER IMAGES ================= */}
-      <section className="py-12 px-6 max-w-7xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+      <section className="py-10 px-6 max-w-6xl mx-auto">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-2">
           <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">Pricing Plans</span>
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold">Choose Wall & Door Packages</h2>
-          <p className="text-[#6B706C] text-sm">Select from our specialized decoration packages for walls, corners, and doorways.</p>
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold">Choose Wall & Door Packages</h2>
+          <p className="text-[#6B706C] text-xs sm:text-sm">Select from our specialized decoration packages for walls, corners, and doorways.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
           {packages.map((pkg) => (
             <div
               key={pkg.id}
-              className={`relative rounded-3xl bg-white border transition-all duration-300 flex flex-col justify-between shadow-md hover:shadow-xl overflow-hidden group ${
-                pkg.popular ? "border-[#8CBC67] ring-2 ring-[#8CBC67]/20 scale-105 md:-translate-y-2" : "border-[#E8E8E3]"
+              className={`relative rounded-2xl bg-white border transition-all duration-300 flex flex-col justify-between shadow-xs hover:shadow-lg overflow-hidden group ${
+                pkg.popular ? "border-[#8CBC67] ring-1 ring-[#8CBC67]/30 shadow-md md:-translate-y-1" : "border-[#E8E8E3]"
               }`}
             >
               {pkg.popular && (
-                <div className="absolute top-4 right-4 z-10 bg-[#8CBC67] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-md">
+                <div className="absolute top-3 right-3 z-10 bg-[#8CBC67] text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full shadow-sm">
                   Most Popular
                 </div>
               )}
 
               {/* Package Image Preview */}
-              <div className="relative h-56 w-full overflow-hidden bg-neutral-100 border-b border-[#E8E8E3]">
+              <div className="relative h-40 sm:h-44 w-full overflow-hidden bg-neutral-100 border-b border-[#E8E8E3]">
                 <img 
                   src={pkg.image} 
                   alt={pkg.name} 
@@ -323,28 +323,28 @@ export default function WallDecorationPage() {
                 />
               </div>
 
-              <div className="p-8 flex flex-col flex-grow justify-between">
+              <div className="p-4 sm:p-5 flex flex-col flex-grow justify-between">
                 <div>
-                  <h3 className="font-serif text-2xl font-bold text-[#202522] mb-2">{pkg.name}</h3>
-                  <p className="text-[#6B706C] text-xs leading-relaxed mb-6">{pkg.desc}</p>
-                  <div className="text-3xl font-bold text-[#8CBC67] mb-6">{pkg.price}</div>
+                  <h3 className="font-serif text-base sm:text-lg font-bold text-[#202522] mb-1.5 leading-snug">{pkg.name}</h3>
+                  <p className="text-[#6B706C] text-xs leading-relaxed mb-3">{pkg.desc}</p>
+                  <div className="text-xl sm:text-2xl font-bold text-[#8CBC67] mb-3">{pkg.price}</div>
 
-                  <div className="space-y-3 border-t border-[#E8E8E3] pt-6">
+                  <div className="space-y-2 border-t border-[#E8E8E3] pt-3">
                     {pkg.features.map((feat, idx) => (
-                      <div key={idx} className="flex items-start space-x-3 text-xs text-[#202522]">
-                        <CheckCircle size={16} className="text-[#8CBC67] shrink-0 mt-0.5" />
+                      <div key={idx} className="flex items-start space-x-2.5 text-[11px] sm:text-xs text-[#202522]">
+                        <CheckCircle size={14} className="text-[#8CBC67] shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="pt-8">
+                <div className="pt-4 sm:pt-5">
                   <Link
                     href={`/payment-detail?productId=${pkg.id}&name=${encodeURIComponent(pkg.name)}&price=${pkg.rawPrice || String(pkg.price).replace(/[^0-9]/g, '')}&image=${encodeURIComponent(pkg.image)}`}
-                    className={`w-full block text-center py-3 rounded-full text-xs font-bold uppercase tracking-wider transition ${
+                    className={`w-full block text-center py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition ${
                       pkg.popular
-                        ? "bg-[#8CBC67] text-white hover:bg-[#7AB055] shadow-md"
+                        ? "bg-[#8CBC67] text-white hover:bg-[#7AB055] shadow-sm"
                         : "bg-neutral-900 text-white hover:bg-[#8CBC67]"
                     }`}
                   >

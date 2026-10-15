@@ -189,43 +189,43 @@ export default function RingDecorationPage() {
       </section>
 
       {/* ================= CEREMONY CARDS GRID SECTION ================= */}
-      <section className="py-20 px-6 max-w-7xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+      <section className="py-10 px-6 max-w-7xl mx-auto">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-2">
           <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">Exclusive Collections</span>
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold">Ring Ceremony & Couple Decor Packages</h2>
-          <p className="text-[#6B706C] text-sm">Explore our specialized packages crafted to make your ring exchange ceremony an absolute fairy tale.</p>
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold">Ring Ceremony & Couple Decor Packages</h2>
+          <p className="text-[#6B706C] text-xs sm:text-sm">Explore our specialized packages crafted to make your ring exchange ceremony an absolute fairy tale.</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {ceremonyCards.map((card, idx) => (
             <div
               key={idx}
-              className="bg-white rounded-3xl overflow-hidden border border-[#E8DFD1] shadow-md hover:shadow-2xl transition-all duration-500 group flex flex-col justify-between"
+              className="bg-white rounded-2xl overflow-hidden border border-[#E8DFD1] shadow-xs hover:shadow-lg transition-all duration-300 group flex flex-col justify-between"
             >
-              <div className="relative h-56 overflow-hidden">
+              <div className="relative h-40 sm:h-44 overflow-hidden">
                 <img
                   src={card.image}
                   alt={card.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
+                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                 />
-                <div className="absolute top-4 right-4 bg-[#202522]/90 backdrop-blur-md text-[#8CBC67] text-xs font-bold px-3 py-1 rounded-full border border-[#8CBC67]/30 shadow">
+                <div className="absolute top-3 right-3 bg-[#202522]/90 backdrop-blur-md text-[#8CBC67] text-xs font-bold px-2.5 py-1 rounded-full border border-[#8CBC67]/30 shadow-xs">
                   {card.price}
                 </div>
               </div>
 
-              <div className="p-6 flex flex-col justify-between flex-grow space-y-4">
+              <div className="p-4 sm:p-5 flex flex-col justify-between flex-grow space-y-3">
                 <div>
-                  <h3 className="font-serif text-lg font-bold text-[#202522] mb-2 group-hover:text-[#8CBC67] transition">
+                  <h3 className="font-serif text-base sm:text-lg font-bold text-[#202522] mb-1.5 group-hover:text-[#8CBC67] transition leading-snug">
                     {card.title}
                   </h3>
-                  <p className="text-[#6B706C] text-xs leading-relaxed">
+                  <p className="text-[#6B706C] text-xs leading-relaxed line-clamp-3">
                     {card.desc}
                   </p>
                 </div>
 
                 <Link
                   href={`/payment-detail?productId=${card.id}&name=${encodeURIComponent(card.title)}&price=${card.rawPrice || String(card.price).replace(/[^0-9]/g, '')}&image=${encodeURIComponent(card.image)}`}
-                  className="w-full block text-center py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#EEF6EB] border border-[#8CBC67]/40 text-[#202522] hover:bg-[#8CBC67] hover:text-white transition duration-300"
+                  className="w-full block text-center py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#EEF6EB] border border-[#8CBC67]/40 text-[#202522] hover:bg-[#8CBC67] hover:text-white transition duration-300 shadow-xs"
                 >
                   Select Package
                 </Link>
