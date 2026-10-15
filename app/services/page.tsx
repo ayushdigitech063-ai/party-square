@@ -170,70 +170,78 @@ export default function AboutPage() {
           </p>
         </div>
 
-        {/* Grid 1: Original 4 Specializations */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        {/* Grid 1: Original 4 Specializations - Compact & Sleek */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           
           {/* Corporate Office */}
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-64 overflow-hidden">
-              <img src="/coprateoffice.png" alt="Corporate Office Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
-                <Building2 size={13} /> Corporate Events
+          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition group flex flex-col justify-between">
+            <div>
+              <div className="relative h-44 sm:h-48 overflow-hidden">
+                <img src="/coprateoffice.png" alt="Corporate Office Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+                <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-[#8CBC67] px-2.5 py-0.5 rounded-full text-[11px] font-medium flex items-center gap-1 border border-[#8CBC67]/30">
+                  <Building2 size={12} /> Corporate Events
+                </div>
               </div>
-            </div>
-            <div className="p-8 space-y-3">
-              <h3 className="text-2xl font-serif text-[#202522]">Corporate Office & Brand Aesthetics</h3>
-              <p className="text-[#6B706C] text-sm font-light leading-relaxed">
-                Elevate your workplace environment for annual meets, product launches, festivals, and corporate milestones with sophisticated branding and decor.
-              </p>
+              <div className="p-4 sm:p-5 space-y-1.5">
+                <h3 className="text-base sm:text-lg font-serif font-bold text-[#202522] leading-snug">Corporate Office & Brand Aesthetics</h3>
+                <p className="text-[#6B706C] text-xs font-light leading-relaxed">
+                  Elevate your workplace environment for annual meets, product launches, festivals, and corporate milestones with sophisticated branding and decor.
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Anniversaries */}
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-64 overflow-hidden">
-              <img src="/aniversarry5.png" alt="Anniversary Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
-                <Calendar size={13} /> Milestone Anniversaries
+          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition group flex flex-col justify-between">
+            <div>
+              <div className="relative h-44 sm:h-48 overflow-hidden">
+                <img src="/aniversarry5.png" alt="Anniversary Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+                <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-[#8CBC67] px-2.5 py-0.5 rounded-full text-[11px] font-medium flex items-center gap-1 border border-[#8CBC67]/30">
+                  <Calendar size={12} /> Milestone Anniversaries
+                </div>
               </div>
-            </div>
-            <div className="p-8 space-y-3">
-              <h3 className="text-2xl font-serif text-[#202522]">Romantic & Grand Anniversaries</h3>
-              <p className="text-[#6B706C] text-sm font-light leading-relaxed">
-                Celebrate years of togetherness with breathtaking thematic backdrops, floral arches, and custom romantic lighting designed for timeless luxury.
-              </p>
+              <div className="p-4 sm:p-5 space-y-1.5">
+                <h3 className="text-base sm:text-lg font-serif font-bold text-[#202522] leading-snug">Romantic & Grand Anniversaries</h3>
+                <p className="text-[#6B706C] text-xs font-light leading-relaxed">
+                  Celebrate years of togetherness with breathtaking thematic backdrops, floral arches, and custom romantic lighting designed for timeless luxury.
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Kids Birthdays */}
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-64 overflow-hidden">
-              <img src="/childbirthday3.png" alt="Kids Birthday Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
-                <Baby size={13} /> Kids Birthdays
+          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition group flex flex-col justify-between">
+            <div>
+              <div className="relative h-44 sm:h-48 overflow-hidden">
+                <img src="/childbirthday3.png" alt="Kids Birthday Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+                <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-[#8CBC67] px-2.5 py-0.5 rounded-full text-[11px] font-medium flex items-center gap-1 border border-[#8CBC67]/30">
+                  <Baby size={12} /> Kids Birthdays
+                </div>
               </div>
-            </div>
-            <div className="p-8 space-y-3">
-              <h3 className="text-2xl font-serif text-[#202522]">Magical Kids Birthday Themes</h3>
-              <p className="text-[#6B706C] text-sm font-light leading-relaxed">
-                Turn your child's dream world into reality! From fairy-tale castles and superhero universes to whimsical balloon art and safe prop setups.
-              </p>
+              <div className="p-4 sm:p-5 space-y-1.5">
+                <h3 className="text-base sm:text-lg font-serif font-bold text-[#202522] leading-snug">Magical Kids Birthday Themes</h3>
+                <p className="text-[#6B706C] text-xs font-light leading-relaxed">
+                  Turn your child's dream world into reality! From fairy-tale castles and superhero universes to whimsical balloon art and safe prop setups.
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Candlelight Dinners */}
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-64 overflow-hidden">
-              <img src="/bgpic.png" alt="Candlelight Dinner Setup" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
-                <Flame size={13} /> Candlelight & Intimate
+          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition group flex flex-col justify-between">
+            <div>
+              <div className="relative h-44 sm:h-48 overflow-hidden">
+                <img src="/bgpic.png" alt="Candlelight Dinner Setup" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+                <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-[#8CBC67] px-2.5 py-0.5 rounded-full text-[11px] font-medium flex items-center gap-1 border border-[#8CBC67]/30">
+                  <Flame size={12} /> Candlelight & Intimate
+                </div>
               </div>
-            </div>
-            <div className="p-8 space-y-3">
-              <h3 className="text-2xl font-serif text-[#202522]">Intimate Candlelight & Date Nights</h3>
-              <p className="text-[#6B706C] text-sm font-light leading-relaxed">
-                Create deeply personal romantic moments with signature candlelight settings, ambient fairy lights, rose petal pathways, and cozy luxury.
-              </p>
+              <div className="p-4 sm:p-5 space-y-1.5">
+                <h3 className="text-base sm:text-lg font-serif font-bold text-[#202522] leading-snug">Intimate Candlelight & Date Nights</h3>
+                <p className="text-[#6B706C] text-sm font-light leading-relaxed text-xs">
+                  Create deeply personal romantic moments with signature candlelight settings, ambient fairy lights, rose petal pathways, and cozy luxury.
+                </p>
+              </div>
             </div>
           </div>
 
@@ -255,53 +263,59 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           {/* Wedding Grandeur */}
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-64 overflow-hidden">
-              <img src="/wedding5.png" alt="Royal Wedding Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
-                <Heart size={13} /> Royal Weddings
+          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition group flex flex-col justify-between">
+            <div>
+              <div className="relative h-48 sm:h-52 overflow-hidden">
+                <img src="/wedding5.png" alt="Royal Wedding Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+                <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3 py-0.5 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
+                  <Heart size={13} /> Royal Weddings
+                </div>
               </div>
-            </div>
-            <div className="p-8 space-y-3">
-              <h3 className="text-2xl font-serif text-[#202522]">Grand Wedding Mandaps & Stages</h3>
-              <p className="text-[#6B706C] text-sm font-light leading-relaxed">
-                Crafting royal union backdrops with majestic floral installations, regal seating, and mesmerizing lighting to make your big day unforgettable.
-              </p>
+              <div className="p-5 sm:p-6 space-y-2">
+                <h3 className="text-lg sm:text-xl font-serif font-bold text-[#202522] leading-snug">Grand Wedding Mandaps & Stages</h3>
+                <p className="text-[#6B706C] text-xs sm:text-sm font-light leading-relaxed">
+                  Crafting royal union backdrops with majestic floral installations, regal seating, and mesmerizing lighting to make your big day unforgettable.
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Haldi Ceremony */}
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-64 overflow-hidden">
-              <img src="/haldiprogramdecoration.png" alt="Haldi Program Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
-                <Sun size={13} /> Haldi Rituals
+          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition group flex flex-col justify-between">
+            <div>
+              <div className="relative h-48 sm:h-52 overflow-hidden">
+                <img src="/haldiprogramdecoration.png" alt="Haldi Program Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+                <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3 py-0.5 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
+                  <Sun size={13} /> Haldi Rituals
+                </div>
               </div>
-            </div>
-            <div className="p-8 space-y-3">
-              <h3 className="text-2xl font-serif text-[#202522]">Vibrant Haldi Program Aesthetics</h3>
-              <p className="text-[#6B706C] text-sm font-light leading-relaxed">
-                Bright, cheerful yellow marigold setups, traditional gaddas, floral jewellery backdrops, and sunny outdoor arrangements full of traditional charm.
-              </p>
+              <div className="p-5 sm:p-6 space-y-2">
+                <h3 className="text-lg sm:text-xl font-serif font-bold text-[#202522] leading-snug">Vibrant Haldi Program Aesthetics</h3>
+                <p className="text-[#6B706C] text-xs sm:text-sm font-light leading-relaxed">
+                  Bright, cheerful yellow marigold setups, traditional gaddas, floral jewellery backdrops, and sunny outdoor arrangements full of traditional charm.
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Mehandi Ceremony */}
-          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition group">
-            <div className="relative h-64 overflow-hidden">
-              <img src="/mehandidecoration.png" alt="Mehandi Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
-              <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
-                <Sparkles size={13} /> Mehandi Celebration
+          <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition group flex flex-col justify-between">
+            <div>
+              <div className="relative h-48 sm:h-52 overflow-hidden">
+                <img src="/mehandidecoration.png" alt="Mehandi Decoration" className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+                <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-[#8CBC67] px-3 py-0.5 rounded-full text-xs font-medium flex items-center gap-1.5 border border-[#8CBC67]/30">
+                  <Sparkles size={13} /> Mehandi Celebration
+                </div>
               </div>
-            </div>
-            <div className="p-8 space-y-3">
-              <h3 className="text-2xl font-serif text-[#202522]">Colorful Mehandi Celebrations</h3>
-              <p className="text-[#6B706C] text-sm font-light leading-relaxed">
-                Boho-chic seating, colorful drapes, vibrant cushion clusters, and floral swings creating a joyful, festive atmosphere for family and friends.
-              </p>
+              <div className="p-5 sm:p-6 space-y-2">
+                <h3 className="text-lg sm:text-xl font-serif font-bold text-[#202522] leading-snug">Colorful Mehandi Celebrations</h3>
+                <p className="text-[#6B706C] text-xs sm:text-sm font-light leading-relaxed">
+                  Boho-chic seating, colorful drapes, vibrant cushion clusters, and floral swings creating a joyful, festive atmosphere for family and friends.
+                </p>
+              </div>
             </div>
           </div>
 
