@@ -206,6 +206,42 @@ export default function ProductDetailPage() {
     return null;
   }, [liveProduct, productId]);
 
+  // SEO & Clean URL handler
+  useEffect(() => {
+    if (foundItem) {
+      // Dynamic SEO Title
+      document.title = `${foundItem.name} | Party Square Event & Party Decoration`;
+
+      // Automatically strip any dirty query parameters from browser address bar for pure SEO URL
+      if (typeof window !== "undefined" && window.location.search) {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+
+      // Dynamic SEO Meta Description
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (!metaDesc) {
+        metaDesc = document.createElement("meta");
+        metaDesc.setAttribute("name", "description");
+        document.head.appendChild(metaDesc);
+      }
+      metaDesc.setAttribute(
+        "content",
+        foundItem.description || `Book ${foundItem.name} with Party Square. Best price, verified decorators, and on-time service.`
+      );
+
+      // Dynamic SEO Canonical Tag
+      let canonicalLink = document.querySelector('link[rel="canonical"]');
+      if (!canonicalLink) {
+        canonicalLink = document.createElement("link");
+        canonicalLink.setAttribute("rel", "canonical");
+        document.head.appendChild(canonicalLink);
+      }
+      if (typeof window !== "undefined") {
+        canonicalLink.setAttribute("href", `https://partysquare.in${window.location.pathname}`);
+      }
+    }
+  }, [foundItem]);
+
   if (!productId || (fetchingLive && !foundItem)) {
     return (
       <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center">

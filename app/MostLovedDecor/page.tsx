@@ -79,14 +79,15 @@ export default function MostLovedDecor() {
       router.push(item.slug);
       return;
     }
-    const cleanSlug = (item.slug || "royal-stage-mandap").replace(/^\/card\//, "");
-    const params = new URLSearchParams();
-    if (item.name) params.set("name", item.name);
-    if (item.price) params.set("price", String(item.price));
-    if (item.image) params.set("image", item.image);
+    const cleanSlug = (item.slug || "royal-stage-mandap")
+      .toLowerCase()
+      .trim()
+      .replace(/^\/card\//, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
 
-    const qs = params.toString();
-    router.push(`/card/${cleanSlug}${qs ? `?${qs}` : ""}`);
+    // Pure, clean SEO-friendly URL without any query string
+    router.push(`/card/${cleanSlug}`);
   };
 
   if (!isEnabled) {
