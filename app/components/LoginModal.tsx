@@ -169,40 +169,49 @@ export default function LoginModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
+    <div className="fixed inset-0 z-[100000] flex items-center justify-center p-3 sm:p-4">
 
       {/* ================= BACKDROP ================= */}
       <div
         onClick={handleClose}
-        className="absolute inset-0 bg-black/50 backdrop-blur-md"
+        className="absolute inset-0 bg-black/60 backdrop-blur-md"
       />
 
       {/* ================= LOGIN MODAL ================= */}
-      <div className="relative z-10 w-full max-w-[430px] max-h-[92vh] overflow-y-auto rounded-[24px] sm:rounded-[26px] bg-[#FFFFFF] shadow-[0_25px_80px_rgba(50,35,20,0.25)] border border-[#E9D7AE]">
+      <div className="relative z-10 w-full max-w-[420px] max-h-[92vh] overflow-hidden rounded-[24px] sm:rounded-[26px] bg-[#FFFFFF] shadow-[0_25px_80px_rgba(50,35,20,0.25)] border border-[#E9D7AE] flex flex-col">
 
-        {/* Decorative top glow */}
-        <div className="absolute -top-20 -right-20 h-44 w-44 rounded-full bg-[#F5C542]/20 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-20 -left-20 h-44 w-44 rounded-full bg-[#D99A00]/10 blur-3xl pointer-events-none" />
+        {/* Decorative top & bottom glow (strictly contained inside overflow-hidden) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-[24px] sm:rounded-[26px]">
+          <div className="absolute -top-20 -right-20 h-44 w-44 rounded-full bg-[#F5C542]/20 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-20 -left-20 h-44 w-44 rounded-full bg-[#D99A00]/10 blur-3xl pointer-events-none" />
+        </div>
 
         {/* ================= HEADER ================= */}
-        <div className="relative px-7 pt-7">
+        <div className="relative px-6 sm:px-8 pt-6 sm:pt-7 shrink-0">
           <button
             onClick={handleClose}
-            className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-[#FCFBF7] text-[#6B706C] transition hover:bg-[#E8E8E3] hover:text-black"
+            className="absolute right-4 top-4 sm:right-5 sm:top-5 flex h-9 w-9 items-center justify-center rounded-full bg-[#FCFBF7] text-[#6B706C] transition hover:bg-[#E8E8E3] hover:text-black z-10"
             aria-label="Close login"
           >
             <X size={18} />
           </button>
 
-          <div className="flex items-center justify-center w-full pt-2"><div className="w-40 h-12 relative flex-shrink-0"><img src="/logo-full.png" alt="Party Square" className="w-full h-full object-contain object-center" /></div></div></div>{/* ================= CONTENT ================= */}
-        <div className="relative px-7 pb-7 pt-8">
+          <div className="flex items-center justify-center w-full pt-1">
+            <div className="w-36 sm:w-40 h-10 sm:h-12 relative flex-shrink-0">
+              <img src="/logo-full.png" alt="Party Square" className="w-full h-full object-contain object-center" />
+            </div>
+          </div>
+        </div>
+
+        {/* ================= CONTENT ================= */}
+        <div className="relative px-6 sm:px-8 pb-6 sm:pb-8 pt-5 sm:pt-6 overflow-y-auto overflow-x-hidden">
 
           {/* Heading */}
-          <div className="mb-6">
-            <h2 className="font-serif text-[28px] font-bold leading-tight text-[#202522]">
+          <div className="mb-5 sm:mb-6">
+            <h2 className="font-serif text-2xl sm:text-[28px] font-bold leading-tight text-[#202522]">
               {view === "register" ? "Create an account" : step === "phone" ? "Log in to your account" : "Verify OTP"}
             </h2>
-            <p className="mt-2 max-w-[320px] text-sm leading-5 text-[#6B706C]">
+            <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm leading-5 text-[#6B706C]">
               {view === "register" 
                 ? "Join us to track your decor, book faster and unlock benefits." 
                 : step === "phone" 
