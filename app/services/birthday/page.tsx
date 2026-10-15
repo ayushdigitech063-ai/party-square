@@ -133,7 +133,7 @@ export default function BirthdayServicePage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans">
       {/* ================= HERO SECTION WITH FULL BACKGROUND IMAGE ================= */}
-      <section className="relative h-[350px] flex items-center justify-center overflow-hidden text-white">
+      <section className="relative min-h-[500px] sm:min-h-[520px] py-12 sm:py-16 flex items-center justify-center overflow-hidden text-white">
         {/* Background Image Container with full cover and center positioning */}
         <div
           className="absolute inset-0 z-0 w-full h-full"
@@ -146,34 +146,34 @@ export default function BirthdayServicePage() {
         />
 
         {/* Luxury gradient overlay for text readability on left side */}
-        <div className="absolute inset-0 z-10 bg-gradient-to-r from-neutral-950/95 via-neutral-950/70 to-neutral-950/30" />
+        <div className="absolute inset-0 z-10 bg-gradient-to-r from-neutral-950/95 via-neutral-950/75 to-neutral-950/40" />
 
         {/* Hero Content on Left Side */}
-        <div className="relative z-20 max-w-7xl mx-auto px-6 w-full">
-          <div className="max-w-3xl space-y-8">
-            <div className="inline-flex items-center space-x-3 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-5 py-2.5 rounded-full text-[#8CBC67] text-sm font-semibold tracking-widest uppercase backdrop-blur-sm shadow-md">
-              <Gift size={16} className="text-[#8CBC67]" />
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 w-full text-center sm:text-left">
+          <div className="max-w-3xl space-y-4 sm:space-y-6">
+            <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-[#8CBC67] text-xs sm:text-sm font-semibold tracking-widest uppercase backdrop-blur-sm shadow-md">
+              <Gift size={14} className="text-[#8CBC67]" />
               <span>India's Premier Birthday Stylists</span>
             </div>
 
-            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight drop-shadow-xl">
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-xl">
               Make Every Birthday{" "}
-              <span className="text-[#8CBC67] italic">Unforgettable</span>
+              <span className="text-[#8CBC67] italic font-normal">Unforgettable</span>
             </h1>
 
-            <p className="text-neutral-200 text-lg max-w-2xl font-light leading-relaxed">
+            <p className="text-neutral-200 text-xs sm:text-base max-w-2xl font-light leading-relaxed">
               Transform your special day into a magical wonderland. From
               whimsical kids' themes to luxurious milestone birthday setups, we
               create joy filled with vibrant colors and elegance.
             </p>
 
-            <div className="flex flex-row items-center gap-2 sm:gap-5 pt-4 w-full justify-center sm:justify-start">
+            <div className="flex flex-row items-center gap-2 sm:gap-4 pt-2 sm:pt-4 w-full justify-center sm:justify-start">
               <Link
                 href="/contact"
                 className="flex-1 sm:flex-initial bg-[#8CBC67] hover:bg-[#7AB055] text-white px-3 sm:px-10 py-3 sm:py-4 rounded-full font-bold text-[11px] sm:text-sm uppercase tracking-wider shadow-xl hover:shadow-[#8CBC67]/30 transition flex items-center justify-center space-x-1.5 sm:space-x-3 cursor-pointer whitespace-nowrap"
               >
                 <span>Book Birthday Decor</span>
-                <ArrowRight size={16} className="shrink-0" />
+                <ArrowRight size={15} className="shrink-0" />
               </Link>
 
               <a
@@ -189,7 +189,7 @@ export default function BirthdayServicePage() {
         </div>
 
         {/* Subtle Scroll Indicator */}
-        <div className="absolute bottom-6 left-1/2 z-20 transform -translate-x-1/2 animate-bounce opacity-75 text-white">
+        <div className="hidden sm:block absolute bottom-6 left-1/2 z-20 transform -translate-x-1/2 animate-bounce opacity-75 text-white">
           <ChevronDown size={32} />
         </div>
       </section>
