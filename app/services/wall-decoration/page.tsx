@@ -162,7 +162,7 @@ export default function WallDecorationPage() {
     <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans selection:bg-[#8CBC67] selection:text-white">
       
       {/* ================= HERO BANNER (FULLY FIXED & CENTERED) ================= */}
-      <section className="relative min-h-[75vh] flex items-center justify-center text-white py-24 px-6 overflow-hidden">
+      <section className="relative min-h-[480px] sm:h-[520px] py-10 sm:py-0 px-4 sm:px-6 flex items-center justify-center text-white overflow-hidden">
         <div 
           className="absolute inset-0 z-0 w-full h-full"
           style={{

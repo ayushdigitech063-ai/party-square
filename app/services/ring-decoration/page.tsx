@@ -143,7 +143,7 @@ export default function RingDecorationPage() {
     <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans">
       
       {/* ================= HERO SECTION WITH SINGLE CLEAR ring.png BACKGROUND ================= */}
-      <section className="relative h-[550px] flex items-center justify-center overflow-hidden text-white">
+      <section className="relative min-h-[480px] sm:h-[520px] py-10 sm:py-0 flex items-center justify-center overflow-hidden text-white">
         {/* Fixed Background Image ring.png with Dark Overlay */}
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/90 via-neutral-950/70 to-neutral-950/40 z-10" />

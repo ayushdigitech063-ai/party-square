@@ -53,7 +53,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans selection:bg-[#8CBC67] selection:text-white">
       {/* ================= HERO / MAIN BANNER SECTION ================= */}
-      <section className="relative min-h-[500px] sm:min-h-[520px] py-12 sm:py-16 flex items-center justify-center overflow-hidden text-white">
+      <section className="relative min-h-[480px] sm:h-[520px] py-10 sm:py-0 flex items-center justify-center overflow-hidden text-white">
         <div
           className="absolute inset-0 z-0 w-full h-full transform scale-105 transition-transform duration-1000"
           style={{

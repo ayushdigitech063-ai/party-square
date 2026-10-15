@@ -63,7 +63,7 @@ export default function JanmashtamiPage() {
   return (
     <div className="min-h-screen text-[#202522] font-sans bg-[#FBF9F4] selection:bg-emerald-600 selection:text-white overflow-x-hidden pb-20">
       {/* Hero Section */}
-      <section className="relative w-full h-[350px] px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[35px] shadow-2xl">
+      <section className="relative w-full min-h-[480px] sm:h-[520px] py-10 sm:py-0 px-4 sm:px-6 flex items-center justify-center text-center overflow-hidden my-4 sm:my-6 max-w-[96rem] mx-auto rounded-[28px] sm:rounded-[35px] shadow-2xl">
         <div
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: "url('/bgcolor.png')" }}

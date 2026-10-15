@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -15,7 +15,7 @@ export default function ChristmasPage() {
   return (
     <div className="min-h-screen bg-[#FCFBF7]">
       {/* 1. HERO SECTION */}
-      <section className="relative w-full h-[60vh] sm:h-[80vh] flex flex-col justify-center items-center text-center overflow-hidden">
+      <section className="relative w-full min-h-[480px] sm:h-[520px] py-10 sm:py-0 flex flex-col justify-center items-center text-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center transform scale-105"
           style={{

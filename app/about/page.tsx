@@ -29,7 +29,7 @@ export default function AboutPage() {
     <div className="w-full bg-[#F3EFE9] font-sans text-[#202522] selection:bg-[#8CBC67] selection:text-white overflow-hidden">
       
       {/* ================= HERO BANNER ================= */}
-      <section className="relative w-full h-[60vh] md:h-[70vh] min-h-[450px] flex items-center justify-center overflow-hidden">
+      <section className="relative w-full min-h-[480px] sm:h-[520px] py-10 sm:py-0 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src="/home2.png" 
