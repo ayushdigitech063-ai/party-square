@@ -148,21 +148,21 @@ export default function Hero() {
                   {currentSlide.description}
                 </p>
 
-                <div className="flex items-center space-x-3 sm:space-x-6 flex-wrap gap-y-3">
+                <div className="flex items-center gap-2.5 sm:gap-6 flex-row flex-nowrap sm:flex-wrap">
                   <Link
                     href={currentSlide.buttonLink || "/services"}
-                    className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-5 sm:px-7 py-3 sm:py-3.5 rounded-full font-semibold text-xs sm:text-sm flex items-center space-x-2 sm:space-x-3 transition shadow-md cursor-pointer"
+                    className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-semibold text-xs sm:text-sm flex items-center space-x-1.5 sm:space-x-3 transition shadow-md cursor-pointer whitespace-nowrap shrink-0"
                   >
                     <span>{currentSlide.buttonText || "Explore Our Services"}</span>
-                    <ArrowRight size={16} />
+                    <ArrowRight size={15} />
                   </Link>
 
                   <Link
                     href="/PRogress"
-                    className="flex items-center space-x-2 sm:space-x-3 text-white group cursor-pointer"
+                    className="flex items-center space-x-1.5 sm:space-x-3 text-white group cursor-pointer whitespace-nowrap shrink-0"
                   >
-                    <span className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-white/40 flex items-center justify-center group-hover:border-[#8CBC67] group-hover:bg-[#8CBC67]/10 transition">
-                      <Play size={12} className="fill-white ml-0.5" />
+                    <span className="w-7 h-7 sm:w-10 sm:h-10 rounded-full border border-white/40 flex items-center justify-center group-hover:border-[#8CBC67] group-hover:bg-[#8CBC67]/10 transition">
+                      <Play size={10} className="fill-white ml-0.5" />
                     </span>
                     <span className="text-xs sm:text-sm font-medium tracking-wide">Watch Story</span>
                   </Link>

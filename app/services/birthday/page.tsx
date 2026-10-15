@@ -167,20 +167,20 @@ export default function BirthdayServicePage() {
               create joy filled with vibrant colors and elegance.
             </p>
 
-            <div className="flex flex-wrap gap-5 pt-4">
+            <div className="flex flex-row items-center gap-2 sm:gap-5 pt-4 w-full justify-center sm:justify-start">
               <Link
                 href="/contact"
-                className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-10 py-4 rounded-full font-bold text-sm uppercase tracking-widest shadow-xl hover:shadow-[#8CBC67]/30 transition flex items-center space-x-3 cursor-pointer"
+                className="flex-1 sm:flex-initial bg-[#8CBC67] hover:bg-[#7AB055] text-white px-3 sm:px-10 py-3 sm:py-4 rounded-full font-bold text-[11px] sm:text-sm uppercase tracking-wider shadow-xl hover:shadow-[#8CBC67]/30 transition flex items-center justify-center space-x-1.5 sm:space-x-3 cursor-pointer whitespace-nowrap"
               >
                 <span>Book Birthday Decor</span>
-                <ArrowRight size={18} />
+                <ArrowRight size={16} className="shrink-0" />
               </Link>
 
               <a
                 href="https://whatsapp.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border border-white/40 bg-white/10 backdrop-blur-sm text-white hover:bg-white/25 px-10 py-4 rounded-full font-semibold text-sm uppercase tracking-widest transition flex items-center space-x-3"
+                className="flex-1 sm:flex-initial border border-white/40 bg-white/10 backdrop-blur-sm text-white hover:bg-white/25 px-3 sm:px-10 py-3 sm:py-4 rounded-full font-semibold text-[11px] sm:text-sm uppercase tracking-wider transition flex items-center justify-center space-x-1.5 sm:space-x-3 whitespace-nowrap"
               >
                 <span>Chat on WhatsApp</span>
               </a>

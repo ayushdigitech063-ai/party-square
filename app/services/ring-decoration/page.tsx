@@ -166,20 +166,20 @@ export default function RingDecorationPage() {
               Immerse your engagement day in breathtaking floral arches, ambient mood lighting, and bespoke stage backdrops tailored for romance and elegance.
             </p>
 
-            <div className="flex flex-wrap gap-4 pt-2 justify-center sm:justify-start">
+            <div className="flex flex-row items-center gap-2 sm:gap-4 pt-2 justify-center sm:justify-start w-full">
               <Link
                 href="/contact"
-                className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-8 py-3.5 rounded-full font-bold text-xs uppercase tracking-wider shadow-lg hover:shadow-[#8CBC67]/30 transition-all flex items-center space-x-2 cursor-pointer"
+                className="flex-1 sm:flex-initial bg-[#8CBC67] hover:bg-[#7AB055] text-white px-3 sm:px-8 py-3 sm:py-3.5 rounded-full font-bold text-[11px] sm:text-xs uppercase tracking-wider shadow-lg hover:shadow-[#8CBC67]/30 transition-all flex items-center justify-center space-x-1.5 sm:space-x-2 whitespace-nowrap cursor-pointer"
               >
                 <span>Book Ring Ceremony</span>
-                <ArrowRight size={15} />
+                <ArrowRight size={14} className="shrink-0" />
               </Link>
               
               <a
                 href="https://whatsapp.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 px-6 py-3.5 rounded-full font-semibold text-xs uppercase tracking-wider transition flex items-center space-x-2"
+                className="flex-1 sm:flex-initial border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 px-3 sm:px-6 py-3 sm:py-3.5 rounded-full font-semibold text-[11px] sm:text-xs uppercase tracking-wider transition flex items-center justify-center space-x-1.5 sm:space-x-2 whitespace-nowrap"
               >
                 <span>Chat on WhatsApp</span>
               </a>

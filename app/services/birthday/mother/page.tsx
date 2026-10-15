@@ -166,15 +166,15 @@ export default function MotherBirthdayPage() {
               design moments she will treasure forever.
             </p>
 
-            <div className="flex flex-wrap gap-4 pt-4">
+            <div className="flex flex-row items-center gap-2 sm:gap-4 pt-4 w-full justify-center sm:justify-start">
               <Link
                 href="/contact"
-                className="group relative bg-[#8CBC67] hover:bg-[#7AB055] text-white px-8 py-4 rounded-full font-bold text-xs uppercase tracking-widest shadow-lg hover:shadow-[#8CBC67]/30 hover:scale-105 transition-all duration-300 flex items-center space-x-2 overflow-hidden cursor-pointer"
+                className="flex-1 sm:flex-initial group relative bg-[#8CBC67] hover:bg-[#7AB055] text-white px-3 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-[11px] sm:text-xs uppercase tracking-wider shadow-lg hover:shadow-[#8CBC67]/30 hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-1.5 sm:space-x-2 overflow-hidden cursor-pointer whitespace-nowrap"
               >
                 <span className="relative z-10">Book Mother's Decor</span>
                 <ArrowRight
-                  size={16}
-                  className="relative z-10 group-hover:translate-x-1 transition-transform"
+                  size={15}
+                  className="relative z-10 group-hover:translate-x-1 transition-transform shrink-0"
                 />
               </Link>
 
@@ -182,7 +182,7 @@ export default function MotherBirthdayPage() {
                 href="https://whatsapp.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/25 hover:border-white px-7 py-4 rounded-full font-semibold text-xs uppercase tracking-widest transition-all duration-300 shadow-lg flex items-center space-x-2"
+                className="flex-1 sm:flex-initial border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/25 hover:border-white px-3 sm:px-7 py-3 sm:py-4 rounded-full font-semibold text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-300 shadow-lg flex items-center justify-center space-x-1.5 sm:space-x-2 whitespace-nowrap"
               >
                 <span>Chat on WhatsApp</span>
               </a>
