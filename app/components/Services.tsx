@@ -102,11 +102,11 @@ export default function Services() {
   const { badge, description, flagship, otherServices, guarantees } = data;
 
   return (
-    <section className="relative bg-gradient-to-b from-[#FAF7F2] via-[#FDF5F2] to-[#F9EBEA] py-14 sm:py-20 md:py-28 px-4 sm:px-6 md:px-16 text-[#241C15] overflow-hidden border-t border-red-200/40">
+    <section className="relative bg-[#FCFBF7] py-14 sm:py-20 md:py-28 px-4 sm:px-6 md:px-16 text-[#202522] overflow-hidden border-t border-[#E8E8E3]/80">
       
       {/* Soft Luxury Background Glows */}
-      <div className="absolute top-10 left-10 w-96 h-96 bg-red-200/30 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#D7A84B]/30 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-10 left-10 w-96 h-96 bg-[#8CBC67]/15 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#D7A84B]/15 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
@@ -114,27 +114,27 @@ export default function Services() {
           {/* Left: heading & Expanded Content */}
           <div className="lg:col-span-4 lg:sticky lg:top-28 space-y-4 sm:space-y-6">
             {badge && (
-              <div className="inline-flex items-center space-x-2 bg-red-100/80 border border-red-300/60 px-3.5 py-1 rounded-full text-xs font-bold text-red-950 shadow-sm">
-                <Sparkles size={13} className="text-red-700" />
+              <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#8CBC67]/40 px-3.5 py-1 rounded-full text-xs font-bold text-[#202522] shadow-sm">
+                <Sparkles size={13} className="text-[#8CBC67]" />
                 <span>{badge}</span>
               </div>
             )}
 
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-normal leading-[1.15] text-[#241C15]">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-serif font-bold leading-[1.15] text-[#202522]">
               {subtitle}
             </h2>
 
-            <div className="space-y-4 text-[#5A5248] text-sm md:text-base leading-relaxed font-medium">
+            <div className="space-y-4 text-[#6B706C] text-sm md:text-base leading-relaxed font-normal">
               <p>
                 {description || DEFAULT_DATA.description}
               </p>
 
               {/* Guarantees Checklist */}
               {guarantees && guarantees.length > 0 && (
-                <div className="pt-2 space-y-2.5 border-t border-red-900/10">
+                <div className="pt-2 space-y-2.5 border-t border-[#E8E8E3]">
                   {guarantees.map((item, idx) => (
                     <div key={idx} className="flex items-start space-x-2.5 text-xs text-[#202522]">
-                      <CheckCircle2 size={16} className="text-red-800 shrink-0 mt-0.5" />
+                      <CheckCircle2 size={16} className="text-[#8CBC67] shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </div>
                   ))}
@@ -145,7 +145,7 @@ export default function Services() {
             <div className="pt-2">
               <Link 
                 href="/services" 
-                className="group inline-flex items-center space-x-3 bg-red-950 text-white px-7 py-4 rounded-full font-medium text-sm hover:bg-red-900 transition-all shadow-lg hover:shadow-xl"
+                className="group inline-flex items-center space-x-3 bg-[#8CBC67] text-white px-7 py-4 rounded-full font-semibold text-sm hover:bg-[#7AB055] transition-all shadow-md hover:shadow-lg cursor-pointer"
               >
                 <span>Explore all collections</span>
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -160,7 +160,7 @@ export default function Services() {
             {flagship && (
               <Link
                 href={flagship.link || "/services"}
-                className="group relative block h-80 md:h-[420px] rounded-3xl overflow-hidden shadow-xl border border-red-200/50"
+                className="group relative block h-80 md:h-[420px] rounded-3xl overflow-hidden shadow-xl border border-[#E8E8E3] hover:border-[#8CBC67] transition-all"
               >
                 <img
                   src={flagship.image || "/wedding.png"}
@@ -179,7 +179,7 @@ export default function Services() {
                       <h3 className="text-2xl sm:text-3xl font-serif text-white">{flagship.title}</h3>
                       <p className="text-white/80 text-sm mt-1 font-light max-w-md">{flagship.subtitle}</p>
                     </div>
-                    <span className="shrink-0 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center text-white group-hover:bg-[#F7D6C7] group-hover:text-[#241C15] group-hover:border-[#E8E8E3] transition-all shadow-md">
+                    <span className="shrink-0 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/30 flex items-center justify-center text-white group-hover:bg-[#8CBC67] group-hover:text-white group-hover:border-[#8CBC67] transition-all shadow-md">
                       <ArrowUpRight size={20} />
                     </span>
                   </div>
@@ -193,9 +193,9 @@ export default function Services() {
                 <Link
                   href={service.link || "/services"}
                   key={service.id || index}
-                  className="group flex items-center gap-5 p-4 sm:p-5 rounded-2xl bg-white/80 hover:bg-white border border-red-200/50 shadow-sm hover:shadow-md transition-all duration-300 backdrop-blur-sm"
+                  className="group flex items-center gap-5 p-4 sm:p-5 rounded-2xl bg-white hover:bg-white border border-[#E8E8E3] hover:border-[#8CBC67] shadow-sm hover:shadow-md transition-all duration-300 backdrop-blur-sm"
                 >
-                  <div className="shrink-0 w-24 h-20 sm:w-28 sm:h-22 rounded-xl overflow-hidden bg-[#F7D6C7] border border-red-100">
+                  <div className="shrink-0 w-24 h-20 sm:w-28 sm:h-22 rounded-xl overflow-hidden bg-[#EEF6EB] border border-[#E8E8E3]">
                     <img
                       src={service.image}
                       alt={service.title}
@@ -204,16 +204,16 @@ export default function Services() {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-red-800 mb-1 block">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#8CBC67] mb-1 block">
                       {service.tag}
                     </span>
-                    <h3 className="text-lg sm:text-xl font-serif text-[#241C15] group-hover:text-red-900 transition-colors">
+                    <h3 className="text-lg sm:text-xl font-serif text-[#202522] group-hover:text-[#8CBC67] transition-colors">
                       {service.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-[#5A5248] font-light mt-0.5 line-clamp-1">{service.subtitle}</p>
+                    <p className="text-xs sm:text-sm text-[#6B706C] font-light mt-0.5 line-clamp-1">{service.subtitle}</p>
                   </div>
 
-                  <span className="shrink-0 w-10 h-10 rounded-full border border-red-900/15 flex items-center justify-center text-[#241C15] group-hover:bg-red-950 group-hover:text-white group-hover:border-red-950 transition-all">
+                  <span className="shrink-0 w-10 h-10 rounded-full border border-[#E8E8E3] bg-[#EEF6EB] flex items-center justify-center text-[#202522] group-hover:bg-[#8CBC67] group-hover:text-white group-hover:border-[#8CBC67] transition-all">
                     <ArrowUpRight size={16} />
                   </span>
                 </Link>
