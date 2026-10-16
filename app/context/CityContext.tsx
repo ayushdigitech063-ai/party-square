@@ -98,6 +98,9 @@ export function CityProvider({ children }: { children: ReactNode }) {
     setSelectedCityState(cityName);
     try {
       localStorage.setItem("party_selected_city", cityName);
+      if (typeof document !== "undefined") {
+        document.cookie = `party_selected_city=${encodeURIComponent(cityName)}; path=/; max-age=31536000`;
+      }
     } catch (e) {
       console.warn("Could not save city to localStorage", e);
     }

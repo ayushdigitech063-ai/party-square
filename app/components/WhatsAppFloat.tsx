@@ -16,7 +16,10 @@ export default function WhatsAppFloat() {
     const updateMessage = () => {
       const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
-      if (pathname?.includes("/card/")) {
+      const pathSegments = pathname ? pathname.split("/").filter(Boolean) : [];
+      const isProductDetail = pathname?.includes("/card/") || (pathSegments.length === 3 && !pathname?.startsWith("/admin") && !pathname?.startsWith("/services"));
+
+      if (isProductDetail) {
         // Try to find the title and price from the DOM for a richer message
         const titleElement = document.querySelector('h1');
         const priceElement = document.querySelector('.text-3xl.font-extrabold');

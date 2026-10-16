@@ -184,6 +184,15 @@ function DropdownPill({
   children,
   pathname,
 }: DropdownPillData & { pathname: string | null }) {
+  const { selectedCity } = useCity();
+  const citySlug = (selectedCity || "jaipur").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const toCityHref = (p?: string) => {
+    if (!p) return "";
+    if (p.startsWith("http") || p.startsWith("mailto:") || p.startsWith("tel:")) return p;
+    if (p === "/") return `/${citySlug}`;
+    const clean = p.startsWith("/") ? p : `/${p}`;
+    return `/${citySlug}${clean}`;
+  };
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [coords, setCoords] = useState<{ top: number } | null>(null);
@@ -322,7 +331,7 @@ function DropdownPill({
                 return (
                   <li key={child.href}>
                     <Link
-                      href={child.href}
+                      href={toCityHref(child.href)}
                       onClick={close}
                       onMouseEnter={() => setActiveChild(child)}
                       onMouseLeave={() => setActiveChild(null)}
@@ -350,7 +359,7 @@ function DropdownPill({
               return (
                 <Link
                   key={child.href}
-                  href={child.href}
+                  href={toCityHref(child.href)}
                   onClick={close}
                   onMouseEnter={() => setActiveChild(child)}
                   onMouseLeave={() => setActiveChild(null)}
@@ -409,7 +418,7 @@ function DropdownPill({
         }`}
       >
         <Link
-          href={href}
+          href={toCityHref(href)}
           className={`flex items-center gap-1.5 sm:gap-2 pl-3 sm:pl-4 pr-2 sm:pr-2.5 py-2 text-sm font-medium whitespace-nowrap transition-colors ${
             isActive || open
               ? "text-[#202522] font-semibold"
@@ -489,6 +498,14 @@ export default function Navbar() {
     setIsCityModalOpen,
     cityNames,
   } = useCity();
+  const citySlug = (selectedCity || "jaipur").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const toCityHref = (p?: string) => {
+    if (!p) return "";
+    if (p.startsWith("http") || p.startsWith("mailto:") || p.startsWith("tel:")) return p;
+    if (p === "/") return `/${citySlug}`;
+    const clean = p.startsWith("/") ? p : `/${p}`;
+    return `/${citySlug}${clean}`;
+  };
 
   const [locationOpen, setLocationOpen] = useState(false);
   const [loginopen, setLoginOpen] = useState(false);
@@ -596,7 +613,7 @@ export default function Navbar() {
 
       <nav className="w-full bg-white border-b border-[#E8E8E3] sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
-          <Link href="/" className="flex items-center shrink-0"><div className="w-32 h-10 sm:w-40 sm:h-12 relative flex-shrink-0"><Image src="/logo-full.png" alt="Party Square" fill className="object-contain object-left" priority /></div></Link>
+          <Link href={`/${citySlug}`} className="flex items-center shrink-0"><div className="w-32 h-10 sm:w-40 sm:h-12 relative flex-shrink-0"><Image src="/logo-full.png" alt="Party Square" fill className="object-contain object-left" priority /></div></Link>
 
           <form
             onSubmit={handleSearchSubmit}
@@ -773,7 +790,7 @@ export default function Navbar() {
                   return (
                     <Link
                       key={label}
-                      href={href}
+                      href={toCityHref(href)}
                       className={`shrink-0 flex items-center gap-1.5 sm:gap-2 rounded-full px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-medium whitespace-nowrap border transition-colors ${
                         isActive
                           ? "bg-[#EEF6EB] text-[#202522] border-[#8CBC67] font-semibold shadow-xs"
@@ -949,8 +966,7 @@ export default function Navbar() {
                   return (
                     <Link
                       key={item.label}
-                      href={item.href}
-                      onClick={() => setMobileMenuOpen(false)}
+                      href={toCityHref(item.href)} onClick={() => setMobileMenuOpen(false)}
                       className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#202522] hover:bg-[#EEF6EB] hover:text-[#8CBC67] transition"
                     >
                       <item.icon size={16} className="text-[#8CBC67]" />
@@ -970,7 +986,7 @@ export default function Navbar() {
                       {item.children.map((child) => (
                         <Link
                           key={child.href}
-                          href={child.href}
+                          href={toCityHref(child.href)}
                           onClick={() => setMobileMenuOpen(false)}
                           className="block py-1.5 px-2 rounded text-xs text-[#6B706C] hover:text-[#8CBC67] hover:bg-[#EEF6EB]/60 font-medium transition"
                         >

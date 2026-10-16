@@ -87,7 +87,19 @@ export default function CityModal({
     handleClose();
 
     const citySlug = city.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-    if (pathname && pathname !== "/" && !pathname.startsWith("/admin") && !pathname.startsWith("/login")) {
+    if (!pathname || (!pathname.startsWith("/admin") && !pathname.startsWith("/login"))) {
+      const segments = pathname ? pathname.split("/").filter(Boolean) : [];
+      if (segments.length > 0) {
+        const first = segments[0].toLowerCase();
+        const allCities = availableCities.map((c) => c.toLowerCase());
+        if (allCities.includes(first) || ["delhi", "mumbai", "jaipur", "bangalore"].includes(first)) {
+          const rest = segments.slice(1).join("/");
+          router.push(`/${citySlug}${rest ? `/${rest}` : ""}`);
+          return;
+        }
+        router.push(`/${citySlug}/${segments.join("/")}`);
+        return;
+      }
       router.push(`/${citySlug}`);
     }
   };

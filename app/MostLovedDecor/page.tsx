@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Sparkles, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { fetchHomePageSection } from "../lib/api";
+import { useCity } from "../context/CityContext";
 
 interface MostLovedItem {
   id?: number | string;
@@ -38,6 +39,7 @@ export default function MostLovedDecor() {
   const [title, setTitle] = useState("Most Loved Decorations");
   const [items, setItems] = useState<MostLovedItem[]>(DEFAULT_ITEMS);
   const router = useRouter();
+  const { selectedCity } = useCity();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -86,8 +88,9 @@ export default function MostLovedDecor() {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
 
-    // Pure, clean SEO-friendly URL without any query string
-    router.push(`/card/${cleanSlug}`);
+    const citySlug = (selectedCity || "jaipur").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    const catSlug = (item.subcategory || "decorations").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    router.push(`/${citySlug}/${catSlug}/${cleanSlug}`);
   };
 
   if (!isEnabled) {

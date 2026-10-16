@@ -245,7 +245,18 @@ export async function fetchProducts(params?: {
   if (params?.status) query.append("status", params.status);
   if (params?.minPrice !== undefined) query.append("minPrice", String(params.minPrice));
   if (params?.maxPrice !== undefined) query.append("maxPrice", String(params.maxPrice));
-  if (params?.city) query.append("city", params.city);
+  let activeCity = params?.city;
+  if (!activeCity && typeof window !== "undefined" && !window.location.pathname.startsWith("/admin")) {
+    try {
+      const savedCity = localStorage.getItem("party_selected_city");
+      if (savedCity && savedCity !== "All") {
+        activeCity = savedCity;
+      }
+    } catch {
+      // ignore
+    }
+  }
+  if (activeCity && activeCity !== "All") query.append("city", activeCity);
   if (params?.sort) query.append("sort", params.sort);
   
   query.append("page", String(params?.page || 1));
