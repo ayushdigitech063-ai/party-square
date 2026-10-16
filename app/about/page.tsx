@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import { fetchProducts } from "@/app/lib/api";
+import React, { useState, useEffect } from "react";
 import { Sparkles, Heart, Award, CheckCircle2, ArrowRight, ShieldCheck, Users, Compass, Building2 } from "lucide-react";
 import Link from "next/link";
 import { useWishlist } from "@/app/context/wishlistcontext";
@@ -9,6 +10,34 @@ import ProductSort from "@/app/components/ProductSort";
 import { corporateProducts } from "@/app/data/corporateProducts";
 
 export default function AboutPage() {
+  const [liveProducts, setLiveProducts] = useState<any[]>(corporateProducts);
+
+  useEffect(() => {
+    let active = true;
+    async function loadDynamic() {
+      try {
+        const res = await fetchProducts({ category: 'corporate-planner', limit: 100 });
+        let list: any[] = res.products || [];
+        if (active && list.length > 0) {
+          const mapped = list.map((item: any) => ({
+            ...item,
+            id: item._id || item.id || item.slug,
+          }));
+          const existingIds = new Set(mapped.map((m: any) => String(m.id)));
+          const fallbackList = Array.isArray(corporateProducts) ? corporateProducts : [];
+          const combined = [...mapped, ...fallbackList.filter((x: any) => !existingIds.has(String(x.id)))];
+          setLiveProducts(combined);
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic products for about:", err);
+      }
+    }
+    loadDynamic();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const { toggleWishlist, isInWishlist } = useWishlist();
   const [sortBy, setSortBy] = useState<"recommended" | "price-low" | "price-high">("recommended");
 
@@ -18,13 +47,13 @@ export default function AboutPage() {
     return Number.isNaN(value) ? Infinity : value;
   };
 
-  const sortedProducts = [...corporateProducts].sort((a, b) => {
+  const sortedProducts = [...liveProducts].sort((a, b) => {
     if (sortBy === "price-low") return getPrice(a.price) - getPrice(b.price);
     if (sortBy === "price-high") return getPrice(b.price) - getPrice(a.price);
     return 0;
   });
 
-  const productsToDisplay = sortBy === "recommended" ? corporateProducts : sortedProducts;
+  const productsToDisplay = sortedProducts;
   return (
     <div className="w-full bg-[#F3EFE9] font-sans text-[#202522] selection:bg-[#8CBC67] selection:text-white overflow-hidden">
       

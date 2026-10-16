@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Play, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import MostLovedDecor from "../MostLovedDecor/page";
 import { fetchHomePageSection } from "../lib/api";
 
@@ -155,16 +155,6 @@ export default function Hero() {
                   >
                     <span>{currentSlide.buttonText || "Explore Our Services"}</span>
                     <ArrowRight size={15} />
-                  </Link>
-
-                  <Link
-                    href="/PRogress"
-                    className="flex items-center space-x-1.5 sm:space-x-3 text-white group cursor-pointer whitespace-nowrap shrink-0"
-                  >
-                    <span className="w-7 h-7 sm:w-10 sm:h-10 rounded-full border border-white/40 flex items-center justify-center group-hover:border-[#8CBC67] group-hover:bg-[#8CBC67]/10 transition">
-                      <Play size={10} className="fill-white ml-0.5" />
-                    </span>
-                    <span className="text-xs sm:text-sm font-medium tracking-wide">Watch Story</span>
                   </Link>
                 </div>
               </div>

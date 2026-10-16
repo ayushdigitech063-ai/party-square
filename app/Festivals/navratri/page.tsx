@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchProducts } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Sparkles, ArrowRight, Heart, ShoppingBag } from "lucide-react";
@@ -44,6 +45,34 @@ const toWishlistItem = (product: Product) => ({
 });
 
 export default function NavratriPage() {
+  const [liveProducts, setLiveProducts] = useState<any[]>(navratriProducts);
+
+  useEffect(() => {
+    let active = true;
+    async function loadDynamic() {
+      try {
+        const res = await fetchProducts({ search: 'navratri', limit: 100 });
+        let list: any[] = res.products || [];
+        if (active && list.length > 0) {
+          const mapped = list.map((item: any) => ({
+            ...item,
+            id: item._id || item.id || item.slug,
+          }));
+          const existingIds = new Set(mapped.map((m: any) => String(m.id)));
+          const fallbackList = Array.isArray(navratriProducts) ? navratriProducts : [];
+          const combined = [...mapped, ...fallbackList.filter((x: any) => !existingIds.has(String(x.id)))];
+          setLiveProducts(combined);
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic products for navratri:", err);
+      }
+    }
+    loadDynamic();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const { toggleWishlist, isInWishlist } = useWishlist();
   const [isMounted, setIsMounted] = useState(false);
   const { addToCart } = useCart();
@@ -79,7 +108,7 @@ export default function NavratriPage() {
     return Number.isNaN(value) ? Infinity : value;
   };
 
-  const sortedProducts = [...navratriProducts].sort((a, b) => {
+  const sortedProducts = [...liveProducts].sort((a, b) => {
     switch (sortBy) {
       case "price-low":
         return getPrice(a.price) - getPrice(b.price);
@@ -96,8 +125,7 @@ export default function NavratriPage() {
   const divineEssentials = getProductsByIds(ESSENTIAL_IDS);
   const mataJiPandalDecor = getProductsByIds(MATA_JI_IDS);
   const specialGarbaPandal = getProductsByIds(GARBA_IDS);
-  const productsToDisplay =
-    sortBy === "recommended" ? divineEssentials : sortedProducts;
+  const productsToDisplay = sortedProducts;
 
   return (
     <div className="min-h-screen text-[#202522] font-sans bg-[#FFFFFF] selection:bg-rose-600 selection:text-white overflow-x-hidden pb-20">

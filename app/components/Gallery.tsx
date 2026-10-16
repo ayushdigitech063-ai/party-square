@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState, useRef } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Heart, ArrowRight, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -10,6 +10,7 @@ import { useWishlist } from "../context/wishlistcontext";
 import { useCart } from "../context/CartContext";
 import { galleryProducts } from "../data/galleryData";
 import { Product } from "@/app/types/product";
+import { fetchProducts } from "../lib/api";
 import {
   getPricing,
   DiscountBadge,
@@ -17,9 +18,36 @@ import {
 } from "../components/ProductExtras";
 
 export default function Gallery() {
+  const [productsList, setProductsList] = useState<any[]>(galleryProducts);
   const [activeTab, setActiveTab] = useState("All");
   const router = useRouter();
   const { selectedCity } = useCity();
+
+  useEffect(() => {
+    let isMounted = true;
+    async function loadLiveProducts() {
+      try {
+        const res = await fetchProducts({ limit: 60 });
+        if (isMounted && res.products && res.products.length > 0) {
+          const mapped = res.products.map((p) => ({
+            ...p,
+            id: p._id,
+            category:
+              typeof p.category === "object" && p.category?.name
+                ? p.category.name
+                : p.category || "Decorations",
+          }));
+          setProductsList(mapped);
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic gallery products:", err);
+      }
+    }
+    loadLiveProducts();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
   const citySlug = (selectedCity || "jaipur").toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
   const containerRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -36,17 +64,17 @@ export default function Gallery() {
   const { toggleWishlist, isInWishlist } = useWishlist();
 
   // =========================================================
-  // GET UNIQUE CATEGORIES FROM galleryProducts
+  // GET UNIQUE CATEGORIES FROM dynamic productsList
   // =========================================================
 
   const categories = useMemo(() => {
     return [
       "All",
       ...Array.from(
-        new Set(galleryProducts.map((product) => product.category)),
+        new Set(productsList.map((product) => product.category)),
       ),
     ];
-  }, []);
+  }, [productsList]);
 
   // =========================================================
   // FILTER PRODUCTS
@@ -54,11 +82,11 @@ export default function Gallery() {
 
   const filteredProducts = useMemo(() => {
     if (activeTab === "All") {
-      return galleryProducts;
+      return productsList;
     }
 
-    return galleryProducts.filter((product) => product.category === activeTab);
-  }, [activeTab]);
+    return productsList.filter((product) => product.category === activeTab);
+  }, [activeTab, productsList]);
 
   // =========================================================
   // GROUP PRODUCTS BY CATEGORY

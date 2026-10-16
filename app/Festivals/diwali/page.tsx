@@ -1,4 +1,5 @@
 "use client";
+
 import SlidingProducts from "@/app/components/SlidingProducts";
 import DiwaliSection from "@/app/Festivals/diwali/DiwaliSection";
 import React, { useState, useEffect, useRef } from "react";
@@ -17,6 +18,7 @@ import { useWishlist } from "../../context/wishlistcontext";
 import { useCart } from "@/app/context/CartContext";
 import { diwaliProducts } from "@/app/data/diwaliProducts";
 import type { Product } from "@/app/types/product";
+import { fetchProducts } from "@/app/lib/api";
 import ProductCard from "@/app/components/ProductCard";
 import ProductSort from "@/app/components/ProductSort";
 import FAQSection from "@/app/components/FAQSection";
@@ -37,11 +39,6 @@ const SOCIETY_IDS: string[] = [
   "diwali-118",
 ];
 
-const getProductsByIds = (ids: string[]): Product[] =>
-  ids
-    .map((id) => diwaliProducts.find((p) => p.id === id))
-    .filter((p): p is Product => Boolean(p));
-
 const formatPrice = (price: number) => `₹${price.toLocaleString("en-IN")}`;
 
 // Wishlist ko pehle ki tarah hi same shape milti hai (price string me)
@@ -55,6 +52,7 @@ const toWishlistItem = (product: Product) => ({
 
 export default function DiwaliPage() {
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
+  const [liveProducts, setLiveProducts] = useState<Product[]>(diwaliProducts);
   const [isMounted, setIsMounted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { addToCart } = useCart();
@@ -69,6 +67,29 @@ export default function DiwaliPage() {
         console.log("Autoplay was prevented:", error);
       });
     }
+
+    let active = true;
+    async function loadDynamicDiwali() {
+      try {
+        const res = await fetchProducts({ search: "diwali", limit: 100 });
+        const list: any[] = res.products || [];
+        if (active && list.length > 0) {
+          const mapped = list.map((p) => ({
+            ...p,
+            id: p._id || p.id || p.slug,
+          }));
+          const existingIds = new Set(mapped.map((m) => String(m.id)));
+          const combined = [...mapped, ...diwaliProducts.filter((p) => !existingIds.has(String(p.id)))];
+          setLiveProducts(combined as any);
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic diwali products:", err);
+      }
+    }
+    loadDynamicDiwali();
+    return () => {
+      active = false;
+    };
   }, []);
 
   if (!isMounted) {
@@ -95,7 +116,12 @@ export default function DiwaliPage() {
     return Number.isNaN(value) ? Infinity : value;
   };
 
-  const sortedProducts = [...diwaliProducts].sort((a, b) => {
+  const getProductsByIds = (ids: string[]): Product[] =>
+    ids
+      .map((id) => liveProducts.find((p) => String(p.id) === String(id)))
+      .filter((p): p is Product => Boolean(p));
+
+  const sortedProducts = [...liveProducts].sort((a, b) => {
     switch (sortBy) {
       case "price-low":
         return getPrice(a.price) - getPrice(b.price);
@@ -112,8 +138,7 @@ export default function DiwaliPage() {
   const trendingProducts = getProductsByIds(TRENDING_IDS);
   const bestLovedDecor = getProductsByIds(BEST_LOVED_IDS);
   const societyDecor = getProductsByIds(SOCIETY_IDS);
-  const productsToDisplay =
-    sortBy === "recommended" ? trendingProducts : sortedProducts;
+  const productsToDisplay = sortedProducts;
 
   return (
     <div className="min-h-screen text-[#202522] font-sans bg-[#FCFBF7] selection:bg-[#8CBC67] selection:text-white overflow-x-hidden pb-20">

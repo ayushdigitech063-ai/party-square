@@ -1,4 +1,5 @@
 "use client";
+
 import { Heart, ArrowRight, Sparkles } from "lucide-react";
 import {useWishlist} from "../context/wishlistcontext";
 

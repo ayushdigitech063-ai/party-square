@@ -8,6 +8,7 @@ import { useWishlist } from "../../context/wishlistcontext";
 import { useCart } from "@/app/context/CartContext";
 import { lohriProducts } from "@/app/data/lohriProducts";
 import type { Product } from "@/app/types/product";
+import { fetchProducts } from "@/app/lib/api";
 import ProductCard from "@/app/components/ProductCard";
 import ProductSort from "@/app/components/ProductSort";
 import FAQSection from "@/app/components/FAQSection";
@@ -15,12 +16,6 @@ import FAQSection from "@/app/components/FAQSection";
 const TRADITIONAL_IDS: string[] = ["1", "2", "3", "4"];
 
 const SPECIAL_PUNJABI_IDS: string[] = ["100", "102", "103", "105"];
-
-const getProductsByIds = (ids: string[]): Product[] => {
-  return ids
-    .map((id) => lohriProducts.find((product) => product.id === id))
-    .filter((product): product is Product => Boolean(product));
-};
 
 const formatPrice = (price: string) => {
   return `₹${Number(price).toLocaleString("en-IN")}`;
@@ -37,15 +32,41 @@ const toWishlistItem = (product: Product) => ({
 export default function LohriPage() {
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { addToCart } = useCart();
+  const [liveProducts, setLiveProducts] = useState<Product[]>(lohriProducts);
   const [sortBy, setSortBy] = useState<
     "recommended" | "price-low" | "price-high"
   >("recommended");
 
   const [isMounted, setIsMounted] = useState(false);
 
-  // Prevent hydration mismatch
   useEffect(() => {
     setIsMounted(true);
+    let active = true;
+    async function loadDynamicLohri() {
+      try {
+        const res = await fetchProducts({ category: "lohri-decoration", limit: 100 });
+        let list: any[] = res.products || [];
+        if (list.length === 0) {
+          const fallbackRes = await fetchProducts({ search: "lohri", limit: 100 });
+          list = fallbackRes.products || [];
+        }
+        if (active && list.length > 0) {
+          const mapped = list.map((p) => ({
+            ...p,
+            id: p._id || p.id || p.slug,
+          }));
+          const existingIds = new Set(mapped.map((m) => String(m.id)));
+          const combined = [...mapped, ...lohriProducts.filter((p) => !existingIds.has(String(p.id)))];
+          setLiveProducts(combined as any);
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic lohri products:", err);
+      }
+    }
+    loadDynamicLohri();
+    return () => {
+      active = false;
+    };
   }, []);
 
   if (!isMounted) {
@@ -76,7 +97,7 @@ export default function LohriPage() {
     return Number.isNaN(value) ? Infinity : value;
   };
 
-  const sortedProducts = [...lohriProducts].sort((a, b) => {
+  const sortedProducts = [...liveProducts].sort((a, b) => {
     switch (sortBy) {
       case "price-low":
         return getPrice(a.price) - getPrice(b.price);
@@ -90,10 +111,7 @@ export default function LohriPage() {
     }
   });
 
-  const traditionalLohriDecor = getProductsByIds(TRADITIONAL_IDS);
-  const specialPunjabiLohri = getProductsByIds(SPECIAL_PUNJABI_IDS);
-  const productsToDisplay =
-    sortBy === "recommended" ? traditionalLohriDecor : sortedProducts;
+  const productsToDisplay = sortedProducts;
 
   return (
     <div className="min-h-screen text-[#202522] font-sans bg-[#FFF9F5] selection:bg-orange-600 selection:text-white overflow-x-hidden pb-20">

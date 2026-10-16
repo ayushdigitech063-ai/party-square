@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchProducts } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Sparkles, ArrowRight, Heart, ShieldCheck, Smile } from "lucide-react";
@@ -23,6 +24,34 @@ export const toyThemeDecor = [
 ];
 
 export default function BabyWelcomePage() {
+  const [liveProducts, setLiveProducts] = useState<any[]>(babyWelcomeDecor);
+
+  useEffect(() => {
+    let active = true;
+    async function loadDynamic() {
+      try {
+        const res = await fetchProducts({ search: 'welcome', limit: 100 });
+        let list: any[] = res.products || [];
+        if (active && list.length > 0) {
+          const mapped = list.map((item: any) => ({
+            ...item,
+            id: item._id || item.id || item.slug,
+          }));
+          const existingIds = new Set(mapped.map((m: any) => String(m.id)));
+          const fallbackList = Array.isArray(babyWelcomeDecor) ? babyWelcomeDecor : [];
+          const combined = [...mapped, ...fallbackList.filter((x: any) => !existingIds.has(String(x.id)))];
+          setLiveProducts(combined);
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic products for babaywelcom:", err);
+      }
+    }
+    loadDynamic();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const { wishlist, toggleWishlist, isInWishlist } = useWishlist();
   const [isMounted, setIsMounted] = useState(false);
   const [sortBy, setSortBy] = useState<
@@ -37,7 +66,7 @@ export default function BabyWelcomePage() {
     return Number.isNaN(value) ? Infinity : value;
   };
 
-  const sortedProducts = [...babyWelcomeDecor].sort((a, b) => {
+  const sortedProducts = [...liveProducts].sort((a, b) => {
     switch (sortBy) {
       case "price-low":
         return getPrice(a.price) - getPrice(b.price);
@@ -51,8 +80,7 @@ export default function BabyWelcomePage() {
     }
   });
 
-  const productsToDisplay =
-    sortBy === "recommended" ? babyWelcomeDecor : sortedProducts;
+  const productsToDisplay = sortedProducts;
 
   useEffect(() => {
     setIsMounted(true);

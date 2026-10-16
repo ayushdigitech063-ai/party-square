@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchProducts } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Sparkles, CheckCircle, Calendar, Star, ShieldCheck, ArrowRight, Heart } from "lucide-react";
@@ -61,6 +62,34 @@ const DEFAULT_PACKAGES = [
 ];
 
 export default function WallDecorationPage() {
+  const [liveProducts, setLiveProducts] = useState<any[]>(wallDecorationProducts);
+
+  useEffect(() => {
+    let active = true;
+    async function loadDynamic() {
+      try {
+        const res = await fetchProducts({ category: 'wall-decoration', limit: 100 });
+        let list: any[] = res.products || [];
+        if (active && list.length > 0) {
+          const mapped = list.map((item: any) => ({
+            ...item,
+            id: item._id || item.id || item.slug,
+          }));
+          const existingIds = new Set(mapped.map((m: any) => String(m.id)));
+          const fallbackList = Array.isArray(wallDecorationProducts) ? wallDecorationProducts : [];
+          const combined = [...mapped, ...fallbackList.filter((x: any) => !existingIds.has(String(x.id)))];
+          setLiveProducts(combined);
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic products for wall-decoration:", err);
+      }
+    }
+    loadDynamic();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const { toggleWishlist, isInWishlist } = useWishlist();
   const [sortBy, setSortBy] = useState<"recommended" | "price-low" | "price-high">("recommended");
   const [packages, setPackages] = useState(DEFAULT_PACKAGES);
@@ -103,13 +132,13 @@ export default function WallDecorationPage() {
     return Number.isNaN(value) ? Infinity : value;
   };
 
-  const sortedProducts = [...wallDecorationProducts].sort((a, b) => {
+  const sortedProducts = [...liveProducts].sort((a, b) => {
     if (sortBy === "price-low") return getPrice(a.price) - getPrice(b.price);
     if (sortBy === "price-high") return getPrice(b.price) - getPrice(a.price);
     return 0;
   });
 
-  const productsToDisplay = sortBy === "recommended" ? wallDecorationProducts : sortedProducts;
+  const productsToDisplay = sortedProducts;
 
   // Gallery Showcase Data
   const DEFAULT_GALLERY_IMAGES = [

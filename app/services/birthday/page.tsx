@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchProducts } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { kidsbirthdayProducts } from "@/app/data/kidsBirthdayProduct";
@@ -20,6 +21,34 @@ import ProductSort from "@/app/components/ProductSort";
 import FAQSection from "@/app/components/FAQSection";
 
 export default function BirthdayServicePage() {
+  const [liveProducts, setLiveProducts] = useState<any[]>(kidsbirthdayProducts);
+
+  useEffect(() => {
+    let active = true;
+    async function loadDynamic() {
+      try {
+        const res = await fetchProducts({ category: 'birthday', limit: 100 });
+        let list: any[] = res.products || [];
+        if (active && list.length > 0) {
+          const mapped = list.map((item: any) => ({
+            ...item,
+            id: item._id || item.id || item.slug,
+          }));
+          const existingIds = new Set(mapped.map((m: any) => String(m.id)));
+          const fallbackList = Array.isArray(kidsbirthdayProducts) ? kidsbirthdayProducts : [];
+          const combined = [...mapped, ...fallbackList.filter((x: any) => !existingIds.has(String(x.id)))];
+          setLiveProducts(combined);
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic products for birthday:", err);
+      }
+    }
+    loadDynamic();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   // Gallery images for child birthdays
   const DEFAULT_CHILD_GALLERY = [
     "/childbirthday1.png",
@@ -113,7 +142,7 @@ export default function BirthdayServicePage() {
     return Number.isNaN(value) ? Infinity : value;
   };
 
-  const sortedProducts = [...kidsbirthdayProducts].sort((a, b) => {
+  const sortedProducts = [...liveProducts].sort((a, b) => {
     switch (sortBy) {
       case "price-low":
         return getPrice(a.price) - getPrice(b.price);
@@ -127,8 +156,7 @@ export default function BirthdayServicePage() {
     }
   });
 
-  const productsToDisplay =
-    sortBy === "recommended" ? kidsbirthdayProducts : sortedProducts;
+  const productsToDisplay = sortedProducts;
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans">

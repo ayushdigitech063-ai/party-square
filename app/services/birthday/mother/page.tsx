@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchProducts } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
@@ -18,6 +19,34 @@ import ProductSort from "@/app/components/ProductSort";
 import FAQSection from "@/app/components/FAQSection";
 
 export default function MotherBirthdayPage() {
+  const [liveProducts, setLiveProducts] = useState<any[]>(motherbirthdayProducts);
+
+  useEffect(() => {
+    let active = true;
+    async function loadDynamic() {
+      try {
+        const res = await fetchProducts({ search: 'mother', limit: 100 });
+        let list: any[] = res.products || [];
+        if (active && list.length > 0) {
+          const mapped = list.map((item: any) => ({
+            ...item,
+            id: item._id || item.id || item.slug,
+          }));
+          const existingIds = new Set(mapped.map((m: any) => String(m.id)));
+          const fallbackList = Array.isArray(motherbirthdayProducts) ? motherbirthdayProducts : [];
+          const combined = [...mapped, ...fallbackList.filter((x: any) => !existingIds.has(String(x.id)))];
+          setLiveProducts(combined);
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic products for mother:", err);
+      }
+    }
+    loadDynamic();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   // Gallery images for mother's special decor
   const DEFAULT_MOTHER_GALLERY = [
     "/motherbirthday.png",
@@ -112,7 +141,7 @@ export default function MotherBirthdayPage() {
     return Number.isNaN(value) ? Infinity : value;
   };
 
-  const sortedProducts = [...motherbirthdayProducts].sort((a, b) => {
+  const sortedProducts = [...liveProducts].sort((a, b) => {
     switch (sortBy) {
       case "price-low":
         return getPrice(a.price) - getPrice(b.price);
@@ -126,8 +155,7 @@ export default function MotherBirthdayPage() {
     }
   });
 
-  const productsToDisplay =
-    sortBy === "recommended" ? motherbirthdayProducts : sortedProducts;
+  const productsToDisplay = sortedProducts;
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans selection:bg-[#8CBC67] selection:text-white">

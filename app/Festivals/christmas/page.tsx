@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchProducts } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Sparkles, CheckCircle, ArrowRight, Gift, Star } from "lucide-react";
@@ -10,6 +11,34 @@ import { christmasProducts } from "@/app/data/christmasProducts";
 import ProductSort from "@/app/components/ProductSort";
 import ProductCard from "@/app/components/ProductCard";
 export default function ChristmasPage() {
+  const [liveProducts, setLiveProducts] = useState<any[]>(christmasProducts);
+
+  useEffect(() => {
+    let active = true;
+    async function loadDynamic() {
+      try {
+        const res = await fetchProducts({ search: 'christmas', limit: 100 });
+        let list: any[] = res.products || [];
+        if (active && list.length > 0) {
+          const mapped = list.map((item: any) => ({
+            ...item,
+            id: item._id || item.id || item.slug,
+          }));
+          const existingIds = new Set(mapped.map((m: any) => String(m.id)));
+          const fallbackList = Array.isArray(christmasProducts) ? christmasProducts : [];
+          const combined = [...mapped, ...fallbackList.filter((x: any) => !existingIds.has(String(x.id)))];
+          setLiveProducts(combined);
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic products for christmas:", err);
+      }
+    }
+    loadDynamic();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const [sortBy, setSortBy] = useState<any>("popular"); const { wishlist, toggleWishlist } = useWishlist();
   const productsToDisplay = christmasProducts;
   return (

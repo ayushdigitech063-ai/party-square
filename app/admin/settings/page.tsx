@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import { Settings, Shield, Bell, Save, CheckCircle2 } from "lucide-react";

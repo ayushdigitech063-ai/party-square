@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchProducts } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -10,13 +11,41 @@ import ProductSort from "@/app/components/ProductSort";
 
 
 export default function AllChristmasProductsPage() {
+  const [liveProducts, setLiveProducts] = useState<any[]>(christmasProducts);
+
+  useEffect(() => {
+    let active = true;
+    async function loadDynamic() {
+      try {
+        const res = await fetchProducts({ search: 'christmas', limit: 100 });
+        let list: any[] = res.products || [];
+        if (active && list.length > 0) {
+          const mapped = list.map((item: any) => ({
+            ...item,
+            id: item._id || item.id || item.slug,
+          }));
+          const existingIds = new Set(mapped.map((m: any) => String(m.id)));
+          const fallbackList = Array.isArray(christmasProducts) ? christmasProducts : [];
+          const combined = [...mapped, ...fallbackList.filter((x: any) => !existingIds.has(String(x.id)))];
+          setLiveProducts(combined);
+        }
+      } catch (err) {
+        console.warn("Could not load dynamic products for all-products:", err);
+      }
+    }
+    loadDynamic();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const [isMounted, setIsMounted] = useState(false);
   const { toggleWishlist, isInWishlist } = useWishlist();
   const [sortBy, setSortBy] = useState<
       "recommended" | "price-low" | "price-high"
     >("recommended");
   
-    const sortedProducts = [...christmasProducts].sort((a, b) => {
+    const sortedProducts = [...liveProducts].sort((a, b) => {
       if (sortBy === "price-low") {
         return Number(a.price) - Number(b.price);
       }
@@ -46,7 +75,7 @@ export default function AllChristmasProductsPage() {
             <span className="text-[#6B706C] text-2xl">|</span>
 
                 <span className="text-[#6B706C] text-2xl">
-                  {christmasProducts.length} Items
+                  {liveProducts.length} Items
                 </span>
             </div>
     
