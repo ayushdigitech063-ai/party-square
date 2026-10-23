@@ -72,18 +72,18 @@ const FAQSection = () => {
         {/* Heading */}
         <div className="mx-auto mb-10 max-w-3xl text-center">
           {badge && (
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#D7A84B]/30 bg-white px-4 py-2 text-sm font-medium text-[#8A6A32]">
-              <Sparkles className="h-4 w-4" />
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#8CBC67]/30 bg-[#EEF6E8] px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#8CBC67]">
+              <Sparkles className="h-4 w-4 text-[#8CBC67]" />
               {badge}
             </div>
           )}
 
-          <h2 className="text-3xl font-semibold tracking-tight text-[#29251F] sm:text-4xl lg:text-5xl">
+          <h2 className="text-3xl font-bold tracking-tight text-[#202522] sm:text-4xl lg:text-5xl">
             {heading}
           </h2>
 
           {description && (
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#756F66] sm:text-base">
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#6B706C] sm:text-base">
               {description}
             </p>
           )}
@@ -99,8 +99,8 @@ const FAQSection = () => {
                 key={faq.question || index}
                 className={`overflow-hidden rounded-[24px] border bg-white transition-all duration-300 ${
                   isOpen
-                    ? "border-[#D7A84B]/50 shadow-[0_10px_35px_rgba(197,160,89,0.10)]"
-                    : "border-[#E9E2D7] shadow-sm hover:border-[#D7A84B]/40"
+                    ? "border-[#8CBC67] shadow-sm"
+                    : "border-[#E8E8E3] shadow-xs hover:border-[#8CBC67]/50"
                 }`}
               >
                 {/* Question */}
@@ -114,10 +114,10 @@ const FAQSection = () => {
 
                     {/* Number */}
                     <span
-                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-semibold transition-colors ${
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors ${
                         isOpen
-                          ? "bg-[#D7A84B] text-white"
-                          : "bg-[#FCFBF7] text-[#A47C35]"
+                          ? "bg-[#8CBC67] text-white"
+                          : "bg-[#EEF6E8] text-[#8CBC67]"
                       }`}
                     >
                       {String(index + 1).padStart(2, "0")}
@@ -125,10 +125,10 @@ const FAQSection = () => {
 
                     {/* Question */}
                     <span
-                      className={`text-sm font-semibold sm:text-base ${
+                      className={`text-sm font-bold sm:text-base ${
                         isOpen
-                          ? "text-[#8A6A32]"
-                          : "text-[#29251F]"
+                          ? "text-[#8CBC67]"
+                          : "text-[#202522]"
                       }`}
                     >
                       {faq.question}
@@ -137,7 +137,7 @@ const FAQSection = () => {
 
                   {/* Arrow */}
                   <ChevronDown
-                    className={`h-5 w-5 shrink-0 text-[#8A6A32] transition-transform duration-300 ${
+                    className={`h-5 w-5 shrink-0 text-[#8CBC67] transition-transform duration-300 ${
                       isOpen ? "rotate-180" : ""
                     }`}
                   />
@@ -152,8 +152,8 @@ const FAQSection = () => {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <div className="border-t border-[#EFE9DF] px-5 pb-6 pt-5 sm:px-7 sm:pl-[4.75rem]">
-                      <p className="text-sm leading-7 text-[#756F66] sm:text-base">
+                    <div className="border-t border-[#E8E8E3] px-5 pb-6 pt-5 sm:px-7 sm:pl-[4.75rem]">
+                      <p className="text-sm leading-7 text-[#6B706C] sm:text-base">
                         {faq.answer}
                       </p>
                     </div>
@@ -164,29 +164,30 @@ const FAQSection = () => {
           })}
         </div>
 
-        {/* Bottom CTA */}
+        {/* Bottom CTA — Matching Brand Palette (#FCFBF7 / #EEF6E8 / #8CBC67) */}
         <div className="mx-auto mt-12 max-w-4xl">
-          <div className="relative overflow-hidden rounded-[28px] bg-[#29251F] px-6 py-10 text-center sm:px-10">
+          <div className="relative overflow-hidden rounded-[28px] bg-[#EEF6E8] border border-[#8CBC67]/40 px-6 py-10 text-center sm:px-10 shadow-sm">
             
-            <div className="absolute -left-20 -top-20 h-40 w-40 rounded-full bg-[#D7A84B]/20 blur-3xl" />
+            <div className="absolute -left-20 -top-20 h-40 w-40 rounded-full bg-[#8CBC67]/15 blur-3xl" />
+            <div className="absolute -right-20 -bottom-20 h-40 w-40 rounded-full bg-[#F7D6C7]/20 blur-3xl" />
 
             <div className="relative">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#D7A84B] text-white">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#8CBC67] text-white shadow-xs">
                 <MessageCircle className="h-5 w-5" />
               </div>
 
-              <h3 className="text-2xl font-semibold text-white sm:text-3xl">
+              <h3 className="text-2xl font-bold text-[#202522] sm:text-3xl">
                 Still Have Questions?
               </h3>
 
-              <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-white/70">
+              <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-[#6B706C]">
                 Our team is here to help you plan the perfect celebration.
                 Get in touch with us for any questions about your decoration.
               </p>
 
               <Link
                 href="/contact"
-                className="mt-6 inline-flex rounded-full bg-[#D7A84B] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#B18D4C]"
+                className="mt-6 inline-flex rounded-full bg-[#8CBC67] hover:bg-[#7AB055] px-7 py-3 text-sm font-bold text-white transition shadow-sm cursor-pointer"
               >
                 Contact Us
               </Link>

@@ -120,8 +120,8 @@ export default function Hero() {
 
       {/* ================= HERO SECTION CARD ================= */}
       {isEnabled && (
-        <div className="max-w-[1212px] mx-auto p-3 sm:p-6">
-          <div className="relative w-full min-h-[490px] sm:min-h-[440px] md:h-[450px] rounded-[24px] sm:rounded-[28px] overflow-hidden text-white shadow-xl flex flex-col justify-center">
+        <div className="max-w-[1264px] mx-auto p-3 sm:p-4 lg:px-0">
+          <div className="relative w-full h-[260px] sm:h-[280px] md:h-[301px] rounded-[20px] sm:rounded-[24px] overflow-hidden text-white shadow-xl flex flex-col justify-center">
 
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
@@ -131,62 +131,62 @@ export default function Hero() {
                 alt="Decoration Background"
                 className="w-full h-full object-cover transition-all duration-1000 ease-in-out scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/85 via-black/55 to-black/25" />
+              <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/90 via-black/70 to-black/30" />
             </div>
 
             {/* Hero Content */}
-            <div className="relative z-20 h-full flex flex-col justify-center px-6 sm:px-10 md:px-14 py-10 sm:py-0">
+            <div className="relative z-20 h-full flex flex-col justify-center px-6 sm:px-10 md:px-12 py-4 sm:py-0">
               <div className="max-w-xl">
-                <p className="text-[11px] sm:text-xs tracking-[0.2em] text-[#8CBC67] font-bold mb-2.5 sm:mb-4 uppercase">
+                <p className="text-[10px] sm:text-xs tracking-[0.18em] text-[#8CBC67] font-bold mb-1.5 sm:mb-2 uppercase">
                   {currentSlide.subtitle}
                 </p>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight mb-3 sm:mb-6">
-                  {currentSlide.titleFirst} <br />
+                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-bold text-white leading-tight mb-2 sm:mb-2.5">
+                  <span className="text-white drop-shadow-sm">{currentSlide.titleFirst}</span> <br />
                   <span className="font-bold text-[#8CBC67]">{currentSlide.titleItalic}</span>
                 </h1>
-                <p className="text-gray-200 text-xs sm:text-sm md:text-base leading-relaxed mb-6 sm:mb-8 max-w-md line-clamp-3 sm:line-clamp-none font-light">
+                <p className="text-gray-100 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 max-w-md line-clamp-2 font-normal">
                   {currentSlide.description}
                 </p>
 
-                <div className="flex items-center gap-2.5 sm:gap-6 flex-row flex-nowrap sm:flex-wrap">
+                <div className="flex items-center gap-2.5 sm:gap-4 flex-row flex-nowrap sm:flex-wrap">
                   <Link
                     href={currentSlide.buttonLink || "/services"}
-                    className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-4 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-semibold text-xs sm:text-sm flex items-center space-x-1.5 sm:space-x-3 transition shadow-md cursor-pointer whitespace-nowrap shrink-0"
+                    className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm flex items-center space-x-1.5 sm:space-x-2 transition shadow-md cursor-pointer whitespace-nowrap shrink-0"
                   >
                     <span>{currentSlide.buttonText || "Explore Our Services"}</span>
-                    <ArrowRight size={15} />
+                    <ArrowRight size={14} />
                   </Link>
                 </div>
               </div>
             </div>
 
-            {/* Floating side arrows - hidden on tiny mobile so they don't cover text */}
+            {/* Floating side arrows */}
             {slides.length > 1 && (
               <>
                 <button
                   onClick={prevSlide}
                   aria-label="Previous slide"
-                  className="hidden sm:flex absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/90 text-[#202522] items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
+                  className="hidden sm:flex absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 text-[#202522] items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
                 >
-                  <ChevronLeft size={18} />
+                  <ChevronLeft size={16} />
                 </button>
                 <button
                   onClick={nextSlide}
                   aria-label="Next slide"
-                  className="hidden sm:flex absolute right-4 sm:right-5 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white/90 text-[#202522] items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
+                  className="hidden sm:flex absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 text-[#202522] items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
                 >
-                  <ChevronRight size={18} />
+                  <ChevronRight size={16} />
                 </button>
 
                 {/* Dot pagination */}
-                <div className="absolute bottom-5 sm:bottom-7 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 bg-black/40 backdrop-blur-sm px-3 py-1.5 sm:py-2 rounded-full">
+                <div className="absolute bottom-3 sm:bottom-3.5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-full">
                   {slides.map((_, idx) => (
                     <button
                       key={idx}
                       onClick={() => setCurrentIndex(idx)}
                       aria-label={`Go to slide ${idx + 1}`}
-                      className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                        currentIndex === idx ? "w-6 bg-[#8CBC67]" : "w-2 bg-white/50 hover:bg-white/80"
+                      className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                        currentIndex === idx ? "w-5 bg-[#8CBC67]" : "w-1.5 bg-white/50 hover:bg-white/80"
                       }`}
                     />
                   ))}

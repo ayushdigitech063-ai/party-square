@@ -1,8 +1,10 @@
-"use client";
+﻿"use client";
 
 import { fetchProducts } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCity } from "@/app/context/CityContext";
 import { Sparkles, CheckCircle, Star, Heart, ArrowRight, ShieldCheck } from "lucide-react";
 import { useWishlist } from "@/app/context/wishlistcontext";
 import ProductCard from "@/app/components/ProductCard";
@@ -46,6 +48,8 @@ const DEFAULT_CEREMONY_CARDS = [
 ];
 
 export default function RingDecorationPage() {
+  const router = useRouter();
+  const { selectedCity } = useCity();
   const [liveProducts, setLiveProducts] = useState<any[]>(ringDecorationProducts);
 
   useEffect(() => {
@@ -172,7 +176,7 @@ export default function RingDecorationPage() {
     <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans">
       
       {/* ================= HERO SECTION WITH SINGLE CLEAR ring.png BACKGROUND ================= */}
-      <section className="relative min-h-[480px] sm:h-[520px] py-10 sm:py-0 flex items-center justify-center overflow-hidden text-white">
+      <section className="relative h-[320px] sm:h-[340px] md:h-[360px] flex items-center justify-center overflow-hidden text-white">
         {/* Fixed Background Image ring.png with Dark Overlay */}
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/90 via-neutral-950/70 to-neutral-950/40 z-10" />
@@ -180,25 +184,26 @@ export default function RingDecorationPage() {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-20 max-w-7xl mx-auto px-6 w-full text-center sm:text-left">
-          <div className="max-w-2xl space-y-6">
-            <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-4 py-1.5 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md">
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 w-full text-center sm:text-left">
+          <div className="max-w-2xl space-y-2 sm:space-y-3">
+            <div className="inline-flex items-center space-x-1.5 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-3 sm:px-4 py-1 rounded-full text-[#8CBC67] text-[10px] sm:text-xs font-semibold tracking-wider uppercase backdrop-blur-md shadow-sm">
               <Sparkles size={13} className="text-[#8CBC67]" />
               <span>Royal Ring Ceremony Specialists</span>
             </div>
 
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-md">
-              Where Forever Begins <span className="text-[#8CBC67] italic font-normal">With A Ring</span>
+            <h1 className="font-serif text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-bold text-white leading-tight drop-shadow-md">
+              <span className="text-white drop-shadow-sm">Where Forever Begins</span>{" "}
+              <span className="text-[#8CBC67] font-bold">With A Ring</span>
             </h1>
 
-            <p className="text-neutral-200 text-sm sm:text-base leading-relaxed">
+            <p className="text-neutral-200 text-xs sm:text-sm max-w-xl font-light leading-relaxed line-clamp-2">
               Immerse your engagement day in breathtaking floral arches, ambient mood lighting, and bespoke stage backdrops tailored for romance and elegance.
             </p>
 
-            <div className="flex flex-row items-center gap-2 sm:gap-4 pt-2 justify-center sm:justify-start w-full">
+            <div className="flex flex-row items-center gap-2.5 sm:gap-4 pt-1.5 sm:pt-2 w-full justify-center sm:justify-start">
               <Link
                 href="/contact"
-                className="flex-1 sm:flex-initial bg-[#8CBC67] hover:bg-[#7AB055] text-white px-3 sm:px-8 py-3 sm:py-3.5 rounded-full font-bold text-[11px] sm:text-xs uppercase tracking-wider shadow-lg hover:shadow-[#8CBC67]/30 transition-all flex items-center justify-center space-x-1.5 sm:space-x-2 whitespace-nowrap cursor-pointer"
+                className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-bold text-[11px] sm:text-xs uppercase tracking-wider shadow-md hover:shadow-[#8CBC67]/30 transition-all flex items-center justify-center space-x-1.5 sm:space-x-2 whitespace-nowrap cursor-pointer"
               >
                 <span>Book Ring Ceremony</span>
                 <ArrowRight size={14} className="shrink-0" />
@@ -208,7 +213,7 @@ export default function RingDecorationPage() {
                 href="https://whatsapp.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-initial border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 px-3 sm:px-6 py-3 sm:py-3.5 rounded-full font-semibold text-[11px] sm:text-xs uppercase tracking-wider transition flex items-center justify-center space-x-1.5 sm:space-x-2 whitespace-nowrap"
+                className="border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-semibold text-[11px] sm:text-xs uppercase tracking-wider transition flex items-center justify-center space-x-1.5 sm:space-x-2 whitespace-nowrap"
               >
                 <span>Chat on WhatsApp</span>
               </a>
@@ -225,42 +230,51 @@ export default function RingDecorationPage() {
           <p className="text-[#6B706C] text-xs sm:text-sm">Explore our specialized packages crafted to make your ring exchange ceremony an absolute fairy tale.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {ceremonyCards.map((card, idx) => (
-            <div
-              key={idx}
-              className="bg-white rounded-2xl overflow-hidden border border-[#E8DFD1] shadow-xs hover:shadow-lg transition-all duration-300 group flex flex-col justify-between"
-            >
-              <div className="relative h-40 sm:h-44 overflow-hidden">
-                <img
-                  src={card.image}
-                  alt={card.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-                />
-                <div className="absolute top-3 right-3 bg-[#202522]/90 backdrop-blur-md text-[#8CBC67] text-xs font-bold px-2.5 py-1 rounded-full border border-[#8CBC67]/30 shadow-xs">
-                  {card.price}
-                </div>
-              </div>
-
-              <div className="p-4 sm:p-5 flex flex-col justify-between flex-grow space-y-3">
-                <div>
-                  <h3 className="font-serif text-base sm:text-lg font-bold text-[#202522] mb-1.5 group-hover:text-[#8CBC67] transition leading-snug">
-                    {card.title}
-                  </h3>
-                  <p className="text-[#6B706C] text-xs leading-relaxed line-clamp-3">
-                    {card.desc}
-                  </p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+          {ceremonyCards.map((card, idx) => {
+            const cardSlug = (card.title || card.id || `ring-pkg-${idx}`).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+            const cardDetailUrl = `/${(selectedCity || "bangalore").toLowerCase()}/ring-decoration/${cardSlug}`;
+            return (
+              <div
+                key={idx}
+                onClick={() => router.push(cardDetailUrl)}
+                className="bg-white rounded-2xl overflow-hidden border border-[#E8DFD1] shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col justify-between cursor-pointer select-none"
+              >
+                <div className="relative h-40 sm:h-44 overflow-hidden">
+                  <img
+                    src={card.image}
+                    alt={card.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                  />
+                  <div className="absolute top-3 right-3 bg-[#202522]/90 backdrop-blur-md text-[#8CBC67] text-xs font-bold px-2.5 py-1 rounded-full border border-[#8CBC67]/30 shadow-xs">
+                    {card.price}
+                  </div>
+                  <div className="absolute bottom-2.5 right-2.5 bg-[#202522]/90 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/20">
+                    Tap for details
+                  </div>
                 </div>
 
-                <Link
-                  href={`/payment-detail?productId=${card.id}&name=${encodeURIComponent(card.title)}&price=${card.rawPrice || String(card.price).replace(/[^0-9]/g, '')}&image=${encodeURIComponent(card.image)}`}
-                  className="w-full block text-center py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#EEF6EB] border border-[#8CBC67]/40 text-[#202522] hover:bg-[#8CBC67] hover:text-white transition duration-300 shadow-xs"
-                >
-                  Select Package
-                </Link>
+                <div className="p-4 sm:p-5 flex flex-col justify-between flex-grow space-y-3">
+                  <div>
+                    <h3 className="font-serif text-base sm:text-lg font-bold text-[#202522] mb-1.5 group-hover:text-[#8CBC67] transition leading-snug">
+                      {card.title}
+                    </h3>
+                    <p className="text-[#6B706C] text-xs leading-relaxed line-clamp-3">
+                      {card.desc}
+                    </p>
+                  </div>
+
+                  <Link
+                    href={cardDetailUrl}
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-full block text-center py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#EEF6EB] border border-[#8CBC67]/40 text-[#202522] hover:bg-[#8CBC67] hover:text-white transition duration-300 shadow-xs"
+                  >
+                    View Package Details
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -294,7 +308,7 @@ export default function RingDecorationPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {productsToDisplay.slice(0, 8).map((product) => (
             <ProductCard
               key={product.id}

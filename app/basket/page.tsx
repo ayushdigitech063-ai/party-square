@@ -202,8 +202,8 @@ export default function BasketPage() {
                     <h3 className="text-lg font-serif font-bold text-gray-900">
                       {item.name}
                     </h3>
-                    <p className="text-xs text-gray-500">
-                      Unit Price: ₹{Number(unitNumeric).toLocaleString("en-IN")}
+                    <p className="text-xs font-semibold text-gray-700">
+                      ₹{Number(unitNumeric).toLocaleString("en-IN")}
                     </p>
                     <div className="inline-flex items-center bg-[#EEF6EB] text-[#202522] rounded-full">
                       <button
@@ -268,54 +268,62 @@ export default function BasketPage() {
           })}
         </div>
 
-        {/* Overall Summary Box */}
-        <div className="bg-white rounded-3xl border border-[#8CBC67] shadow-xl p-6 sm:p-8 space-y-6">
-          <div className="flex items-center space-x-2 text-[#202522]">
-            <Sparkles size={18} />
-            <h3 className="text-xl font-serif font-bold">
-              Overall Order Summary
-            </h3>
+        {/* Overall Summary Box — Compact, Sleek & Modern */}
+        <div className="bg-white rounded-2xl border border-[#E8E8E3] shadow-md p-4 sm:p-5 space-y-4 max-w-xl ml-auto">
+          <div className="flex items-center justify-between border-b border-[#E8E8E3] pb-2.5">
+            <div className="flex items-center space-x-1.5 text-[#202522]">
+              <Sparkles size={16} className="text-[#8CBC67]" />
+              <h3 className="text-base font-bold">
+                Order Summary
+              </h3>
+            </div>
+            <span className="text-xs text-[#6B706C]">
+              {totalItemsCount} {totalItemsCount === 1 ? "Item" : "Items"}
+            </span>
           </div>
 
-          <div className="space-y-3 border-t border-b border-[#E8E8E3] py-4 text-sm">
-            <div className="flex justify-between text-gray-600">
-              <span>Total Unique Items:</span>
-              <span className="font-semibold text-gray-900">{cart.length}</span>
-            </div>
-            <div className="flex justify-between text-gray-600">
-              <span>Total Quantity Added:</span>
-              <span className="font-semibold text-gray-900">
-                {totalItemsCount} Units
+          <div className="space-y-2 text-xs">
+            <div className="flex justify-between text-[#6B706C]">
+              <span>Items Total</span>
+              <span className="font-semibold text-[#202522]">
+                ₹{cart.reduce((sum, item) => {
+                  const unit = Number(item.numericPrice) || Number(item.price?.toString().replace(/[^0-9]/g, "")) || item.price || 0;
+                  return sum + (unit * (Number(item.quantity) || 1));
+                }, 0).toLocaleString("en-IN")}
               </span>
             </div>
-            {/* Coupon */}
-            <div className="pt-2">
+
+            {/* Compact Coupon Section */}
+            <div className="pt-1.5 pb-1">
               {appliedCoupon ? (
-                <div className="flex items-center justify-between bg-emerald-50 text-emerald-800 px-4 py-2.5 rounded-xl">
-                  <div className="flex items-center space-x-2">
-                    <Tag size={15} />
-                    <span className="text-xs font-bold uppercase">
+                <div className="flex items-center justify-between bg-[#EEF6E8] text-[#202522] border border-[#8CBC67]/30 px-3 py-1.5 rounded-lg">
+                  <div className="flex items-center space-x-1.5">
+                    <Tag size={13} className="text-[#8CBC67]" />
+                    <span className="text-[11px] font-bold uppercase tracking-wider">
                       {appliedCoupon.code} applied
                     </span>
                   </div>
                   <button
                     onClick={handleRemoveCoupon}
-                    className="text-xs font-bold text-rose-600 hover:text-rose-800 cursor-pointer"
+                    className="text-[11px] font-bold text-rose-600 hover:text-rose-800 cursor-pointer"
                   >
                     Remove
                   </button>
                 </div>
               ) : (
-                <div className="flex space-x-2">
-                  <input
-                    value={couponInput}
-                    onChange={(e) => setCouponInput(e.target.value)}
-                    placeholder="Enter coupon code"
-                    className="flex-1 border border-[#E8E8E3] rounded-full px-4 py-2 text-sm uppercase focus:outline-none focus:border-[#202522]"
-                  />
+                <div className="flex gap-1.5">
+                  <div className="relative flex-1">
+                    <Tag size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6B706C]" />
+                    <input
+                      value={couponInput}
+                      onChange={(e) => setCouponInput(e.target.value)}
+                      placeholder="Coupon code"
+                      className="w-full border border-[#E8E8E3] rounded-lg pl-8 pr-3 py-1.5 text-xs uppercase focus:outline-none focus:border-[#8CBC67] bg-[#FCFBF7]"
+                    />
+                  </div>
                   <button
                     onClick={handleApplyCoupon}
-                    className="bg-[#202522] hover:bg-black text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition cursor-pointer"
+                    className="bg-[#202522] hover:bg-black text-white px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition cursor-pointer"
                   >
                     Apply
                   </button>
@@ -323,7 +331,7 @@ export default function BasketPage() {
               )}
               {couponMsg && !appliedCoupon && (
                 <p
-                  className={`text-xs mt-1.5 ml-2 ${couponMsg.ok ? "text-emerald-700" : "text-rose-600"}`}
+                  className={`text-[10px] mt-1 ml-1 ${couponMsg.ok ? "text-emerald-700" : "text-rose-600"}`}
                 >
                   {couponMsg.text}
                 </p>
@@ -331,16 +339,15 @@ export default function BasketPage() {
             </div>
 
             {appliedCoupon && (
-              <div className="flex justify-between text-emerald-700">
-                <span>Coupon Discount:</span>
-                <span className="font-semibold">
-                  - ₹{discountAmount.toLocaleString("en-IN")}
-                </span>
+              <div className="flex justify-between text-emerald-700 font-semibold pt-1">
+                <span>Coupon Discount</span>
+                <span>- ₹{discountAmount.toLocaleString("en-IN")}</span>
               </div>
             )}
-            <div className="flex justify-between text-lg font-bold text-gray-900 pt-2 border-t border-amber-50">
-              <span>Grand Total Price:</span>
-              <span className="text-[#202522] text-xl">
+
+            <div className="flex justify-between items-center text-sm font-bold text-[#202522] pt-2.5 border-t border-[#E8E8E3]">
+              <span>Grand Total</span>
+              <span className="text-base text-[#202522]">
                 {formattedGrandTotal}
               </span>
             </div>
@@ -354,10 +361,10 @@ export default function BasketPage() {
               router.push(`/payment-detail?productId=${encodeURIComponent(pId)}`);
             }}
             disabled={cart.length === 0}
-            className="w-full bg-[#8CBC67] hover:bg-[#7AB055] text-white font-bold py-4 rounded-full text-xs uppercase tracking-widest transition shadow-lg flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50"
+            className="w-full bg-[#8CBC67] hover:bg-[#7AB055] text-white font-bold py-2.5 rounded-lg text-xs uppercase tracking-wider transition shadow-sm flex items-center justify-center space-x-1.5 cursor-pointer disabled:opacity-50"
           >
             <span>Proceed to Checkout</span>
-            <ArrowRight size={16} />
+            <ArrowRight size={14} />
           </button>
         </div>
       </div>
@@ -391,7 +398,7 @@ export default function BasketPage() {
 
             <div className="space-y-3 text-sm text-gray-700">
               <div className="flex justify-between bg-[#EEF6EB] px-4 py-2.5 rounded-xl">
-                <span className="text-gray-500">Unit Price:</span>
+                <span className="text-gray-500">Package Price:</span>
                 <span className="font-bold text-gray-900">
                   ₹{Number(selectedItem.unitNumeric).toLocaleString("en-IN")}
                 </span>
@@ -399,8 +406,7 @@ export default function BasketPage() {
               <div className="flex justify-between bg-[#EEF6EB] px-4 py-2.5 rounded-xl">
                 <span className="text-gray-500">Selected Quantity:</span>
                 <span className="font-bold text-[#202522]">
-                  {selectedItem.quantity} Unit
-                  {selectedItem.quantity > 1 ? "s" : ""}
+                  {selectedItem.quantity}
                 </span>
               </div>
               <div className="flex justify-between bg-[#EEF6EB] px-4 py-2.5 rounded-xl">

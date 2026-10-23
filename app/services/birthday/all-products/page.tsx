@@ -1,22 +1,98 @@
-"use client";
+﻿"use client";
 
 import { fetchProducts } from "@/app/lib/api";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { kidsbirthdayProducts } from "@/app/data/kidsBirthdayProduct";
+import { ArrowLeft, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { allProducts } from "@/app/data/allCollections";
 import { useWishlist } from "@/app/context/wishlistcontext";
 import ProductCard from "@/app/components/ProductCard";
 import ProductSort from "@/app/components/ProductSort";
 
+interface SubCategoryItem {
+  id: string;
+  slug: string;
+  name: string;
+  image: string;
+  keywords: string[];
+}
+
+const BIRTHDAY_CATEGORIES: SubCategoryItem[] = [
+  {
+    id: "all",
+    slug: "all",
+    name: "All Birthday",
+    image: "/birthdaykids.png",
+    keywords: [],
+  },
+  {
+    id: "kids-birthday",
+    slug: "kids-birthday",
+    name: "Kids Birthday",
+    image: "/birthdaykids.png",
+    keywords: ["kid", "baby", "cartoon", "dinosaur", "princess", "superhero", "avenger", "toy"],
+  },
+  {
+    id: "adult-birthday",
+    slug: "adult-birthday",
+    name: "Adult / Romantic Birthday",
+    image: "/romaticvibe.png",
+    keywords: ["adult", "romantic", "cabana", "candlelight", "canopy", "anniversary", "couples", "love"],
+  },
+  {
+    id: "premium-decor",
+    slug: "premium-decor",
+    name: "Premium Decor",
+    image: "/homepage.png",
+    keywords: ["premium", "royal", "luxury", "stage", "golden", "mandap", "grand"],
+  },
+  {
+    id: "birthday-gifts",
+    slug: "birthday-gifts",
+    name: "Birthday Gifts",
+    image: "/card.png",
+    keywords: ["gift", "hamper", "keepsake", "present", "box"],
+  },
+  {
+    id: "same-day-decors",
+    slug: "same-day-decors",
+    name: "Same Day Decors",
+    image: "/card2.png",
+    keywords: ["same day", "express", "fast", "instant", "balloon", "room"],
+  },
+  {
+    id: "simple-birthday",
+    slug: "simple-birthday",
+    name: "Simple Birthday Decors",
+    image: "/birthdaydesign.png",
+    keywords: ["simple", "home", "wall", "room", "pastel", "garland", "balloon"],
+  },
+  {
+    id: "car-boot",
+    slug: "car-boot",
+    name: "Car Boot Decors",
+    image: "/card3.png",
+    keywords: ["car", "boot", "trunk", "dicky", "surprise", "outdoor"],
+  },
+  {
+    id: "ring-decor",
+    slug: "ring-decor",
+    name: "Ring Decorations",
+    image: "/ring.png",
+    keywords: ["ring", "circle", "round", "ceremony", "arch", "halo"],
+  },
+];
+
 export default function BirthdayAllProductsPage() {
-  const [liveProducts, setLiveProducts] = useState<any[]>(kidsbirthdayProducts);
+  const [liveProducts, setLiveProducts] = useState<any[]>(allProducts);
+  const [selectedSub, setSelectedSub] = useState<string>("all");
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let active = true;
     async function loadDynamic() {
       try {
-        const res = await fetchProducts({ category: 'birthday', limit: 100 });
+        const res = await fetchProducts({ limit: 150 });
         let list: any[] = res.products || [];
         if (active && list.length > 0) {
           const mapped = list.map((item: any) => ({
@@ -24,8 +100,7 @@ export default function BirthdayAllProductsPage() {
             id: item._id || item.id || item.slug,
           }));
           const existingIds = new Set(mapped.map((m: any) => String(m.id)));
-          const fallbackList = Array.isArray(kidsbirthdayProducts) ? kidsbirthdayProducts : [];
-          const combined = [...mapped, ...fallbackList.filter((x: any) => !existingIds.has(String(x.id)))];
+          const combined = [...mapped, ...allProducts.filter((x: any) => !existingIds.has(String(x.id)))];
           setLiveProducts(combined);
         }
       } catch (err) {
@@ -50,7 +125,41 @@ export default function BirthdayAllProductsPage() {
     return Number.isNaN(value) ? Infinity : value;
   };
 
-  const sortedProducts = [...liveProducts].sort((a, b) => {
+  // De-duplicate liveProducts to avoid multiple items having same id (e.g. numeric 8)
+  const uniqueProducts = React.useMemo(() => {
+    const seen = new Set();
+    return liveProducts.filter((p, idx) => {
+      const key = String(p.id ?? p._id ?? p.slug ?? idx);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [liveProducts]);
+
+  // Filter products based on selected category accurately
+  const filteredProducts = uniqueProducts.filter((product) => {
+    if (selectedSub === "all") {
+      // Show birthday-relevant and general celebration decorations by default
+      const cat = `${product.category || ""} ${product.subcategory || ""} ${product.name || ""}`.toLowerCase();
+      return (
+        cat.includes("birthday") ||
+        cat.includes("decor") ||
+        cat.includes("balloon") ||
+        cat.includes("romantic") ||
+        cat.includes("gift")
+      );
+    }
+
+    const currentCatObj = BIRTHDAY_CATEGORIES.find((c) => c.slug === selectedSub);
+    if (!currentCatObj) return true;
+
+    const fullText = `${product.name || ""} ${product.description || ""} ${product.category || ""} ${product.subcategory || ""} ${product.theme || ""}`.toLowerCase();
+
+    // Check if any keyword matches
+    return currentCatObj.keywords.some((kw) => fullText.includes(kw.toLowerCase()));
+  });
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sortBy === "price-low") {
       return getPrice(a.price) - getPrice(b.price);
     }
@@ -60,10 +169,22 @@ export default function BirthdayAllProductsPage() {
     return 0;
   });
 
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const offset = direction === "left" ? -260 : 260;
+      scrollRef.current.scrollBy({ left: offset, behavior: "smooth" });
+    }
+  };
+
+  const selectedCategoryName =
+    BIRTHDAY_CATEGORIES.find((c) => c.slug === selectedSub)?.name || "All Birthday";
+
   return (
-    <div className="min-h-screen bg-[#FCFBF7] px-6 py-10">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-6">
+    <div className="min-h-screen bg-[#FCFBF7] px-4 sm:px-6 md:px-12 py-10 font-sans text-[#202522]">
+      <div className="max-w-7xl mx-auto space-y-8">
+        
+        {/* Navigation */}
+        <div>
           <Link
             href="/services/birthday"
             className="inline-flex items-center space-x-2 text-xs font-bold text-[#6B706C] hover:text-[#202522] transition"
@@ -73,36 +194,133 @@ export default function BirthdayAllProductsPage() {
           </Link>
         </div>
 
-        <div className="flex items-baseline gap-3">
-          <h1 className="text-[#202522] text-3xl font-serif font-bold mb-2">
-            Birthday Decorations - All Products Catalogue
-          </h1>
-          <span className="text-[#6B706C] text-2xl">|</span>
-          <span className="text-[#6B706C] text-2xl">
-            {liveProducts.length} Items
-          </span>
+        {/* Header Title */}
+        <div className="space-y-2 border-b border-[#E8E8E3] pb-6">
+          <div className="flex items-baseline gap-3 flex-wrap">
+            <h1 className="text-[#202522] text-2xl sm:text-4xl font-bold">
+              {selectedSub === "all" ? "Birthday Decorations - All Products Catalogue" : `${selectedCategoryName} Catalogue`}
+            </h1>
+            <span className="text-[#6B706C] text-xl font-normal">|</span>
+            <span className="text-[#8CBC67] text-lg font-bold">
+              {sortedProducts.length} Items
+            </span>
+          </div>
+
+          <p className="text-[#6B706C] text-xs sm:text-sm font-normal">
+            Explore our complete collection of birthday party themes, balloon backdrops, superhero cutouts and props.
+          </p>
         </div>
 
-        <p className="text-[#6B706C] text-sm mb-8 font-light">
-          Explore our complete collection of birthday party themes, balloon backdrops, superhero cutouts and props.
-        </p>
+        {/* ========================================================
+            TOP CATEGORIES SECTION (Interactive filter on click)
+        ========================================================= */}
+        <div className="bg-white rounded-3xl p-5 sm:p-6 border border-[#E8E8E3] shadow-xs space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Sparkles size={16} className="text-[#8CBC67]" />
+              <h3 className="text-sm sm:text-base font-bold text-[#202522]">
+                Explore By Birthday Categories
+              </h3>
+            </div>
+            
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => scroll("left")}
+                aria-label="Scroll left"
+                className="w-8 h-8 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] text-[#202522] hover:bg-[#EEF6EB] hover:border-[#8CBC67] transition flex items-center justify-center cursor-pointer shadow-2xs"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => scroll("right")}
+                aria-label="Scroll right"
+                className="w-8 h-8 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] text-[#202522] hover:bg-[#EEF6EB] hover:border-[#8CBC67] transition flex items-center justify-center cursor-pointer shadow-2xs"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
 
-        {/* Sort Button */}
-        <div className="flex justify-end mb-6">
+          {/* Categories Horizontal Carousel */}
+          <div
+            ref={scrollRef}
+            className="flex items-start gap-3 sm:gap-4 overflow-x-auto scroll-smooth py-2 px-1 scrollbar-none"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
+            {BIRTHDAY_CATEGORIES.map((cat) => {
+              const isSelected = selectedSub === cat.slug;
+              return (
+                <div
+                  key={cat.id}
+                  onClick={() => setSelectedSub(cat.slug)}
+                  className={`flex flex-col items-center group cursor-pointer w-[100px] sm:w-[120px] md:w-[130px] shrink-0 p-2 rounded-2xl transition-all duration-200 ${
+                    isSelected
+                      ? "bg-[#EEF6EB] border border-[#8CBC67] shadow-xs -translate-y-1"
+                      : "hover:bg-[#FCFBF7] border border-transparent hover:border-[#E8E8E3]"
+                  }`}
+                >
+                  {/* Category Image Card */}
+                  <div
+                    className={`relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shadow-xs border transition-transform duration-300 group-hover:scale-105 ${
+                      isSelected ? "border-[#8CBC67] ring-2 ring-[#8CBC67]/30" : "border-[#E8E8E3]"
+                    }`}
+                  >
+                    <img
+                      src={cat.image}
+                      alt={cat.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  {/* Title */}
+                  <p
+                    className={`mt-2.5 text-center text-xs font-bold line-clamp-2 leading-tight transition-colors ${
+                      isSelected ? "text-[#8CBC67]" : "text-[#202522] group-hover:text-[#8CBC67]"
+                    }`}
+                  >
+                    {cat.name}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Sort Controls Bar */}
+        <div className="flex items-center justify-between pt-2">
+          <p className="text-xs text-[#6B706C]">
+            Showing <strong className="text-[#202522]">{sortedProducts.length}</strong> products for <span className="text-[#8CBC67] font-bold">{selectedCategoryName}</span>
+          </p>
           <ProductSort value={sortBy} onChange={setSortBy} />
         </div>
 
-        {/* Products */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {sortedProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              isInWishlist={isInWishlist}
-              toggleWishlist={toggleWishlist}
-            />
-          ))}
-        </div>
+        {/* Products Grid */}
+        {sortedProducts.length === 0 ? (
+          <div className="bg-white rounded-3xl p-12 text-center border border-[#E8E8E3] space-y-3">
+            <h4 className="text-base font-bold text-[#202522]">No products in this category yet</h4>
+            <p className="text-xs text-[#6B706C]">Try selecting another category or view all products.</p>
+            <button
+              onClick={() => setSelectedSub("all")}
+              className="px-5 py-2 rounded-full bg-[#8CBC67] hover:bg-[#7AB055] text-white text-xs font-bold transition shadow-xs cursor-pointer"
+            >
+              Show All Products
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+            {sortedProducts.map((product, idx) => (
+              <ProductCard
+                key={`${product.id || product.slug || 'product'}-${idx}`}
+                product={product}
+                isInWishlist={isInWishlist}
+                toggleWishlist={toggleWishlist}
+              />
+            ))}
+          </div>
+        )}
+
       </div>
     </div>
   );

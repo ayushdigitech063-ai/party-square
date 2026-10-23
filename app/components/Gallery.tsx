@@ -134,7 +134,7 @@ export default function Gallery() {
             CATEGORY TABS
         ====================================================== */}
 
-        <div className="flex items-center justify-start sm:justify-center overflow-x-auto pb-3 gap-2 mb-12 scrollbar-none">
+        <div className="flex items-center justify-start sm:justify-center overflow-x-auto pb-3 gap-2 mb-8 sm:mb-12 scrollbar-none max-w-full px-2">
           {categories.map((category) => (
             <button
               type="button"
@@ -207,7 +207,7 @@ export default function Gallery() {
                 ref={(el) => {
                   containerRefs.current[categoryName] = el;
                 }}
-                className="flex gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory scroll-smooth"
+                className="flex gap-3 sm:gap-6 overflow-x-auto scrollbar-none pb-4 snap-x snap-mandatory scroll-smooth px-0.5"
                 style={{ scrollbarWidth: "none" }}
               >
                 {products.map((item) => {
@@ -230,10 +230,10 @@ export default function Gallery() {
                     <div
                       key={item.id}
                       onClick={() => router.push(productUrl)}
-                      className="relative w-[260px] sm:w-[290px] h-[390px] sm:h-[395px] flex-shrink-0 bg-white border border-[#E8E8E3] hover:border-[#8CBC67] rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group snap-start cursor-pointer select-none"
+                      className="relative w-[calc(50%-6px)] sm:w-[260px] md:w-[280px] h-[280px] sm:h-[395px] flex-shrink-0 bg-white border border-[#E8E8E3] hover:border-[#8CBC67] rounded-2xl overflow-hidden shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group snap-start cursor-pointer select-none"
                     >
                       {/* 1. IMAGE CONTAINER */}
-                      <div className="relative h-[255px] w-full overflow-hidden bg-[#EEF6EB] shrink-0 block">
+                      <div className="relative h-[140px] sm:h-[255px] w-full overflow-hidden bg-[#EEF6EB] shrink-0 block">
                         <img
                           src={item.image}
                           alt=""
@@ -265,14 +265,14 @@ export default function Gallery() {
                       </div>
 
                       {/* 2. BASE CARD BODY (Pura Name + Starts at + Details Button) */}
-                      <div className="p-3.5 flex flex-col justify-between flex-1 bg-white">
+                      <div className="p-2.5 sm:p-3.5 flex flex-col justify-between flex-1 bg-white">
                         <Link href={productUrl} onClick={(e) => e.stopPropagation()} className="block">
-                          <h3 className="font-serif text-[15px] sm:text-base font-semibold text-gray-950 hover:text-[#8CBC67] transition line-clamp-2 leading-snug">
+                          <h3 className="font-serif text-[13px] sm:text-base font-semibold text-gray-950 hover:text-[#8CBC67] transition line-clamp-2 leading-snug min-h-[36px] sm:min-h-0">
                             {item.name}
                           </h3>
                         </Link>
 
-                        <div className="pt-2 border-t border-[#E8E8E3] flex items-center justify-between">
+                        <div className="pt-2 border-t border-[#E8E8E3] flex items-center justify-between gap-1">
                           <div>
                             <span className="text-[10px] uppercase tracking-wider text-gray-400 block font-medium">
                               Starts at
@@ -332,7 +332,7 @@ export default function Gallery() {
                               e.stopPropagation();
                               router.push(productUrl);
                             }}
-                            className="bg-[#8CBC67] hover:bg-[#7AB055] text-white text-[11px] font-bold uppercase px-4 py-2.5 rounded-full transition shadow-md inline-flex items-center gap-1.5 shrink-0 cursor-pointer"
+                            className="bg-[#8CBC67] hover:bg-[#7AB055] text-white text-[11px] font-bold uppercase px-3 py-1.5 sm:px-4 sm:py-2 rounded-full transition shadow-md inline-flex items-center gap-1.5 shrink-0 cursor-pointer"
                           >
                             <span>Book</span>
                             <ArrowRight size={12} />

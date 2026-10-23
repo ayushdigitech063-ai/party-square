@@ -54,6 +54,21 @@ function PaymentContent() {
   const paramName = searchParams.get("name") || "";
   const paramPrice = searchParams.get("price") || "";
   const paramImage = searchParams.get("image") || "";
+  const addonsParam = searchParams.get("addons") || "";
+
+  const selectedAddons: any[] = React.useMemo(() => {
+    if (!addonsParam) return [];
+    try {
+      return JSON.parse(decodeURIComponent(addonsParam));
+    } catch {
+      return [];
+    }
+  }, [addonsParam]);
+
+  const addonsTotal = selectedAddons.reduce(
+    (sum, item) => sum + (Number(item.price) || 0),
+    0
+  );
 
   // Product state
   const [product, setProduct] = useState<any>(() => {
@@ -136,7 +151,7 @@ function PaymentContent() {
             const apiProduct = await fetchProductByIdOrSlug(productId);
             if (apiProduct) {
               setProduct({
-                id: apiProduct._id || apiProduct.id,
+                id: apiProduct._id || (apiProduct as any).id || String(productId),
                 name: apiProduct.name,
                 price: apiProduct.price,
                 image: apiProduct.images?.[0] || apiProduct.image || "/birthdaydesign.png",
@@ -232,7 +247,7 @@ function PaymentContent() {
   const baseTotal = Number(product.price) || 0;
   const deliveryCharge = 0; // Free delivery & setup included
 
-  const finalTotal = Math.max(0, baseTotal + deliveryCharge - couponDiscount);
+  const finalTotal = Math.max(0, baseTotal + addonsTotal + deliveryCharge - couponDiscount);
   const advanceAmountPayable = paymentPlan === "advance" ? Math.round(finalTotal * 0.5) : finalTotal;
   const pendingOnSite = finalTotal - advanceAmountPayable;
 
@@ -366,7 +381,12 @@ function PaymentContent() {
         eventDate,
         eventTimeSlot,
         deliveryAddress: fullDeliveryAddress,
-        specialRequests,
+        specialRequests: [
+          specialRequests?.trim(),
+          selectedAddons.length > 0
+            ? `[Add-ons: ${selectedAddons.map((a: any) => `${a.name} (₹${a.price})`).join(", ")}]`
+            : "",
+        ].filter(Boolean).join(" | "),
         totalAmount: finalTotal,
         advanceAmountPaid: advanceAmountPayable,
         onSiteAmountPending: pendingOnSite,
@@ -1114,6 +1134,13 @@ function PaymentContent() {
                     <span>Package Price:</span>
                     <span className="font-semibold text-[#202522]">₹{baseTotal.toLocaleString("en-IN")}</span>
                   </div>
+
+                  {selectedAddons.map((ad: any, idx: number) => (
+                    <div key={idx} className="flex justify-between text-xs text-[#202522]">
+                      <span className="truncate pr-2">+ {ad.name}</span>
+                      <span className="font-semibold shrink-0">₹{(Number(ad.price) || 0).toLocaleString("en-IN")}</span>
+                    </div>
+                  ))}
 
                   <div className="flex justify-between">
                     <span>Delivery & Installation:</span>

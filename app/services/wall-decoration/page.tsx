@@ -1,8 +1,10 @@
-"use client";
+﻿"use client";
 
 import { fetchProducts } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCity } from "@/app/context/CityContext";
 import { Sparkles, CheckCircle, Calendar, Star, ShieldCheck, ArrowRight, Heart } from "lucide-react";
 import { useWishlist } from "@/app/context/wishlistcontext";
 import ProductCard from "@/app/components/ProductCard";
@@ -62,6 +64,8 @@ const DEFAULT_PACKAGES = [
 ];
 
 export default function WallDecorationPage() {
+  const router = useRouter();
+  const { selectedCity } = useCity();
   const [liveProducts, setLiveProducts] = useState<any[]>(wallDecorationProducts);
 
   useEffect(() => {
@@ -191,7 +195,7 @@ export default function WallDecorationPage() {
     <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans selection:bg-[#8CBC67] selection:text-white">
       
       {/* ================= HERO BANNER (FULLY FIXED & CENTERED) ================= */}
-      <section className="relative min-h-[480px] sm:h-[520px] py-10 sm:py-0 px-4 sm:px-6 flex items-center justify-center text-white overflow-hidden">
+      <section className="relative h-[320px] sm:h-[340px] md:h-[360px] px-4 sm:px-6 flex items-center justify-center text-white overflow-hidden">
         <div 
           className="absolute inset-0 z-0 w-full h-full"
           style={{
@@ -205,34 +209,35 @@ export default function WallDecorationPage() {
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-neutral-950/90 via-transparent to-neutral-950/30" />
 
         <div className="max-w-7xl mx-auto relative z-20 w-full text-center sm:text-left">
-          <div className="max-w-2xl space-y-6">
-            <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-4 py-2 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-lg">
-              <Sparkles size={14} className="text-[#8CBC67]" />
+          <div className="max-w-2xl space-y-2 sm:space-y-3">
+            <div className="inline-flex items-center space-x-1.5 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-3 sm:px-4 py-1 rounded-full text-[#8CBC67] text-[10px] sm:text-xs font-semibold tracking-wider uppercase backdrop-blur-md shadow-sm">
+              <Sparkles size={13} className="text-[#8CBC67]" />
               <span>Wall & Door Styling Specialists</span>
             </div>
             
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-md">
-              Transform Your Walls Into <span className="text-[#8CBC67] italic font-normal">Pure Elegance</span>
+            <h1 className="font-serif text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-bold text-white leading-tight drop-shadow-md">
+              <span className="text-white drop-shadow-sm">Transform Your Walls Into</span>{" "}
+              <span className="text-[#8CBC67] font-bold">Pure Elegance</span>
             </h1>
 
-            <p className="text-neutral-200 text-sm sm:text-base leading-relaxed drop-shadow font-light">
+            <p className="text-neutral-200 text-xs sm:text-sm max-w-xl font-light leading-relaxed line-clamp-2">
               Give your empty walls and entryways a stunning makeover. From mesmerizing balloon arches to artistic floral backdrops and door styling, we bring life to your celebrations.
             </p>
 
-            <div className="flex flex-row items-center gap-2 sm:gap-4 pt-4 justify-center sm:justify-start w-full">
+            <div className="flex flex-row items-center gap-2.5 sm:gap-4 pt-1.5 sm:pt-2 w-full justify-center sm:justify-start">
               <Link
                 href="/contact"
-                className="flex-1 sm:flex-initial group relative bg-[#8CBC67] hover:bg-[#7AB055] text-white px-3 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-[11px] sm:text-xs uppercase tracking-wider shadow-lg hover:shadow-[#8CBC67]/30 hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-1.5 sm:space-x-2 cursor-pointer whitespace-nowrap"
+                className="group relative bg-[#8CBC67] hover:bg-[#7AB055] text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-bold text-[11px] sm:text-xs uppercase tracking-wider shadow-md hover:shadow-[#8CBC67]/30 transition-all duration-300 flex items-center justify-center space-x-1.5 sm:space-x-2 cursor-pointer whitespace-nowrap"
               >
                 <span>Book Wall Decor</span>
-                <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform shrink-0" />
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform shrink-0" />
               </Link>
               
               <a
                 href="https://whatsapp.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-initial border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/25 px-3 sm:px-7 py-3 sm:py-4 rounded-full font-semibold text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-300 shadow-lg flex items-center justify-center whitespace-nowrap"
+                className="border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/25 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-semibold text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-300 shadow-md flex items-center justify-center whitespace-nowrap"
               >
                 <span>Chat on WhatsApp</span>
               </a>
@@ -330,59 +335,70 @@ export default function WallDecorationPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-          {packages.map((pkg) => (
-            <div
-              key={pkg.id}
-              className={`relative rounded-2xl bg-white border transition-all duration-300 flex flex-col justify-between shadow-xs hover:shadow-lg overflow-hidden group ${
-                pkg.popular ? "border-[#8CBC67] ring-1 ring-[#8CBC67]/30 shadow-md md:-translate-y-1" : "border-[#E8E8E3]"
-              }`}
-            >
-              {pkg.popular && (
-                <div className="absolute top-3 right-3 z-10 bg-[#8CBC67] text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full shadow-sm">
-                  Most Popular
-                </div>
-              )}
+          {packages.map((pkg) => {
+            const packageSlug = (pkg.name || pkg.id).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+            const packageDetailUrl = `/${(selectedCity || "bangalore").toLowerCase()}/wall-decoration/${packageSlug || pkg.id}`;
+            return (
+              <div
+                key={pkg.id}
+                onClick={() => router.push(packageDetailUrl)}
+                className={`relative rounded-2xl bg-white border transition-all duration-300 flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1 overflow-hidden group cursor-pointer select-none ${
+                  pkg.popular ? "border-[#8CBC67] ring-1 ring-[#8CBC67]/30 shadow-md" : "border-[#E8E8E3] hover:border-[#8CBC67]"
+                }`}
+              >
+                {pkg.popular && (
+                  <div className="absolute top-3 right-3 z-10 bg-[#8CBC67] text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full shadow-sm">
+                    Most Popular
+                  </div>
+                )}
 
-              {/* Package Image Preview */}
-              <div className="relative h-40 sm:h-44 w-full overflow-hidden bg-neutral-100 border-b border-[#E8E8E3]">
-                <img 
-                  src={pkg.image} 
-                  alt={pkg.name} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                />
-              </div>
-
-              <div className="p-4 sm:p-5 flex flex-col flex-grow justify-between">
-                <div>
-                  <h3 className="font-serif text-base sm:text-lg font-bold text-[#202522] mb-1.5 leading-snug">{pkg.name}</h3>
-                  <p className="text-[#6B706C] text-xs leading-relaxed mb-3">{pkg.desc}</p>
-                  <div className="text-xl sm:text-2xl font-bold text-[#8CBC67] mb-3">{pkg.price}</div>
-
-                  <div className="space-y-2 border-t border-[#E8E8E3] pt-3">
-                    {pkg.features.map((feat, idx) => (
-                      <div key={idx} className="flex items-start space-x-2.5 text-[11px] sm:text-xs text-[#202522]">
-                        <CheckCircle size={14} className="text-[#8CBC67] shrink-0 mt-0.5" />
-                        <span>{feat}</span>
-                      </div>
-                    ))}
+                {/* Package Image Preview */}
+                <div className="relative h-44 sm:h-48 w-full overflow-hidden bg-neutral-100 border-b border-[#E8E8E3]">
+                  <img 
+                    src={pkg.image} 
+                    alt={pkg.name} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  />
+                  <div className="absolute bottom-2.5 right-2.5 bg-[#202522]/90 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-1 rounded-full border border-white/20">
+                    Tap to view details
                   </div>
                 </div>
 
-                <div className="pt-4 sm:pt-5">
-                  <Link
-                    href={`/payment-detail?productId=${pkg.id}&name=${encodeURIComponent(pkg.name)}&price=${pkg.rawPrice || String(pkg.price).replace(/[^0-9]/g, '')}&image=${encodeURIComponent(pkg.image)}`}
-                    className={`w-full block text-center py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition ${
-                      pkg.popular
-                        ? "bg-[#8CBC67] text-white hover:bg-[#7AB055] shadow-sm"
-                        : "bg-neutral-900 text-white hover:bg-[#8CBC67]"
-                    }`}
-                  >
-                    Select Package
-                  </Link>
-                </div>
-              </div>                                                          
-            </div>
-          ))}
+                <div className="p-4 sm:p-5 flex flex-col flex-grow justify-between">
+                  <div>
+                    <h3 className="font-serif text-base sm:text-lg font-bold text-[#202522] mb-1.5 leading-snug group-hover:text-[#8CBC67] transition">
+                      {pkg.name}
+                    </h3>
+                    <p className="text-[#6B706C] text-xs leading-relaxed mb-3">{pkg.desc}</p>
+                    <div className="text-xl sm:text-2xl font-bold text-[#8CBC67] mb-3">{pkg.price}</div>
+
+                    <div className="space-y-2 border-t border-[#E8E8E3] pt-3">
+                      {pkg.features.map((feat, idx) => (
+                        <div key={idx} className="flex items-start space-x-2.5 text-[11px] sm:text-xs text-[#202522]">
+                          <CheckCircle size={14} className="text-[#8CBC67] shrink-0 mt-0.5" />
+                          <span>{feat}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="pt-4 sm:pt-5">
+                    <Link
+                      href={packageDetailUrl}
+                      onClick={(e) => e.stopPropagation()}
+                      className={`w-full block text-center py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition ${
+                        pkg.popular
+                          ? "bg-[#8CBC67] text-white hover:bg-[#7AB055] shadow-sm"
+                          : "bg-neutral-900 text-white hover:bg-[#8CBC67]"
+                      }`}
+                    >
+                      View Package Details
+                    </Link>
+                  </div>
+                </div>                                                          
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -416,7 +432,7 @@ export default function WallDecorationPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {productsToDisplay.slice(0, 8).map((product) => (
             <ProductCard
               key={product.id}

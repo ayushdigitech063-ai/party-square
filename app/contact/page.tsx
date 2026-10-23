@@ -72,14 +72,14 @@ export default function ContactPage() {
     <div className="min-h-screen bg-[#FCFBF7] text-[#202522] font-sans pt-12 pb-24 px-6 md:px-16 relative overflow-hidden">
       
       {/* Background Soft Glows */}
-      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-[#F7D6C7]/30 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-[#8CBC67]/15 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 left-10 w-[400px] h-[400px] bg-[#D7A84B]/20 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10 space-y-20">
         
         {/* Page Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center space-x-2 bg-[#F7D6C7]/80 border border-[#8CBC67] px-4 py-1.5 rounded-full text-xs font-bold text-[#202522] shadow-sm">
+          <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#8CBC67] px-4 py-1.5 rounded-full text-xs font-bold text-[#202522] shadow-sm">
             <Sparkles size={13} className="text-[#202522]" />
             <span>LET'S CREATE MAGICAL MOMENTS</span>
           </div>
@@ -87,7 +87,7 @@ export default function ContactPage() {
             Get in Touch with <span className="italic font-normal text-[#202522]">Our Designers</span>
           </h1>
           <p className="text-[#202522] text-base sm:text-lg font-medium leading-relaxed">
-            Whether itâ€™s a grand wedding, a royal reception, or an intimate celebration, we bring your vision to life with breathtaking floral and light designs.
+            Whether it's a grand wedding, a royal reception, or an intimate celebration, we bring your vision to life with breathtaking floral and light designs.
           </p>
         </div>
 
@@ -137,7 +137,7 @@ export default function ContactPage() {
           <div className="lg:col-span-5 space-y-6">
             <div className="bg-gradient-to-br from-[#EEF6EB]/80 to-[#EEF6EB]/80 backdrop-blur-md border border-[#8CBC67]/80 rounded-3xl p-8 shadow-sm space-y-8">
               <div>
-                <h3 className="text-2xl font-serif font-bold text-neutral-950 mb-2">Letâ€™s Talk Styling</h3>
+                <h3 className="text-2xl font-serif font-bold text-neutral-950 mb-2">Let's Talk Styling</h3>
                 <p className="text-[#202522] text-sm font-medium">
                   Connect directly with our senior event architects or visit our design studio in New Delhi.
                 </p>
@@ -151,7 +151,7 @@ export default function ContactPage() {
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-[#202522] mb-1">Studio Address</h4>
                     <p className="text-sm font-medium text-[#202522] leading-relaxed">
-                      124 Luxury Avenue, Event Square, New Delhi, India 110001
+                      Party Square Event Studio, Corporate Park, Jaipur & Bangalore, India
                     </p>
                   </div>
                 </div>
@@ -163,7 +163,7 @@ export default function ContactPage() {
                   <div>
                     <h4 className="text-xs font-bold uppercase tracking-wider text-[#202522] mb-1">Direct Line</h4>
                     <p className="text-sm font-medium text-[#202522]">
-                      +91 98765 43210 / +91 91234 56789
+                      +91 91191 19898 / +91 91234 56789
                     </p>
                   </div>
                 </div>
@@ -217,7 +217,7 @@ export default function ContactPage() {
                       setFormData({ name: "", email: "", phone: "", eventType: "Wedding Decoration", message: "" });
                       setErrors({ name: "", email: "", phone: "", message: "" });
                     }}
-                    className="mt-6 bg-neutral-950 hover:bg-[#7AB055] text-white px-8 py-3.5 rounded-full text-sm font-bold transition shadow cursor-pointer"
+                    className="mt-6 bg-[#8CBC67] hover:bg-[#7AB055] text-white px-8 py-3.5 rounded-full text-sm font-bold transition shadow cursor-pointer"
                   >
                     Send Another Inquiry
                   </button>
@@ -277,7 +277,7 @@ export default function ContactPage() {
                       <label className="text-xs font-bold uppercase tracking-wider text-[#202522]">Phone Number</label>
                       <input 
                         type="tel" 
-                        placeholder="+91 98765 43210"
+                        placeholder="+91 91191 19898"
                         value={formData.phone}
                         onChange={(e) => {
                           setFormData({...formData, phone: e.target.value});
@@ -331,7 +331,7 @@ export default function ContactPage() {
 
                   <button 
                     type="submit" 
-                    className="w-full bg-neutral-950 hover:bg-[#7AB055] text-white py-4 rounded-xl text-sm font-bold transition flex items-center justify-center space-x-2 shadow-lg cursor-pointer"
+                    className="w-full bg-[#8CBC67] hover:bg-[#7AB055] text-white py-4 rounded-xl text-sm font-bold transition flex items-center justify-center space-x-2 shadow-lg cursor-pointer"
                   >
                     <span>Submit Design Request</span>
                     <Send size={16} />

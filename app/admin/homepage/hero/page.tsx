@@ -256,7 +256,7 @@ export default function AdminHeroPage() {
                 Hero Banner Slider
               </h1>
               <p className="text-xs text-[#6B706C]">
-                Rotating flagship carousel at top of homepage with high-res photos and call-to-actions.
+                Rotating flagship carousel at top of homepage with high-res photos and call-to-actions (Banner size: 1264x301 px).
               </p>
             </div>
           </div>
@@ -434,7 +434,7 @@ export default function AdminHeroPage() {
               {/* Image Input + Upload */}
               <div>
                 <label className="block text-xs font-semibold text-[#202522] mb-1.5">
-                  Background Image * (Cloudinary Upload or Path)
+                  Background Image * (Recommended size: 1264x301 px | Cloudinary Upload or Path)
                 </label>
                 <div className="flex gap-2">
                   <input

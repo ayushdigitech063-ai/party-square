@@ -1,633 +1,230 @@
-﻿import Link from "next/link";
+"use client";
+
+import React, { useState } from "react";
+import Link from "next/link";
+import {
+  ShieldCheck,
+  Lock,
+  Eye,
+  FileText,
+  UserCheck,
+  Database,
+  Mail,
+  MapPin,
+  Sparkles,
+  CheckCircle2,
+} from "lucide-react";
 
 interface PrivacySection {
   number: number;
   title: string;
+  icon: any;
   content: React.ReactNode;
 }
 
 const privacySections: PrivacySection[] = [
   {
     number: 1,
-    title: "Introduction",
+    title: "Introduction & Commitment",
+    icon: ShieldCheck,
     content: (
       <>
         <p>
-          Infureka Technologies Private Limited, a company incorporated under
-          the Companies Act, 2013 and having its registered office at{" "}
-          <strong>Kirti Nagar, New Delhi â€“ 110015</strong>, operating under
-          the brand name <strong>â€œCherishXâ€</strong> (hereinafter referred to
-          as the â€œCompanyâ€, â€œCherishXâ€, â€œweâ€, â€œusâ€, or â€œourâ€), is committed to
-          protecting the personally identifiable information and sensitive
-          personal data that we collect from you through our website, mobile
-          applications, and related services.
+          Party Square (&quot;Party Square&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) is India&apos;s trusted event planning and decoration platform. We value the trust you place in us when sharing your personal details, celebration venues, and preferences. We are deeply committed to protecting your privacy and ensuring your personal data is handled responsibly.
         </p>
-
-        <p>
-          CherishX processes your data in accordance with applicable Indian
-          data protection laws, including the Information Technology Act, 2000,
-          the Information Technology (Reasonable Security Practices and
-          Procedures and Sensitive Personal Data or Information) Rules, 2011,
-          the Digital Personal Data Protection Act, 2023, and other applicable
-          laws.
-        </p>
-
-        <p>
-          This Privacy Policy explains how we collect, use, store, protect,
-          and share your Personal Information.
+        <p className="mt-2.5">
+          This Privacy Policy describes how we collect, process, store, protect, and use your information when you access our website, book our party decoration packages, or interact with our customer support teams across India.
         </p>
       </>
     ),
   },
-
   {
     number: 2,
-    title: "Consent",
+    title: "Information We Collect",
+    icon: Database,
     content: (
       <>
         <p>
-          By accessing the Platform, sharing your information, or using our
-          services, you consent to the collection and use of your Personal
-          Information in accordance with this Privacy Policy.
+          To deliver delightful, on-time decoration experiences at your doorstep, we collect the following categories of information:
         </p>
-
-        <p>
-          If you disclose Personal Information of another individual, you
-          represent that you have the authority to do so and that such
-          individual consents to our use of their data under this Privacy
-          Policy.
-        </p>
-
-        <p>
-          If you do not agree with the terms of this Privacy Policy, please
-          discontinue using our Platform.
-        </p>
-
-        <div className="mt-5 rounded-2xl border border-[#E8E8E3] bg-[#EEF6EB]/80 p-5">
-          <p className="font-medium text-[#202522]">
-            Note: This Privacy Policy may be updated periodically without prior
-            notice. Please review it periodically for any changes.
-          </p>
-        </div>
+        <ul className="mt-3 space-y-2 list-disc list-inside text-[#6B706C]">
+          <li><strong>Personal Contact Details:</strong> Full name, mobile phone number, and email address for account authentication and booking communications.</li>
+          <li><strong>Event & Delivery Location:</strong> Doorstep address, flat/floor details, landmark, and postal pincode where our decorator team will set up the decor.</li>
+          <li><strong>Event Scheduling & Customization:</strong> Event date, preferred decorator arrival time slot, celebratory person&apos;s name/age, and customization notes.</li>
+          <li><strong>Transaction Information:</strong> Order ID, amount paid, payment mode, and transaction references (we do not store your credit card CVV or net banking passwords).</li>
+        </ul>
       </>
     ),
   },
-
   {
     number: 3,
-    title: "Scope of This Policy",
+    title: "How We Use Your Information",
+    icon: UserCheck,
     content: (
       <>
         <p>
-          This Privacy Policy describes how CherishX collects, uses, stores,
-          shares, and protects your information in the course of your use of
-          the Platform and purchase of our services or products.
+          We use your data strictly for legitimate business and fulfillment purposes:
         </p>
-
-        <p>
-          The Policy does not cover third-party websites or social media links
-          embedded on our Platform. We are not responsible for their privacy
-          practices or content.
-        </p>
+        <ul className="mt-3 space-y-2 list-disc list-inside text-[#6B706C]">
+          <li>To assign verified decorator partners to your location and ensure 100% on-time arrival.</li>
+          <li>To send instant booking confirmations, invoice receipts, and live decorator tracking via WhatsApp/SMS.</li>
+          <li>To assist you with date changes, customizations, cancellations, and customer support requests.</li>
+          <li>To continuously improve our balloon themes, user interface, and service catalog.</li>
+        </ul>
       </>
     ),
   },
-
   {
     number: 4,
-    title: "Information We Collect",
+    title: "Data Security & Protection",
+    icon: Lock,
     content: (
       <>
-        <p className="mb-5">
-          We may collect information in the following categories:
+        <p>
+          We employ state-of-the-art security measures to safeguard your personal data:
         </p>
-
-        <div className="space-y-6">
-          <div>
-            <h3 className="mb-3 font-semibold text-stone-900">
-              (a) Personal Information Provided by You
-            </h3>
-
-            <ul className="list-disc space-y-2 pl-6">
-              <li>
-                Name, email, phone number, gender, date of birth, address, and
-                event preferences.
-              </li>
-              <li>
-                Payment details, occasion type, special messages, and
-                customisation notes.
-              </li>
-              <li>
-                Account credentials such as username/password and communication
-                preferences.
-              </li>
-            </ul>
+        <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="p-3.5 rounded-xl bg-[#FCFBF7] border border-[#E8E8E3]">
+            <h4 className="font-bold text-xs text-[#202522]">256-Bit SSL Encryption</h4>
+            <p className="text-xs text-[#6B706C] mt-1">All data transmission between your browser and our servers is encrypted using bank-grade protocols.</p>
           </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold text-stone-900">
-              (b) Automatically Collected Information
-            </h3>
-
-            <p className="mb-3">
-              When you use our Platform, we may collect data automatically
-              through cookies, analytics, and device tracking.
-            </p>
-
-            <ul className="list-disc space-y-2 pl-6">
-              <li>
-                Device type, IP address, browser details, OS version, network,
-                location, and time zone.
-              </li>
-              <li>
-                Website interaction data such as pages viewed, search queries,
-                cart activity, and similar information.
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="mb-3 font-semibold text-stone-900">
-              (c) Transaction Information
-            </h3>
-
-            <ul className="list-disc space-y-2 pl-6">
-              <li>
-                Payment gateway details processed through secure third-party
-                processors.
-              </li>
-              <li>
-                Order history, cancellations, refunds, and feedback records.
-              </li>
-            </ul>
-
-            <p className="mt-4">
-              We do not store card numbers, CVV, or UPI IDs on our servers.
-            </p>
+          <div className="p-3.5 rounded-xl bg-[#FCFBF7] border border-[#E8E8E3]">
+            <h4 className="font-bold text-xs text-[#202522]">Verified Decorator Access</h4>
+            <p className="text-xs text-[#6B706C] mt-1">Decorators only receive event venue details required strictly on the date of execution.</p>
           </div>
         </div>
       </>
     ),
   },
-
   {
     number: 5,
-    title: "Use of Collected Information",
+    title: "Third-Party Sharing & Disclosure",
+    icon: Eye,
     content: (
       <>
-        <p className="mb-4">
-          We use your Personal Information for purposes including:
+        <p>
+          We never sell, rent, or trade your personal information to external advertising brokers. We only share essential details with:
         </p>
-
-        <ul className="list-disc space-y-3 pl-6">
-          <li>
-            Processing bookings, orders, payments, and service fulfilment.
-          </li>
-          <li>
-            Providing updates, reminders, and confirmations via email, WhatsApp,
-            or SMS.
-          </li>
-          <li>Personalising content, offers, and experiences.</li>
-          <li>Improving the performance and usability of our Platform.</li>
-          <li>Responding to customer queries and support requests.</li>
-          <li>
-            Complying with legal obligations such as tax and recordkeeping
-            requirements.
-          </li>
+        <ul className="mt-3 space-y-2 list-disc list-inside text-[#6B706C]">
+          <li><strong>RBI-Authorized Payment Gateways:</strong> To securely process UPI, card, and net banking transactions.</li>
+          <li><strong>SMS & Notification Providers:</strong> To deliver real-time booking alerts, OTPs, and receipts.</li>
+          <li><strong>Legal Authorities:</strong> Only when legally required to comply with applicable Indian laws, subpoenas, or lawful government orders.</li>
         </ul>
-
-        <p className="mt-5">
-          If CherishX undergoes a merger, acquisition, or reorganization, your
-          data may be transferred to the successor entity, subject to this same
-          Privacy Policy.
-        </p>
       </>
     ),
   },
-
   {
     number: 6,
-    title: "Communications",
+    title: "Cookies & Tracking Technologies",
+    icon: FileText,
     content: (
       <>
-        <p className="mb-4">
-          You may receive communications regarding:
-        </p>
-
-        <ul className="list-disc space-y-3 pl-6">
-          <li>Booking confirmations and updates.</li>
-          <li>Payment or refund notifications.</li>
-          <li>
-            Promotional offers, newsletters, and surveys (optional).
-          </li>
-        </ul>
-
-        <p className="mt-5">
-          You can unsubscribe from marketing communications at any time by
-          contacting our support team or using the unsubscribe link provided in
-          our emails.
+        <p>
+          Party Square uses session and preference cookies to remember your selected city, preserve your cart during checkout, and analyze website speed and traffic. You can adjust your browser cookie settings at any time without losing core website functionality.
         </p>
       </>
     ),
   },
-
   {
     number: 7,
-    title: "Security of Personal Information",
+    title: "Your Rights & Contact Details",
+    icon: Mail,
     content: (
       <>
         <p>
-          CherishX takes reasonable measures to ensure that your Personal
-          Information is protected from unauthorized access, modification,
-          loss, or disclosure.
+          You have full rights to review, update, or request the deletion of your account and personal data from our servers. If you have any inquiries or privacy requests, please reach out to our grievance officer:
         </p>
-
-        <p className="mt-5 mb-4">We use security measures including:</p>
-
-        <ul className="list-disc space-y-3 pl-6">
-          <li>Secure servers using HTTPS / SSL encryption.</li>
-          <li>Limited employee access.</li>
-          <li>Regular security audits.</li>
-          <li>Strong password and data encryption protocols.</li>
-        </ul>
-
-        <p className="mt-5">
-          While we follow reasonable security practices, no online system is
-          entirely secure. Users are responsible for safeguarding their account
-          credentials and logging out after use.
-        </p>
-
-        <p className="mt-4">
-          We do not sell, rent, or lease your Personal Information to any third
-          party.
-        </p>
-      </>
-    ),
-  },
-
-  {
-    number: 8,
-    title: "Sharing of Personal Information",
-    content: (
-      <>
-        <p className="mb-4">
-          We may share your Personal Information with:
-        </p>
-
-        <ol className="list-decimal space-y-4 pl-6">
-          <li>
-            <strong>Vendors and Service Partners</strong> who perform
-            functions such as decoration setup, product delivery, venue
-            management, photography, or courier services.
-          </li>
-
-          <li>
-            <strong>Payment gateways and financial processors</strong> for
-            secure transactions.
-          </li>
-
-          <li>
-            <strong>Technology partners</strong> for analytics, marketing, and
-            support operations.
-          </li>
-
-          <li>
-            <strong>Government authorities</strong> when legally required.
-          </li>
-        </ol>
-
-        <p className="mt-5">
-          These entities are expected to maintain confidentiality and use your
-          data only for the purposes defined.
-        </p>
-      </>
-    ),
-  },
-
-  {
-    number: 9,
-    title: "Cookies and Tracking Technologies",
-    content: (
-      <>
-        <p>
-          CherishX may use cookies, beacons, and analytics tools such as
-          Google Analytics and similar technologies to enhance user experience
-          and analyse site traffic.
-        </p>
-
-        <p className="mt-4">
-          You can control cookie settings through your browser, although
-          disabling cookies may affect certain Platform functionality.
-        </p>
-      </>
-    ),
-  },
-
-  {
-    number: 10,
-    title: "Data Retention",
-    content: (
-      <>
-        <p>
-          We retain your Personal Information only for as long as reasonably
-          necessary for:
-        </p>
-
-        <ul className="mt-4 list-disc space-y-3 pl-6">
-          <li>Providing services and resolving disputes.</li>
-          <li>Complying with legal and financial recordkeeping.</li>
-          <li>Retaining proof of consent and tax compliance.</li>
-        </ul>
-
-        <p className="mt-5">
-          After the applicable retention period, data may be deleted or
-          securely anonymized.
-        </p>
-      </>
-    ),
-  },
-
-  {
-    number: 11,
-    title: "Access, Correction, and Deletion Rights",
-    content: (
-      <>
-        <p>You may:</p>
-
-        <ul className="mt-4 list-disc space-y-3 pl-6">
-          <li>Request access to the Personal Information we hold.</li>
-          <li>Request corrections or updates.</li>
-          <li>Withdraw consent or request data deletion.</li>
-        </ul>
-
-        <div className="mt-6 rounded-2xl border border-[#E8E8E3] bg-[#EEF6EB]/80 p-5">
-          <p>
-            To submit a data access or deletion request, please contact our
-            support team with the subject{" "}
-            <strong>â€œData Access Requestâ€</strong>.
-          </p>
+        <div className="mt-3 p-4 rounded-xl bg-[#EEF6E8] border border-[#8CBC67]/40 space-y-1.5 text-xs sm:text-sm">
+          <p><strong>Grievance & Privacy Officer:</strong> Party Square Legal & Security Team</p>
+          <p><strong>Email:</strong> privacy@partysquare.in / support@partysquare.in</p>
+          <p><strong>Operating Office:</strong> Party Square Headquarters, Jaipur & Bangalore, India</p>
         </div>
-
-        <p className="mt-5">
-          We may verify your identity before processing the request.
-        </p>
-      </>
-    ),
-  },
-
-  {
-    number: 12,
-    title: "Use by Minors",
-    content: (
-      <>
-        <p>
-          Our Platform is intended for users aged 18 and above. We do not
-          knowingly collect information from minors.
-        </p>
-
-        <p className="mt-4">
-          If you believe that a minor's data has been shared with us, please
-          contact us so that appropriate action can be taken.
-        </p>
-      </>
-    ),
-  },
-
-  {
-    number: 13,
-    title: "Links to Other Sites",
-    content: (
-      <p>
-        Our Platform may include links to third-party websites or social media
-        pages. CherishX is not responsible for the content, security, or
-        privacy practices of such websites.
-      </p>
-    ),
-  },
-
-  {
-    number: 14,
-    title: "Advertisements",
-    content: (
-      <p>
-        We may use trusted advertising networks to display advertisements.
-        These networks may use non-identifiable information to provide relevant
-        advertisements. Such information does not include directly identifying
-        details such as your name, email address, or phone number unless
-        otherwise permitted by applicable law.
-      </p>
-    ),
-  },
-
-  {
-    number: 15,
-    title: "International Transfers",
-    content: (
-      <p>
-        In limited cases, data may be processed or stored on servers outside
-        India. Where applicable, such transfers will be subject to appropriate
-        contractual, organizational, and technical safeguards.
-      </p>
-    ),
-  },
-
-  {
-    number: 16,
-    title: "Grievance Officer",
-    content: (
-      <>
-        <p className="mb-5">
-          For questions, complaints, or to exercise your data rights, please
-          contact:
-        </p>
-
-        <div className="rounded-2xl border border-[#E8E8E3] bg-[#EEF6EB]/70 p-6">
-          <p className="font-bold text-stone-900">
-            Grievance Officer
-          </p>
-
-          <p className="mt-2">
-            Customer Operations &amp; Support Head â€“ CherishX
-          </p>
-
-          <div className="mt-4 space-y-2">
-            <p>ðŸ“ Infureka Technologies Pvt. Ltd., Kirti Nagar, New Delhi â€“ 110015</p>
-            <p>
-              âœ‰ï¸{" "}
-              <a
-                href="mailto:contact@cherishx.com"
-                className="font-semibold text-[#202522] transition hover:text-[#202522]"
-              >
-                contact@cherishx.com
-              </a>
-            </p>
-            <p>
-              ðŸ“ž{" "}
-              <a
-                href="tel:+918081833833"
-                className="font-semibold text-[#202522] transition hover:text-[#202522]"
-              >
-                +91 8081833833
-              </a>
-            </p>
-          </div>
-
-          <p className="mt-5">
-            We aim to acknowledge your query within 48 hours and work toward
-            resolving it within a reasonable period.
-          </p>
-        </div>
-      </>
-    ),
-  },
-
-  {
-    number: 17,
-    title: "Amendments to This Policy",
-    content: (
-      <>
-        <p>
-          CherishX reserves the right to modify this Privacy Policy at any
-          time. Updates will be posted on this page with the revised
-          â€œLast Updatedâ€ date.
-        </p>
-
-        <p className="mt-4">
-          Continued use of the Platform after changes are posted signifies
-          acceptance of the updated Privacy Policy, to the extent permitted by
-          applicable law.
-        </p>
       </>
     ),
   },
 ];
 
 export default function PrivacyPolicyPage() {
+  const [activeSection, setActiveSection] = useState(1);
+
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#EEF6EB] via-orange-50/40 to-white px-4 py-10 md:px-8 lg:px-12">
-      <div className="mx-auto max-w-6xl">
+    <div className="min-h-screen bg-[#FCFBF7] text-[#202522] font-sans selection:bg-[#8CBC67] selection:text-white pb-20">
+      {/* Hero Banner */}
+      <section className="relative bg-gradient-to-b from-[#EEF6E8] to-[#FCFBF7] pt-14 pb-12 px-4 sm:px-6 md:px-12 border-b border-[#E8E8E3]">
+        <div className="max-w-4xl mx-auto text-center space-y-3">
+          <div className="inline-flex items-center gap-2 bg-white border border-[#E8E8E3] px-4 py-1.5 rounded-full text-[#8CBC67] text-xs font-bold uppercase tracking-wider shadow-2xs">
+            <Sparkles size={13} />
+            <span>Privacy & Trust</span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-serif font-bold text-[#202522] tracking-tight">
+            Privacy Policy
+          </h1>
+          <p className="text-sm sm:text-base text-[#6B706C] max-w-2xl mx-auto leading-relaxed">
+            Your privacy is sacred to us. Learn how Party Square safely handles your celebration bookings, venue addresses, and personal details.
+          </p>
+          <p className="text-xs text-[#6B706C] font-medium pt-1">
+            Last Updated: October 2026 • Effective across all Indian cities
+          </p>
+        </div>
+      </section>
 
-        {/* Main Privacy Policy Card */}
-        <section className="overflow-hidden rounded-3xl border border-[#E8E8E3]/80 bg-white/95 shadow-[0_10px_40px_rgba(120,80,20,0.08)] backdrop-blur">
-
-          {/* Header */}
-          <div className="border-b border-[#E8E8E3]/70 bg-gradient-to-r from-[#EEF6EB]/90 via-[#EEF6EB]/90 to-orange-50/80 px-6 py-10 text-center md:px-12 md:py-14">
-
-            <div className="mx-auto mb-4 inline-flex items-center rounded-full border border-[#8CBC67]/80 bg-white/70 px-4 py-2 text-sm font-semibold text-[#202522] shadow-sm">
-              Privacy &amp; Data Protection
-            </div>
-
-            <h1 className="text-3xl font-bold tracking-tight text-stone-900 md:text-4xl lg:text-5xl">
-              Privacy Policy
-            </h1>
-
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-stone-600 md:text-base">
-              Your privacy matters to us. This policy explains how we collect,
-              use, protect, and manage your information when you use our
-              platform and services.
-            </p>
-
-            {/* Last Updated */}
-            <div className="mx-auto mt-7 inline-flex rounded-full border border-[#E8E8E3] bg-white/80 px-5 py-2.5 text-sm text-stone-700 shadow-sm">
-              <span className="font-semibold text-stone-900">
-                Last Updated:
+      {/* Main Content Grid */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          
+          {/* Quick Jump Sidebar */}
+          <div className="md:col-span-4 sticky top-24 space-y-2 hidden md:block">
+            <div className="bg-white rounded-2xl border border-[#E8E8E3] p-4 shadow-xs">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#8CBC67] block mb-3">
+                Table of Contents
               </span>
-              <span className="ml-2">October 2026</span>
+              <nav className="space-y-1">
+                {privacySections.map((sec) => (
+                  <a
+                    key={sec.number}
+                    href={`#section-${sec.number}`}
+                    onClick={() => setActiveSection(sec.number)}
+                    className={`block px-3 py-2 rounded-xl text-xs font-medium transition ${
+                      activeSection === sec.number
+                        ? "bg-[#EEF6E8] text-[#8CBC67] font-bold"
+                        : "text-[#6B706C] hover:text-[#202522] hover:bg-neutral-50"
+                    }`}
+                  >
+                    {sec.number}. {sec.title}
+                  </a>
+                ))}
+              </nav>
             </div>
           </div>
 
-          {/* Important Notice */}
-          <div className="px-6 pt-8 md:px-12 md:pt-10">
-            <div className="rounded-2xl border border-[#8CBC67]/70 bg-[#EEF6EB]/70 p-5 md:p-6">
-              <p className="text-sm leading-7 text-stone-700 md:text-base">
-                <span className="font-bold text-[#202522]">
-                  Important:
-                </span>{" "}
-                This Privacy Policy forms an integral part of the Terms &amp;
-                Conditions, Payment &amp; Refund Policy, and all other policies,
-                disclaimers, or terms available on the website.
-              </p>
-            </div>
-          </div>
-
-          {/* Sections */}
-          <div className="px-6 py-8 md:px-12 md:py-12 lg:px-16">
-
-            <div className="space-y-8">
-              {privacySections.map((section) => (
-                <article
-                  key={section.number}
-                  className="group rounded-3xl border border-[#E8E8E3] bg-gradient-to-br from-white to-[#EEF6EB]/30 p-6 transition-all duration-300 hover:border-[#E8E8E3] hover:shadow-[0_8px_30px_rgba(120,80,20,0.06)] md:p-8"
+          {/* Policy Sections */}
+          <div className="md:col-span-8 space-y-6">
+            {privacySections.map((sec) => {
+              const Icon = sec.icon;
+              return (
+                <section
+                  key={sec.number}
+                  id={`section-${sec.number}`}
+                  className="bg-white rounded-2xl border border-[#E8E8E3] p-6 sm:p-8 shadow-xs space-y-3"
                 >
-                  {/* Section heading */}
-                  <div className="mb-5 flex items-start gap-4">
-
-                    {/* Number */}
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#E8E8E3] bg-[#EEF6EB]/80 text-sm font-bold text-[#202522]">
-                      {section.number}
+                  <div className="flex items-center gap-3 border-b border-[#E8E8E3] pb-3">
+                    <div className="w-9 h-9 rounded-xl bg-[#EEF6E8] text-[#8CBC67] flex items-center justify-center shrink-0">
+                      <Icon size={18} />
                     </div>
-
-                    {/* Title */}
-                    <div className="pt-1">
-                      <h2 className="text-xl font-bold tracking-tight text-stone-900 md:text-2xl">
-                        {section.title}
-                      </h2>
-
-                      <div className="mt-2 h-1 w-12 rounded-full bg-[#8CBC67] transition-all duration-300 group-hover:w-20" />
-                    </div>
+                    <h2 className="text-lg sm:text-xl font-serif font-bold text-[#202522]">
+                      {sec.number}. {sec.title}
+                    </h2>
                   </div>
-
-                  {/* Content */}
-                  <div className="space-y-4 text-[15px] leading-7 text-stone-600 md:text-base">
-                    {section.content}
+                  <div className="text-xs sm:text-sm text-[#6B706C] leading-relaxed">
+                    {sec.content}
                   </div>
-                </article>
-              ))}
-            </div>
+                </section>
+              );
+            })}
           </div>
 
-          {/* Bottom Navigation */}
-          <div className="border-t border-[#E8E8E3]/70 bg-gradient-to-r from-[#EEF6EB]/80 to-orange-50/50 px-6 py-8 md:px-12">
-            <div className="flex flex-col items-center justify-between gap-5 text-center md:flex-row md:text-left">
-
-              <div>
-                <h3 className="font-semibold text-stone-900">
-                  Have questions about our policies?
-                </h3>
-
-                <p className="mt-1 text-sm text-stone-600">
-                  Please contact our support team for assistance.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap justify-center gap-3">
-
-                <Link
-                  href="/terms-and-condition"
-                  className="rounded-xl border border-[#8CBC67] bg-white px-5 py-2.5 text-sm font-semibold text-[#202522] transition hover:bg-[#EEF6EB]"
-                >
-                  Terms &amp; Conditions
-                </Link>
-
-                <Link
-                  href="/contact"
-                  className="rounded-xl bg-[#7AB055] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#7AB055]"
-                >
-                  Contact Us
-                </Link>
-
-              </div>
-            </div>
-          </div>
-
-        </section>
-
-        {/* Footer note */}
-        <p className="px-4 py-8 text-center text-xs leading-5 text-stone-500">
-          By using our Platform, you acknowledge that you have read and
-          understood this Privacy Policy.
-        </p>
+        </div>
       </div>
-    </main>
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -190,6 +190,8 @@ function DropdownPill({
     if (!p) return "";
     if (p.startsWith("http") || p.startsWith("mailto:") || p.startsWith("tel:")) return p;
     if (p === "/") return `/${citySlug}`;
+    const staticPages = ["/about", "/contact", "/privacy-policy", "/privacy-Policy", "/terms-and-condition", "/cancellation-and-refund", "/payments", "/basket", "/cookie", "/login", "/profile", "/wishlist"];
+    if (staticPages.some((sp) => p === sp || p.startsWith(sp + "/"))) return p;
     const clean = p.startsWith("/") ? p : `/${p}`;
     return `/${citySlug}${clean}`;
   };
@@ -488,6 +490,52 @@ function DropdownPill({
   );
 }
 
+
+// ── MobileAccordion ── collapsible category section for mobile drawer
+function MobileAccordion({
+  item,
+  toCityHref,
+  onClose,
+}: {
+  item: DropdownPillData;
+  toCityHref: (p?: string) => string;
+  onClose: () => void;
+}) {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <div className="rounded-xl border border-[#E8E8E3]/60 overflow-hidden bg-white">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="group w-full flex items-center gap-3 px-3.5 py-3 hover:bg-[#EEF6E8] transition"
+      >
+        <div className="w-8 h-8 rounded-lg bg-[#EEF6E8] group-hover:bg-[#8CBC67]/15 flex items-center justify-center shrink-0 transition">
+          <item.icon size={15} className="text-[#8CBC67]" />
+        </div>
+        <span className="text-sm font-semibold text-[#202522] group-hover:text-[#7AB055] flex-1 text-left">{item.label}</span>
+        <ChevronRight
+          size={14}
+          className={`text-[#6B706C] group-hover:text-[#8CBC67] transition-transform duration-200 ${open ? "rotate-90" : ""}`}
+        />
+      </button>
+      {open && (
+        <div className="bg-[#FCFBF7] border-t border-[#E8E8E3] px-3 py-2 grid grid-cols-1 gap-0.5">
+          {item.children.map((child) => (
+            <Link
+              key={child.href}
+              href={toCityHref(child.href)}
+              onClick={onClose}
+              className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-semibold text-[#6B706C] hover:text-[#8CBC67] hover:bg-[#EEF6E8] transition"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#8CBC67]/50 shrink-0"></span>
+              {child.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Navbar() {
   const { wishlist } = useWishlist();
   const { cartCount } = useCart();
@@ -503,6 +551,8 @@ export default function Navbar() {
     if (!p) return "";
     if (p.startsWith("http") || p.startsWith("mailto:") || p.startsWith("tel:")) return p;
     if (p === "/") return `/${citySlug}`;
+    const staticPages = ["/about", "/contact", "/privacy-policy", "/privacy-Policy", "/terms-and-condition", "/cancellation-and-refund", "/payments", "/basket", "/cookie", "/login", "/profile", "/wishlist"];
+    if (staticPages.some((sp) => p === sp || p.startsWith(sp + "/"))) return p;
     const clean = p.startsWith("/") ? p : `/${p}`;
     return `/${citySlug}${clean}`;
   };
@@ -612,8 +662,12 @@ export default function Navbar() {
       />
 
       <nav className="w-full bg-white border-b border-[#E8E8E3] sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 md:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
-          <Link href={`/${citySlug}`} className="flex items-center shrink-0"><div className="w-32 h-10 sm:w-40 sm:h-12 relative flex-shrink-0"><Image src="/logo-full.png" alt="Party Square" fill className="object-contain object-left" priority /></div></Link>
+        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 md:px-8 h-14 sm:h-20 flex items-center justify-between gap-1.5 sm:gap-4">
+          <Link href={`/${citySlug}`} className="flex items-center shrink-0">
+            <div className="w-24 h-7 sm:w-40 sm:h-12 relative flex-shrink-0">
+              <Image src="/logo-full.png" alt="Party Square" fill className="object-contain object-left" priority />
+            </div>
+          </Link>
 
           <form
             onSubmit={handleSearchSubmit}
@@ -629,16 +683,26 @@ export default function Navbar() {
             />
           </form>
 
+          {/* Mobile City Pill — visible directly in navbar */}
+          <button
+            onClick={() => setIsCityModalOpen(true)}
+            aria-label="Select city"
+            className="flex md:hidden items-center gap-1 text-[10.5px] font-bold bg-[#EEF6E8] border border-[#8CBC67]/40 px-2 py-1 rounded-full text-[#202522] max-w-[76px] truncate shrink-0 hover:border-[#8CBC67] transition-colors"
+          >
+            <MapPin size={10} className="text-[#8CBC67] shrink-0" />
+            <span className="truncate">{selectedCity || "City"}</span>
+          </button>
+
           {/* Mobile Right Controls: Wishlist + Basket + Search + Hamburger Menu */}
-          <div className="flex md:hidden items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="flex md:hidden items-center gap-1 shrink-0">
             <Link
               href="/wishlist"
               aria-label={`Wishlist${wishlist.length > 0 ? `, ${wishlist.length} items` : ""}`}
-              className="relative w-9 h-9 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-center text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
+              className="relative w-8 h-8 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-center text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
             >
-              <Heart size={16} />
+              <Heart size={14} />
               {wishlist.length > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center border-2 border-white">
+                <span className="absolute -top-1 -right-1 min-w-[14px] h-[14px] px-0.5 rounded-full bg-rose-500 text-white text-[8px] font-bold flex items-center justify-center border border-white">
                   {wishlist.length}
                 </span>
               )}
@@ -647,11 +711,11 @@ export default function Navbar() {
             <Link
               href="/basket"
               aria-label="Basket"
-              className="relative w-9 h-9 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-center text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
+              className="relative w-8 h-8 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-center text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
             >
-              <ShoppingBasket size={16} />
+              <ShoppingBasket size={14} />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center border-2 border-white">
+                <span className="absolute -top-1 -right-1 min-w-[14px] h-[14px] px-0.5 rounded-full bg-rose-500 text-white text-[8px] font-bold flex items-center justify-center border border-white">
                   {cartCount}
                 </span>
               )}
@@ -660,17 +724,17 @@ export default function Navbar() {
             <button
               onClick={() => setSearchOpen((v) => !v)}
               aria-label="Search"
-              className="w-9 h-9 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-center text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
+              className="w-8 h-8 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-center text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
             >
-              {searchOpen ? <X size={16} /> : <Search size={16} />}
+              {searchOpen ? <X size={14} /> : <Search size={14} />}
             </button>
 
             <button
               onClick={() => setMobileMenuOpen(true)}
               aria-label="Toggle Menu"
-              className="w-9 h-9 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-center text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
+              className="w-8 h-8 rounded-full border border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-center text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
             >
-              <Menu size={17} />
+              <Menu size={15} />
             </button>
           </div>
 
@@ -829,174 +893,119 @@ export default function Navbar() {
       {/* ================= MOBILE SLIDE-OVER DRAWER ================= */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-[9999] md:hidden overscroll-none select-none">
+          {/* Backdrop */}
           <div
             onClick={() => setMobileMenuOpen(false)}
-            onTouchMove={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity touch-none"
+            onTouchMove={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            className="absolute inset-0 bg-black/50 backdrop-blur-[2px] touch-none"
           />
-          <div className="absolute right-0 top-0 bottom-0 w-[85%] max-w-[340px] bg-white shadow-2xl flex flex-col overflow-y-auto overscroll-contain select-text">
-            {/* Drawer Header */}
-            <div className="p-4 border-b border-[#E8E8E3] flex items-center justify-between">
-              <div className="w-28 h-8 relative">
-                <Image src="/logo-full.png" alt="Party Square" fill className="object-contain" priority />
+          {/* Drawer Panel */}
+          <div className="absolute right-0 top-0 bottom-0 w-[88%] max-w-[360px] bg-white shadow-2xl flex flex-col overflow-hidden">
+            {/* Header */}
+            <div className="bg-white px-4 pt-4 pb-3 border-b border-[#E8E8E3] flex items-center justify-between shrink-0">
+              <div className="w-32 h-9 relative">
+                <Image src="/logo-full.png" alt="Party Square" fill className="object-contain object-left" priority />
               </div>
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-8 h-8 rounded-full bg-[#FCFBF7] border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:text-black"
+                className="w-9 h-9 rounded-full bg-[#F5F5F3] border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:bg-[#EEF6E8] hover:text-[#8CBC67] transition"
                 aria-label="Close menu"
               >
-                <X size={16} />
+                <X size={17} />
               </button>
             </div>
-
-            {/* Location Selector */}
-            <div className="p-4 border-b border-[#E8E8E3] bg-[#FCFBF7]">
-              <p className="text-[10px] uppercase font-bold text-[#6B706C] tracking-wider mb-1.5">Your Selected City</p>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setIsCityModalOpen(true);
-                }}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-[#E8E8E3] bg-white text-xs font-semibold text-[#202522] hover:border-[#8CBC67]"
-              >
-                <div className="flex items-center gap-2">
-                  <MapPin size={15} className="text-[#8CBC67]" />
-                  <span>{selectedCity}</span>
-                </div>
-                <span className="text-[#8CBC67] text-[11px] font-bold">Change City →</span>
-              </button>
-            </div>
-
-            {/* Quick Actions Row */}
-            <div className="p-4 grid grid-cols-3 gap-2 border-b border-[#E8E8E3]">
-              <Link
-                href="/basket"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex flex-col items-center justify-center p-2.5 rounded-xl border border-[#E8E8E3] bg-white hover:bg-[#EEF6EB] relative transition"
-              >
-                <ShoppingBasket size={18} className="text-[#202522]" />
-                {cartCount > 0 && (
-                  <span className="absolute top-1.5 right-2 min-w-[16px] h-[16px] px-1 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">
-                    {cartCount}
-                  </span>
+            {/* Scrollable Body */}
+            <div className="flex-1 overflow-y-auto overscroll-contain select-text">
+              {/* Profile Card */}
+              <div className="mx-3 mt-3 mb-1">
+                {isLoggedIn ? (
+                  <div className="rounded-2xl bg-gradient-to-br from-[#EEF6E8] to-[#FCFBF7] border border-[#8CBC67]/20 p-3.5 flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-full bg-[#8CBC67] flex items-center justify-center text-white font-bold text-base shrink-0 shadow">
+                      {userName ? userName[0].toUpperCase() : <User size={18} />}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-bold text-[#202522] truncate">{userName}</p>
+                      <p className="text-[11px] text-[#6B706C] flex items-center gap-1 mt-0.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#8CBC67] inline-block"></span>
+                        Verified Customer
+                      </p>
+                    </div>
+                    <div className="flex flex-col gap-1.5 shrink-0">
+                      <Link href="/profile" onClick={() => setMobileMenuOpen(false)} className="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-[#8CBC67] text-white hover:bg-[#7AB055] transition text-center">My Bookings</Link>
+                      <button
+                        onClick={() => { document.cookie = "token=; path=/; max-age=0;"; document.cookie = "user=; path=/; max-age=0;"; window.location.href = "/"; }}
+                        className="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-rose-50 text-rose-500 hover:bg-rose-100 transition text-center"
+                      >Logout</button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => { setMobileMenuOpen(false); setLoginOpen(true); }}
+                    className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-2xl bg-gradient-to-r from-[#8CBC67] to-[#7AB055] text-white text-sm font-bold shadow-lg hover:opacity-90 transition"
+                  >
+                    <User size={17} />
+                    <span>Login / Sign Up</span>
+                    <ArrowRight size={15} className="opacity-70" />
+                  </button>
                 )}
-                <span className="text-[11px] font-semibold mt-1">Basket</span>
-              </Link>
-
-              <Link
-                href="/wishlist"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex flex-col items-center justify-center p-2.5 rounded-xl border border-[#E8E8E3] bg-white hover:bg-[#EEF6EB] relative transition"
-              >
-                <Heart size={18} className="text-[#202522]" />
-                {wishlist.length > 0 && (
-                  <span className="absolute top-1.5 right-2 min-w-[16px] h-[16px] px-1 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">
-                    {wishlist.length}
-                  </span>
-                )}
-                <span className="text-[11px] font-semibold mt-1">Wishlist</span>
-              </Link>
-
-              <a
-                href="https://wa.me/910000000000"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col items-center justify-center p-2.5 rounded-xl border border-emerald-200 bg-emerald-50 text-emerald-800 transition"
-              >
-                <WhatsAppIcon size={18} />
-                <span className="text-[11px] font-semibold mt-1">WhatsApp</span>
-              </a>
-            </div>
-
-            {/* Profile / Login */}
-            <div className="p-4 border-b border-[#E8E8E3]">
-              {isLoggedIn ? (
-                <div className="space-y-2.5">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-10 h-10 rounded-full bg-[#F7D6C7] flex items-center justify-center font-bold text-sm">
-                      <User size={18} />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-bold truncate">{userName}</p>
-                      <p className="text-[11px] text-[#6B706C]">Verified Customer</p>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 pt-1">
-                    <Link
-                      href="/profile"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="text-center py-2 px-3 rounded-lg bg-[#EEF6EB] text-[#202522] text-xs font-semibold hover:bg-[#8CBC67] hover:text-white transition"
-                    >
-                      My Bookings
-                    </Link>
-                    <button
-                      onClick={() => {
-                        document.cookie = "token=; path=/; max-age=0;";
-                        document.cookie = "user=; path=/; max-age=0;";
-                        window.location.href = "/";
-                      }}
-                      className="text-center py-2 px-3 rounded-lg bg-rose-50 text-rose-600 text-xs font-semibold hover:bg-rose-100 transition"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    setLoginOpen(true);
-                  }}
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#8CBC67] text-white text-xs font-bold shadow-md hover:bg-[#7AB055] transition"
-                >
-                  <User size={16} />
-                  <span>Login / Sign Up</span>
-                </button>
-              )}
-            </div>
-
-            {/* Navigation links & subcategories */}
-            <div className="p-4 flex-1 space-y-1">
-              <p className="text-[10px] uppercase font-bold text-[#6B706C] tracking-wider mb-2">Explore Services</p>
-              {NAV_PILLS.map((item) => {
-                if (item.type === "link") {
-                  return (
-                    <Link
-                      key={item.label}
-                      href={toCityHref(item.href)} onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#202522] hover:bg-[#EEF6EB] hover:text-[#8CBC67] transition"
-                    >
-                      <item.icon size={16} className="text-[#8CBC67]" />
-                      <span>{item.label}</span>
-                    </Link>
-                  );
-                }
-                return (
-                  <div key={item.label} className="border-b border-[#E8E8E3]/60 pb-1">
-                    <div className="flex items-center justify-between px-3 py-2 text-sm font-semibold text-[#202522]">
-                      <div className="flex items-center gap-2.5">
-                        <item.icon size={16} className="text-[#8CBC67]" />
-                        <span>{item.label}</span>
-                      </div>
-                    </div>
-                    <div className="pl-8 pr-2 space-y-0.5 pb-2">
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={toCityHref(child.href)}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block py-1.5 px-2 rounded text-xs text-[#6B706C] hover:text-[#8CBC67] hover:bg-[#EEF6EB]/60 font-medium transition"
-                        >
-                          {child.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
+              </div>
+              {/* Quick Action Tiles */}
+              <div className="px-3 mt-3 grid grid-cols-3 gap-2">
+                <Link href="/basket" onClick={() => setMobileMenuOpen(false)} className="flex flex-col items-center justify-center gap-1.5 py-3.5 rounded-2xl border border-[#E8E8E3] bg-[#FCFBF7] hover:bg-[#EEF6E8] hover:border-[#8CBC67]/40 relative transition">
+                  <ShoppingBasket size={20} className="text-[#8CBC67]" />
+                  {cartCount > 0 && (<span className="absolute top-2 right-2.5 min-w-[16px] h-[16px] px-1 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">{cartCount}</span>)}
+                  <span className="text-[11px] font-semibold text-[#202522]">Basket</span>
+                </Link>
+                <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)} className="flex flex-col items-center justify-center gap-1.5 py-3.5 rounded-2xl border border-[#E8E8E3] bg-[#FCFBF7] hover:bg-[#EEF6E8] hover:border-[#8CBC67]/40 relative transition">
+                  <Heart size={20} className="text-[#8CBC67]" />
+                  {wishlist.length > 0 && (<span className="absolute top-2 right-2.5 min-w-[16px] h-[16px] px-1 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">{wishlist.length}</span>)}
+                  <span className="text-[11px] font-semibold text-[#202522]">Wishlist</span>
+                </Link>
+                <a href="https://wa.me/919119119898" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center gap-1.5 py-3.5 rounded-2xl border border-emerald-200 bg-emerald-50 hover:bg-emerald-100 transition">
+                  <WhatsAppIcon size={20} className="text-emerald-600" />
+                  <span className="text-[11px] font-semibold text-emerald-700">WhatsApp</span>
+                </a>
+              </div>
+              {/* Divider */}
+              <div className="mx-3 my-3 border-t border-[#E8E8E3]" />
+              {/* Services Header */}
+              <div className="px-4 mb-2 flex items-center gap-2">
+                <span className="text-[10px] uppercase font-bold tracking-widest text-[#6B706C]">Explore Services</span>
+                <div className="flex-1 h-px bg-[#E8E8E3]" />
+              </div>
+              {/* Navigation Items */}
+              <div className="px-3 pb-4 space-y-1">
+                {NAV_PILLS.map((item) => {
+                  if (item.type === "link") {
+                    return (
+                      <Link key={item.label} href={toCityHref(item.href)} onClick={() => setMobileMenuOpen(false)}
+                        className="group flex items-center gap-3 px-3.5 py-3 rounded-xl bg-white border border-[#E8E8E3]/60 hover:border-[#8CBC67]/40 hover:bg-[#EEF6E8] transition">
+                        <div className="w-8 h-8 rounded-lg bg-[#EEF6E8] group-hover:bg-[#8CBC67]/15 flex items-center justify-center shrink-0 transition">
+                          <item.icon size={15} className="text-[#8CBC67]" />
+                        </div>
+                        <span className="text-sm font-semibold text-[#202522] group-hover:text-[#7AB055] flex-1">{item.label}</span>
+                        <ChevronRight size={14} className="text-[#6B706C] group-hover:text-[#8CBC67] transition" />
+                      </Link>
+                    );
+                  }
+                  return <MobileAccordion key={item.label} item={item} toCityHref={toCityHref} onClose={() => setMobileMenuOpen(false)} />;
+                })}
+              </div>
+              {/* Footer Links */}
+              <div className="mx-3 mb-4 rounded-2xl bg-[#FCFBF7] border border-[#E8E8E3] overflow-hidden">
+                {[
+                  { label: "About Us", href: "/about" },
+                  { label: "Contact Us", href: "/contact" },
+                  { label: "Privacy Policy", href: "/privacy-policy" },
+                  { label: "Terms & Conditions", href: "/terms-and-condition" },
+                ].map((link, i, arr) => (
+                  <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center justify-between px-4 py-3 text-xs font-medium text-[#6B706C] hover:text-[#8CBC67] hover:bg-[#EEF6E8] transition ${i < arr.length - 1 ? "border-b border-[#E8E8E3]" : ""}`}>
+                    <span>{link.label}</span>
+                    <ChevronRight size={13} />
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>

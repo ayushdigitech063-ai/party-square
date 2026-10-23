@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { fetchProducts } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
@@ -93,7 +93,7 @@ export default function ThemeDecorationAllProductsPage() {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {sortedProducts.map((product) => (
             <ProductCard
               key={product.id}

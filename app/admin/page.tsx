@@ -14,7 +14,7 @@ import UpcomingEvents from "./component/UpcommingEvents";
 
 import { INITIAL_BOOKINGS } from "./data/bookings";
 import { Booking, Status } from "./types/dashboard";
-import { fetchDashboardOverview, DashboardOverview } from "@/app/lib/api";
+import { fetchDashboardOverview, DashboardOverview, fetchAllBookings } from "@/app/lib/api";
 
 export default function AdminDashboard() {
   // =========================
@@ -58,7 +58,7 @@ export default function AdminDashboard() {
               customer: b.customerName || b.user?.name || "Customer",
               theme: b.productName || b.theme || "Decoration",
               date: b.eventDate ? new Date(b.eventDate).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }) : "Upcoming",
-              amount: b.totalAmount ? `₹${Number(b.totalAmount).toLocaleString("en-IN")}` : "₹5,000",
+              amount: Number(b.totalAmount) || 5000,
               status,
               deposit: b.advanceAmountPaid ? `₹${Number(b.advanceAmountPaid).toLocaleString("en-IN")}` : "₹2,500",
               venue: b.deliveryAddress || b.city || "Venue",

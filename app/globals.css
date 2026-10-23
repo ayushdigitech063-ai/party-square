@@ -2,8 +2,18 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Manrope', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Manrope', sans-serif;
+
+  --color-primary-green: #8CBC67;
+  --color-primary-green-hover: #7AB055;
+  --color-charcoal: #202522;
+  --color-warm-white: #FCFBF7;
+  --color-light-green: #EEF6E8;
+  --color-soft-peach: #F7D6C7;
+  --color-gold: #D7A84B;
+  --color-border-grey: #E8E8E3;
+  --color-muted-text: #6B706C;
 }
 
 /* Global Base Styles */
@@ -15,30 +25,49 @@ body {
   color: #202522;
 }
 
-/* Typography Defaults using Playfair Display */
-h1, h2, .font-serif {
-  font-family: var(--font-serif);
+/* Typography Defaults using Manrope (as specified in Design Guide) */
+h1, h2, h3, h4, h5, h6, .font-serif {
+  font-family: var(--font-sans);
 }
 
-h1 {
-  font-size: 2.25rem;
+:where(h1) {
+  font-size: 2.5rem;
   font-weight: 700;
   line-height: 1.2;
+  color: #202522;
 }
 
-h2 {
-  font-size: 1.875rem;
+:where(h2) {
+  font-size: 2rem;
   font-weight: 700;
   line-height: 1.3;
+  color: #202522;
 }
 
-h3 {
+:where(h3) {
   font-size: 1.5rem;
   font-weight: 600;
   line-height: 1.4;
+  color: #202522;
 }
 
-p {
-  font-size: 0.95rem;
+:where(p) {
+  font-size: 1rem;
   line-height: 1.6;
+  color: #6B706C;
+}
+
+/* Responsive safety rules to prevent horizontal overflow */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+*, ::before, ::after {
+  box-sizing: border-box;
+}
+
+img, video {
+  max-width: 100%;
+  height: auto;
 }

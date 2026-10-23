@@ -213,6 +213,7 @@ export interface ProductItem {
   theme?: string;
   gradientBg?: string;
   isSpecialCard?: boolean;
+  showUnitPrice?: boolean;
   availableCities?: string[];
   createdAt: string;
   updatedAt: string;
@@ -478,6 +479,108 @@ export async function updateBookingStatus(id: string, bookingStatus: string): Pr
 
 export async function deleteBooking(id: string): Promise<any> {
   const res = await fetch(`${API_BASE}/api/bookings/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  return handleResponse(res);
+}
+
+// ==========================================
+// REVIEWS API
+// ==========================================
+
+export interface ReviewItem {
+  _id: string;
+  bookingId: string;
+  productId: string;
+  productName: string;
+  customerName: string;
+  city: string;
+  rating: number;
+  comment: string;
+  status: "PENDING" | "APPROVED" | "FEATURED" | "REJECTED";
+  createdAt: string;
+  user?: { name: string; email?: string; phone?: string };
+}
+
+export async function submitReview(payload: {
+  bookingId: string;
+  rating: number;
+  comment: string;
+}): Promise<{ success: boolean; review: ReviewItem }> {
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+  const res = await fetch(`${API_BASE}/api/reviews`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(payload),
+  });
+  return handleResponse(res);
+}
+
+export async function fetchReviewsByProduct(productId: string): Promise<{
+  reviews: ReviewItem[];
+  averageRating: string | null;
+  totalCount: number;
+}> {
+  const res = await fetch(`${API_BASE}/api/reviews/product/${encodeURIComponent(productId)}`, {
+    method: "GET",
+    cache: "no-store",
+  });
+  return handleResponse(res);
+}
+
+export async function checkBookingReviewed(bookingId: string): Promise<{
+  reviewed: boolean;
+  review: ReviewItem | null;
+}> {
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const headers: Record<string, string> = {};
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+  const res = await fetch(`${API_BASE}/api/reviews/check/${encodeURIComponent(bookingId)}`, {
+    method: "GET",
+    headers,
+    cache: "no-store",
+  });
+  return handleResponse(res);
+}
+
+export async function fetchAllReviewsAdmin(status?: string): Promise<{
+  reviews: ReviewItem[];
+  stats: {
+    total: number;
+    pending: number;
+    approved: number;
+    featured: number;
+    rejected: number;
+  };
+}> {
+  const url = status
+    ? `${API_BASE}/api/reviews?status=${encodeURIComponent(status)}`
+    : `${API_BASE}/api/reviews`;
+  const res = await fetch(url, {
+    method: "GET",
+    headers: getAuthHeaders(),
+    cache: "no-store",
+  });
+  return handleResponse(res);
+}
+
+export async function updateReviewStatus(
+  id: string,
+  status: "PENDING" | "APPROVED" | "FEATURED" | "REJECTED"
+): Promise<{ success: boolean; review: ReviewItem }> {
+  const res = await fetch(`${API_BASE}/api/reviews/${id}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ status }),
+  });
+  return handleResponse(res);
+}
+
+export async function deleteReviewAdmin(id: string): Promise<{ success: boolean }> {
+  const res = await fetch(`${API_BASE}/api/reviews/${id}`, {
     method: "DELETE",
     headers: getAuthHeaders(),
   });

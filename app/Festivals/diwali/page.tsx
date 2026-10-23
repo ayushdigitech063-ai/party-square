@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import SlidingProducts from "@/app/components/SlidingProducts";
 import DiwaliSection from "@/app/Festivals/diwali/DiwaliSection";
@@ -322,7 +322,7 @@ export default function DiwaliPage() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {productsToDisplay.map((item) => {
             return (
               <ProductCard

@@ -19,11 +19,13 @@ import {
   ArrowRight,
   ShieldCheck,
   Loader2,
+  Star,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { fetchMyBookings, fetchBookingsByPhone, API_BASE } from "@/app/lib/api";
 import LoginModal from "@/app/components/LoginModal";
+import ReviewModal from "@/app/components/ReviewModal";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -38,6 +40,10 @@ export default function ProfilePage() {
   const [isSearchingPhone, setIsSearchingPhone] = useState(false);
   const [phoneSearchDone, setPhoneSearchDone] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  // Review Modal state
+  const [reviewingBooking, setReviewingBooking] = useState<any>(null);
+  // Track which bookings have been reviewed in this session
+  const [reviewedBookingIds, setReviewedBookingIds] = useState<Set<string>>(new Set());
 
   // Helper to extract token
   const getStoredToken = () => {
@@ -432,6 +438,27 @@ export default function ProfilePage() {
                           </span>
                         </div>
                       )}
+
+                      {/* Rate Experience button — only for COMPLETED bookings */}
+                      {isCompleted && (
+                        <div className="pt-2 border-t border-[#E8E8E3]">
+                          {reviewedBookingIds.has(booking.bookingId) ? (
+                            <div className="flex items-center gap-1.5 text-[#8CBC67] font-bold text-xs">
+                              <CheckCircle2 size={13} />
+                              <span>Review Submitted — Thank you!</span>
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => setReviewingBooking(booking)}
+                              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-bold text-xs transition cursor-pointer"
+                            >
+                              <Star size={13} className="fill-amber-500 text-amber-500" />
+                              Rate Your Experience
+                            </button>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
@@ -449,6 +476,26 @@ export default function ProfilePage() {
           loadUserAndBookings();
         }}
       />
+
+      {/* Review Modal */}
+      {reviewingBooking && (
+        <ReviewModal
+          isOpen={!!reviewingBooking}
+          onClose={() => setReviewingBooking(null)}
+          booking={{
+            bookingId: reviewingBooking.bookingId,
+            productName: reviewingBooking.productName,
+            productImage: reviewingBooking.productImage,
+            eventDate: reviewingBooking.eventDate,
+          }}
+          onReviewSubmitted={() => {
+            setReviewedBookingIds((prev) =>
+              new Set([...prev, reviewingBooking.bookingId])
+            );
+            setReviewingBooking(null);
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -2,13 +2,16 @@ import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight, MapPin, Sparkles, Clock, Star, ShieldCheck } from "lucide-react";
-import { fetchProducts, fetchCityBySlugOrId } from "@/app/lib/api";
+import { fetchProducts, ProductItem } from "@/app/lib/api";
 import CityProductsGrid from "../CityProductsGrid";
 import CityFaqAccordion from "../CityFaqAccordion";
 import CitySync from "@/app/components/CitySync";
+import CityCategorySubNav from "./CityCategorySubNav";
+import { decorationItems } from "@/app/data/decorationThemeData";
 
 interface Props {
   params: Promise<{ city: string; category: string }>;
+  searchParams?: Promise<{ sub?: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -41,22 +44,85 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function CityCategoryPage({ params }: Props) {
+export default async function CityCategoryPage({ params, searchParams }: Props) {
   const { city: citySlug, category: categorySlug } = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const activeSub = resolvedSearchParams.sub || "";
+
   const cityName = citySlug.charAt(0).toUpperCase() + citySlug.slice(1);
   const categoryName = categorySlug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
   // Fetch products filtered by city and category
-  let products = [];
+  let rawProducts: any[] = [];
   try {
     const res = await fetchProducts({
       city: cityName,
       category: categorySlug,
-      limit: 24,
+      limit: 30,
     });
-    products = res.products || [];
+    rawProducts = res.products || [];
   } catch (err) {
-    products = [];
+    rawProducts = [];
+  }
+
+  // Fallback to high-quality curated decoration items if backend returns empty list
+  if (!rawProducts || rawProducts.length === 0) {
+    const normCategory = categorySlug.toLowerCase().trim();
+    const fallbackList = decorationItems.filter((item) => {
+      const c = (item.category || "").toLowerCase();
+      const sc = (item.subcategory || "").toLowerCase();
+      return c.includes(normCategory) || normCategory.includes(c) || sc.includes(normCategory);
+    });
+
+    const source = fallbackList.length > 0 ? fallbackList : decorationItems;
+    rawProducts = source.map((p) => ({
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      _id: p.id,
+      name: p.name,
+      slug: p.slug,
+      description: p.description,
+      fullDescription: p.fullDescription,
+      price: p.price,
+      originalPrice: p.originalPrice,
+      image: p.image,
+      images: p.images,
+      category: p.category as any,
+      subcategory: p.subcategory as any,
+      availability: p.availability,
+      included: p.included,
+      rating: p.rating || 0,
+      reviewCount: p.reviewCount || 0,
+      theme: p.theme,
+      gradientBg: p.gradientBg,
+      badgeColor: p.badgeColor,
+      isSpecialCard: p.isSpecialCard,
+      showUnitPrice: p.showUnitPrice,
+    }));
+  }
+
+  // Filter products if a subcategory is selected
+  let products = rawProducts;
+  if (activeSub) {
+    const cleanSub = activeSub.toLowerCase().replace(/[-_]/g, " ");
+    const filtered = rawProducts.filter((p) => {
+      const pName = (p.name || "").toLowerCase();
+      const pSub =
+        typeof p.subcategory === "object" && p.subcategory !== null
+          ? ((p.subcategory as any).name || "").toLowerCase()
+          : String(p.subcategory || "").toLowerCase();
+      const pDesc = (p.description || "").toLowerCase();
+      const pTheme = (p.theme || "").toLowerCase();
+      return (
+        pName.includes(cleanSub) ||
+        pSub.includes(cleanSub) ||
+        pDesc.includes(cleanSub) ||
+        pTheme.includes(cleanSub)
+      );
+    });
+    if (filtered.length > 0) {
+      products = filtered;
+    }
   }
 
   // Schema Markup
@@ -108,37 +174,61 @@ export default async function CityCategoryPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      {/* Header Banner */}
-      <section className="pt-8 pb-12 sm:pt-12 sm:pb-16 bg-gradient-to-b from-[#EEF6EB]/60 via-[#FCFBF7] to-[#FCFBF7] border-b border-[#E8E8E3]">
+      {/* Header Banner & Sub-Categories Section */}
+      <section className="pt-6 pb-10 sm:pt-10 sm:pb-14 bg-gradient-to-b from-[#EEF6EB]/70 via-[#FCFBF7] to-[#FCFBF7] border-b border-[#E8E8E3]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Breadcrumb */}
-          <nav className="flex items-center space-x-2 text-xs text-[#6B706C] mb-6">
+          {/* Breadcrumb Navigation */}
+          <nav className="flex items-center space-x-2 text-xs text-[#6B706C] mb-4 sm:mb-6">
             <Link href="/" className="hover:text-[#202522] transition">
               Home
             </Link>
             <ChevronRight size={12} />
-            <Link href={`/${citySlug.toLowerCase()}`} className="hover:text-[#202522] transition">
+            <Link
+              href={`/${citySlug.toLowerCase()}`}
+              className="hover:text-[#202522] transition"
+            >
               {cityName}
             </Link>
             <ChevronRight size={12} />
             <span className="font-bold text-[#202522]">{categoryName}</span>
           </nav>
 
-          <div className="max-w-3xl space-y-4">
+          {/* VISUAL CATEGORY & SUB-CATEGORY STRIP (As in Competitor Screenshot 2) */}
+          <div className="mb-6 sm:mb-8">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[11px] sm:text-xs uppercase font-bold tracking-[0.2em] text-[#8CBC67]">
+                Popular {categoryName} Categories
+              </span>
+              <span className="text-[11px] text-[#6B706C] hidden sm:inline">
+                Tap any category to filter
+              </span>
+            </div>
+            <CityCategorySubNav
+              citySlug={citySlug}
+              cityName={cityName}
+              categorySlug={categorySlug}
+              categoryName={categoryName}
+            />
+          </div>
+
+          {/* Page Main Heading & Badges (Matching Screenshot 1) */}
+          <div className="max-w-4xl space-y-3.5 pt-2 border-t border-[#E8DFD1]/60">
             <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#EEF6EB] text-[#202522] border border-[#8CBC67]/40 text-xs font-semibold">
               <MapPin size={13} className="text-[#8CBC67]" />
-              <span>{categoryName} Specialists in {cityName}</span>
+              <span>
+                {categoryName} Specialists in {cityName}
+              </span>
             </div>
 
-            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#202522] leading-tight">
-              Best {categoryName} in {cityName}
+            <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#202522] leading-tight">
+              Best {categoryName} Event Organisers in {cityName} for Decoration, Games & Entertainment
             </h1>
 
-            <p className="text-sm sm:text-base text-[#6B706C] leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#6B706C] leading-relaxed max-w-2xl">
               Explore our curated {categoryName.toLowerCase()} collections for home, terrace, banquet, and outdoor events across {cityName}.
             </p>
 
-            <div className="pt-2 grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="pt-2 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
               <div className="flex items-center space-x-2 text-xs text-[#202522] font-semibold bg-white p-2.5 rounded-xl border border-[#E8E8E3] shadow-2xs">
                 <Clock size={16} className="text-[#8CBC67] shrink-0" />
                 <span>2-Hour Express Setup</span>
@@ -161,14 +251,16 @@ export default async function CityCategoryPage({ params }: Props) {
       </section>
 
       {/* Products Section */}
-      <section className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#202522]">
-            Available {categoryName} Packages in {cityName}
-          </h2>
-          <p className="text-xs sm:text-sm text-[#6B706C] mt-1">
-            Choose your favourite package to customize colors, balloons, and date slots.
-          </p>
+      <section className="py-10 sm:py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+          <div>
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#202522]">
+              Available {categoryName} Packages in {cityName}
+            </h2>
+            <p className="text-xs sm:text-sm text-[#6B706C] mt-1">
+              Showing {products.length} curated packages. Choose your favourite package to customize colors, balloons, and date slots.
+            </p>
+          </div>
         </div>
 
         <CityProductsGrid products={products} cityName={cityName} />

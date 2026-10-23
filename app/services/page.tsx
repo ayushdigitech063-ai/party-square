@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { fetchProducts } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
@@ -58,7 +58,7 @@ export default function AboutPage() {
     <div className="w-full bg-[#F3EFE9] font-sans text-[#202522] selection:bg-[#8CBC67] selection:text-white overflow-hidden">
       
       {/* ================= TOP HERO BANNER (With home2.png full-width & height) ================= */}
-      <section className="relative w-full min-h-[480px] sm:h-[520px] py-10 sm:py-0 flex items-center justify-center overflow-hidden">
+      <section className="relative w-full h-[320px] sm:h-[340px] md:h-[360px] flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img 
@@ -71,18 +71,18 @@ export default function AboutPage() {
         </div>
 
         {/* Content */}
-        <div className="max-w-5xl mx-auto px-6 text-center relative z-10 space-y-4 pt-10">
-          <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 backdrop-blur-md border border-[#8CBC67]/50 px-4 py-1.5 rounded-full text-[#8CBC67] text-xs uppercase tracking-[0.25em] font-semibold shadow-lg">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center relative z-10 space-y-2.5 sm:space-y-3">
+          <div className="inline-flex items-center space-x-1.5 bg-[#8CBC67]/20 backdrop-blur-md border border-[#8CBC67]/50 px-3 sm:px-4 py-1 rounded-full text-[#8CBC67] text-[10px] sm:text-xs uppercase tracking-wider font-semibold shadow-sm">
             <Sparkles size={13} className="text-[#8CBC67]" />
             <span>The Party Square Legacy</span>
           </div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light tracking-wide text-white drop-shadow-md">
-            Crafting Elegance, <br />
-            <span className="italic font-normal text-[#8CBC67]">Defining Memories</span>
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-serif font-bold tracking-wide text-white drop-shadow-md">
+            <span className="text-white drop-shadow-sm">Crafting Elegance,</span>{" "}
+            <span className="font-bold text-[#8CBC67]">Defining Memories</span>
           </h1>
 
-          <p className="text-neutral-200 text-sm md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-neutral-200 text-xs sm:text-sm max-w-xl mx-auto font-light leading-relaxed line-clamp-2">
             We transform spaces into extraordinary emotional landscapes, merging luxury design aesthetics with flawless execution.
           </p>
         </div>
@@ -200,7 +200,7 @@ export default function AboutPage() {
         </div>
 
         {/* Grid 1: Original 4 Specializations - Compact & Sleek */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           
           {/* Corporate Office */}
           <div className="bg-[#FFFFFF] border border-[#E8E8E3] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition group flex flex-col justify-between">
@@ -383,7 +383,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {productsToDisplay.slice(0, 8).map((product) => (
             <ProductCard
               key={product.id}

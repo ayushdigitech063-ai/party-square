@@ -55,7 +55,7 @@ export default function AboutPage() {
 
   const productsToDisplay = sortedProducts;
   return (
-    <div className="w-full bg-[#F3EFE9] font-sans text-[#202522] selection:bg-[#8CBC67] selection:text-white overflow-hidden">
+    <div className="w-full bg-[#FCFBF7] font-sans text-[#202522] selection:bg-[#8CBC67] selection:text-white overflow-hidden">
       
       {/* ================= HERO BANNER ================= */}
       <section className="relative w-full min-h-[480px] sm:h-[520px] py-10 sm:py-0 flex items-center justify-center overflow-hidden">
@@ -74,9 +74,9 @@ export default function AboutPage() {
             <span>The Art of Celebration</span>
           </div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-light tracking-wide text-white drop-shadow-md">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold tracking-wide text-white drop-shadow-md">
             Designing Dreams, <br />
-            <span className="italic font-normal text-[#8CBC67]">Inspiring Emotions</span>
+            <span className="font-bold text-[#8CBC67]">Inspiring Emotions</span>
           </h1>
 
           <p className="text-neutral-200 text-sm md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
@@ -143,7 +143,7 @@ export default function AboutPage() {
       </section>
 
       {/* ================= THE Party Square APPROACH (3-Step Philosophy) ================= */}
-      <section className="bg-[#FAF6EE] border-y border-[#E8E8E3] py-24 px-6 md:px-16">
+      <section className="bg-[#FCFBF7] border-y border-[#E8E8E3] py-24 px-6 md:px-16">
         <div className="max-w-7xl mx-auto space-y-16">
           
           <div className="text-center max-w-2xl mx-auto space-y-3">
@@ -228,7 +228,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {productsToDisplay.map((product) => (
             <ProductCard
               key={product.id}
@@ -263,7 +263,7 @@ export default function AboutPage() {
           </div>
 
           <h2 className="text-3xl md:text-5xl font-serif font-light">
-            Ready to Create Something <span className="italic font-normal text-[#8CBC67]">Extraordinary?</span>
+            Ready to Create Something <span className="font-bold text-[#8CBC67]">Extraordinary?</span>
           </h2>
 
           <p className="text-neutral-300 text-sm md:text-base max-w-xl mx-auto font-light leading-relaxed">

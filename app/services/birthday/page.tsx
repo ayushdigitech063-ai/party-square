@@ -1,8 +1,10 @@
-"use client";
+﻿"use client";
 
 import { fetchProducts } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCity } from "@/app/context/CityContext";
 import { kidsbirthdayProducts } from "@/app/data/kidsBirthdayProduct";
 import { fetchPackages, fetchGalleryItems } from "@/app/lib/api";
 import {
@@ -21,6 +23,8 @@ import ProductSort from "@/app/components/ProductSort";
 import FAQSection from "@/app/components/FAQSection";
 
 export default function BirthdayServicePage() {
+  const router = useRouter();
+  const { selectedCity } = useCity();
   const [liveProducts, setLiveProducts] = useState<any[]>(kidsbirthdayProducts);
 
   useEffect(() => {
@@ -161,7 +165,7 @@ export default function BirthdayServicePage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans">
       {/* ================= HERO SECTION WITH FULL BACKGROUND IMAGE ================= */}
-      <section className="relative min-h-[480px] sm:h-[520px] py-10 sm:py-0 flex items-center justify-center overflow-hidden text-white">
+      <section className="relative h-[320px] sm:h-[340px] md:h-[360px] flex items-center justify-center overflow-hidden text-white">
         {/* Background Image Container with full cover and center positioning */}
         <div
           className="absolute inset-0 z-0 w-full h-full"
@@ -178,47 +182,42 @@ export default function BirthdayServicePage() {
 
         {/* Hero Content on Left Side */}
         <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 w-full text-center sm:text-left">
-          <div className="max-w-3xl space-y-4 sm:space-y-6">
-            <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-[#8CBC67] text-xs sm:text-sm font-semibold tracking-widest uppercase backdrop-blur-sm shadow-md">
-              <Gift size={14} className="text-[#8CBC67]" />
+          <div className="max-w-2xl space-y-2 sm:space-y-3">
+            <div className="inline-flex items-center space-x-1.5 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-3 sm:px-4 py-1 rounded-full text-[#8CBC67] text-[10px] sm:text-xs font-semibold tracking-wider uppercase backdrop-blur-sm shadow-sm">
+              <Gift size={13} className="text-[#8CBC67]" />
               <span>India's Premier Birthday Stylists</span>
             </div>
 
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-xl">
-              Make Every Birthday{" "}
-              <span className="text-[#8CBC67] italic font-normal">Unforgettable</span>
+            <h1 className="font-serif text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-bold text-white leading-tight drop-shadow-md">
+              <span className="text-white drop-shadow-sm">Make Every Birthday</span>{" "}
+              <span className="text-[#8CBC67] font-bold">Unforgettable</span>
             </h1>
 
-            <p className="text-neutral-200 text-xs sm:text-base max-w-2xl font-light leading-relaxed">
+            <p className="text-neutral-200 text-xs sm:text-sm max-w-xl font-light leading-relaxed line-clamp-2">
               Transform your special day into a magical wonderland. From
               whimsical kids' themes to luxurious milestone birthday setups, we
               create joy filled with vibrant colors and elegance.
             </p>
 
-            <div className="flex flex-row items-center gap-2 sm:gap-4 pt-2 sm:pt-4 w-full justify-center sm:justify-start">
+            <div className="flex flex-row items-center gap-2.5 sm:gap-4 pt-1.5 sm:pt-2 w-full justify-center sm:justify-start">
               <Link
                 href="/contact"
-                className="flex-1 sm:flex-initial bg-[#8CBC67] hover:bg-[#7AB055] text-white px-3 sm:px-10 py-3 sm:py-4 rounded-full font-bold text-[11px] sm:text-sm uppercase tracking-wider shadow-xl hover:shadow-[#8CBC67]/30 transition flex items-center justify-center space-x-1.5 sm:space-x-3 cursor-pointer whitespace-nowrap"
+                className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-bold text-[11px] sm:text-xs uppercase tracking-wider shadow-md hover:shadow-[#8CBC67]/30 transition flex items-center justify-center space-x-1.5 sm:space-x-2 cursor-pointer whitespace-nowrap"
               >
                 <span>Book Birthday Decor</span>
-                <ArrowRight size={15} className="shrink-0" />
+                <ArrowRight size={14} className="shrink-0" />
               </Link>
 
               <a
                 href="https://whatsapp.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 sm:flex-initial border border-white/40 bg-white/10 backdrop-blur-sm text-white hover:bg-white/25 px-3 sm:px-10 py-3 sm:py-4 rounded-full font-semibold text-[11px] sm:text-sm uppercase tracking-wider transition flex items-center justify-center space-x-1.5 sm:space-x-3 whitespace-nowrap"
+                className="border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/25 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-semibold text-[11px] sm:text-xs uppercase tracking-wider transition flex items-center justify-center space-x-1.5 sm:space-x-2 whitespace-nowrap"
               >
                 <span>Chat on WhatsApp</span>
               </a>
             </div>
           </div>
-        </div>
-
-        {/* Subtle Scroll Indicator */}
-        <div className="hidden sm:block absolute bottom-6 left-1/2 z-20 transform -translate-x-1/2 animate-bounce opacity-75 text-white">
-          <ChevronDown size={32} />
         </div>
       </section>
 
@@ -238,55 +237,64 @@ export default function BirthdayServicePage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-          {birthdayPackages.map((pkg) => (
-            <div
-              key={pkg.id}
-              className={`relative rounded-2xl bg-white border transition-all duration-300 p-4 sm:p-5 flex flex-col justify-between shadow-xs hover:shadow-lg ${
-                pkg.popular
-                  ? "border-[#8CBC67] ring-1 ring-[#8CBC67]/30 shadow-md md:-translate-y-1"
-                  : "border-[#E8E8E3]"
-              }`}
-            >
-              {pkg.popular && (
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#8CBC67] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-md">
-                  Most Loved
-                </div>
-              )}
-
-              <div>
-                <div className="relative h-40 sm:h-44 rounded-xl overflow-hidden mb-4 border border-[#E8E8E3] shadow-inner">
-                  <img
-                    src={pkg.image}
-                    alt={pkg.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 right-3 bg-[#202522]/90 text-[#8CBC67] text-xs font-bold px-3 py-1 rounded-full backdrop-blur-md shadow-xs border border-[#8CBC67]/30">
-                    {pkg.price}
+          {birthdayPackages.map((pkg) => {
+            const packageSlug = (pkg.name || pkg.id).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+            const packageDetailUrl = `/${(selectedCity || "bangalore").toLowerCase()}/birthday/${packageSlug || pkg.id}`;
+            return (
+              <div
+                key={pkg.id}
+                onClick={() => router.push(packageDetailUrl)}
+                className={`relative rounded-2xl bg-white border transition-all duration-300 p-4 sm:p-5 flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1 cursor-pointer select-none group ${
+                  pkg.popular
+                    ? "border-[#8CBC67] ring-1 ring-[#8CBC67]/30 shadow-md"
+                    : "border-[#E8E8E3] hover:border-[#8CBC67]"
+                }`}
+              >
+                {pkg.popular && (
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#8CBC67] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-md z-10">
+                    Most Loved
                   </div>
+                )}
+
+                <div>
+                  <div className="relative h-44 sm:h-48 rounded-xl overflow-hidden mb-4 border border-[#E8E8E3] shadow-inner">
+                    <img
+                      src={pkg.image}
+                      alt={pkg.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-3 right-3 bg-[#202522]/90 text-[#8CBC67] text-xs font-bold px-3 py-1 rounded-full backdrop-blur-md shadow-xs border border-[#8CBC67]/30">
+                      {pkg.price}
+                    </div>
+                    <div className="absolute bottom-2.5 right-2.5 bg-[#202522]/90 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-1 rounded-full border border-white/20">
+                      Tap to view details
+                    </div>
+                  </div>
+
+                  <h3 className="font-serif text-base sm:text-lg font-bold text-[#202522] mb-1.5 leading-snug group-hover:text-[#8CBC67] transition">
+                    {pkg.name}
+                  </h3>
+                  <p className="text-[#6B706C] text-xs leading-relaxed mb-4">
+                    {pkg.desc}
+                  </p>
                 </div>
 
-                <h3 className="font-serif text-base sm:text-lg font-bold text-[#202522] mb-1.5 leading-snug">
-                  {pkg.name}
-                </h3>
-                <p className="text-[#6B706C] text-xs leading-relaxed mb-4">
-                  {pkg.desc}
-                </p>
+                <div>
+                  <Link
+                    href={packageDetailUrl}
+                    onClick={(e) => e.stopPropagation()}
+                    className={`w-full block text-center py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition ${
+                      pkg.popular
+                        ? "bg-[#8CBC67] text-white hover:bg-[#7AB055] shadow-sm"
+                        : "bg-neutral-900 text-white hover:bg-[#8CBC67]"
+                    }`}
+                  >
+                    View Package Details
+                  </Link>
+                </div>
               </div>
-
-              <div>
-                <Link
-                  href={`/payment-detail?productId=${pkg.id}&name=${encodeURIComponent(pkg.name)}&price=${pkg.rawPrice || String(pkg.price).replace(/[^0-9]/g, '')}&image=${encodeURIComponent(pkg.image)}`}
-                  className={`w-full block text-center py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition ${
-                    pkg.popular
-                      ? "bg-[#8CBC67] text-white hover:bg-[#7AB055] shadow-sm"
-                      : "bg-neutral-900 text-white hover:bg-[#8CBC67]"
-                  }`}
-                >
-                  Select Package
-                </Link>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -324,7 +332,7 @@ export default function BirthdayServicePage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {productsToDisplay.map((product) => {
             return (
               <ProductCard

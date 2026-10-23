@@ -61,6 +61,7 @@ export default function ProductForm({
   );
   const [stock, setStock] = useState<string>(initialData?.stock !== undefined ? String(initialData.stock) : "100");
   const [availability, setAvailability] = useState<boolean>(initialData?.availability ?? true);
+  const [showUnitPrice, setShowUnitPrice] = useState<boolean>(initialData?.showUnitPrice ?? false);
 
   // Category & Subcategory
   const [categories, setCategories] = useState<CategoryItem[]>([]);
@@ -291,6 +292,7 @@ export default function ProductForm({
         originalPrice: originalPrice ? Number(originalPrice) : undefined,
         stock: stock ? Number(stock) : 100,
         availability,
+        showUnitPrice,
         category: selectedCategory,
         subcategory: selectedSubcategory || null,
         image: image.trim(),
@@ -510,6 +512,20 @@ export default function ProductForm({
               />
               <span className="text-sm font-semibold text-[#202522]">
                 Active & Available for Booking (Product visible on storefront)
+              </span>
+            </label>
+          </div>
+
+          <div className="pt-2 border-t border-[#E8E8E3]/60">
+            <label className="flex items-center space-x-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={showUnitPrice}
+                onChange={(e) => setShowUnitPrice(e.target.checked)}
+                className="w-4 h-4 rounded text-[#8CBC67] focus:ring-[#8CBC67] accent-[#8CBC67]"
+              />
+              <span className="text-sm font-semibold text-[#202522]">
+                Show "Unit Price" on Product Page (Default is OFF for event decor business)
               </span>
             </label>
           </div>

@@ -89,11 +89,11 @@ export default function ProgressBanner() {
   }
 
   return (
-    <section className="relative bg-[#FCFBF7] py-12 sm:py-20 px-4 sm:px-6 md:px-16 overflow-hidden border-y border-[#E8E8E3]/80">
+    <section className="relative bg-[#FCFBF7] py-8 sm:py-16 px-3 sm:px-6 md:px-16 overflow-hidden border-y border-[#E8E8E3]/80 w-full">
       
       {/* Background Animated Gradient Glow */}
-      <div className="absolute top-1/2 -left-20 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-red-500/20 via-[#8CBC67]/30 to-yellow-400/20 rounded-full blur-[140px] pointer-events-none animate-pulse" />
-      <div className="absolute top-10 right-10 w-96 h-96 bg-gradient-to-br from-yellow-500/20 to-red-400/15 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 -left-20 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-[#8CBC67]/25 via-[#EEF6E8]/40 to-[#D7A84B]/20 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-10 right-10 w-96 h-96 bg-gradient-to-br from-[#8CBC67]/20 to-[#EEF6E8]/30 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10 space-y-8 sm:space-y-10">
         
@@ -101,7 +101,7 @@ export default function ProgressBanner() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 border-b border-[#8CBC67]/60 pb-6 sm:pb-8">
           <div className="space-y-2.5 max-w-2xl">
             {data.badge && (
-              <div className="inline-flex items-center space-x-2 bg-[#F7D6C7]/90 border border-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-bold text-[#202522] shadow-sm">
+              <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#8CBC67] px-3.5 py-1 rounded-full text-xs font-bold text-[#202522] shadow-sm">
                 <Sparkles size={13} className="text-[#202522]" />
                 <span>{data.badge}</span>
               </div>
@@ -125,7 +125,7 @@ export default function ProgressBanner() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
           
           {/* Left Side: Clean Video Player */}
-          <div className="lg:col-span-7 relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-2 border-[#8CBC67]/80 bg-neutral-950 group min-h-[260px] sm:min-h-[380px] lg:min-h-[500px] aspect-video lg:aspect-auto">
+          <div className="lg:col-span-7 relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border-2 border-[#8CBC67]/80 bg-neutral-950 group w-full h-[220px] sm:h-[340px] md:h-[420px] lg:h-full lg:min-h-[500px]">
             <video
               ref={videoRef}
               key={data.videoUrl}
@@ -141,7 +141,7 @@ export default function ProgressBanner() {
 
             {/* Video Live Badge */}
             {data.videoBadge && (
-              <div className="absolute top-6 left-6 z-20 bg-neutral-950/80 border border-[#8CBC67]/50 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold text-[#8CBC67] shadow-lg flex items-center space-x-2">
+              <div className="absolute top-3 left-3 sm:top-5 sm:left-5 z-20 bg-neutral-950/85 border border-[#8CBC67]/50 backdrop-blur-md px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-bold text-[#8CBC67] shadow-lg flex items-center space-x-1.5">
                 <Sparkle size={14} className="text-[#8CBC67] animate-pulse" />
                 <span>{data.videoBadge}</span>
               </div>
@@ -157,7 +157,7 @@ export default function ProgressBanner() {
               return (
                 <div
                   key={feat.id || index}
-                  className="relative bg-[#F2F8F4] text-[#202522] rounded-3xl p-6 border border-emerald-600/30 shadow-xl overflow-hidden group hover:border-emerald-500 hover:-translate-y-1 transition duration-300"
+                  className="relative bg-[#F2F8F4] text-[#202522] rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-emerald-600/30 shadow-md overflow-hidden group hover:border-emerald-500 hover:-translate-y-1 transition duration-300"
                 >
                   <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-emerald-500 via-[#D7A84B] to-emerald-600 opacity-80" />
                   

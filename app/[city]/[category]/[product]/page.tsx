@@ -1,7 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import ProductDetailPage from "@/app/card/[id]/page";
-import { fetchProductByIdOrSlug } from "@/app/lib/api";
+import { fetchProductByIdOrSlug, fetchPackages } from "@/app/lib/api";
 import CitySync from "@/app/components/CitySync";
 import { allProducts } from "@/app/data/allCollections";
 
@@ -16,6 +16,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     productData = await fetchProductByIdOrSlug(product);
   } catch (e) {
     // Fallback: check static catalog
+  }
+
+  if (!productData) {
+    try {
+      const pkgs = await fetchPackages();
+      if (Array.isArray(pkgs)) {
+        const pkg = pkgs.find(
+          (p) =>
+            String(p._id || (p as any).id).toLowerCase() === String(product).toLowerCase() ||
+            p.name?.toLowerCase().replace(/[^a-z0-9]+/g, "-") === String(product).toLowerCase()
+        );
+        if (pkg) {
+          productData = {
+            name: pkg.name,
+            description: pkg.description,
+            price: pkg.price || 4999,
+            image: pkg.image,
+          };
+        }
+      }
+    } catch {}
   }
 
   if (!productData) {
@@ -76,6 +97,27 @@ export default async function CityProductDetailPage({ params }: Props) {
     productData = await fetchProductByIdOrSlug(product);
   } catch (e) {
     // Fallback to static catalog
+  }
+
+  if (!productData) {
+    try {
+      const pkgs = await fetchPackages();
+      if (Array.isArray(pkgs)) {
+        const pkg = pkgs.find(
+          (p) =>
+            String(p._id || (p as any).id).toLowerCase() === String(product).toLowerCase() ||
+            p.name?.toLowerCase().replace(/[^a-z0-9]+/g, "-") === String(product).toLowerCase()
+        );
+        if (pkg) {
+          productData = {
+            name: pkg.name,
+            description: pkg.description,
+            price: pkg.price || 4999,
+            image: pkg.image,
+          };
+        }
+      }
+    } catch {}
   }
 
   if (!productData) {

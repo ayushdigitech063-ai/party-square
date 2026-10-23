@@ -30,4 +30,5 @@ export interface Product {
   gradientBg?: string;
   badgeColor?: string;
   isSpecialCard?: boolean;
+  showUnitPrice?: boolean;
 }

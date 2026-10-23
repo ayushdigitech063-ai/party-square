@@ -14,6 +14,7 @@ import { WishlistProvider } from "./context/wishlistcontext";
 import { CartProvider } from "./context/CartContext";
 import { CityProvider } from "./context/CityContext";
 import USP from "./components/USP";
+import SEOContentSection from "./components/SEOContentSection";
 
 import { Toaster } from "react-hot-toast";
 
@@ -30,15 +31,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <link rel="icon" href="/logo-icon.png" type="image/png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Modern, clean & readable Manrope typography as per Design Guide */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased overflow-x-hidden">
+      <body className="antialiased overflow-x-hidden bg-[#FCFBF7] text-[#202522]">
         <Preloader />
         <Toaster position="top-right" />
         <CartProvider>
@@ -47,14 +50,13 @@ export default function RootLayout({
             {!isExcludedRoute && <AnnouncementBar />}
             {!isExcludedRoute && <Navbar />}
 
-            {!isExcludedRoute && <ScrollToTop />}
-            {!isExcludedRoute && <WhatsAppFloat />}
+            {children}
 
-            <main className="w-full overflow-hidden">
-              {children}
-            </main>
             {!isExcludedRoute && <USP />}
+            {!isExcludedRoute && <SEOContentSection />}
             {!isExcludedRoute && <Footer />}
+            <ScrollToTop />
+            {!isExcludedRoute && <WhatsAppFloat />}
             </CityProvider>
           </WishlistProvider>
         </CartProvider>

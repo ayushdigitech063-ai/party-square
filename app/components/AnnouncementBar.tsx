@@ -87,17 +87,19 @@ export default function AnnouncementBar() {
 
   return (
     <div className="relative w-full bg-[#132c20] text-white text-xs sm:text-sm font-medium z-40 border-b border-emerald-950/40 shadow-sm transition-all">
-      {/* Mobile view: Clean single-line banner matching reference */}
-      <div className="sm:hidden px-3 py-2 flex items-center justify-center gap-1.5 text-center text-[11px] font-semibold text-emerald-50">
-        <span className="shrink-0 text-xs">🎁</span>
-        <span className="truncate">{data.text || DEFAULT_ANNOUNCEMENT.text}</span>
+      {/* Mobile view: Clean single-line banner */}
+      <div className="sm:hidden px-2.5 py-1.5 flex items-center justify-between gap-1 text-[10.5px] font-semibold text-emerald-50">
+        <div className="flex items-center gap-1 min-w-0">
+          <span className="shrink-0 text-xs">🎁</span>
+          <span className="truncate">{data.text ? data.text.replace(/ON ALL EVENT BOOKINGS/i, "ON ALL BOOKINGS") : "FLAT 30% OFF ON ALL BOOKINGS"}</span>
+        </div>
         {data.showCoupon !== false && data.couponCode && (
           <button
             onClick={() => handleCopyCoupon(data.couponCode!)}
             title="Click to copy coupon code"
             className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-950/90 border border-emerald-600/40 text-[10px] font-mono text-emerald-200 hover:text-white transition"
           >
-            <span>Use Code: <strong className="text-white font-bold">{data.couponCode}</strong></span>
+            <span>Code: <strong className="text-white font-bold">{data.couponCode}</strong></span>
             {copied && <Check size={10} className="text-[#8CBC67]" />}
           </button>
         )}

@@ -19,7 +19,8 @@ import {
   BarChart3,
   HelpCircle,
   Eye,
-  ShieldCheck
+  ShieldCheck,
+  FileText
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { fetchHomePageSections, updateHomePageSection, HomePageSection } from "@/app/lib/api";
@@ -82,6 +83,14 @@ const SECTION_METADATA: Record<
     icon: BarChart3,
     color: "text-purple-600",
     bgColor: "bg-purple-50 border-purple-200",
+  },
+  seo_content: {
+    name: "Homepage SEO & About Content",
+    description: "Rich descriptive article block above footer for Google ranking & event planner details",
+    editUrl: "/admin/homepage/seo-content",
+    icon: FileText,
+    color: "text-emerald-700",
+    bgColor: "bg-emerald-50 border-emerald-200",
   },
   faqs: {
     name: "FAQ Section",

@@ -48,11 +48,12 @@ export default function CityProductsGrid({ products, cityName }: Props) {
           included: p.included,
           notIncluded: p.notIncluded,
           cancellationPolicy: p.cancellationPolicy,
-          rating: p.rating ?? 4.8,
-          reviewCount: p.reviewCount ?? 24,
+          rating: p.rating || 0,
+          reviewCount: p.reviewCount || 0,
           theme: p.theme,
           gradientBg: p.gradientBg,
           isSpecialCard: p.isSpecialCard,
+          showUnitPrice: p.showUnitPrice,
         };
 
         return (

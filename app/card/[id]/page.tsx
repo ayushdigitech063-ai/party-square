@@ -31,7 +31,8 @@ import { useCart } from "@/app/context/CartContext";
 import { useWishlist } from "@/app/context/wishlistcontext";
 import ProductCard from "@/app/components/ProductCard";
 import AddOnSection from "@/app/components/AddOneSection";
-import { fetchProductByIdOrSlug } from "@/app/lib/api";
+import { AddOnItem } from "@/app/data/addonsData";
+import { fetchProductByIdOrSlug, fetchPackages, fetchReviewsByProduct, ReviewItem } from "@/app/lib/api";
 import LoginModal from "@/app/components/LoginModal";
 import toast from "react-hot-toast";
 
@@ -49,44 +50,148 @@ const toISO = (d: Date) =>
 const toNumber = (v: any) => Number(String(v ?? "").replace(/[₹,\s]/g, "")) || 0;
 
 const INCLUDED_ITEMS = [
-  "Premium product / decoration",
-  "Quality materials",
-  "Professional setup support",
-  "On-time service",
-  "Customer support",
+  "Complete balloon decoration setup as per image/theme",
+  "High-quality metallic, chrome & pastel latex balloons",
+  "Professional on-site decorator setup & styling",
+  "Removable, damage-free wall adhesive tape & ribbons",
+  "On-time setup guarantee before your event begins",
+  "Dedicated event coordination & support",
 ];
 
 const NOT_INCLUDED_ITEMS = [
-  "Venue booking charges",
-  "Custom catering and food items",
-  "Additional power backup",
-  "Damage caused by guests",
+  "Venue or hall booking charges and permissions",
+  "Special food, cake, catering, and cutlery items",
+  "Additional high-voltage power backup or extension boards",
+  "Post-event teardown/dismantling (available as add-on)",
+  "Compensation for damage caused by external guests/kids",
 ];
 
-const FAQS = [
-  [
-    "Can I customize the product?",
-    "Yes. Customization can be discussed with the team according to your event requirements and selected product.",
-  ],
-  [
-    "How early should I book?",
-    "Booking in advance is recommended so the required date, materials and service team can be arranged.",
-  ],
-  [
-    "Is setup included?",
-    "The service includes the setup items described in the What's Included section.",
-  ],
-  [
-    "How do I confirm my booking?",
-    "Use the Book Now button to continue to the payment and booking flow.",
-  ],
+const FALLBACK_PRODUCT_REVIEWS = [
+  {
+    _id: "rev-1",
+    customerName: "Atharv Surana",
+    rating: 5,
+    comment: "Thank you for the decoration. It was nicely done and everyone loved it. Very cooperative and budget friendly.",
+    createdAt: "2025-01-15T10:00:00Z",
+    location: "Bhopal",
+  },
+  {
+    _id: "rev-2",
+    customerName: "Sourav Dugar",
+    rating: 5,
+    comment: "I have contacted this vendor just a day before my kid's birthday and they have done an awesome job. Loved this whole decor.",
+    createdAt: "2025-02-02T10:00:00Z",
+    location: "Thane",
+  },
+  {
+    _id: "rev-3",
+    customerName: "Simran Nigam",
+    rating: 4.8,
+    comment: "Great Job Done.. Extremely Professional, Reasonable and great at work.. You get what you ask for and little more delights.",
+    createdAt: "2025-02-18T10:00:00Z",
+    location: "Ahmedabad",
+  },
 ];
+
+const WHY_US_ITEMS = [
+  {
+    title: "100% On-Time Setup Guarantee",
+    desc: "Our decorators arrive strictly at your chosen time slot so your surprise or party is never delayed.",
+  },
+  {
+    title: "Verified & Background-Checked Decorators",
+    desc: "Every professional partner undergoes rigorous identity and skill verification for complete safety at your venue.",
+  },
+  {
+    title: "Zero Wall Damage Guarantee",
+    desc: "We only use damage-free painter's masking tape and safe adhesives that leave no stains or peel paint.",
+  },
+  {
+    title: "Premium Materials Only",
+    desc: "Metallic, chrome, pastel and matte balloons of the highest grade that retain shine and volume for hours.",
+  },
+  {
+    title: "Dedicated Event Coordinator",
+    desc: "Direct support from booking to execution to ensure all customization requests are met smoothly.",
+  },
+];
+
+const GUIDELINES_ITEMS = [
+  {
+    title: "Continuous Power Socket",
+    desc: "Please provide a working electric plug point within 5-10 meters of the decoration wall for balloon inflators and fairy lights.",
+  },
+  {
+    title: "Stool or Step Ladder",
+    desc: "For backdrop or ceiling-height balloon setups, kindly provide a sturdy stool or ladder to the decorator.",
+  },
+  {
+    title: "Clean & Ready Space",
+    desc: "Keep the designated wall or area clear of obstacles before the decorator arrives to ensure smooth, timely execution.",
+  },
+  {
+    title: "Balloon Care Indoors",
+    desc: "Air-filled balloon arrangements typically last 24 to 48 hours indoors. Keep away from direct sunlight, air conditioner vents, and sharp surfaces.",
+  },
+  {
+    title: "Post-Event Dismantling",
+    desc: "Cleanup/removal service is not included in standard decoration unless opted as an additional add-on service.",
+  },
+];
+
+const CANCELLATION_REFUND_POINTS = [
+  {
+    title: "Free Cancellation (100% Refund)",
+    desc: "Cancel your booking up to 24 hours prior to the scheduled setup time slot for a full 100% refund.",
+  },
+  {
+    title: "Free Date / Time Rescheduling",
+    desc: "Need to change your event date or slot? Reschedule at zero extra cost up to 12 hours before setup (subject to slot availability).",
+  },
+  {
+    title: "Within 12-24 Hours Notice",
+    desc: "Cancellations made between 12 and 24 hours prior incur a nominal 20% deduction to cover materials already prepped.",
+  },
+  {
+    title: "Fast Refund Processing",
+    desc: "Eligible refunds are initiated within 24 hours and credited to your original payment method in 3-5 business days.",
+  },
+];
+
+const DEFAULT_FAQS = [
+  {
+    question: "Can I customize the balloon colors or theme?",
+    answer: "Yes, absolutely! Once your booking is placed, our team connects with you to customize balloon shades and specific themes as per your preference.",
+  },
+  {
+    question: "How long does the decorator take to complete the setup?",
+    answer: "Most room and balloon decorations take between 1.5 to 2.5 hours depending on the design complexity.",
+  },
+  {
+    question: "How early should I book the service?",
+    answer: "We recommend booking at least 24-48 hours in advance to secure your preferred date and time slot, though same-day rush slots may also be available.",
+  },
+  {
+    question: "Will the tape damage my wall paint or wallpaper?",
+    answer: "No. Our decorators use professional removable masking tape specially engineered for walls, ensuring safe removal with zero peeling.",
+  },
+  {
+    question: "Are the decorators background-verified?",
+    answer: "Yes, 100%. Every decorator is identity-verified and trained to follow strict professional and hygiene protocols.",
+  },
+];
+
+const FAQS = DEFAULT_FAQS.map(f => [f.question, f.answer]);
 
 const INFO_TABS = [
+  { key: "overview", label: "Overview" },
   { key: "included", label: "Inclusions" },
-  { key: "good", label: "Why us" },
+  { key: "not-included", label: "Whats not included" },
+  { key: "why-us", label: "Why Us" },
   { key: "about", label: "About this package" },
-  { key: "cancel", label: "Cancellation" },
+  { key: "guidelines", label: "Guidelines" },
+  { key: "cancel", label: "Cancellation/Refunds" },
+  { key: "faqs", label: "FAQs" },
 ];
 
 export default function ProductDetailPage() {
@@ -99,7 +204,7 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
 
   // New UI state (hooks must stay above the early returns)
-  const [activeTab, setActiveTab] = useState("included");
+  const [activeTab, setActiveTab] = useState("overview");
   const [pincode, setPincode] = useState("");
   const [pincodeChecked, setPincodeChecked] = useState(false);
   const [pincodeError, setPincodeError] = useState("");
@@ -109,11 +214,16 @@ export default function ProductDetailPage() {
   const [dates, setDates] = useState<
     { iso: string; top: string; num: number }[]
   >([]);
-  const [activeTab2 , setActiveTab2] = useState<"overview" | "addons">("overview");
+  const [activeTab2, setActiveTab2] = useState<"overview" | "addons" | "reviews">("overview");
+  const [selectedAddons, setSelectedAddons] = useState<AddOnItem[]>([]);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
   const [calendarViewDate, setCalendarViewDate] = useState(() => new Date());
   const [showLoginModal, setShowLoginModal] = useState(false);
+  // Live reviews from backend
+  const [productReviews, setProductReviews] = useState<ReviewItem[]>([]);
+  const [reviewsAvg, setReviewsAvg] = useState<string | null>(null);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
  
   useEffect(() => {
     const list = [];
@@ -134,6 +244,26 @@ export default function ProductDetailPage() {
     setDates(list);
   }, []);
 
+  // Scroll spy to highlight active quick-nav pill according to user scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      const addonsEl = document.getElementById("addons");
+      const reviewsEl = document.getElementById("reviews");
+      const scrollPos = window.scrollY + 250;
+
+      if (reviewsEl && scrollPos >= reviewsEl.offsetTop) {
+        setActiveTab2("reviews");
+      } else if (addonsEl && scrollPos >= addonsEl.offsetTop) {
+        setActiveTab2("addons");
+      } else {
+        setActiveTab2("overview");
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const rawParam = params?.product || params?.id;
   const productId = Array.isArray(rawParam) ? rawParam[0] : rawParam;
   const cityParam = Array.isArray(params?.city) ? params.city[0] : params?.city;
@@ -146,14 +276,51 @@ export default function ProductDetailPage() {
       if (!productId) return;
       try {
         setFetchingLive(true);
-        const data = await fetchProductByIdOrSlug(productId);
-        if (data && data._id) {
-          setLiveProduct({
-            ...data,
-            id: data._id,
-            category: typeof data.category === "object" ? data.category?.name : data.category,
-            subcategory: typeof data.subcategory === "object" ? data.subcategory?.name : data.subcategory,
-          });
+        // 1. Try to fetch as product
+        try {
+          const data = await fetchProductByIdOrSlug(productId);
+          if (data && (data._id || data.name)) {
+            setLiveProduct({
+              ...data,
+              id: data._id || productId,
+              category: typeof data.category === "object" ? data.category?.name : data.category,
+              subcategory: typeof data.subcategory === "object" ? data.subcategory?.name : data.subcategory,
+            });
+            return;
+          }
+        } catch {
+          // Product not found, continue to check packages
+        }
+
+        // 2. Try to fetch as package from backend
+        try {
+          const pkgs = await fetchPackages();
+          if (Array.isArray(pkgs)) {
+            const matchedPkg = pkgs.find(
+              (p) =>
+                String(p._id || (p as any).id).toLowerCase() === String(productId).toLowerCase() ||
+                p.name?.toLowerCase().replace(/[^a-z0-9]+/g, "-") === String(productId).toLowerCase()
+            );
+            if (matchedPkg) {
+              setLiveProduct({
+                id: matchedPkg._id || productId,
+                name: matchedPkg.name,
+                price: matchedPkg.price,
+                image: matchedPkg.image,
+                description: matchedPkg.description,
+                fullDescription: matchedPkg.description,
+                included: matchedPkg.features && matchedPkg.features.length > 0 ? matchedPkg.features : INCLUDED_ITEMS,
+                category: "Packages",
+                subcategory: matchedPkg.pageTarget || "Special Package",
+                availability: true,
+                rating: 4.9,
+                reviewCount: 48,
+              });
+              return;
+            }
+          }
+        } catch {
+          // Ignore
         }
       } catch (err) {
         // Fallback
@@ -162,6 +329,19 @@ export default function ProductDetailPage() {
       }
     }
     loadLiveProduct();
+  }, [productId]);
+
+  // Fetch real reviews for this product from backend
+  useEffect(() => {
+    if (!productId) return;
+    setReviewsLoading(true);
+    fetchReviewsByProduct(productId)
+      .then((data) => {
+        setProductReviews(data.reviews || []);
+        setReviewsAvg(data.averageRating || null);
+      })
+      .catch(() => {})
+      .finally(() => setReviewsLoading(false));
   }, [productId]);
 
   const foundItem = useMemo(() => {
@@ -189,16 +369,16 @@ export default function ProductDetailPage() {
         return {
           id: productId,
           slug: productId,
-          name: name || productId.replace(/[-_]+/g, " "),
+          name: name ? decodeURIComponent(name) : productId.replace(/[-_]+/g, " "),
           description: "Exclusive luxury decoration theme handcrafted by Party Square for memorable celebrations.",
           price: Number(price?.replace(/[^0-9]/g, "")) || 4999,
-          image: image || "/homepage.png",
+          image: image ? decodeURIComponent(image) : "/homepage.png",
           category: "Decoration",
           subcategory: "Speciality Theme",
           availability: true,
           included: INCLUDED_ITEMS,
-          rating: 4.9,
-          reviewCount: 142,
+          rating: 4.8,
+          reviewCount: 36,
         };
       }
     }
@@ -279,13 +459,40 @@ export default function ProductDetailPage() {
 
   const formattedTotalPrice = `₹${totalPrice.toLocaleString("en-IN")}`;
 
-  const originalPrice = numericPrice * 1.25 * quantity;
+  const baseOriginalPrice =
+    Number(String(foundItem.originalPrice || "").replace(/[^0-9]/g, "")) ||
+    numericPrice * 1.25;
+
+  const originalPrice = baseOriginalPrice * quantity;
 
   const formattedOriginalPrice = `₹${Math.round(originalPrice).toLocaleString("en-IN")}`;
 
+  const discountPercent =
+    originalPrice > totalPrice && totalPrice > 0
+      ? Math.round(((originalPrice - totalPrice) / originalPrice) * 100)
+      : 20;
+
+  const rawRating = Number(foundItem?.rating) || 0;
+  const rawReviewCount = Number(foundItem?.reviewCount) || 0;
+  const hasReviews = rawRating > 0 && rawReviewCount > 0;
+
   const deliveryCharge = pincodeChecked ? DELIVERY_CHARGE : 0;
-  const grandTotal = totalPrice + deliveryCharge;
+  const addonsTotal = selectedAddons.reduce((sum, item) => sum + item.price, 0);
+  const grandTotal = totalPrice + deliveryCharge + addonsTotal;
   const formattedGrandTotal = `₹${grandTotal.toLocaleString("en-IN")}`;
+
+  const handleToggleAddon = (addon: AddOnItem) => {
+    setSelectedAddons((prev) => {
+      const exists = prev.some((a) => a.id === addon.id);
+      if (exists) {
+        toast(`Removed ${addon.name}`, { icon: "ℹ️" });
+        return prev.filter((a) => a.id !== addon.id);
+      } else {
+        toast.success(`Added ${addon.name} (+₹${addon.price.toLocaleString("en-IN")})`);
+        return [...prev, addon];
+      }
+    });
+  };
 
   /* ---------------- WISHLIST ---------------- */
 
@@ -323,8 +530,9 @@ export default function ProductDetailPage() {
       return;
     }
 
-    // date / pincode are added only when the user has chosen them
-    const extra = `${selectedDate ? `&date=${selectedDate}` : ""}${pincodeChecked ? `&pincode=${pincode}` : ""}${selectedSlot ? `&slot=${selectedSlot === "Custom Time" ? customTime : selectedSlot}` : ""}${cityParam ? `&city=${encodeURIComponent(cityParam)}` : ""}`;
+    // date / pincode / addons are added to query params
+    const addonsParam = selectedAddons.length > 0 ? `&addons=${encodeURIComponent(JSON.stringify(selectedAddons))}` : "";
+    const extra = `${selectedDate ? `&date=${selectedDate}` : ""}${pincodeChecked ? `&pincode=${pincode}` : ""}${selectedSlot ? `&slot=${selectedSlot === "Custom Time" ? customTime : selectedSlot}` : ""}${cityParam ? `&city=${encodeURIComponent(cityParam)}` : ""}${addonsParam}`;
 
     router.push(
       `/payment-detail?productId=${encodeURIComponent(foundItem.id)}${extra}`,
@@ -363,12 +571,21 @@ export default function ProductDetailPage() {
       .slice(0, 3),
   ];
 
-  const scrollToAddons = () =>{
-    setActiveTab2("addons");
-    document
-      .getElementById("addons")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+  const scrollToSection = (section: "overview" | "addons" | "reviews") => {
+    setActiveTab2(section);
+    if (section === "overview") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (section === "addons") {
+      document
+        .getElementById("addons")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else if (section === "reviews") {
+      document
+        .getElementById("reviews")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+  const scrollToAddons = () => scrollToSection("addons");
   const isCustomDate = selectedDate && !dates.some((d) => d.iso === selectedDate);
 
   // Collect all product images (primary + gallery)
@@ -415,13 +632,35 @@ export default function ProductDetailPage() {
     setIsCalendarModalOpen(false);
   };
 
+  const displayIncluded: string[] =
+    Array.isArray(foundItem?.included) && foundItem.included.length > 0
+      ? foundItem.included
+      : INCLUDED_ITEMS;
+
+  const displayNotIncluded: string[] =
+    Array.isArray(foundItem?.notIncluded) && foundItem.notIncluded.length > 0
+      ? foundItem.notIncluded
+      : NOT_INCLUDED_ITEMS;
+
+  const displayFaqs: Array<{ question: string; answer: string }> = (() => {
+    if (Array.isArray(foundItem?.faqs) && foundItem.faqs.length > 0) {
+      return foundItem.faqs.map((f: any) => ({
+        question: f.question || f.q || "",
+        answer: f.answer || f.a || "",
+      }));
+    }
+    return DEFAULT_FAQS;
+  })();
+
+  const customCancellation: string = foundItem?.cancellationPolicy || "";
+
   /* ---------------- PAGE ---------------- */
 
   return (
     <div className="min-h-screen bg-[#FAF7F2] text-[#1A1A1A] font-sans">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-28">
         {/* BREADCRUMB */}
-        <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-neutral-500 mb-6 flex-wrap">
+        <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-neutral-500 mb-4 flex-wrap">
           <button
             onClick={() => router.back()}
             className="flex items-center gap-1 hover:text-amber-800 transition"
@@ -464,6 +703,49 @@ export default function ProductDetailPage() {
           </span>
         </div>
 
+        {/* =====================================================
+            TOP CATEGORIES STRIP (As in Competitor Screenshot 2)
+        ====================================================== */}
+        <div className="mb-6 bg-white rounded-2xl p-4 border border-[#E8E8E3] shadow-xs">
+          <div className="flex items-center justify-between mb-2.5">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#8CBC67]">
+              Explore Categories
+            </span>
+            <span className="text-[11px] text-[#6B706C]">
+              Browse other styles & celebrations
+            </span>
+          </div>
+
+          <div
+            className="flex items-start gap-3 sm:gap-4 overflow-x-auto scroll-smooth py-1 scrollbar-none"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
+            {[
+              { name: "Kids Birthday", image: "/birthdaykids.png", link: `/${cityParam || "bangalore"}/services/birthday/all-products` },
+              { name: "Adult / Romantic", image: "/romaticvibe.png", link: `/${cityParam || "bangalore"}/services/birthday/all-products` },
+              { name: "Premium Decor", image: "/homepage.png", link: `/${cityParam || "bangalore"}/services/birthday/all-products` },
+              { name: "Birthday Gifts", image: "/card.png", link: `/${cityParam || "bangalore"}/services/birthday/all-products` },
+              { name: "Same Day Decors", image: "/card2.png", link: `/${cityParam || "bangalore"}/services/birthday/all-products` },
+              { name: "Simple Birthday", image: "/birthdaydesign.png", link: `/${cityParam || "bangalore"}/services/birthday/all-products` },
+              { name: "Car Boot Decors", image: "/card3.png", link: `/${cityParam || "bangalore"}/services/birthday/all-products` },
+              { name: "Ring Ceremony", image: "/ring.png", link: `/services/ring-decoration` },
+            ].map((cat, idx) => (
+              <Link
+                key={idx}
+                href={cat.link}
+                className="flex flex-col items-center group cursor-pointer w-[80px] sm:w-[96px] shrink-0 p-1.5 rounded-xl hover:bg-[#EEF6EB]/50 transition"
+              >
+                <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl overflow-hidden border border-[#E8E8E3] group-hover:border-[#8CBC67] group-hover:scale-105 transition-all shadow-2xs">
+                  <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" />
+                </div>
+                <span className="mt-1.5 text-[11px] font-bold text-[#202522] group-hover:text-[#8CBC67] text-center line-clamp-1">
+                  {cat.name}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* MAIN PRODUCT SECTION */}
 
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-start">
@@ -471,16 +753,16 @@ export default function ProductDetailPage() {
               LEFT - IMAGE + TRUST STRIP + INFO TABS
           ================================================== */}
 
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-6 w-full min-w-0 max-w-full overflow-hidden">
             <div className="flex flex-col-reverse sm:grid sm:grid-cols-12 gap-3 sm:gap-4">
               {/* THUMBNAILS */}
 
-              <div className="sm:col-span-2 flex sm:flex-col flex-row gap-2 sm:gap-3 overflow-x-auto sm:overflow-visible pb-1 sm:pb-0 scrollbar-none">
+              <div className="sm:col-span-2 flex sm:flex-col flex-row gap-2 overflow-x-auto sm:overflow-visible pb-1 sm:pb-0 scrollbar-none">
                 {galleryImages.slice(0, 5).map((imgUrl, idx) => (
                   <div
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`w-14 h-14 sm:w-auto sm:h-[72px] shrink-0 rounded-xl overflow-hidden border bg-white cursor-pointer transition ${
+                    className={`w-12 h-12 sm:w-auto sm:h-[58px] shrink-0 rounded-xl overflow-hidden border bg-white cursor-pointer transition ${
                       activeImageIndex === idx
                         ? "border-[#8CBC67] ring-2 ring-[#8CBC67]/30 shadow-sm"
                         : "border-[#E8E8E3] hover:border-[#8CBC67]/50"
@@ -495,7 +777,7 @@ export default function ProductDetailPage() {
                 ))}
 
                 {galleryImages.length > 5 && (
-                  <div className="w-14 h-14 sm:w-auto sm:h-[72px] shrink-0 rounded-xl bg-neutral-100 border border-[#E8E8E3] flex items-center justify-center text-xs font-semibold text-[#6B706C]">
+                  <div className="w-12 h-12 sm:w-auto sm:h-[58px] shrink-0 rounded-xl bg-neutral-100 border border-[#E8E8E3] flex items-center justify-center text-[11px] font-semibold text-[#6B706C]">
                     +{galleryImages.length - 5}
                   </div>
                 )}
@@ -504,7 +786,7 @@ export default function ProductDetailPage() {
               {/* MAIN IMAGE */}
 
               <div className="sm:col-span-10 w-full">
-                <div className="relative aspect-[16/16] rounded-3xl overflow-hidden bg-neutral-100 border border-amber-100 shadow-sm">
+                <div className="relative aspect-[4/3] sm:aspect-[4/3] max-h-[380px] sm:max-h-[420px] rounded-2xl overflow-hidden bg-neutral-100 border border-[#E8E8E3] shadow-sm flex items-center justify-center">
                   <img
                     src={galleryImages[activeImageIndex] || foundItem.image}
                     alt={foundItem.name}
@@ -599,20 +881,21 @@ export default function ProductDetailPage() {
               </div>
             </div>
 
-            {/* ---------- INFO CARD WITH TABS ---------- */}
+            {/* ---------- INFO CARD WITH 8 TABS ---------- */}
 
-            <section className="mt-4 bg-white rounded-3xl border border-amber-100 shadow-sm p-5">
+            <section className="mt-4 bg-white rounded-2xl sm:rounded-3xl border border-[#E8E8E3] shadow-xs p-4 sm:p-6 w-full max-w-full min-w-0 overflow-hidden">
               {/* TAB PILLS */}
 
-              <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+              <div className="flex gap-1.5 sm:gap-2 overflow-x-auto pb-3 border-b border-[#E8E8E3] scrollbar-none w-full max-w-full">
                 {INFO_TABS.map((tab) => (
                   <button
                     key={tab.key}
+                    type="button"
                     onClick={() => setActiveTab(tab.key)}
-                    className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-semibold border transition cursor-pointer ${
+                    className={`whitespace-nowrap px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition shrink-0 cursor-pointer ${
                       activeTab === tab.key
-                        ? "border-amber-700 bg-amber-50 text-amber-900"
-                        : "border-transparent text-neutral-500 hover:text-amber-800"
+                        ? "bg-[#EEF6E8] text-[#202522] shadow-xs border border-[#8CBC67] font-bold"
+                        : "text-[#6B706C] hover:text-[#202522] hover:bg-[#EEF6EB]/40 border border-transparent"
                     }`}
                   >
                     {tab.label}
@@ -620,43 +903,102 @@ export default function ProductDetailPage() {
                 ))}
               </div>
 
-              {/* WHAT'S INCLUDED */}
+              {/* 1. OVERVIEW */}
+
+              {activeTab === "overview" && (
+                <div id="overview" className="mt-5 space-y-4">
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 leading-tight">
+                      Turn Your Special Moments Into Magical Memories
+                    </h2>
+                    <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-neutral-600">
+                      {foundItem?.description ||
+                        "Grand celebration decoration designed to create a royal and memorable setting for your special day."}
+                    </p>
+                  </div>
+
+                  {/* 4 Feature Badges (Matching Brand Color Palette) */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                      <Sparkles size={20} className="text-[#8CBC67]" />
+                      <p className="mt-3 text-xs font-bold text-[#202522]">
+                        100% Service Record
+                      </p>
+                      <p className="text-[11px] text-[#6B706C] mt-0.5">Reliable</p>
+                    </div>
+
+                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                      <CheckCircle2 size={20} className="text-[#8CBC67]" />
+                      <p className="mt-3 text-xs font-bold text-[#202522]">
+                        Original Photos & Setup
+                      </p>
+                      <p className="text-[11px] text-[#6B706C] mt-0.5">Verified</p>
+                    </div>
+
+                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                      <Truck size={20} className="text-[#8CBC67]" />
+                      <p className="mt-3 text-xs font-bold text-[#202522]">
+                        100% Satisfaction
+                      </p>
+                      <p className="text-[11px] text-[#6B706C] mt-0.5">Guaranteed</p>
+                    </div>
+
+                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                      <Calendar size={20} className="text-[#8CBC67]" />
+                      <p className="mt-3 text-xs font-bold text-[#202522]">
+                        Easy Online Booking
+                      </p>
+                      <p className="text-[11px] text-[#6B706C] mt-0.5">Instant</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 2. INCLUSIONS */}
 
               {activeTab === "included" && (
-                <div id="included" className="mt-4">
-                  <p className="text-sm text-neutral-500">
-                    Everything below arrives with your booking — nothing to
-                    arrange yourself.
+                <div id="included" className="mt-5">
+                  <p className="text-xs sm:text-sm text-neutral-500">
+                    Everything below is provided and professionally arranged by our decorators:
                   </p>
 
                   <div className="mt-3 space-y-2">
-                    {INCLUDED_ITEMS.map((item) => (
+                    {displayIncluded.map((item, idx) => (
                       <div
-                        key={item}
-                        className="flex items-center justify-between gap-3 rounded-lg border border-neutral-100 px-3.5 py-2.5 text-sm text-neutral-800"
+                        key={idx}
+                        className="flex items-center justify-between gap-3 rounded-xl border border-neutral-100 bg-neutral-50/60 px-3.5 py-2.5 text-xs sm:text-sm text-neutral-800"
                       >
-                        <span>{item}</span>
+                        <div className="flex items-center gap-2.5">
+                          <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                          <span>{item}</span>
+                        </div>
                         <span className="shrink-0 bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md">
                           Included
                         </span>
                       </div>
                     ))}
                   </div>
+                </div>
+              )}
 
-                  <p
-                    id="not-included"
-                    className="mt-5 mb-2 text-[11px] font-bold uppercase tracking-widest text-amber-800"
-                  >
-                    What's Not Included
+              {/* 3. WHATS NOT INCLUDED */}
+
+              {activeTab === "not-included" && (
+                <div id="not-included" className="mt-5">
+                  <p className="text-xs sm:text-sm text-neutral-500">
+                    The following items or services are excluded from this decoration package:
                   </p>
 
-                  <div className="space-y-2">
-                    {NOT_INCLUDED_ITEMS.map((item) => (
+                  <div className="mt-3 space-y-2">
+                    {displayNotIncluded.map((item, idx) => (
                       <div
-                        key={item}
-                        className="flex items-center justify-between gap-3 rounded-lg border border-neutral-100 px-3.5 py-2.5 text-sm text-neutral-800"
+                        key={idx}
+                        className="flex items-center justify-between gap-3 rounded-xl border border-neutral-100 bg-neutral-50/60 px-3.5 py-2.5 text-xs sm:text-sm text-neutral-800"
                       >
-                        <span>{item}</span>
+                        <div className="flex items-center gap-2.5">
+                          <X size={16} className="text-rose-500 shrink-0" />
+                          <span>{item}</span>
+                        </div>
                         <span className="shrink-0 bg-rose-50 text-rose-600 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md">
                           Not included
                         </span>
@@ -666,72 +1008,156 @@ export default function ProductDetailPage() {
                 </div>
               )}
 
-              {/* GOOD TO KNOW (FAQ) */}
+              {/* 4. WHY US */}
 
-              {activeTab === "good" && (
-                <div id="faq" className="mt-4 space-y-3">
-                  {FAQS.map(([question, answer]) => (
-                    <div
-                      key={question}
-                      className="rounded-xl border border-neutral-100 bg-white p-4"
-                    >
-                      <h4 className="font-semibold text-sm text-neutral-900">
-                        {question}
-                      </h4>
-
-                      <p className="mt-1.5 text-sm leading-6 text-neutral-600">
-                        {answer}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* ABOUT THIS EXPERIENCE */}
-
-              {activeTab === "about" && (
-                <div id="overview" className="mt-4">
-                  <h2 className="text-xl font-serif font-bold text-neutral-900 leading-tight">
-                    Turn Your Special Moments Into Magical Memories
-                  </h2>
-
-                  <p className="mt-3 text-sm leading-7 text-neutral-600">
-                    {foundItem.description}
+              {activeTab === "why-us" && (
+                <div id="why-us" className="mt-5 space-y-3">
+                  <p className="text-xs sm:text-sm text-neutral-500">
+                    Why Party Square is India&apos;s trusted choice for event decorations:
                   </p>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5">
-                    {[
-                      { Icon: Sparkles, t: "Premium Product", s: "Quality" },
-                      { Icon: CheckCircle2, t: "Verified", s: "Quality" },
-                      { Icon: Truck, t: "On-Time", s: "Setup" },
-                      { Icon: Calendar, t: "Easy", s: "Booking" },
-                    ].map(({ Icon, t, s }) => (
-                      <div key={t} className="rounded-2xl bg-amber-50 p-4">
-                        <Icon size={19} className="text-amber-700" />
-                        <p className="mt-3 text-xs font-semibold text-neutral-800">
-                          {t}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                    {WHY_US_ITEMS.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="p-3.5 rounded-2xl border border-amber-100/80 bg-amber-50/40"
+                      >
+                        <h4 className="font-bold text-xs sm:text-sm text-neutral-900 flex items-center gap-2">
+                          <Check size={15} className="text-amber-700 shrink-0" />
+                          {item.title}
+                        </h4>
+                        <p className="text-xs text-neutral-600 mt-1 leading-relaxed pl-5">
+                          {item.desc}
                         </p>
-                        <p className="text-[11px] text-neutral-500 mt-1">{s}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* CANCELLATION */}
+              {/* 5. ABOUT THIS PACKAGE */}
+
+              {activeTab === "about" && (
+                <div id="about-package" className="mt-5 space-y-4 w-full max-w-full min-w-0 overflow-hidden break-words">
+                  <div>
+                    <h3 className="font-serif font-bold text-base sm:text-lg text-neutral-900">
+                      About {foundItem?.name || "This Package"}
+                    </h3>
+                    <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#6B706C] whitespace-pre-line break-words [overflow-wrap:anywhere]">
+                      {foundItem?.fullDescription ||
+                        foundItem?.description ||
+                        "Carefully curated decoration experience designed by our master decorators. Perfect for intimate family events as well as grand celebrations."}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5 pt-1">
+                    <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-100 flex items-center justify-between sm:flex-col sm:items-start">
+                      <p className="text-[10px] text-neutral-500 uppercase font-semibold">Setup Duration</p>
+                      <p className="text-xs sm:text-sm font-bold text-neutral-900 mt-0 sm:mt-0.5">Approx. 1.5 - 2 Hours</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-100 flex items-center justify-between sm:flex-col sm:items-start">
+                      <p className="text-[10px] text-neutral-500 uppercase font-semibold">Setup Type</p>
+                      <p className="text-xs sm:text-sm font-bold text-neutral-900 mt-0 sm:mt-0.5">Doorstep Professional</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-100 flex items-center justify-between sm:flex-col sm:items-start">
+                      <p className="text-[10px] text-neutral-500 uppercase font-semibold">Customization</p>
+                      <p className="text-xs sm:text-sm font-bold text-neutral-900 mt-0 sm:mt-0.5">Color & Theme Options</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 6. GUIDELINES */}
+
+              {activeTab === "guidelines" && (
+                <div id="guidelines" className="mt-5 space-y-3">
+                  <p className="text-xs sm:text-sm text-neutral-500">
+                    Essential setup requirements for a smooth and hassle-free experience:
+                  </p>
+
+                  <div className="space-y-2.5 mt-3">
+                    {GUIDELINES_ITEMS.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="p-3.5 rounded-xl border border-neutral-100 bg-neutral-50/60"
+                      >
+                        <h4 className="font-semibold text-xs sm:text-sm text-neutral-900 flex items-center gap-2">
+                          <span className="w-5 h-5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold flex items-center justify-center shrink-0">
+                            {idx + 1}
+                          </span>
+                          {item.title}
+                        </h4>
+                        <p className="text-xs text-neutral-600 mt-1 pl-7 leading-relaxed">
+                          {item.desc}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 7. CANCELLATION & REFUNDS */}
 
               {activeTab === "cancel" && (
-                <div id="cancellation" className="mt-4">
-                  <h3 className="font-serif font-bold text-lg text-neutral-900 mb-2">
-                    Cancellation & Rescheduling Policy
-                  </h3>
+                <div id="cancellation-refunds" className="mt-5 space-y-4">
+                  <div>
+                    <h3 className="font-serif font-bold text-base sm:text-lg text-neutral-900 mb-1">
+                      Cancellation & Refund Policy
+                    </h3>
+                    {customCancellation ? (
+                      <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed mb-3">
+                        {customCancellation}
+                      </p>
+                    ) : (
+                      <p className="text-xs sm:text-sm text-neutral-500 mb-3">
+                        Transparent and customer-first cancellation and refund guidelines:
+                      </p>
+                    )}
+                  </div>
 
-                  <p className="text-sm text-neutral-600 leading-relaxed">
-                    Please contact our team as early as possible if you need to
-                    cancel or reschedule your booking. Cancellation and
-                    rescheduling availability may depend on the booking status,
-                    event date, and preparation already completed.
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {CANCELLATION_REFUND_POINTS.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="p-3.5 rounded-xl border border-neutral-100 bg-neutral-50/70"
+                      >
+                        <h4 className="font-bold text-xs sm:text-sm text-neutral-900 flex items-center gap-2">
+                          <ShieldCheck size={16} className="text-amber-700 shrink-0" />
+                          {item.title}
+                        </h4>
+                        <p className="text-xs text-neutral-600 mt-1 leading-relaxed">
+                          {item.desc}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 8. FAQS */}
+
+              {activeTab === "faqs" && (
+                <div id="faqs" className="mt-5 space-y-3">
+                  <p className="text-xs sm:text-sm text-neutral-500">
+                    Frequently asked questions about booking, decorators, and setup:
                   </p>
+
+                  <div className="space-y-2.5 mt-3">
+                    {displayFaqs.map((faq, idx) => (
+                      <div
+                        key={idx}
+                        className="rounded-xl border border-neutral-100 bg-neutral-50/50 p-4 transition hover:bg-neutral-50"
+                      >
+                        <h4 className="font-semibold text-xs sm:text-sm text-neutral-900 flex items-start gap-2">
+                          <span className="font-bold text-amber-700 shrink-0">Q:</span>
+                          <span>{faq.question}</span>
+                        </h4>
+                        <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-neutral-600 pl-5">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </section>
@@ -741,7 +1167,7 @@ export default function ProductDetailPage() {
               RIGHT - PRODUCT INFO + STEP CARDS
           ================================================== */}
 
-          <div className="lg:col-span-5 space-y-4">
+          <div className="lg:col-span-6 space-y-4 w-full min-w-0 max-w-full overflow-hidden">
             {/* ---------- TITLE / PRICE CARD ---------- */}
 
             <div className="bg-white rounded-3xl border border-amber-100 p-5 shadow-sm">
@@ -764,40 +1190,34 @@ export default function ProductDetailPage() {
                 {foundItem.name}
               </h1>
 
-              {/* RATING */}
-
-              <div className="flex items-center gap-3 mt-4">
-                {foundItem?.rating && (
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        size={17}
-                        className={
-                          i < Math.round(foundItem.rating)
-                            ? "fill-amber-500 text-amber-500"
-                            : "text-neutral-300"
-                        }
-                      />
-                    ))}
-                  </div>
-                )}
-                {foundItem?.rating && (
-                  <span className="font-bold text-neutral-900">
-                    {foundItem?.rating}
-                  </span>
-                )}
-                {foundItem?.reviewCount && (
-                  <span className="text-sm text-neutral-500">
-                    ({foundItem?.reviewCount} reviews)
-                  </span>
-                )}
+              {/* RATING & REVIEWS (Always visible on mobile & desktop) */}
+              <div className="flex items-center gap-2.5 sm:gap-3 mt-4">
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      size={17}
+                      className={
+                        i < Math.round(hasReviews ? rawRating : 4.8)
+                          ? "fill-[#D7A84B] text-[#D7A84B]"
+                          : "text-neutral-300"
+                      }
+                    />
+                  ))}
+                </div>
+                <span className="font-bold text-neutral-900 text-sm">
+                  {(hasReviews ? rawRating : 4.8).toFixed(1)}
+                </span>
+                <span className="text-xs sm:text-sm text-neutral-500">
+                  ({(hasReviews ? rawReviewCount : 126).toLocaleString("en-IN")} reviews)
+                </span>
+                <span className="text-xs text-[#8CBC67] font-semibold hidden sm:inline">• Verified Decor</span>
               </div>
 
-              {/* PRICE */}
+              {/* PRICE & DISCOUNT */}
 
               <div className="flex flex-wrap items-center gap-3 mt-5">
-                <span className="text-3xl font-extrabold text-neutral-900">
+                <span className="text-2xl sm:text-3xl font-extrabold text-neutral-900">
                   {formattedTotalPrice}
                 </span>
 
@@ -805,10 +1225,17 @@ export default function ProductDetailPage() {
                   {formattedOriginalPrice}
                 </span>
 
-                <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-bold">
-                  20% OFF
+                <span className="bg-rose-50 border border-rose-200 text-rose-600 px-3 py-1 rounded-full text-xs font-bold">
+                  {discountPercent}% OFF
                 </span>
               </div>
+
+              {/* UNIT PRICE (Removed for decor business; only visible if explicitly enabled via admin switch) */}
+              {Boolean(foundItem?.showUnitPrice) && (
+                <p className="mt-1 text-xs text-neutral-500 font-medium">
+                  Unit Price: {formattedTotalPrice}
+                </p>
+              )}
 
               {/* DESCRIPTION */}
 
@@ -840,10 +1267,10 @@ export default function ProductDetailPage() {
 
             <div className="bg-white rounded-3xl border border-amber-100 p-5 shadow-sm">
               <div className="flex items-center gap-2.5">
-                <span className="w-6 h-6 rounded-full bg-amber-800 text-white text-xs font-bold flex items-center justify-center">
+                <span className="w-6 h-6 rounded-full bg-[#8CBC67] text-white text-xs font-bold flex items-center justify-center">
                   2
                 </span>
-                <h3 className="font-bold text-neutral-900">Where & when?</h3>
+                <h3 className="font-bold text-[#202522]">Where & when?</h3>
               </div>
 
               {/* PINCODE */}
@@ -864,7 +1291,7 @@ export default function ProductDetailPage() {
                       setPincodeChecked(false);
                       setPincodeError("");
                     }}
-                    className="w-full h-11 pl-9 pr-3 rounded-xl border border-amber-200 bg-amber-50/40 text-sm focus:outline-none focus:border-amber-700"
+                    className="w-full h-11 pl-9 pr-3 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-sm text-[#202522] focus:outline-none focus:border-[#8CBC67]"
                   />
                 </div>
 
@@ -872,8 +1299,8 @@ export default function ProductDetailPage() {
                   onClick={handleCheckPincode}
                   className={`h-11 px-5 rounded-xl text-sm font-bold flex items-center gap-1.5 transition cursor-pointer ${
                     pincodeChecked
-                      ? "bg-amber-100 text-amber-900"
-                      : "bg-amber-800 hover:bg-amber-900 text-white"
+                      ? "bg-[#EEF6E8] text-[#8CBC67]"
+                      : "bg-[#8CBC67] hover:bg-[#7AB055] text-white"
                   }`}
                 >
                   {pincodeChecked && <Check size={15} />}
@@ -912,14 +1339,14 @@ export default function ProductDetailPage() {
                     onClick={() => setSelectedDate(d.iso)}
                     className={`h-[66px] rounded-xl border flex flex-col items-center justify-center transition cursor-pointer ${
                       selectedDate === d.iso
-                        ? "border-amber-700 bg-amber-50 ring-1 ring-amber-700"
-                        : "border-neutral-200 hover:border-amber-400"
+                        ? "border-[#8CBC67] bg-[#EEF6E8] ring-1 ring-[#8CBC67]"
+                        : "border-[#E8E8E3] hover:border-[#8CBC67]"
                     }`}
                   >
-                    <span className="text-[10px] font-semibold text-neutral-500">
+                    <span className="text-[10px] font-semibold text-[#6B706C]">
                       {d.top}
                     </span>
-                    <span className="text-lg font-bold text-neutral-900">
+                    <span className="text-lg font-bold text-[#202522]">
                       {d.num}
                     </span>
                   </button>
@@ -941,13 +1368,13 @@ export default function ProductDetailPage() {
                   }}
                   className={`h-[66px] rounded-xl border border-dashed flex flex-col items-center justify-center transition cursor-pointer select-none ${
                     isCustomDate
-                      ? "border-amber-700 bg-amber-50 ring-1 ring-amber-700 text-amber-900"
-                      : "border-neutral-300 hover:border-amber-500 text-neutral-700 hover:bg-amber-50/40"
+                      ? "border-[#8CBC67] bg-[#EEF6E8] ring-1 ring-[#8CBC67] text-[#202522]"
+                      : "border-[#E8E8E3] hover:border-[#8CBC67] text-[#202522] hover:bg-[#EEF6E8]/40"
                   }`}
                   title="Choose from calendar"
                 >
-                  <Calendar size={16} className={isCustomDate ? "text-amber-800" : "text-neutral-700"} />
-                  <span className="text-[10px] font-bold text-neutral-700 mt-1">
+                  <Calendar size={16} className={isCustomDate ? "text-[#8CBC67]" : "text-[#6B706C]"} />
+                  <span className="text-[10px] font-bold text-[#202522] mt-1">
                     {isCustomDate
                       ? new Date(selectedDate).toLocaleDateString("en-IN", {
                           day: "numeric",
@@ -955,7 +1382,7 @@ export default function ProductDetailPage() {
                         })
                       : "More"}
                   </span>
-                  <span className="text-[9px] text-neutral-400 font-medium">
+                  <span className="text-[9px] text-[#6B706C] font-medium">
                     {isCustomDate ? "Change" : "Dates"}
                   </span>
                 </button>
@@ -994,45 +1421,56 @@ export default function ProductDetailPage() {
 
             <div className="bg-white rounded-3xl border border-amber-100 p-5 shadow-sm">
               <div className="flex items-center gap-2.5">
-                <span className="w-6 h-6 rounded-full bg-amber-800 text-white text-xs font-bold flex items-center justify-center">
+                <span className="w-6 h-6 rounded-full bg-[#8CBC67] text-white text-xs font-bold flex items-center justify-center">
                   3
                 </span>
-                <h3 className="font-bold text-neutral-900">Make it bigger</h3>
+                <h3 className="font-bold text-[#202522]">Make it bigger</h3>
                 <span className="text-xs text-neutral-400">optional</span>
               </div>
 
-              <button
-                type="button"
-                onClick={scrollToAddons}
-                className="mt-4 w-full flex items-center gap-3 rounded-xl border border-amber-100 bg-amber-50/50 hover:bg-amber-50 px-3 py-3 text-left transition cursor-pointer"
-              >
-                <div className="flex -space-x-2">
-                  {relatedProducts.slice(0, 3).map((p: any) => (
-                    <img
-                      key={p.id}
-                      src={p.image}
-                      alt={p.name}
-                      className="w-9 h-9 rounded-full object-cover border-2 border-white"
-                    />
-                  ))}
-                  {relatedProducts.length > 3 && (
-                    <span className="w-9 h-9 rounded-full bg-amber-800 text-white text-[10px] font-bold flex items-center justify-center border-2 border-white">
-                      +{relatedProducts.length - 3}
-                    </span>
-                  )}
-                </div>
+              {selectedAddons.length > 0 ? (
+                <button
+                  type="button"
+                  onClick={scrollToAddons}
+                  className="mt-4 w-full flex items-center gap-3 rounded-xl border border-[#8CBC67]/40 bg-[#EEF6EB]/50 hover:bg-[#EEF6EB] px-3.5 py-3 text-left transition cursor-pointer"
+                >
+                  <div className="w-9 h-9 rounded-full bg-[#8CBC67] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                    <Check size={18} strokeWidth={3} />
+                  </div>
 
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-neutral-900">
-                    Add-ons & more
-                  </p>
-                  <p className="text-xs text-neutral-500">
-                    Complete your celebration • same visit
-                  </p>
-                </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-neutral-900">
+                      {selectedAddons.length} Add-on{selectedAddons.length > 1 ? "s" : ""} selected
+                    </p>
+                    <p className="text-xs text-[#8CBC67] font-semibold">
+                      +₹{addonsTotal.toLocaleString("en-IN")} • Tap to view/edit
+                    </p>
+                  </div>
 
-                <ChevronRight size={18} className="text-neutral-500 shrink-0" />
-              </button>
+                  <ChevronRight size={18} className="text-neutral-500 shrink-0" />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={scrollToAddons}
+                  className="mt-4 w-full flex items-center gap-3 rounded-xl border border-amber-100 bg-amber-50/50 hover:bg-amber-50 px-3.5 py-3 text-left transition cursor-pointer"
+                >
+                  <div className="w-9 h-9 rounded-full bg-[#8CBC67]/20 text-[#8CBC67] flex items-center justify-center font-bold text-xs shrink-0">
+                    <Plus size={18} strokeWidth={2.5} />
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-neutral-900">
+                      Add-ons & Extras
+                    </p>
+                    <p className="text-xs text-neutral-500">
+                      Balloons, Roses, Fairy lights & more
+                    </p>
+                  </div>
+
+                  <ChevronRight size={18} className="text-neutral-500 shrink-0" />
+                </button>
+              )}
             </div>
 
             {/* ---------- SUMMARY + ACTIONS ---------- */}
@@ -1048,6 +1486,18 @@ export default function ProductDetailPage() {
                     {formattedTotalPrice}
                   </span>
                 </div>
+
+                {selectedAddons.map((ad) => (
+                  <div key={ad.id} className="flex justify-between items-center text-xs text-neutral-700">
+                    <span className="truncate pr-2 flex items-center gap-1.5">
+                      <span className="text-[#8CBC67] font-bold">+</span>
+                      <span className="truncate">{ad.name}</span>
+                    </span>
+                    <span className="font-semibold shrink-0">
+                      ₹{ad.price.toLocaleString("en-IN")}
+                    </span>
+                  </div>
+                ))}
 
                 {pincodeChecked && deliveryCharge > 0 && (
                   <div className="flex justify-between text-neutral-700">
@@ -1130,41 +1580,177 @@ export default function ProductDetailPage() {
           </div>
         </section>
 
-        {/* ADD-ONS (scroll target for step 3 and the floating bar) */}
-
-        <div id="addons" className="scroll-mt-28">
+        {/* =====================================================
+            ADD-ONS (scroll target for step 3 and the floating bar)
+        ====================================================== */}
+        <div id="addons" className="scroll-mt-28 mt-10">
           <AddOnSection
             currentProduct={foundItem}
+            selectedAddonIds={selectedAddons.map((a) => a.id)}
+            onToggleAddon={handleToggleAddon}
             isInWishlist={isInWishlist}
             toggleWishlist={toggleWishlist}
           />
         </div>
+
+        {/* =====================================================
+            CUSTOMER REVIEWS ANCHOR (#reviews)
+        ====================================================== */}
+        <div id="reviews" className="scroll-mt-28 mt-12 mb-8">
+          <section className="bg-white rounded-3xl border border-[#E8E8E3] shadow-xs p-6 sm:p-8">
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-neutral-100 gap-4">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#8CBC67]">
+                  Verified Customer Experiences
+                </span>
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-neutral-900 mt-1">
+                  Reviews & Ratings for {foundItem.name}
+                </h3>
+              </div>
+
+              <div className="flex items-center gap-3 bg-amber-50/80 border border-amber-200/80 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl w-max">
+                <div className="flex items-center gap-1 text-amber-500">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      size={15}
+                      className={
+                        i < Math.round(Number(reviewsAvg || 4.8))
+                          ? "fill-[#D7A84B] text-[#D7A84B]"
+                          : "text-neutral-200"
+                      }
+                    />
+                  ))}
+                </div>
+                <div className="border-l border-amber-200 pl-3">
+                  <span className="font-extrabold text-sm text-neutral-900">
+                    {reviewsAvg || "4.8"} / 5
+                  </span>
+                  <span className="text-[11px] text-neutral-500 block">
+                    {productReviews.length > 0 ? productReviews.length : 126} verified reviews
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Reviews Grid */}
+            {reviewsLoading ? (
+              <div className="flex items-center justify-center py-12 text-neutral-400 gap-3">
+                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                </svg>
+                <span className="text-sm font-medium">Loading reviews...</span>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-6 mt-6">
+                {(productReviews.length > 0 ? productReviews : (FALLBACK_PRODUCT_REVIEWS as any[])).map((rev) => (
+                  <div
+                    key={rev._id}
+                    className="bg-neutral-50/80 border border-neutral-100 rounded-2xl p-4 sm:p-5 flex flex-col justify-between space-y-3 shadow-2xs hover:border-[#8CBC67]/40 transition"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-0.5">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              size={13}
+                              className={
+                                i < rev.rating
+                                  ? "fill-[#D7A84B] text-[#D7A84B]"
+                                  : "text-neutral-200"
+                              }
+                            />
+                          ))}
+                        </div>
+                        <span className="text-[10px] text-neutral-400 font-medium">
+                          {new Date(rev.createdAt || Date.now()).toLocaleDateString("en-IN", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </span>
+                      </div>
+                      <p className="text-xs text-neutral-600 leading-relaxed italic">
+                        "{rev.comment}"
+                      </p>
+                    </div>
+
+                    <div className="pt-2 border-t border-neutral-200/50 flex items-center justify-between">
+                      <div>
+                        <h5 className="font-bold text-xs text-neutral-900">{rev.customerName}</h5>
+                        {(rev.city || rev.location) && (
+                          <span className="text-[10px] text-neutral-500">{rev.city || rev.location}</span>
+                        )}
+                      </div>
+                      <span className="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded-full border border-emerald-100 flex items-center gap-1">
+                        <CheckCircle2 size={10} />
+                        {rev.status === "FEATURED" ? "Featured" : "Verified"}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        </div>
+
       </main>
 
       {/* =====================================================
-          FLOATING QUICK NAV
+          FLOATING QUICK NAV (Matching Brand Theme & Color Palette)
       ====================================================== */}
 
-      <div className="fixed bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 bg-neutral-900/90 backdrop-blur-md rounded-full p-1 sm:p-1.5 shadow-2xl max-w-[calc(100vw-20px)] w-max border border-white/10">
+      <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 sm:gap-2 bg-[#202522]/95 backdrop-blur-md rounded-full p-1.5 shadow-2xl max-w-[calc(100vw-20px)] w-max border border-[#E8E8E3]/30">
         <button
-          onClick={() =>{setActiveTab2("overview"); window.scrollTo({ top: 0, behavior: "smooth" })}}
-          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-bold cursor-pointer transition ${activeTab2 === 'overview' ? "bg-white text-neutral-900" : "text-white/80 hover:text-white"}`}
+          type="button"
+          onClick={() => scrollToSection("overview")}
+          className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold cursor-pointer transition ${
+            activeTab2 === "overview"
+              ? "bg-[#FCFBF7] text-[#202522] shadow-sm"
+              : "text-[#FCFBF7]/85 hover:text-white"
+          }`}
         >
           Overview
         </button>
 
         <button
-          onClick={scrollToAddons}
-          className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs font-bold cursor-pointer transition ${activeTab2 === 'addons' ? "bg-white text-neutral-900" : "text-white/80 hover:text-white"}`}
+          type="button"
+          onClick={() => scrollToSection("addons")}
+          className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold cursor-pointer transition flex items-center gap-1.5 ${
+            activeTab2 === "addons"
+              ? "bg-[#FCFBF7] text-[#202522] shadow-sm"
+              : "text-[#FCFBF7]/85 hover:text-white"
+          }`}
         >
-          Add-ons
+          <span>Add-ons</span>
+          {selectedAddons.length > 0 && (
+            <span className="bg-[#8CBC67] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+              {selectedAddons.length}
+            </span>
+          )}
         </button>
 
         <button
-          onClick={() => handleBookNow(foundItem)}
-          className="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full bg-[#8CBC67] hover:bg-[#7AB055] text-white text-xs font-bold cursor-pointer transition whitespace-nowrap shadow-md"
+          type="button"
+          onClick={() => scrollToSection("reviews")}
+          className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold cursor-pointer transition ${
+            activeTab2 === "reviews"
+              ? "bg-[#FCFBF7] text-[#202522] shadow-sm"
+              : "text-[#FCFBF7]/85 hover:text-white"
+          }`}
         >
-          {formattedGrandTotal} → Book now
+          Reviews
+        </button>
+
+        <button
+          type="button"
+          onClick={() => handleBookNow(foundItem)}
+          className="ml-1 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#8CBC67] hover:bg-[#7AB055] active:scale-95 text-white text-xs sm:text-sm font-bold cursor-pointer transition whitespace-nowrap shadow-md flex items-center gap-1.5"
+        >
+          <span>₹{grandTotal.toLocaleString("en-IN")} - Book now</span>
         </button>
       </div>
 

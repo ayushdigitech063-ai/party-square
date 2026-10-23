@@ -31,13 +31,13 @@ interface StatsData {
 }
 
 const DEFAULT_DATA: StatsData = {
-  topLabel: "Trusted since 2020",
-  heading: "Event partner for 10,000+ celebrations",
+  topLabel: "Trusted Celebration Partner",
+  heading: "Event partner for over 1 Million+ celebrations",
   stats: [
-    { id: 1, label: "Celebrations", value: "10,000+", caption: "Happy events decorated" },
-    { id: 2, label: "Rating", value: "4.8 / 5", caption: "from 2,000+ customer reviews" },
-    { id: 3, label: "Community", value: "50K+", caption: "followers on social media" },
-    { id: 4, label: "Promise", value: "On-time Setup", caption: "Verified decorators, fixed pricing" },
+    { id: 1, label: "CELEBRATIONS", value: "1 Million+", caption: "Happy customers over 10 years" },
+    { id: 2, label: "RATING", value: "4.6 / 5", caption: "from 5,000+ reviews on Google" },
+    { id: 3, label: "COMMUNITY", value: "1 Lakh+", caption: "followers on social media" },
+    { id: 4, label: "PARTNERS", value: "Top brands", caption: "Marriott, Radisson, Taj & more" },
   ],
 };
 

@@ -140,14 +140,18 @@ export default function MostLovedDecor() {
               <ChevronRight size={16} />
             </button>
 
-            {/* View All Button */}
-            <Link
-              href="/services"
-              className="inline-flex items-center gap-1.5 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full border border-[#E8E8E3] hover:border-[#8CBC67] bg-white text-xs sm:text-sm font-semibold text-[#202522] hover:bg-[#EEF6EB] transition shrink-0 shadow-2xs"
+            {/* View All Button — Navigate to Birthday All Products Catalogue */}
+            <button
+              type="button"
+              onClick={() => {
+                const citySlug = (selectedCity || "bangalore").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+                router.push(`/${citySlug}/services/birthday/all-products`);
+              }}
+              className="inline-flex items-center gap-1.5 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full border border-[#E8E8E3] hover:border-[#8CBC67] bg-white text-xs sm:text-sm font-semibold text-[#202522] hover:bg-[#EEF6EB] transition shrink-0 shadow-2xs cursor-pointer"
             >
               <span>View All</span>
               <ArrowRight size={13} />
-            </Link>
+            </button>
           </div>
         </div>
 

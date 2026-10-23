@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { fetchProducts } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
@@ -92,7 +92,7 @@ export default function BabyWelcomePage() {
   return (
     <div className="min-h-screen text-[#202522] font-sans bg-[#FCFBF7] selection:bg-[#8CBC67] selection:text-white overflow-x-hidden pb-20">
       {/* Hero Section with backgroundbacbypic.png */}
-      <section className="relative w-full min-h-[480px] sm:h-[520px] py-10 sm:py-0 px-4 sm:px-6 flex items-center justify-center text-center overflow-hidden">
+      <section className="relative w-full h-[320px] sm:h-[340px] md:h-[360px] px-4 sm:px-6 flex items-center justify-center text-center overflow-hidden">
         <div
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat scale-100"
           style={{ backgroundImage: "url('/backgroundbacbypic.png')" }}
@@ -100,38 +100,36 @@ export default function BabyWelcomePage() {
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/95 via-neutral-950/70 to-neutral-950/40" />
         </div>
 
-        <div className="relative z-10 space-y-4 sm:space-y-6 max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center space-x-2 bg-black/60 border border-[#8CBC67]/50 px-4 py-1.5 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
-            <Sparkles size={14} className="text-[#8CBC67]" />
+        <div className="relative z-10 space-y-2 sm:space-y-3 max-w-4xl mx-auto px-4">
+          <div className="inline-flex items-center space-x-1.5 bg-black/60 border border-[#8CBC67]/50 px-3 sm:px-4 py-1 rounded-full text-[#8CBC67] text-[10px] sm:text-xs font-semibold tracking-wider uppercase backdrop-blur-md shadow-sm">
+            <Sparkles size={13} className="text-[#8CBC67]" />
             <span>Welcome Little One • Newborn Special 2026</span>
           </div>
-          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white drop-shadow-2xl">
-            Magical{" "}
-            <span className="text-[#8CBC67] italic font-normal">
-              Baby Welcome
-            </span>{" "}
-            Decorations
+          <h1 className="font-serif text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-bold tracking-tight text-white drop-shadow-md">
+            <span className="text-white drop-shadow-sm">Magical</span>{" "}
+            <span className="text-[#8CBC67] font-bold">Baby Welcome</span>{" "}
+            <span className="text-white drop-shadow-sm">Decorations</span>
           </h1>
-          <p className="text-neutral-200 text-xs sm:text-base max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="text-neutral-200 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed font-light line-clamp-2">
             Celebrate the most precious arrival of your life with our
             heartwarming, handcrafted balloon arches, floral cradles, and joyful
             theme setups.
           </p>
 
-          <div className="flex flex-row items-center gap-2 sm:gap-4 pt-2 sm:pt-4 w-full justify-center max-w-md mx-auto">
+          <div className="flex flex-row items-center gap-2.5 sm:gap-4 pt-1.5 sm:pt-2 w-full justify-center max-w-md mx-auto">
             <Link
               href="/contact"
-              className="flex-1 sm:flex-initial bg-[#8CBC67] hover:bg-[#7AB055] text-white px-3 sm:px-8 py-3 rounded-full font-bold text-[11px] sm:text-xs uppercase tracking-wider shadow-lg hover:shadow-[#8CBC67]/30 transition flex items-center justify-center space-x-1.5 sm:space-x-2 cursor-pointer whitespace-nowrap"
+              className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-bold text-[11px] sm:text-xs uppercase tracking-wider shadow-md hover:shadow-[#8CBC67]/30 transition flex items-center justify-center space-x-1.5 sm:space-x-2 cursor-pointer whitespace-nowrap"
             >
               <span>Book Baby Welcome</span>
-              <ArrowRight size={15} className="shrink-0" />
+              <ArrowRight size={14} className="shrink-0" />
             </Link>
 
             <a
               href="https://whatsapp.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 sm:flex-initial border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 px-3 sm:px-6 py-3 rounded-full font-semibold text-[11px] sm:text-xs uppercase tracking-wider transition flex items-center justify-center space-x-1.5 sm:space-x-2 whitespace-nowrap"
+              className="border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/20 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-semibold text-[11px] sm:text-xs uppercase tracking-wider transition flex items-center justify-center space-x-1.5 sm:space-x-2 whitespace-nowrap"
             >
               <span>Chat on WhatsApp</span>
             </a>
@@ -172,7 +170,7 @@ export default function BabyWelcomePage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
           {productsToDisplay.map((item) => {
             return (
               <ProductCard
@@ -241,7 +239,7 @@ export default function BabyWelcomePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
           {cartoonAndToyDecor.map((item) => {
             return (
               <ProductCard

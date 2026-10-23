@@ -246,18 +246,26 @@ export default function CategoryForm({
             </div>
           </div>
 
-          {/* Description */}
+          {/* Description / SEO Content */}
           <div>
-            <label className="block text-xs font-bold text-[#202522] uppercase tracking-wider mb-2">
-              Description
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-xs font-bold text-[#202522] uppercase tracking-wider">
+                SEO & Category Description (Displayed Above Footer)
+              </label>
+              <span className="text-[11px] text-[#8CBC67] font-semibold">
+                Boosts Google Ranking
+              </span>
+            </div>
             <textarea
-              rows={3}
+              rows={6}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Provide a brief description of this category for SEO and customers..."
-              className="w-full px-4 py-3 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-sm text-[#202522] focus:outline-none focus:ring-2 focus:ring-[#8CBC67]/30 focus:border-[#8CBC67] transition"
+              placeholder="Provide detailed description, event services, themes, and keywords for this category. This content appears right above the footer on this category/subcategory page..."
+              className="w-full px-4 py-3 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-sm text-[#202522] focus:outline-none focus:ring-2 focus:ring-[#8CBC67]/30 focus:border-[#8CBC67] transition leading-relaxed"
             />
+            <span className="text-[11px] text-[#6B706C] mt-1 block">
+              Tip: Include keywords, themes, and unique features of this category for maximum Google search visibility.
+            </span>
           </div>
 
           {/* Image & Preview */}
