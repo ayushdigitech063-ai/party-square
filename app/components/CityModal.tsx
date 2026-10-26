@@ -68,6 +68,7 @@ export default function CityModal({
     selectedCity,
     setSelectedCity,
     cityNames,
+    cities: contextCities,
   } = useCity();
 
   const showModal = isOpen !== undefined ? isOpen : ctxIsOpen;
@@ -80,10 +81,10 @@ export default function CityModal({
   const pathname = usePathname();
 
   const handleSelect = (city: string) => {
+    setSelectedCity(city);
     if (onSelectCity) {
       onSelectCity(city);
     }
-    setSelectedCity(city);
     handleClose();
 
     const citySlug = city.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -92,15 +93,15 @@ export default function CityModal({
       if (segments.length > 0) {
         const first = segments[0].toLowerCase();
         const allCities = availableCities.map((c) => c.toLowerCase());
-        if (allCities.includes(first) || ["delhi", "mumbai", "jaipur", "bangalore"].includes(first)) {
+        if (allCities.includes(first) || ["delhi", "mumbai", "jaipur", "bangalore", "pune", "hyderabad", "chennai", "kolkata", "lucknow", "ahmedabad", "gurugram", "noida", "ghaziabad", "faridabad"].includes(first)) {
           const rest = segments.slice(1).join("/");
-          router.push(`/${citySlug}${rest ? `/${rest}` : ""}`);
+          window.location.href = `/${citySlug}${rest ? `/${rest}` : ""}`;
           return;
         }
-        router.push(`/${citySlug}/${segments.join("/")}`);
+        window.location.href = `/${citySlug}/${segments.join("/")}`;
         return;
       }
-      router.push(`/${citySlug}`);
+      window.location.href = `/${citySlug}`;
     }
   };
 
@@ -190,7 +191,21 @@ export default function CityModal({
                       : "bg-[#EEF6EB]/70 group-hover:bg-[#EEF6EB] text-[#8CBC67] border-[#E8E8E3]"
                   }`}
                 >
-                  {getCityIcon(city)}
+                  {(() => {
+                    const matchedCity = contextCities?.find(
+                      (c) => c.name.toLowerCase() === city.toLowerCase()
+                    );
+                    if (matchedCity?.icon) {
+                      return (
+                        <img
+                          src={matchedCity.icon}
+                          alt={city}
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+                      );
+                    }
+                    return getCityIcon(city);
+                  })()}
                 </div>
                 <span
                   className={`text-xs sm:text-sm font-semibold transition text-center ${

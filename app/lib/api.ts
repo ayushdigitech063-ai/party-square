@@ -1,4 +1,4 @@
-// Centralized API client for Party Square frontend & admin
+﻿// Centralized API client for Party Square frontend & admin
 
 export const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "https://decoration-backend-qtx7.onrender.com").replace(/\/$/, "");
 
@@ -205,6 +205,8 @@ export interface ProductItem {
   availability: boolean;
   included?: string[];
   notIncluded?: string[];
+  whyUs?: string[];
+  guidelines?: string[];
   cancellationPolicy?: string;
   rating?: number;
   reviewCount?: number;
@@ -215,6 +217,7 @@ export interface ProductItem {
   isSpecialCard?: boolean;
   showUnitPrice?: boolean;
   availableCities?: string[];
+  serviceablePincodes?: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -468,11 +471,21 @@ export async function fetchAllBookings(): Promise<any[]> {
   return handleResponse(res);
 }
 
-export async function updateBookingStatus(id: string, bookingStatus: string): Promise<any> {
+export async function updateBookingStatus(
+  id: string,
+  bookingStatus?: string,
+  paymentStatus?: string,
+  onSiteAmountPending?: number
+): Promise<any> {
+  const payload: Record<string, any> = {};
+  if (bookingStatus) payload.bookingStatus = bookingStatus;
+  if (paymentStatus) payload.paymentStatus = paymentStatus;
+  if (onSiteAmountPending !== undefined) payload.onSiteAmountPending = onSiteAmountPending;
+
   const res = await fetch(`${API_BASE}/api/bookings/${id}`, {
     method: "PUT",
     headers: getAuthHeaders(),
-    body: JSON.stringify({ bookingStatus }),
+    body: JSON.stringify(payload),
   });
   return handleResponse(res);
 }
@@ -499,6 +512,7 @@ export interface ReviewItem {
   rating: number;
   comment: string;
   status: "PENDING" | "APPROVED" | "FEATURED" | "REJECTED";
+  isManual?: boolean;
   createdAt: string;
   user?: { name: string; email?: string; phone?: string };
 }
@@ -567,6 +581,23 @@ export async function fetchAllReviewsAdmin(status?: string): Promise<{
   return handleResponse(res);
 }
 
+export async function createReviewAdmin(data: {
+  productId: string;
+  productName?: string;
+  customerName: string;
+  city?: string;
+  rating: number;
+  comment: string;
+  status?: "PENDING" | "APPROVED" | "FEATURED" | "REJECTED";
+}): Promise<{ success: boolean; review: ReviewItem }> {
+  const res = await fetch(`${API_BASE}/api/reviews/admin-create`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse(res);
+}
+
 export async function updateReviewStatus(
   id: string,
   status: "PENDING" | "APPROVED" | "FEATURED" | "REJECTED"
@@ -614,6 +645,7 @@ export interface CityItem {
   content?: string;
   serviceAreas?: string[];
   faqs?: CityFaq[];
+  customSchema?: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -668,6 +700,79 @@ export async function deleteCity(id: string): Promise<{ message: string }> {
 }
 
 // ==========================================
+// ==========================================
+// COUPONS API
+// ==========================================
+
+export interface CouponItem {
+  _id: string;
+  code: string;
+  description?: string;
+  discountType: "PERCENTAGE" | "FLAT";
+  discountValue: number;
+  minOrderValue?: number;
+  maxDiscountAmount?: number | null;
+  expiryDate?: string | null;
+  usageLimit?: number | null;
+  timesUsed?: number;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export async function fetchCouponsAdmin(): Promise<CouponItem[]> {
+  const res = await fetch(`${API_BASE}/api/coupons`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+    cache: "no-store",
+  });
+  return handleResponse<CouponItem[]>(res);
+}
+
+export async function createCouponAdmin(data: Partial<CouponItem>): Promise<CouponItem> {
+  const res = await fetch(`${API_BASE}/api/coupons`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse<CouponItem>(res);
+}
+
+export async function updateCouponAdmin(id: string, data: Partial<CouponItem>): Promise<CouponItem> {
+  const res = await fetch(`${API_BASE}/api/coupons/${id}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse<CouponItem>(res);
+}
+
+export async function deleteCouponAdmin(id: string): Promise<{ message: string }> {
+  const res = await fetch(`${API_BASE}/api/coupons/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  return handleResponse<{ message: string }>(res);
+}
+
+export async function validateCoupon(
+  code: string,
+  orderAmount: number
+): Promise<{
+  valid: boolean;
+  code: string;
+  discountAmount: number;
+  finalAmount: number;
+  coupon: CouponItem;
+}> {
+  const res = await fetch(`${API_BASE}/api/coupons/validate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code, orderAmount }),
+  });
+  return handleResponse(res);
+}
+
 // CUSTOMERS / USERS API
 // ==========================================
 
@@ -681,9 +786,20 @@ export interface CustomerUser {
   isProfileComplete?: boolean;
   createdAt: string;
   bookingsCount: number;
+  dropoffStage?: "CART_DROP" | "PAYMENT_PAGE" | "PAYMENT_FAILED";
+  cartItems?: Array<{
+    productName: string;
+    price: number;
+    image?: string;
+    addedAt?: string;
+  }>;
   latestBooking?: {
     bookingId: string;
     productName: string;
+    productId?: string;
+    productImage?: string;
+    city?: string;
+    specialRequests?: string;
     eventDate: string;
     totalAmount: number;
     advanceAmountPaid: number;
@@ -707,7 +823,10 @@ export interface PricingPackage {
   name: string;
   description: string;
   price: number;
+  originalPrice?: number;
+  city?: string;
   image: string;
+  images?: string[];
   isPopular?: boolean;
   pageTarget: string;
   features?: string[];
@@ -715,10 +834,12 @@ export interface PricingPackage {
   updatedAt?: string;
 }
 
-export async function fetchPackages(pageTarget?: string): Promise<PricingPackage[]> {
-  const url = pageTarget
-    ? `${API_BASE}/api/packages?pageTarget=${encodeURIComponent(pageTarget)}`
-    : `${API_BASE}/api/packages`;
+export async function fetchPackages(pageTarget?: string, city?: string): Promise<PricingPackage[]> {
+  const params = new URLSearchParams();
+  if (pageTarget && pageTarget !== "all") params.append("pageTarget", pageTarget);
+  if (city && city !== "all") params.append("city", city);
+  const qs = params.toString();
+  const url = `${API_BASE}/api/packages${qs ? `?${qs}` : ""}`;
   const res = await fetch(url, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
@@ -869,6 +990,60 @@ export async function updateHomePageSection<T = any>(
 }
 
 // ==========================================
+// ==========================================
+// STAFF & DECORATORS API
+// ==========================================
+
+export interface StaffItem {
+  _id: string;
+  name: string;
+  role: string;
+  phone: string;
+  email?: string;
+  city: string;
+  serviceAreas?: string[];
+  assignedBookingsCount?: number;
+  rating?: number;
+  isActive: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export async function fetchStaffAdmin(): Promise<StaffItem[]> {
+  const res = await fetch(`${API_BASE}/api/staff`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+    cache: "no-store",
+  });
+  return handleResponse<StaffItem[]>(res);
+}
+
+export async function createStaffAdmin(data: Partial<StaffItem>): Promise<StaffItem> {
+  const res = await fetch(`${API_BASE}/api/staff`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse<StaffItem>(res);
+}
+
+export async function updateStaffAdmin(id: string, data: Partial<StaffItem>): Promise<StaffItem> {
+  const res = await fetch(`${API_BASE}/api/staff/${id}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse<StaffItem>(res);
+}
+
+export async function deleteStaffAdmin(id: string): Promise<{ message: string }> {
+  const res = await fetch(`${API_BASE}/api/staff/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  return handleResponse<{ message: string }>(res);
+}
+
 // ANALYTICS & REPORTS API
 // ==========================================
 

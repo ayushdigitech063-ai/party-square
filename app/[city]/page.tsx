@@ -9,6 +9,7 @@ import Services from "@/app/components/Services";
 import Gallery from "@/app/components/Gallery";
 import Work from "@/app/Work/page";
 import FAQSection from "@/app/components/FAQSection";
+import { MapPin, Navigation, Sparkles } from "lucide-react";
 
 interface Props {
   params: Promise<{ city: string }>;
@@ -111,6 +112,13 @@ export default async function CityLandingPage({ params }: Props) {
   return (
     <main>
       <CitySync cityName={cityName} />
+      {/* Inject Custom JSON-LD Schema if configured */}
+      {cityData?.customSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: cityData.customSchema }}
+        />
+      )}
       {/* Inject Structured Data for Google SERP */}
       <script
         type="application/ld+json"
@@ -127,6 +135,48 @@ export default async function CityLandingPage({ params }: Props) {
       <Services />
       <Gallery />
       <Work />
+
+      {/* Coverage Areas & Localities Section (Connected to Admin Backend) */}
+      {cityData?.serviceAreas && cityData.serviceAreas.length > 0 && (
+        <section className="bg-white py-12 sm:py-16 px-4 sm:px-6 md:px-16 border-t border-[#E8E8E3]">
+          <div className="max-w-7xl mx-auto space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-[#E8E8E3] pb-4">
+              <div>
+                <div className="inline-flex items-center space-x-1.5 bg-[#EEF6EB] text-[#8CBC67] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
+                  <MapPin size={13} />
+                  <span>Doorstep Service Coverage</span>
+                </div>
+                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#202522]">
+                  Serviceable Localities in {cityName}
+                </h3>
+              </div>
+              <span className="text-xs text-[#6B706C] font-medium">
+                {cityData.serviceAreas.length} Prime Areas Covered with 2-Hour Express Setup
+              </span>
+            </div>
+
+            <div className="flex flex-wrap gap-2.5 sm:gap-3 pt-2">
+              {cityData.serviceAreas.map((area: string, idx: number) => (
+                <div
+                  key={idx}
+                  className="inline-flex items-center space-x-2 px-3.5 sm:px-4 py-2 rounded-2xl bg-[#FCFBF7] border border-[#E8E8E3] text-[#202522] text-xs sm:text-sm font-semibold hover:border-[#8CBC67] hover:bg-[#EEF6EB]/50 transition-all shadow-2xs group cursor-default"
+                >
+                  <Navigation size={13} className="text-[#8CBC67] group-hover:scale-110 transition-transform" />
+                  <span>{area.trim()}</span>
+                </div>
+              ))}
+            </div>
+
+            {cityData.content && (
+              <div 
+                className="mt-6 p-6 rounded-3xl bg-[#EEF6EB]/20 border border-[#8CBC67]/20 text-xs sm:text-sm text-[#6B706C] leading-relaxed prose prose-sm max-w-none"
+                dangerouslySetInnerHTML={{ __html: cityData.content }}
+              />
+            )}
+          </div>
+        </section>
+      )}
+
       <FAQSection />
     </main>
   );

@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { fetchHomePageSection, updateHomePageSection } from "@/app/lib/api";
+import RichContentEditor from "@/app/components/RichContentEditor";
 
 interface FAQItem {
   id?: number | string;
@@ -409,16 +410,12 @@ export default function AdminFAQsPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#202522] mb-1.5">
-                  Detailed Answer *
-                </label>
-                <textarea
-                  rows={4}
-                  required
+                <RichContentEditor
+                  label="Detailed Answer (Supports clickable links & styling) *"
                   value={formFAQ.answer}
-                  onChange={(e) => setFormFAQ({ ...formFAQ, answer: e.target.value })}
-                  placeholder="Provide clear, reassuring information for customers..."
-                  className="w-full px-3.5 py-2 text-xs rounded-xl border border-[#E8E8E3] bg-neutral-50 focus:bg-white focus:border-[#8CBC67] focus:outline-none"
+                  onChange={(val) => setFormFAQ({ ...formFAQ, answer: val })}
+                  placeholder="Provide clear, reassuring information for customers. Click 'Link' in the toolbar to insert URLs..."
+                  rows={4}
                 />
               </div>
 

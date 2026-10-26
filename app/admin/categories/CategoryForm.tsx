@@ -50,7 +50,7 @@ export default function CategoryForm({
       try {
         setLoadingParents(true);
         // Fetch only top-level categories as possible parents
-        const res = await fetchCategories({ parentOnly: true });
+        const res = await fetchCategories();
         const list = Array.isArray(res) ? res : res.categories;
         // In edit mode, exclude self
         const filtered = isEdit && initialData?._id
@@ -217,14 +217,17 @@ export default function CategoryForm({
                 className="w-full px-4 py-3 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-sm text-[#202522] focus:outline-none focus:ring-2 focus:ring-[#8CBC67]/30 focus:border-[#8CBC67] transition"
               >
                 <option value="">None (Top-Level Main Category)</option>
-                {parentCategories.map((p) => (
-                  <option key={p._id} value={p._id}>
-                    {p.name}
-                  </option>
-                ))}
+                {parentCategories.map((p) => {
+                  const isChild = !!p.parentCategory;
+                  return (
+                    <option key={p._id} value={p._id}>
+                      {isChild ? `↳ ${p.name} (Subcategory)` : `${p.name} (Main Category)`}
+                    </option>
+                  );
+                })}
               </select>
               <span className="text-[11px] text-[#6B706C] mt-1 block">
-                Select a parent category if this is a subcategory (e.g. Balloon Kits under Birthday Decoration)
+                Select Main Category to create a Subcategory, OR select an existing Subcategory to create a Sub-Sub Category!
               </span>
             </div>
 

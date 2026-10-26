@@ -23,7 +23,7 @@ interface MostLovedData {
 }
 
 const DEFAULT_ITEMS: MostLovedItem[] = [
-  { id: 1, name: "Royal Stage Floral Mandap", image: "/homepage.png", price: "₹14,999", slug: "royal-stage-mandap" },
+  { id: 1, name: "Royal Stage Floral Mandap", image: "/wedding.png", price: "₹14,999", slug: "royal-stage-mandap" },
   { id: 2, name: "Kids Cartoon Balloon Wonderland", image: "/birthdaykids.png", price: "₹6,499", slug: "kids-cartoon-balloon" },
   { id: 3, name: "Romantic Candlelight Canopy", image: "/marriageaniversary.png", price: "₹8,999", slug: "romantic-candlelight" },
   { id: 4, name: "Traditional Diya & Flower Decor", image: "/diwalidecoration.png", price: "₹5,999", slug: "traditional-diya-decor" },

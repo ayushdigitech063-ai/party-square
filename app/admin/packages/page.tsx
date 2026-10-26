@@ -16,7 +16,11 @@ import {
   Eye,
   RefreshCw,
   X,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Upload,
+  Loader2,
+  MapPin,
+  Tag
 } from "lucide-react";
 import toast from "react-hot-toast";
 import {
@@ -24,6 +28,7 @@ import {
   createPackage,
   updatePackage,
   deletePackage,
+  uploadImage,
   PricingPackage
 } from "@/app/lib/api";
 
@@ -35,10 +40,29 @@ const PAGE_TARGETS = [
   { id: "ring-decoration", label: "💍 Ring & Engagement", path: "/services/ring-decoration" },
 ];
 
+const STANDARD_CITIES = [
+  "All Cities",
+  "Delhi",
+  "Mumbai",
+  "Bangalore",
+  "Hyderabad",
+  "Chennai",
+  "Ahmedabad",
+  "Jaipur",
+  "Pune",
+  "Kolkata",
+  "Lucknow",
+  "Gurugram",
+  "Noida",
+  "Ghaziabad",
+  "Faridabad"
+];
+
 export default function AdminPackagesPage() {
   const [packages, setPackages] = useState<PricingPackage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTarget, setSelectedTarget] = useState("all");
+  const [selectedCity, setSelectedCity] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   // Modal states
@@ -49,11 +73,18 @@ export default function AdminPackagesPage() {
   // Form states
   const [formName, setFormName] = useState("");
   const [formPrice, setFormPrice] = useState("");
+  const [formOriginalPrice, setFormOriginalPrice] = useState("");
+  const [formCity, setFormCity] = useState("All Cities");
   const [formDescription, setFormDescription] = useState("");
   const [formImage, setFormImage] = useState("");
+  const [formImages, setFormImages] = useState<string[]>([]);
   const [formTarget, setFormTarget] = useState("wall-decoration");
   const [formPopular, setFormPopular] = useState(false);
   const [formFeatures, setFormFeatures] = useState("");
+
+  // Image upload loaders
+  const [uploadingPrimary, setUploadingPrimary] = useState(false);
+  const [uploadingGallery, setUploadingGallery] = useState(false);
 
   // Load packages
   const loadData = async () => {
@@ -72,28 +103,41 @@ export default function AdminPackagesPage() {
     loadData();
   }, []);
 
-  // Filtered packages
+  // Filtered packages by Target, City, and Search
   const filteredPackages = useMemo(() => {
     return packages.filter((pkg) => {
       const matchesTarget =
         selectedTarget === "all" || pkg.pageTarget === selectedTarget;
+
+      const matchesCity =
+        selectedCity === "all" ||
+        !pkg.city ||
+        pkg.city === "All Cities" ||
+        pkg.city === "All" ||
+        pkg.city.toLowerCase() === selectedCity.toLowerCase();
+
       const q = searchQuery.toLowerCase().trim();
       const matchesSearch =
         !q ||
         pkg.name.toLowerCase().includes(q) ||
         pkg.description?.toLowerCase().includes(q) ||
+        (pkg.city && pkg.city.toLowerCase().includes(q)) ||
         String(pkg.price).includes(q);
-      return matchesTarget && matchesSearch;
+
+      return matchesTarget && matchesCity && matchesSearch;
     });
-  }, [packages, selectedTarget, searchQuery]);
+  }, [packages, selectedTarget, selectedCity, searchQuery]);
 
   // Open modal for create
   const handleOpenCreate = () => {
     setEditingPkg(null);
     setFormName("");
     setFormPrice("");
+    setFormOriginalPrice("");
+    setFormCity(selectedCity !== "all" ? selectedCity : "All Cities");
     setFormDescription("");
     setFormImage("");
+    setFormImages([]);
     setFormTarget(selectedTarget === "all" ? "wall-decoration" : selectedTarget);
     setFormPopular(false);
     setFormFeatures("");
@@ -105,12 +149,71 @@ export default function AdminPackagesPage() {
     setEditingPkg(pkg);
     setFormName(pkg.name);
     setFormPrice(String(pkg.price));
+    setFormOriginalPrice(pkg.originalPrice ? String(pkg.originalPrice) : "");
+    setFormCity(pkg.city || "All Cities");
     setFormDescription(pkg.description || "");
     setFormImage(pkg.image || "");
+    setFormImages(pkg.images || []);
     setFormTarget(pkg.pageTarget || "wall-decoration");
     setFormPopular(!!pkg.isPopular);
     setFormFeatures((pkg.features || []).join("\n"));
     setIsModalOpen(true);
+  };
+
+  // Upload Primary Image directly to Cloudinary
+  const handlePrimaryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Image file size should be under 10MB");
+      return;
+    }
+
+    try {
+      setUploadingPrimary(true);
+      const toastId = toast.loading("Uploading primary package image...");
+      const uploaded = await uploadImage(file);
+      setFormImage(uploaded.url);
+      toast.success("Primary image uploaded successfully!", { id: toastId });
+    } catch (err: any) {
+      toast.error(err.message || "Failed to upload image");
+    } finally {
+      setUploadingPrimary(false);
+    }
+  };
+
+  // Upload Multiple Gallery Images
+  const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const fileList = Array.from(files);
+    setUploadingGallery(true);
+    const toastId = toast.loading(`Uploading ${fileList.length} image(s)...`);
+
+    try {
+      const uploadPromises = fileList.map(async (file) => {
+        const res = await uploadImage(file);
+        return res.url;
+      });
+      const urls = await Promise.all(uploadPromises);
+      setFormImages((prev) => [...prev, ...urls]);
+      toast.success(`${urls.length} gallery image(s) uploaded!`, { id: toastId });
+    } catch (err: any) {
+      toast.error(err.message || "Failed to upload one or more gallery images", { id: toastId });
+    } finally {
+      setUploadingGallery(false);
+      e.target.value = "";
+    }
+  };
+
+  const removeGalleryImage = (indexToRemove: number) => {
+    setFormImages((prev) => prev.filter((_, idx) => idx !== indexToRemove));
   };
 
   // Submit create or edit
@@ -123,8 +226,16 @@ export default function AdminPackagesPage() {
 
     const priceNum = Number(formPrice.toString().replace(/[^0-9]/g, ""));
     if (isNaN(priceNum) || priceNum <= 0) {
-      toast.error("Please enter a valid price");
+      toast.error("Please enter a valid sale price");
       return;
+    }
+
+    let origPriceNum: number | undefined = undefined;
+    if (formOriginalPrice.trim()) {
+      const parsed = Number(formOriginalPrice.toString().replace(/[^0-9]/g, ""));
+      if (!isNaN(parsed) && parsed > 0) {
+        origPriceNum = parsed;
+      }
     }
 
     const featuresList = formFeatures
@@ -135,10 +246,13 @@ export default function AdminPackagesPage() {
     const payload = {
       name: formName.trim(),
       price: priceNum,
+      originalPrice: origPriceNum,
+      city: formCity || "All Cities",
       description: formDescription.trim(),
       image:
         formImage.trim() ||
-        "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&auto=format&fit=crop&q=60",
+        (formImages.length > 0 ? formImages[0] : "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&auto=format&fit=crop&q=60"),
+      images: formImages,
       pageTarget: formTarget,
       isPopular: formPopular,
       features: featuresList,
@@ -205,19 +319,19 @@ export default function AdminPackagesPage() {
       <div className="bg-white border border-[#E8E8E3] rounded-3xl p-6 lg:p-8 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="space-y-1">
           <div className="flex items-center space-x-2">
-            <span className="p-2 bg-[#FAF5EB] text-[#D7A84B] rounded-xl border border-[#D7A84B]/20">
+            <span className="p-2 bg-[#EEF6EB] text-[#8CBC67] rounded-xl border border-[#8CBC67]/20">
               <PackageIcon size={20} />
             </span>
-            <span className="text-xs uppercase tracking-widest font-bold text-[#D7A84B]">
-              Customizable Plans
+            <span className="text-xs uppercase tracking-widest font-bold text-[#8CBC67]">
+              City-Wise Customizable Plans
             </span>
           </div>
           <h1 className="font-serif text-2xl lg:text-3xl font-bold text-[#202522]">
             Pricing Plans & Packages Manager
           </h1>
           <p className="text-xs lg:text-sm text-[#6B706C] font-light max-w-2xl">
-            Super Admin control panel to add, edit prices, descriptions, and feature tags
-            for each service page dynamically.
+            Super Admin control panel to manage packages, city-specific pricing (Sale & Actual MRP),
+            and multi-image media uploads across all services.
           </p>
         </div>
 
@@ -231,7 +345,7 @@ export default function AdminPackagesPage() {
           </button>
           <button
             onClick={handleOpenCreate}
-            className="flex-1 md:flex-initial flex items-center justify-center space-x-2 bg-[#D7A84B] hover:bg-[#c2953e] text-[#202522] font-bold px-6 py-3 rounded-2xl shadow-md transition"
+            className="flex-1 md:flex-initial flex items-center justify-center space-x-2 bg-[#8CBC67] hover:bg-[#7AB055] text-white font-bold px-6 py-3 rounded-2xl shadow-md transition"
           >
             <Plus size={18} />
             <span className="text-sm">Add New Package</span>
@@ -239,9 +353,9 @@ export default function AdminPackagesPage() {
         </div>
       </div>
 
-      {/* Target Pages Tabs & Search */}
-      <div className="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4">
-        {/* Page Filter Tabs */}
+      {/* Target Pages Tabs, City Filter, & Search */}
+      <div className="space-y-4">
+        {/* Row 1: Category Filter Tabs */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
           {PAGE_TARGETS.map((target) => {
             const count =
@@ -255,7 +369,7 @@ export default function AdminPackagesPage() {
                 onClick={() => setSelectedTarget(target.id)}
                 className={`px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition flex items-center space-x-2 border ${
                   isActive
-                    ? "bg-neutral-900 text-white border-neutral-900 shadow-sm"
+                    ? "bg-[#202522] text-white border-[#202522] shadow-sm"
                     : "bg-white text-[#6B706C] border-[#E8E8E3] hover:text-[#202522] hover:bg-neutral-50"
                 }`}
               >
@@ -274,27 +388,58 @@ export default function AdminPackagesPage() {
           })}
         </div>
 
-        {/* Search */}
-        <div className="relative min-w-[280px]">
-          <Search
-            size={16}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B706C]"
-          />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search plan by title or price..."
-            className="w-full pl-11 pr-4 py-2.5 bg-white border border-[#E8E8E3] rounded-2xl text-xs text-[#202522] focus:outline-none focus:border-[#D7A84B] transition shadow-sm"
-          />
+        {/* Row 2: City Filter + Search Bar */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          {/* City Selection Dropdown Filter */}
+          <div className="flex items-center space-x-2">
+            <span className="text-xs font-bold text-[#6B706C] whitespace-nowrap flex items-center gap-1.5">
+              <MapPin size={14} className="text-[#8CBC67]" /> Filter by City:
+            </span>
+            <select
+              value={selectedCity}
+              onChange={(e) => setSelectedCity(e.target.value)}
+              className="px-4 py-2 bg-white border border-[#E8E8E3] rounded-2xl text-xs font-semibold text-[#202522] focus:outline-none focus:border-[#8CBC67] transition shadow-sm cursor-pointer"
+            >
+              <option value="all">📍 All Cities ({packages.length})</option>
+              {STANDARD_CITIES.filter((c) => c !== "All Cities").map((city) => {
+                const count = packages.filter(
+                  (p) =>
+                    p.city?.toLowerCase() === city.toLowerCase() ||
+                    p.city === "All Cities" ||
+                    p.city === "All" ||
+                    !p.city
+                ).length;
+                return (
+                  <option key={city} value={city}>
+                    {city} ({count})
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
+          {/* Search */}
+          <div className="relative min-w-[260px] sm:max-w-xs w-full">
+            <Search
+              size={16}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6B706C]"
+            />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search plan by title, city, or price..."
+              className="w-full pl-11 pr-4 py-2 bg-white border border-[#E8E8E3] rounded-2xl text-xs text-[#202522] focus:outline-none focus:border-[#8CBC67] transition shadow-sm"
+            />
+          </div>
         </div>
       </div>
 
       {/* Page Link Banner if filtered */}
       {selectedTarget !== "all" && (
-        <div className="flex items-center justify-between bg-[#FAF5EB] border border-[#D7A84B]/30 px-5 py-3 rounded-2xl text-xs">
+        <div className="flex items-center justify-between bg-[#EEF6EB] border border-[#8CBC67]/30 px-5 py-3 rounded-2xl text-xs">
           <div className="flex items-center space-x-2 text-[#202522]">
-            <Sparkles size={16} className="text-[#D7A84B]" />
+            <Sparkles size={16} className="text-[#8CBC67]" />
             <span>
               Managing plans for:{" "}
               <strong>
@@ -307,7 +452,7 @@ export default function AdminPackagesPage() {
               href={PAGE_TARGETS.find((p) => p.id === selectedTarget)?.path}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-1 text-[#D7A84B] hover:text-[#b08d4b] font-bold"
+              className="flex items-center space-x-1 text-[#8CBC67] hover:text-[#7AB055] font-bold"
             >
               <span>View Live Page</span>
               <ExternalLink size={14} />
@@ -318,65 +463,62 @@ export default function AdminPackagesPage() {
 
       {/* Packages Grid */}
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map((n) => (
-            <div
-              key={n}
-              className="bg-white rounded-3xl border border-[#E8E8E3] p-6 h-96 animate-pulse space-y-4"
-            >
-              <div className="h-44 bg-neutral-100 rounded-2xl" />
-              <div className="h-5 bg-neutral-100 rounded w-2/3" />
-              <div className="h-4 bg-neutral-100 rounded w-1/3" />
-              <div className="h-16 bg-neutral-100 rounded" />
-            </div>
-          ))}
+        <div className="bg-white border border-[#E8E8E3] rounded-3xl p-16 text-center shadow-sm">
+          <RefreshCw size={28} className="animate-spin text-[#8CBC67] mx-auto mb-3" />
+          <p className="text-[#6B706C] text-sm">Loading packages database...</p>
         </div>
       ) : filteredPackages.length === 0 ? (
-        <div className="bg-white rounded-3xl border border-[#E8E8E3] p-12 text-center space-y-4">
-          <div className="w-16 h-16 bg-[#FAF5EB] text-[#D7A84B] rounded-2xl flex items-center justify-center mx-auto">
-            <PackageIcon size={32} />
+        <div className="bg-white border border-[#E8E8E3] rounded-3xl p-16 text-center shadow-sm space-y-4">
+          <div className="w-16 h-16 rounded-full bg-neutral-100 flex items-center justify-center mx-auto text-[#6B706C]">
+            <Layers size={28} />
           </div>
-          <h3 className="font-serif text-xl font-bold text-[#202522]">
-            No Packages Found
-          </h3>
-          <p className="text-xs text-[#6B706C] max-w-sm mx-auto">
-            No packages match your active filter. Click below to add a brand new package for this page.
-          </p>
+          <div>
+            <h3 className="font-serif text-lg font-bold text-[#202522]">
+              No packages found
+            </h3>
+            <p className="text-xs text-[#6B706C] mt-1 max-w-sm mx-auto">
+              {searchQuery || selectedCity !== "all"
+                ? "No packages match your search criteria or selected city."
+                : "No packages have been created for this category yet."}
+            </p>
+          </div>
           <button
             onClick={handleOpenCreate}
-            className="inline-flex items-center space-x-2 bg-[#D7A84B] hover:bg-[#c2953e] text-[#202522] font-bold px-6 py-2.5 rounded-2xl text-xs transition"
+            className="inline-flex items-center space-x-2 bg-[#8CBC67] hover:bg-[#7AB055] text-white font-bold px-5 py-2.5 rounded-xl text-xs transition"
           >
             <Plus size={16} />
-            <span>Create New Package</span>
+            <span>Create First Package</span>
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPackages.map((pkg) => {
-            const targetMeta = PAGE_TARGETS.find((p) => p.id === pkg.pageTarget);
+            const hasDiscount =
+              pkg.originalPrice && pkg.originalPrice > pkg.price;
+            const discountPercent = hasDiscount
+              ? Math.round(((pkg.originalPrice! - pkg.price) / pkg.originalPrice!) * 100)
+              : 0;
+
             return (
               <div
                 key={pkg._id}
-                className={`relative bg-white rounded-3xl border transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl group ${
-                  pkg.isPopular
-                    ? "border-2 border-[#D7A84B] ring-4 ring-[#D7A84B]/10"
-                    : "border-[#E8E8E3]"
-                }`}
+                className="bg-white border border-[#E8E8E3] rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between group relative"
               >
-                {/* Popular Pill */}
+                {/* Popular Badge */}
                 {pkg.isPopular && (
-                  <div className="absolute top-4 left-4 z-10 bg-gradient-to-r from-[#DFBC71] to-[#D7A84B] text-[#202522] text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-md flex items-center space-x-1">
-                    <Star size={12} className="fill-[#202522]" />
-                    <span>Most Popular</span>
+                  <div className="absolute top-3 left-3 z-10 bg-[#FAF5EB] border border-[#D7A84B] text-[#D7A84B] text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow flex items-center space-x-1">
+                    <Star size={11} className="fill-[#D7A84B]" />
+                    <span>Most Loved</span>
                   </div>
                 )}
 
-                {/* Target Page Tag */}
-                <div className="absolute top-4 right-4 z-10 bg-neutral-900/80 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full border border-white/20 shadow">
-                  {targetMeta?.label || pkg.pageTarget}
+                {/* City Badge Top Right */}
+                <div className="absolute top-3 right-3 z-10 bg-white/95 backdrop-blur-md text-[#202522] border border-[#E8E8E3] text-[11px] font-bold px-2.5 py-1 rounded-xl shadow-xs flex items-center space-x-1">
+                  <MapPin size={12} className="text-[#8CBC67]" />
+                  <span>{pkg.city || "All Cities"}</span>
                 </div>
 
-                {/* Card Top: Image */}
+                {/* Top Image & Price */}
                 <div>
                   <div className="relative h-56 w-full bg-neutral-100 overflow-hidden border-b border-[#E8E8E3]">
                     <img
@@ -384,15 +526,39 @@ export default function AdminPackagesPage() {
                       alt={pkg.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute bottom-3 right-3 bg-neutral-950/80 backdrop-blur-md text-[#DFBC71] font-bold text-base px-3.5 py-1 rounded-xl border border-white/10 shadow">
-                      ₹{pkg.price.toLocaleString("en-IN")}
+                    {/* Price Pill Bottom Right */}
+                    <div className="absolute bottom-3 right-3 bg-neutral-950/85 backdrop-blur-md text-white font-bold text-sm px-3.5 py-1.5 rounded-xl border border-white/10 shadow flex items-center gap-2">
+                      <span className="text-[#8CBC67]">₹{pkg.price.toLocaleString("en-IN")}</span>
+                      {hasDiscount && (
+                        <span className="text-white/60 line-through text-xs font-normal">
+                          ₹{pkg.originalPrice?.toLocaleString("en-IN")}
+                        </span>
+                      )}
+                      {discountPercent > 0 && (
+                        <span className="text-[10px] bg-[#8CBC67] text-white px-1.5 py-0.5 rounded font-extrabold">
+                          {discountPercent}% OFF
+                        </span>
+                      )}
                     </div>
+
+                    {/* Gallery Images Count Indicator */}
+                    {pkg.images && pkg.images.length > 0 && (
+                      <div className="absolute bottom-3 left-3 bg-neutral-900/75 backdrop-blur-xs text-white text-[10px] font-medium px-2.5 py-1 rounded-lg flex items-center gap-1 border border-white/10">
+                        <ImageIcon size={12} />
+                        <span>+{pkg.images.length} photos</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Card Content */}
                   <div className="p-6 space-y-4">
                     <div>
-                      <h3 className="font-serif text-xl font-bold text-[#202522] group-hover:text-[#D7A84B] transition">
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <span className="text-[10px] uppercase font-bold text-[#8CBC67] tracking-wider">
+                          {PAGE_TARGETS.find((p) => p.id === pkg.pageTarget)?.label.replace(/[^\w\s&]/gi, "").trim() || pkg.pageTarget}
+                        </span>
+                      </div>
+                      <h3 className="font-serif text-xl font-bold text-[#202522] group-hover:text-[#8CBC67] transition">
                         {pkg.name}
                       </h3>
                       <p className="text-[#6B706C] text-xs leading-relaxed mt-2 line-clamp-3">
@@ -447,14 +613,14 @@ export default function AdminPackagesPage() {
                   <div className="flex items-center space-x-2 flex-1 justify-end">
                     <button
                       onClick={() => handleOpenEdit(pkg)}
-                      className="flex-1 max-w-[120px] flex items-center justify-center space-x-1.5 bg-[#FAF8F5] border border-[#E8E8E3] hover:border-[#D7A84B] text-[#202522] py-2.5 px-3 rounded-xl text-xs font-bold transition shadow-sm"
+                      className="flex-1 max-w-[120px] flex items-center justify-center space-x-1.5 bg-[#FCFBF7] border border-[#E8E8E3] hover:border-[#8CBC67] text-[#202522] py-2.5 px-3 rounded-xl text-xs font-bold transition shadow-xs"
                     >
-                      <Edit3 size={14} className="text-[#D7A84B]" />
+                      <Edit3 size={14} className="text-[#8CBC67]" />
                       <span>Edit</span>
                     </button>
                     <button
                       onClick={() => handleDelete(pkg)}
-                      className="p-2.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl transition border border-red-200"
+                      className="p-2.5 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-[#6B706C] hover:text-red-600 hover:border-red-200 transition"
                       title="Delete Package"
                     >
                       <Trash2 size={16} />
@@ -467,23 +633,23 @@ export default function AdminPackagesPage() {
         </div>
       )}
 
-      {/* Add / Edit Modal */}
+      {/* CREATE / EDIT MODAL */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-lg w-full border border-[#E8E8E3] shadow-2xl p-6 sm:p-8 space-y-6 animate-in fade-in zoom-in-95 duration-200 my-8">
+        <div className="fixed inset-0 z-50 bg-neutral-950/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white border border-[#E8E8E3] rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl relative max-h-[92vh] overflow-y-auto my-auto space-y-6">
             {/* Modal Header */}
-            <div className="flex justify-between items-start border-b border-[#E8E8E3] pb-4">
+            <div className="flex items-center justify-between pb-4 border-b border-[#E8E8E3]">
               <div>
-                <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#202522]">
-                  {editingPkg ? "Edit Package Plan" : "Create New Package Plan"}
-                </h3>
-                <p className="text-xs text-[#6B706C] mt-1">
-                  Configure package details, pricing, and live page allocation.
+                <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#202522]">
+                  {editingPkg ? "Edit Package & Pricing" : "Create New Package"}
+                </h2>
+                <p className="text-xs text-[#6B706C] mt-0.5">
+                  Configure city-specific pricing, discount strike-through, and upload package photos.
                 </p>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="p-2 rounded-xl text-[#6B706C] hover:bg-neutral-100 transition"
+                className="p-2 rounded-xl text-[#6B706C] hover:text-[#202522] hover:bg-neutral-100 transition"
               >
                 <X size={20} />
               </button>
@@ -491,112 +657,249 @@ export default function AdminPackagesPage() {
 
             {/* Modal Form */}
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-              {/* Target Page */}
-              <div>
-                <label className="block text-[#202522] font-bold mb-1.5">
-                  Display On Page <span className="text-red-500">*</span>
-                </label>
-                <select
-                  value={formTarget}
-                  onChange={(e) => setFormTarget(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#E8E8E3] bg-[#FAF8F5] text-[#202522] font-medium focus:outline-none focus:border-[#D7A84B]"
-                >
-                  <option value="wall-decoration">🚪 Wall & Door Decoration (/services/wall-decoration)</option>
-                  <option value="birthday">🎂 Birthday Main Theme (/services/birthday)</option>
-                  <option value="birthday-mother">👩 Mother's Milestone Birthday (/services/birthday/mother)</option>
-                  <option value="ring-decoration">💍 Ring Ceremony & Engagement (/services/ring-decoration)</option>
-                </select>
+              {/* Row: Target Page & City Selection */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Target Page */}
+                <div>
+                  <label className="block text-[#202522] font-bold mb-1.5 uppercase tracking-wider text-[11px]">
+                    Display On Page <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={formTarget}
+                    onChange={(e) => setFormTarget(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-[#202522] font-medium focus:outline-none focus:border-[#8CBC67]"
+                  >
+                    <option value="wall-decoration">🚪 Wall & Door Decoration (/services/wall-decoration)</option>
+                    <option value="birthday">🎂 Birthday Main Theme (/services/birthday)</option>
+                    <option value="birthday-mother">👩 Mother's Milestone Birthday (/services/birthday/mother)</option>
+                    <option value="ring-decoration">💍 Ring Ceremony & Engagement (/services/ring-decoration)</option>
+                  </select>
+                </div>
+
+                {/* City Selection */}
+                <div>
+                  <label className="block text-[#202522] font-bold mb-1.5 uppercase tracking-wider text-[11px] flex items-center gap-1">
+                    <MapPin size={13} className="text-[#8CBC67]" /> City Coverage <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={formCity}
+                    onChange={(e) => setFormCity(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-[#202522] font-semibold focus:outline-none focus:border-[#8CBC67]"
+                  >
+                    <option value="All Cities">📍 All Cities (Pan-India)</option>
+                    {STANDARD_CITIES.filter((c) => c !== "All Cities").map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              {/* Package Name */}
+              {/* Package Title */}
               <div>
-                <label className="block text-[#202522] font-bold mb-1.5">
+                <label className="block text-[#202522] font-bold mb-1.5 uppercase tracking-wider text-[11px]">
                   Package Title <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Floral & Ring Wall Decor"
+                  placeholder="e.g. Floral & Ring Wall Decor Setup"
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#E8E8E3] bg-[#FAF8F5] text-[#202522] focus:outline-none focus:border-[#D7A84B]"
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-[#202522] focus:outline-none focus:border-[#8CBC67]"
                 />
               </div>
 
-              {/* Price */}
-              <div>
-                <label className="block text-[#202522] font-bold mb-1.5">
-                  Price in Rupees (₹) <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  required
-                  placeholder="e.g. 5499"
-                  value={formPrice}
-                  onChange={(e) => setFormPrice(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#E8E8E3] bg-[#FAF8F5] text-[#202522] focus:outline-none focus:border-[#D7A84B]"
-                />
+              {/* Pricing Row: Sale Price & Actual Price (MRP) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[#202522] font-bold mb-1.5 uppercase tracking-wider text-[11px]">
+                    Sale Price in ₹ <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    min="1"
+                    placeholder="e.g. 5499"
+                    value={formPrice}
+                    onChange={(e) => setFormPrice(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-[#202522] font-bold focus:outline-none focus:border-[#8CBC67]"
+                  />
+                  <span className="text-[10px] text-[#6B706C] mt-1 block">
+                    Actual customer booking price
+                  </span>
+                </div>
+
+                <div>
+                  <label className="block text-[#202522] font-bold mb-1.5 uppercase tracking-wider text-[11px]">
+                    Actual / Original Price in ₹ (MRP Strike-through)
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    placeholder="e.g. 7999"
+                    value={formOriginalPrice}
+                    onChange={(e) => setFormOriginalPrice(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-[#202522] focus:outline-none focus:border-[#8CBC67]"
+                  />
+                  <span className="text-[10px] text-[#6B706C] mt-1 block">
+                    Shows crossed out with discount % OFF badge
+                  </span>
+                </div>
               </div>
 
-              {/* Image URL */}
-              <div>
-                <label className="block text-[#202522] font-bold mb-1.5">
-                  Image URL / Link
-                </label>
+              {/* Primary Image: File Upload + URL */}
+              <div className="p-4 bg-[#FCFBF7] rounded-2xl border border-[#E8E8E3] space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="block text-[#202522] font-bold uppercase tracking-wider text-[11px]">
+                    Primary Package Image <span className="text-red-500">*</span>
+                  </label>
+                  <label className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-neutral-100 text-[#202522] border border-[#E8E8E3] text-[11px] font-bold cursor-pointer transition shadow-xs">
+                    {uploadingPrimary ? (
+                      <>
+                        <Loader2 size={13} className="animate-spin text-[#8CBC67]" />
+                        <span>Uploading...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Upload size={13} className="text-[#8CBC67]" />
+                        <span>Upload From Device</span>
+                      </>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePrimaryUpload}
+                      disabled={uploadingPrimary}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+
                 <input
                   type="text"
-                  placeholder="https://images.unsplash.com/... or /walldecoration.png"
+                  placeholder="Or paste image URL (https://images.unsplash.com/...)"
                   value={formImage}
                   onChange={(e) => setFormImage(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-[#E8E8E3] bg-[#FAF8F5] text-[#202522] focus:outline-none focus:border-[#D7A84B]"
+                  className="w-full px-3 py-2 rounded-xl border border-[#E8E8E3] bg-white text-[#202522] focus:outline-none focus:border-[#8CBC67]"
                 />
+
                 {formImage && (
-                  <div className="mt-2 h-24 w-full rounded-xl overflow-hidden border border-[#E8E8E3]">
+                  <div className="relative h-28 w-full rounded-xl overflow-hidden border border-[#E8E8E3] group">
                     <img
                       src={formImage}
-                      alt="Preview"
+                      alt="Primary Preview"
                       className="w-full h-full object-cover"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setFormImage("")}
+                      className="absolute top-2 right-2 p-1.5 bg-neutral-900/80 hover:bg-red-600 text-white rounded-lg transition"
+                      title="Remove image"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Multiple Gallery Images Upload */}
+              <div className="p-4 bg-[#FCFBF7] rounded-2xl border border-[#E8E8E3] space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="block text-[#202522] font-bold uppercase tracking-wider text-[11px]">
+                      Multiple Gallery Photos ({formImages.length})
+                    </label>
+                    <span className="text-[10px] text-[#6B706C]">
+                      Upload multiple setup angles and past work photos
+                    </span>
+                  </div>
+                  <label className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-neutral-100 text-[#202522] border border-[#E8E8E3] text-[11px] font-bold cursor-pointer transition shadow-xs">
+                    {uploadingGallery ? (
+                      <>
+                        <Loader2 size={13} className="animate-spin text-[#8CBC67]" />
+                        <span>Uploading...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Plus size={13} className="text-[#8CBC67]" />
+                        <span>Add Photos (Multiple)</span>
+                      </>
+                    )}
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleGalleryUpload}
+                      disabled={uploadingGallery}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+
+                {formImages.length > 0 && (
+                  <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 pt-2">
+                    {formImages.map((imgUrl, idx) => (
+                      <div
+                        key={idx}
+                        className="relative h-16 rounded-xl overflow-hidden border border-[#E8E8E3] group"
+                      >
+                        <img
+                          src={imgUrl}
+                          alt={`Gallery ${idx + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeGalleryImage(idx)}
+                          className="absolute inset-0 bg-neutral-900/60 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition cursor-pointer"
+                          title="Remove photo"
+                        >
+                          <Trash2 size={14} className="text-red-400" />
+                        </button>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
 
               {/* Description */}
               <div>
-                <label className="block text-[#202522] font-bold mb-1.5">
+                <label className="block text-[#202522] font-bold mb-1.5 uppercase tracking-wider text-[11px]">
                   Package Description
                 </label>
                 <textarea
-                  rows={3}
+                  rows={2}
                   placeholder="Short description highlighting what this package offers..."
                   value={formDescription}
                   onChange={(e) => setFormDescription(e.target.value)}
-                  className="w-full px-4 py-2 rounded-xl border border-[#E8E8E3] bg-[#FAF8F5] text-[#202522] focus:outline-none focus:border-[#D7A84B]"
+                  className="w-full px-4 py-2 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-[#202522] focus:outline-none focus:border-[#8CBC67]"
                 />
               </div>
 
               {/* Features (One per line) */}
               <div>
-                <label className="block text-[#202522] font-bold mb-1.5">
+                <label className="block text-[#202522] font-bold mb-1.5 uppercase tracking-wider text-[11px]">
                   Inclusions / Bullet Points (One per line)
                 </label>
                 <textarea
                   rows={3}
-                  placeholder="Metal ring backdrop&#10;LED neon sign&#10;150 metallic balloons"
+                  placeholder="Metal ring backdrop&#10;LED neon sign&#10;150 metallic balloons&#10;Professional balloon artist on-site"
                   value={formFeatures}
                   onChange={(e) => setFormFeatures(e.target.value)}
-                  className="w-full px-4 py-2 rounded-xl border border-[#E8E8E3] bg-[#FAF8F5] text-[#202522] focus:outline-none focus:border-[#D7A84B]"
+                  className="w-full px-4 py-2 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-[#202522] focus:outline-none focus:border-[#8CBC67]"
                 />
               </div>
 
               {/* Popular Switch */}
-              <div className="flex items-center justify-between p-3.5 bg-[#FAF8F5] rounded-xl border border-[#E8E8E3]">
+              <div className="flex items-center justify-between p-3.5 bg-[#FAF5EB] rounded-xl border border-[#D7A84B]/30">
                 <div>
-                  <span className="font-bold text-[#202522] block">
+                  <span className="font-bold text-[#202522] block text-xs">
                     Mark as "Most Popular / Loved"
                   </span>
                   <span className="text-[11px] text-[#6B706C]">
-                    Adds a glowing golden highlight badge on the card
+                    Adds a glowing golden highlight badge on the package card
                   </span>
                 </div>
                 <input
@@ -618,8 +921,8 @@ export default function AdminPackagesPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="flex-1 py-3 px-4 rounded-xl bg-[#D7A84B] hover:bg-[#c2953e] text-[#202522] font-bold shadow-md transition disabled:opacity-50"
+                  disabled={isSubmitting || uploadingPrimary || uploadingGallery}
+                  className="flex-1 py-3 px-4 rounded-xl bg-[#8CBC67] hover:bg-[#7AB055] text-white font-bold shadow-md transition disabled:opacity-50"
                 >
                   {isSubmitting
                     ? "Saving..."

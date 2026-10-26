@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { getAdminToken, API_BASE } from "@/app/lib/api";
+import { getAdminToken, API_BASE, fetchAllBookings } from "@/app/lib/api";
 import {
   LayoutDashboard,
   CalendarCheck,
@@ -38,6 +38,30 @@ export default function AdminLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [recentBookingsAlerts, setRecentBookingsAlerts] = useState<any[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  // Poll / fetch live bookings for bell alert
+  const loadAlerts = async () => {
+    try {
+      const data = await fetchAllBookings();
+      if (Array.isArray(data)) {
+        // Latest 5 bookings
+        const latest = data.slice(0, 6);
+        setRecentBookingsAlerts(latest);
+        // Count bookings from last 24 hours or unconfirmed
+        const pending = data.filter((b) => (b.bookingStatus || "").toUpperCase() === "PENDING" || (b.bookingStatus || "").toUpperCase() === "CONFIRMED").length;
+        setUnreadCount(pending > 0 ? Math.min(pending, 9) : 0);
+      }
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    loadAlerts();
+    const interval = setInterval(loadAlerts, 15000); // live check every 15s
+    return () => clearInterval(interval);
+  }, []);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -398,16 +422,87 @@ export default function AdminLayout({
           </div>
 
           <div className="flex items-center space-x-4 shrink-0">
-            <button className="relative text-[#6B706C] hover:text-[#202522]">
-              <MessageSquare size={20} />
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#F7D6C7]0 rounded-full border-2 border-white"></span>
-            </button>
-            <button className="relative text-[#6B706C] hover:text-[#202522]">
-              <Bell size={20} />
-              <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#F7D6C7]0 text-white text-[8px] font-bold flex items-center justify-center rounded-full border-2 border-white">
-                3
-              </span>
-            </button>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setNotificationsOpen(!notificationsOpen)}
+                className="relative w-10 h-10 rounded-2xl bg-neutral-100/80 hover:bg-[#EEF6EB] hover:text-[#558234] border border-[#E8E8E3] hover:border-[#8CBC67]/40 flex items-center justify-center text-[#202522] transition-all cursor-pointer shadow-2xs group"
+                title="Booking Alerts & Notifications"
+              >
+                <Bell size={18} className="group-hover:scale-105 transition-transform" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-red-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-white shadow-xs">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {notificationsOpen && (
+                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white border border-[#E8E8E3] rounded-3xl shadow-2xl py-3 z-50 overflow-hidden">
+                  <div className="px-4 pb-3 border-b border-[#E8E8E3] flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-7 h-7 rounded-full bg-[#EEF6EB] text-[#8CBC67] flex items-center justify-center font-bold">
+                        <Bell size={14} />
+                      </div>
+                      <h4 className="font-bold text-xs text-[#202522]">Live Booking Alerts</h4>
+                    </div>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#EEF6EB] text-[#558234] font-bold">
+                      {recentBookingsAlerts.length} Orders
+                    </span>
+                  </div>
+
+                  <div className="max-h-80 overflow-y-auto divide-y divide-[#E8E8E3]/60">
+                    {recentBookingsAlerts.length === 0 ? (
+                      <div className="p-6 text-center text-xs text-[#6B706C]">
+                        No new booking alerts at the moment.
+                      </div>
+                    ) : (
+                      recentBookingsAlerts.map((b) => (
+                        <Link
+                          key={b._id}
+                          href="/admin/bookings"
+                          onClick={() => setNotificationsOpen(false)}
+                          className="p-3.5 hover:bg-neutral-50 flex items-start space-x-3 transition block"
+                        >
+                          <div className="w-8 h-8 rounded-xl bg-neutral-100 text-[#8CBC67] flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">
+                            🎉
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between">
+                              <p className="font-bold text-xs text-[#202522] truncate">
+                                {b.customerName || b.user?.name || "New Customer"}
+                              </p>
+                              <span className="text-[10px] font-bold text-emerald-800 font-mono">
+                                ₹{(b.totalAmount || 0).toLocaleString("en-IN")}
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-[#6B706C] truncate mt-0.5 font-medium">
+                              {b.productName || b.theme || "Decoration Setup"}
+                            </p>
+                            <div className="flex items-center space-x-2 text-[10px] text-neutral-400 mt-1">
+                              <span>📍 {b.city || "Delhi"}</span>
+                              <span>•</span>
+                              <span>📅 {b.eventDate ? new Date(b.eventDate).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : "Upcoming"}</span>
+                            </div>
+                          </div>
+                        </Link>
+                      ))
+                    )}
+                  </div>
+
+                  <div className="px-4 pt-2.5 border-t border-[#E8E8E3] bg-[#FCFBF7] flex items-center justify-between">
+                    <span className="text-[10px] text-neutral-400">Updates live every 15s</span>
+                    <Link
+                      href="/admin/bookings"
+                      onClick={() => setNotificationsOpen(false)}
+                      className="text-xs font-bold text-[#8CBC67] hover:underline"
+                    >
+                      View All Bookings →
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
             <div className="relative">
               <button
                 onClick={() => setProfileOpen(!profileOpen)}

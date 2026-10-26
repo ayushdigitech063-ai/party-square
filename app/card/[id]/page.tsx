@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -47,7 +47,7 @@ const toISO = (d: Date) =>
     d.getDate(),
   ).padStart(2, "0")}`;
 
-const toNumber = (v: any) => Number(String(v ?? "").replace(/[₹,\s]/g, "")) || 0;
+const toNumber = (v: any) => Number(String(v ?? "").replace(/[â‚¹,\s]/g, "")) || 0;
 
 const INCLUDED_ITEMS = [
   "Complete balloon decoration setup as per image/theme",
@@ -184,11 +184,11 @@ const DEFAULT_FAQS = [
 const FAQS = DEFAULT_FAQS.map(f => [f.question, f.answer]);
 
 const INFO_TABS = [
+  { key: "about", label: "About this package" },
   { key: "overview", label: "Overview" },
   { key: "included", label: "Inclusions" },
   { key: "not-included", label: "Whats not included" },
   { key: "why-us", label: "Why Us" },
-  { key: "about", label: "About this package" },
   { key: "guidelines", label: "Guidelines" },
   { key: "cancel", label: "Cancellation/Refunds" },
   { key: "faqs", label: "FAQs" },
@@ -204,7 +204,7 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
 
   // New UI state (hooks must stay above the early returns)
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("about");
   const [pincode, setPincode] = useState("");
   const [pincodeChecked, setPincodeChecked] = useState(false);
   const [pincodeError, setPincodeError] = useState("");
@@ -457,7 +457,7 @@ export default function ProductDetailPage() {
 
   const totalPrice = numericPrice * quantity;
 
-  const formattedTotalPrice = `₹${totalPrice.toLocaleString("en-IN")}`;
+  const formattedTotalPrice = `â‚¹${totalPrice.toLocaleString("en-IN")}`;
 
   const baseOriginalPrice =
     Number(String(foundItem.originalPrice || "").replace(/[^0-9]/g, "")) ||
@@ -465,7 +465,7 @@ export default function ProductDetailPage() {
 
   const originalPrice = baseOriginalPrice * quantity;
 
-  const formattedOriginalPrice = `₹${Math.round(originalPrice).toLocaleString("en-IN")}`;
+  const formattedOriginalPrice = `â‚¹${Math.round(originalPrice).toLocaleString("en-IN")}`;
 
   const discountPercent =
     originalPrice > totalPrice && totalPrice > 0
@@ -479,16 +479,16 @@ export default function ProductDetailPage() {
   const deliveryCharge = pincodeChecked ? DELIVERY_CHARGE : 0;
   const addonsTotal = selectedAddons.reduce((sum, item) => sum + item.price, 0);
   const grandTotal = totalPrice + deliveryCharge + addonsTotal;
-  const formattedGrandTotal = `₹${grandTotal.toLocaleString("en-IN")}`;
+  const formattedGrandTotal = `â‚¹${grandTotal.toLocaleString("en-IN")}`;
 
   const handleToggleAddon = (addon: AddOnItem) => {
     setSelectedAddons((prev) => {
       const exists = prev.some((a) => a.id === addon.id);
       if (exists) {
-        toast(`Removed ${addon.name}`, { icon: "ℹ️" });
+        toast(`Removed ${addon.name}`, { icon: "â„¹ï¸" });
         return prev.filter((a) => a.id !== addon.id);
       } else {
-        toast.success(`Added ${addon.name} (+₹${addon.price.toLocaleString("en-IN")})`);
+        toast.success(`Added ${addon.name} (+â‚¹${addon.price.toLocaleString("en-IN")})`);
         return [...prev, addon];
       }
     });
@@ -525,7 +525,7 @@ export default function ProductDetailPage() {
   const handleBookNow = (foundItem: any) => {
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     if (!token) {
-      toast("Please login to proceed with your booking", { icon: "🔒" });
+      toast("Please login to proceed with your booking", { icon: "ðŸ”’" });
       setShowLoginModal(true);
       return;
     }
@@ -542,11 +542,24 @@ export default function ProductDetailPage() {
   /* ---------------- PINCODE ---------------- */
 
   const handleCheckPincode = () => {
-    if (!/^\d{6}$/.test(pincode)) {
+    const cleanPin = pincode.trim();
+    if (!/^\d{6}$/.test(cleanPin)) {
       setPincodeChecked(false);
       setPincodeError("Please enter a valid 6-digit pincode");
       return;
     }
+
+    // Check if this product has custom serviceable pincodes configured
+    const customPins = (foundItem as any)?.serviceablePincodes;
+    if (Array.isArray(customPins) && customPins.length > 0) {
+      const isAllowed = customPins.some((p: string) => p.trim() === cleanPin);
+      if (!isAllowed) {
+        setPincodeChecked(false);
+        setPincodeError(`Sorry, this package is currently not serviceable at pincode ${cleanPin}.`);
+        return;
+      }
+    }
+
     setPincodeError("");
     setPincodeChecked(true);
   };
@@ -836,7 +849,7 @@ export default function ProductDetailPage() {
                       }
                       className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-md flex items-center justify-center text-neutral-800 transition cursor-pointer"
                     >
-                      ‹
+                      â€¹
                     </button>
                   )}
 
@@ -852,7 +865,7 @@ export default function ProductDetailPage() {
                       }
                       className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-md flex items-center justify-center text-neutral-800 transition cursor-pointer"
                     >
-                      ›
+                      â€º
                     </button>
                   )}
                 </div>
@@ -1017,7 +1030,15 @@ export default function ProductDetailPage() {
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
-                    {WHY_US_ITEMS.map((item, idx) => (
+                    {((foundItem as any)?.whyUs && (foundItem as any).whyUs.length > 0
+                      ? (foundItem as any).whyUs.map((w: string, idx: number) => {
+                          const parts = w.split(":");
+                          const title = parts.length > 1 ? parts[0].trim() : "Party Square Guarantee";
+                          const desc = parts.length > 1 ? parts.slice(1).join(":").trim() : w;
+                          return { title, desc };
+                        })
+                      : WHY_US_ITEMS
+                    ).map((item: any, idx: number) => (
                       <div
                         key={idx}
                         className="p-3.5 rounded-2xl border border-amber-100/80 bg-amber-50/40"
@@ -1076,7 +1097,15 @@ export default function ProductDetailPage() {
                   </p>
 
                   <div className="space-y-2.5 mt-3">
-                    {GUIDELINES_ITEMS.map((item, idx) => (
+                    {((foundItem as any)?.guidelines && (foundItem as any).guidelines.length > 0
+                      ? (foundItem as any).guidelines.map((g: string, idx: number) => {
+                          const parts = g.split(":");
+                          const title = parts.length > 1 ? parts[0].trim() : `Guideline ${idx + 1}`;
+                          const desc = parts.length > 1 ? parts.slice(1).join(":").trim() : g;
+                          return { title, desc };
+                        })
+                      : GUIDELINES_ITEMS
+                    ).map((item: any, idx: number) => (
                       <div
                         key={idx}
                         className="p-3.5 rounded-xl border border-neutral-100 bg-neutral-50/60"
@@ -1211,7 +1240,7 @@ export default function ProductDetailPage() {
                 <span className="text-xs sm:text-sm text-neutral-500">
                   ({(hasReviews ? rawReviewCount : 126).toLocaleString("en-IN")} reviews)
                 </span>
-                <span className="text-xs text-[#8CBC67] font-semibold hidden sm:inline">• Verified Decor</span>
+                <span className="text-xs text-[#8CBC67] font-semibold hidden sm:inline">â€¢ Verified Decor</span>
               </div>
 
               {/* PRICE & DISCOUNT */}
@@ -1318,7 +1347,7 @@ export default function ProductDetailPage() {
                 <p className="mt-2 text-xs font-semibold text-emerald-700">
                   {deliveryCharge > 0
                     ? `For this pincode you have to pay delivery charge of Rs ${deliveryCharge}`
-                    : "Service available in your area — free delivery for this pincode"}
+                    : "Service available in your area â€” free delivery for this pincode"}
                 </p>
               )}
 
@@ -1443,7 +1472,7 @@ export default function ProductDetailPage() {
                       {selectedAddons.length} Add-on{selectedAddons.length > 1 ? "s" : ""} selected
                     </p>
                     <p className="text-xs text-[#8CBC67] font-semibold">
-                      +₹{addonsTotal.toLocaleString("en-IN")} • Tap to view/edit
+                      +â‚¹{addonsTotal.toLocaleString("en-IN")} â€¢ Tap to view/edit
                     </p>
                   </div>
 
@@ -1480,7 +1509,7 @@ export default function ProductDetailPage() {
                 <div className="flex justify-between gap-3 text-neutral-700">
                   <span className="truncate">
                     {foundItem.name}
-                    {quantity > 1 ? ` × ${quantity}` : ""}
+                    {quantity > 1 ? ` Ã— ${quantity}` : ""}
                   </span>
                   <span className="font-semibold shrink-0">
                     {formattedTotalPrice}
@@ -1494,7 +1523,7 @@ export default function ProductDetailPage() {
                       <span className="truncate">{ad.name}</span>
                     </span>
                     <span className="font-semibold shrink-0">
-                      ₹{ad.price.toLocaleString("en-IN")}
+                      â‚¹{ad.price.toLocaleString("en-IN")}
                     </span>
                   </div>
                 ))}
@@ -1507,7 +1536,7 @@ export default function ProductDetailPage() {
                         Checked for {pincode}
                       </span>
                     </span>
-                    <span className="font-semibold">₹{deliveryCharge}</span>
+                    <span className="font-semibold">â‚¹{deliveryCharge}</span>
                   </div>
                 )}
               </div>
@@ -1574,11 +1603,58 @@ export default function ProductDetailPage() {
               {/* CHECKOUT MESSAGE */}
 
               <p className="text-center text-xs text-neutral-400 mt-4">
-                Secure checkout • Guaranteed satisfaction
+                Secure checkout â€¢ Guaranteed satisfaction
               </p>
             </div>
           </div>
         </section>
+
+        {/* =====================================================
+            ABOUT THIS PACKAGE DETAILED SECTION (As requested by client)
+        ====================================================== */}
+        {(foundItem?.fullDescription || foundItem?.description) && (
+          <div id="about" className="scroll-mt-28 mt-10">
+            <section className="bg-white rounded-3xl border border-[#E8E8E3] shadow-xs p-6 sm:p-8">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-neutral-100 gap-2">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#8CBC67]">
+                    Detailed Overview & Specifications
+                  </span>
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-neutral-900 mt-1">
+                    About the Package
+                  </h3>
+                </div>
+                <span className="text-xs text-[#6B706C] bg-neutral-100 px-3 py-1 rounded-full font-medium w-max">
+                  Verified Setup Details
+                </span>
+              </div>
+
+              <div className="mt-5 space-y-4">
+                <p className="text-sm sm:text-base leading-relaxed text-[#202522] whitespace-pre-line break-words [overflow-wrap:anywhere]">
+                  {foundItem?.fullDescription || foundItem?.description}
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3">
+                  <div className="p-4 rounded-2xl bg-[#EEF6EB]/50 border border-[#8CBC67]/30">
+                    <p className="text-[11px] text-[#6B706C] uppercase font-bold tracking-wider">Setup Duration</p>
+                    <p className="text-sm font-bold text-[#202522] mt-1">Approx. 1.5 - 2 Hours</p>
+                    <p className="text-xs text-[#6B706C] mt-0.5">Professional on-site decorator</p>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-[#EEF6EB]/50 border border-[#8CBC67]/30">
+                    <p className="text-[11px] text-[#6B706C] uppercase font-bold tracking-wider">Service Mode</p>
+                    <p className="text-sm font-bold text-[#202522] mt-1">Doorstep Execution</p>
+                    <p className="text-xs text-[#6B706C] mt-0.5">All materials & tools included</p>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-[#EEF6EB]/50 border border-[#8CBC67]/30">
+                    <p className="text-[11px] text-[#6B706C] uppercase font-bold tracking-wider">Customization</p>
+                    <p className="text-sm font-bold text-[#202522] mt-1">Colors & Balloon Themes</p>
+                    <p className="text-xs text-[#6B706C] mt-0.5">Tailored to your celebration</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        )}
 
         {/* =====================================================
             ADD-ONS (scroll target for step 3 and the floating bar)
@@ -1750,7 +1826,7 @@ export default function ProductDetailPage() {
           onClick={() => handleBookNow(foundItem)}
           className="ml-1 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#8CBC67] hover:bg-[#7AB055] active:scale-95 text-white text-xs sm:text-sm font-bold cursor-pointer transition whitespace-nowrap shadow-md flex items-center gap-1.5"
         >
-          <span>₹{grandTotal.toLocaleString("en-IN")} - Book now</span>
+          <span>â‚¹{grandTotal.toLocaleString("en-IN")} - Book now</span>
         </button>
       </div>
 

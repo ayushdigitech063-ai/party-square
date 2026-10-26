@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
   MapPin,
+  ImageIcon,
+  Upload,
   Plus,
   Search,
   Edit2,
@@ -29,9 +31,11 @@ import {
   createCity,
   updateCity,
   deleteCity,
+  uploadImage,
   CityItem,
   CityFaq
 } from "@/app/lib/api";
+import RichContentEditor from "@/app/components/RichContentEditor";
 
 export default function AdminCitiesPage() {
   const [cities, setCities] = useState<CityItem[]>([]);
@@ -47,6 +51,8 @@ export default function AdminCitiesPage() {
   const [formOrder, setFormOrder] = useState<number>(0);
   const [formIsActive, setFormIsActive] = useState<boolean>(true);
   const [formIsPopular, setFormIsPopular] = useState<boolean>(false);
+  const [formIcon, setFormIcon] = useState("");
+  const [uploadingIcon, setUploadingIcon] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   // SEO & Content Modal State
@@ -62,6 +68,7 @@ export default function AdminCitiesPage() {
   const [seoContent, setSeoContent] = useState("");
   const [seoServiceAreas, setSeoServiceAreas] = useState("");
   const [seoFaqs, setSeoFaqs] = useState<CityFaq[]>([]);
+  const [seoCustomSchema, setSeoCustomSchema] = useState("");
   const [savingSeo, setSavingSeo] = useState(false);
 
   // Delete Modal State
@@ -92,6 +99,7 @@ export default function AdminCitiesPage() {
     setFormOrder(cities.length);
     setFormIsActive(true);
     setFormIsPopular(false);
+    setFormIcon("");
     setIsModalOpen(true);
   };
 
@@ -103,6 +111,7 @@ export default function AdminCitiesPage() {
     setFormOrder(city.order ?? 0);
     setFormIsActive(city.isActive);
     setFormIsPopular(city.isPopular);
+    setFormIcon(city.icon || "");
     setIsModalOpen(true);
   };
 
@@ -129,6 +138,7 @@ export default function AdminCitiesPage() {
       city.content ||
         `Looking for professional party and balloon decorators in ${city.name}? Party Square brings you stunning balloon arches, neon backdrops, theme birthday setups, and romantic room decor directly to your doorstep. Our verified decorators in ${city.name} ensure quick 2-hour setups, high-grade metallic balloons, and 100% on-time execution for birthdays, anniversaries, baby showers, and festive occasions.`
     );
+    setSeoCustomSchema(city.customSchema || "");
     setSeoServiceAreas(
       Array.isArray(city.serviceAreas) && city.serviceAreas.length > 0
         ? city.serviceAreas.join(", ")
@@ -155,6 +165,32 @@ export default function AdminCitiesPage() {
     setIsSeoModalOpen(true);
   };
 
+  
+  // Handle City Icon upload
+  const handleIconUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file (PNG, JPG, SVG, WebP)");
+      return;
+    }
+
+    try {
+      setUploadingIcon(true);
+      const res = await uploadImage(file);
+      const imgUrl = typeof res === "string" ? res : (res as any)?.url || "";
+      if (imgUrl) {
+        setFormIcon(imgUrl);
+        toast.success("City icon uploaded successfully!");
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Failed to upload image");
+    } finally {
+      setUploadingIcon(false);
+    }
+  };
+
   // Submit Quick Add/Edit Form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -171,6 +207,7 @@ export default function AdminCitiesPage() {
         order: Number(formOrder) || 0,
         isActive: formIsActive,
         isPopular: formIsPopular,
+        icon: formIcon.trim(),
       };
 
       if (editingCity?._id) {
@@ -219,6 +256,7 @@ export default function AdminCitiesPage() {
         content: seoContent.trim(),
         serviceAreas: parsedAreas,
         faqs: validFaqs,
+        customSchema: seoCustomSchema.trim(),
       };
 
       await updateCity(seoCity._id, payload);
@@ -472,8 +510,12 @@ export default function AdminCitiesPage() {
                       {/* City Name & Slug */}
                       <td className="py-4 px-6">
                         <div className="flex items-center space-x-3">
-                          <div className="w-9 h-9 rounded-xl bg-[#EEF6EB] text-[#8CBC67] flex items-center justify-center font-bold">
-                            <MapPin size={17} />
+                          <div className="w-9 h-9 rounded-xl bg-[#EEF6EB] text-[#8CBC67] flex items-center justify-center font-bold overflow-hidden border border-[#8CBC67]/20 flex-shrink-0">
+                            {city.icon ? (
+                              <img src={city.icon} alt={city.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <MapPin size={17} />
+                            )}
                           </div>
                           <div>
                             <p className="font-bold text-sm text-[#202522]">{city.name}</p>
@@ -810,19 +852,13 @@ export default function AdminCitiesPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-neutral-800 mb-1">
-                      Localized Content & Area Narrative <span className="text-neutral-400 font-normal">(Crucial for Google Ranking)</span>
-                    </label>
-                    <textarea
-                      rows={7}
+                    <RichContentEditor
+                      label="Localized Content & Area Narrative (Crucial for Google Ranking - Supports Links & Formatting)"
                       value={seoContent}
-                      onChange={(e) => setSeoContent(e.target.value)}
+                      onChange={(val) => setSeoContent(val)}
                       placeholder={`Describe services in ${seoCity.name}, mention local landmarks, delivery speed, setup guarantees, and balloon quality...`}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-200 bg-neutral-50 text-xs text-neutral-900 focus:outline-none focus:border-[#8CBC67] leading-relaxed"
+                      rows={6}
                     />
-                    <p className="text-[10px] text-neutral-400 mt-1">
-                      Tip: Mention popular neighborhoods, 2-hour doorstep service, and why users in {seoCity.name} choose Party Square.
-                    </p>
                   </div>
                 </div>
               )}
@@ -921,12 +957,11 @@ export default function AdminCitiesPage() {
                           className="w-full px-3 py-2 rounded-xl border border-neutral-200 bg-white text-xs text-neutral-900 font-semibold focus:outline-none focus:border-[#8CBC67]"
                         />
 
-                        <textarea
-                          rows={2}
+                        <RichContentEditor
                           value={faq.answer}
-                          onChange={(e) => handleFaqChange(index, "answer", e.target.value)}
-                          placeholder="e.g. Yes, we have express decorators stationed across Delhi for urgent setups."
-                          className="w-full px-3 py-2 rounded-xl border border-neutral-200 bg-white text-xs text-neutral-700 focus:outline-none focus:border-[#8CBC67]"
+                          onChange={(val) => handleFaqChange(index, "answer", val)}
+                          placeholder="e.g. Yes, we have express decorators stationed across Delhi for urgent setups. Click Link to insert URLs..."
+                          rows={2}
                         />
                       </div>
                     ))}
@@ -936,6 +971,36 @@ export default function AdminCitiesPage() {
                         No FAQs added yet. Click &ldquo;Add FAQ&rdquo; above to boost Google Rich Snippet ranking.
                       </div>
                     )}
+                  </div>
+
+                  {/* CUSTOM SCHEMA INJECTION SECTION */}
+                  <div className="pt-6 border-t border-neutral-200 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <label className="block text-xs font-bold text-neutral-900 flex items-center gap-1.5">
+                          <Sparkles size={14} className="text-[#8CBC67]" />
+                          <span>Custom JSON-LD Schema (Optional / Advanced SEO)</span>
+                        </label>
+                        <p className="text-[10px] text-neutral-500">
+                          Paste custom JSON-LD schema (e.g. LocalBusiness, Organization, or Service schema). It will be injected directly into &lt;head&gt; for Googlebot.
+                        </p>
+                      </div>
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-neutral-100 text-neutral-600 border border-neutral-200">
+                        application/ld+json
+                      </span>
+                    </div>
+
+                    <textarea
+                      rows={6}
+                      value={seoCustomSchema}
+                      onChange={(e) => setSeoCustomSchema(e.target.value)}
+                      placeholder={`{\n  "@context": "https://schema.org",\n  "@type": "LocalBusiness",\n  "name": "Party Square ${seoCity?.name || ""}",\n  "telephone": "+91-XXXXXXXXXX"\n}`}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-200 bg-neutral-900 text-emerald-400 font-mono text-xs focus:outline-none focus:border-[#8CBC67]"
+                      spellCheck={false}
+                    />
+                    <p className="text-[10px] text-neutral-400">
+                      Note: City FAQs above already auto-generate valid FAQPage schema automatically. Use this field if your SEO team provides specific custom JSON-LD.
+                    </p>
                   </div>
                 </div>
               )}
@@ -1042,6 +1107,59 @@ export default function AdminCitiesPage() {
                 />
                 <p className="text-[10px] text-neutral-400 mt-0.5">
                   Lower numbers appear first in the customer city selector.
+                </p>
+              </div>
+
+              {/* City Icon / Landmark Image Upload (Point 18) */}
+              <div>
+                <label className="block text-xs font-bold text-neutral-800 mb-1">
+                  City Icon / Landmark Image (Optional)
+                </label>
+                <div className="flex items-center gap-3">
+                  <div className="w-14 h-14 rounded-2xl border-2 border-dashed border-neutral-200 bg-neutral-50 flex items-center justify-center overflow-hidden flex-shrink-0 relative">
+                    {uploadingIcon ? (
+                      <Loader2 size={18} className="animate-spin text-[#8CBC67]" />
+                    ) : formIcon ? (
+                      <img src={formIcon} alt="City Icon" className="w-full h-full object-cover" />
+                    ) : (
+                      <ImageIcon size={20} className="text-neutral-400" />
+                    )}
+                  </div>
+
+                  <div className="flex-1 space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <label className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-xs font-semibold cursor-pointer transition">
+                        <Upload size={13} />
+                        <span>{formIcon ? "Change Icon" : "Upload Icon"}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleIconUpload}
+                          disabled={uploadingIcon}
+                          className="hidden"
+                        />
+                      </label>
+                      {formIcon && (
+                        <button
+                          type="button"
+                          onClick={() => setFormIcon("")}
+                          className="px-2.5 py-1.5 rounded-xl text-xs text-red-600 hover:bg-red-50 transition cursor-pointer"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                    <input
+                      type="text"
+                      value={formIcon}
+                      onChange={(e) => setFormIcon(e.target.value)}
+                      placeholder="Or paste image URL (e.g. /delhi-icon.png or https://...)"
+                      className="w-full px-3 py-1.5 rounded-xl border border-neutral-200 bg-white text-[11px] text-neutral-800 focus:outline-none focus:border-[#8CBC67]"
+                    />
+                  </div>
+                </div>
+                <p className="text-[10px] text-neutral-400 mt-1">
+                  Shows in the customer city selector next to the city name (e.g. India Gate, Gateway of India).
                 </p>
               </div>
 

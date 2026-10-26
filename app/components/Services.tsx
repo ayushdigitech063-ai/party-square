@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Sparkles, CheckCircle2 } from "lucide-react";
-import { fetchHomePageSection } from "../lib/api";
+import { fetchHomePageSection, fetchCategories } from "../lib/api";
 
 interface ServiceCard {
   id?: number | string;
@@ -84,6 +84,25 @@ export default function Services() {
           if (sec.contentData) {
             setData((prev) => ({ ...prev, ...sec.contentData }));
           }
+        }
+
+        // Also fetch category images to dynamically update cards like Home/Wall Decoration
+        const catsRes = await fetchCategories();
+        const catList = Array.isArray(catsRes) ? catsRes : catsRes?.categories || [];
+        const wallCat = catList.find((c: any) => 
+          c.slug === "wall-decoration" || 
+          c.name?.toLowerCase().includes("wall")
+        );
+        if (isMounted && wallCat && wallCat.image) {
+          const imgUrl = wallCat.image;
+          setData((prev) => ({
+            ...prev,
+            otherServices: prev.otherServices.map((srv) => 
+              srv.link === "/services/wall-decoration"
+                ? { ...srv, image: imgUrl }
+                : srv
+            ),
+          }));
         }
       } catch (e) {
         // Fallback default retained

@@ -45,9 +45,10 @@ export default function CityFaqAccordion({ faqs }: Props) {
             </button>
 
             {isOpen && (
-              <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-[#6B706C] leading-relaxed border-t border-neutral-100/70 bg-[#FCFBF7]/50">
-                {faq.answer}
-              </div>
+              <div 
+                className="px-5 pb-5 pt-1 text-xs sm:text-sm text-[#6B706C] leading-relaxed border-t border-neutral-100/70 bg-[#FCFBF7]/50 prose prose-sm max-w-none break-words"
+                dangerouslySetInnerHTML={{ __html: faq.answer }}
+              />
             )}
           </div>
         );

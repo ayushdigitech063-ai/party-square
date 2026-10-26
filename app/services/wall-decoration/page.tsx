@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 
-import { fetchProducts } from "@/app/lib/api";
+import { fetchProducts, fetchCategories } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -67,11 +67,24 @@ export default function WallDecorationPage() {
   const router = useRouter();
   const { selectedCity } = useCity();
   const [liveProducts, setLiveProducts] = useState<any[]>(wallDecorationProducts);
+  const [categoryImage, setCategoryImage] = useState<string>("/wallbg.png");
 
   useEffect(() => {
     let active = true;
     async function loadDynamic() {
       try {
+        // 1. Fetch Wall Decoration Category Image from Database
+        const catsRes = await fetchCategories();
+        const catList = Array.isArray(catsRes) ? catsRes : catsRes?.categories || [];
+        const wallCat = catList.find((c: any) => 
+          c.slug === "wall-decoration" || 
+          c.name?.toLowerCase().includes("wall")
+        );
+        if (active && wallCat && wallCat.image) {
+          setCategoryImage(wallCat.image);
+        }
+
+        // 2. Fetch Wall Decoration Products
         const res = await fetchProducts({ category: 'wall-decoration', limit: 100 });
         let list: any[] = res.products || [];
         if (active && list.length > 0) {
@@ -194,12 +207,12 @@ export default function WallDecorationPage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans selection:bg-[#8CBC67] selection:text-white">
       
-      {/* ================= HERO BANNER (FULLY FIXED & CENTERED) ================= */}
+      {/* ================= HERO BANNER (DYNAMIC CATEGORY IMAGE) ================= */}
       <section className="relative h-[320px] sm:h-[340px] md:h-[360px] px-4 sm:px-6 flex items-center justify-center text-white overflow-hidden">
         <div 
-          className="absolute inset-0 z-0 w-full h-full"
+          className="absolute inset-0 z-0 w-full h-full transition-all duration-700"
           style={{
-            backgroundImage: "url('/wallbg.png')",
+            backgroundImage: `url('${categoryImage}')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat'

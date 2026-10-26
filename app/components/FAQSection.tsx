@@ -153,9 +153,10 @@ const FAQSection = () => {
                 >
                   <div className="overflow-hidden">
                     <div className="border-t border-[#E8E8E3] px-5 pb-6 pt-5 sm:px-7 sm:pl-[4.75rem]">
-                      <p className="text-sm leading-7 text-[#6B706C] sm:text-base">
-                        {faq.answer}
-                      </p>
+                      <div
+                        className="text-sm leading-7 text-[#6B706C] sm:text-base prose prose-sm max-w-none break-words"
+                        dangerouslySetInnerHTML={{ __html: faq.answer }}
+                      />
                     </div>
                   </div>
                 </div>

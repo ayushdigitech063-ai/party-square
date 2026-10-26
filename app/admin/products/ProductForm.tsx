@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -72,6 +72,11 @@ export default function ProductForm({
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>(
     initialData?.subcategory ? (typeof initialData.subcategory === "object" ? initialData.subcategory._id : initialData.subcategory) : ""
   );
+  const [subSubcategories, setSubSubcategories] = useState<CategoryItem[]>([]);
+  const [selectedSubSubcategory, setSelectedSubSubcategory] = useState<string>(
+    (initialData as any)?.subSubcategory ? (typeof (initialData as any).subSubcategory === "object" ? (initialData as any).subSubcategory._id : (initialData as any).subSubcategory) : ""
+  );
+  const [loadingSubSubs, setLoadingSubSubs] = useState(false);
 
   // Images
   const [image, setImage] = useState(initialData?.image || "");
@@ -93,6 +98,32 @@ export default function ProductForm({
       : ["Venue charges", "Food & catering items"]
   );
   const [newNotIncludedItem, setNewNotIncludedItem] = useState("");
+
+  // Why Us & Brand USPs
+  const [whyUsList, setWhyUsList] = useState<string[]>(
+    initialData?.whyUs && initialData.whyUs.length > 0
+      ? initialData.whyUs
+      : [
+          "100% On-Time Setup Guarantee: Decorators arrive strictly on time.",
+          "Verified & Trained Decorators: Identity-checked professional team.",
+          "Zero Wall Damage Guarantee: Removable tapes & wall-safe adhesives.",
+          "100% Exact Setup as Shown: High grade premium balloons & materials."
+        ]
+  );
+  const [newWhyUsItem, setNewWhyUsItem] = useState("");
+
+  // Guidelines & Preparation Instructions
+  const [guidelinesList, setGuidelinesList] = useState<string[]>(
+    initialData?.guidelines && initialData.guidelines.length > 0
+      ? initialData.guidelines
+      : [
+          "Continuous Power Socket: Electric plug point within 5-10m for inflator & lights.",
+          "Stool or Step Ladder: Sturdy stool/ladder for high ceiling/backdrop setups.",
+          "Clean & Ready Space: Clear the decoration area before arrival.",
+          "Venue Permission: Ensure society/gate entry permission is pre-arranged."
+        ]
+  );
+  const [newGuidelinesItem, setNewGuidelinesItem] = useState("");
 
   const [cancellationPolicy, setCancellationPolicy] = useState(
     initialData?.cancellationPolicy ||
@@ -129,6 +160,33 @@ export default function ProductForm({
     }
     loadCats();
   }, []);
+
+  // 3. Fetch Sub-Subcategories when Subcategory changes
+  useEffect(() => {
+    if (!selectedSubcategory) {
+      setSubSubcategories([]);
+      setSelectedSubSubcategory("");
+      return;
+    }
+
+    async function loadSubSubs() {
+      try {
+        setLoadingSubSubs(true);
+        const data = await fetchSubcategories(selectedSubcategory);
+        setSubSubcategories(data);
+
+        if (selectedSubSubcategory && !data.some((s) => s._id === selectedSubSubcategory)) {
+          setSelectedSubSubcategory("");
+        }
+      } catch (err: any) {
+        console.error("Failed to load sub-subcategories", err);
+      } finally {
+        setLoadingSubSubs(false);
+      }
+    }
+
+    loadSubSubs();
+  }, [selectedSubcategory]);
 
   // 2. Fetch Subcategories when Category changes
   useEffect(() => {
@@ -177,7 +235,9 @@ export default function ProductForm({
   // Handle Parent Category Change explicitly
   const handleCategoryChange = (newCatId: string) => {
     setSelectedCategory(newCatId);
-    setSelectedSubcategory(""); // Reset subcategory when parent changes
+    setSelectedSubcategory("");
+    setSelectedSubSubcategory("");
+    setSubSubcategories([]);
   };
 
   // Auto slug generation from name
@@ -260,6 +320,28 @@ export default function ProductForm({
     setNotIncludedList(notIncludedList.filter((_, i) => i !== idx));
   };
 
+  const addWhyUs = () => {
+    if (newWhyUsItem.trim()) {
+      setWhyUsList([...whyUsList, newWhyUsItem.trim()]);
+      setNewWhyUsItem("");
+    }
+  };
+
+  const removeWhyUs = (idx: number) => {
+    setWhyUsList(whyUsList.filter((_, i) => i !== idx));
+  };
+
+  const addGuidelines = () => {
+    if (newGuidelinesItem.trim()) {
+      setGuidelinesList([...guidelinesList, newGuidelinesItem.trim()]);
+      setNewGuidelinesItem("");
+    }
+  };
+
+  const removeGuidelines = (idx: number) => {
+    setGuidelinesList(guidelinesList.filter((_, i) => i !== idx));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -295,6 +377,7 @@ export default function ProductForm({
         showUnitPrice,
         category: selectedCategory,
         subcategory: selectedSubcategory || null,
+        subSubcategory: selectedSubSubcategory || null,
         image: image.trim(),
         images,
         included: includedList,
@@ -411,15 +494,52 @@ export default function ProductForm({
 
             <div>
               <label className="block text-xs font-bold text-[#202522] uppercase tracking-wider mb-2">
-                Badge / Tag
+                Badge / Tag (Photo Card Highlight)
               </label>
-              <input
-                type="text"
-                value={badge}
-                onChange={(e) => setBadge(e.target.value)}
-                placeholder="e.g. Verified Quality Product"
-                className="w-full px-4 py-3 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-sm text-[#202522] focus:outline-none focus:ring-2 focus:ring-[#8CBC67]/30 focus:border-[#8CBC67] transition"
-              />
+              <div className="space-y-2">
+                <select
+                  value={
+                    [
+                      "Premium Product",
+                      "Verified Quality Product",
+                      "Best Seller",
+                      "Trending Decor",
+                      "Most Popular",
+                      "New Arrival",
+                      "Festive Special",
+                      "Budget Friendly",
+                      "None"
+                    ].includes(badge)
+                      ? badge
+                      : "Custom"
+                  }
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val === "None") setBadge("");
+                    else if (val !== "Custom") setBadge(val);
+                  }}
+                  className="w-full px-4 py-3 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-sm font-semibold text-[#202522] focus:outline-none focus:ring-2 focus:ring-[#8CBC67]/30 focus:border-[#8CBC67] transition"
+                >
+                  <option value="Premium Product">âœ¨ Premium Product</option>
+                  <option value="Verified Quality Product">âœ“ Verified Quality Product</option>
+                  <option value="Best Seller">ðŸ”¥ Best Seller</option>
+                  <option value="Trending Decor">ðŸ“ˆ Trending Decor</option>
+                  <option value="Most Popular">â­ Most Popular</option>
+                  <option value="New Arrival">ðŸŽ‰ New Arrival</option>
+                  <option value="Festive Special">ðŸª” Festive Special</option>
+                  <option value="Budget Friendly">ðŸ’° Budget Friendly</option>
+                  <option value="None">ðŸš« No Badge (Blank)</option>
+                  <option value="Custom">âœï¸ Custom Badge (Write Below)...</option>
+                </select>
+
+                <input
+                  type="text"
+                  value={badge}
+                  onChange={(e) => setBadge(e.target.value)}
+                  placeholder="Or type custom badge text here..."
+                  className="w-full px-4 py-2.5 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-xs text-[#202522] focus:outline-none focus:ring-2 focus:ring-[#8CBC67]/30 focus:border-[#8CBC67] transition"
+                />
+              </div>
             </div>
           </div>
 
@@ -460,7 +580,7 @@ export default function ProductForm({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div>
               <label className="block text-xs font-bold text-[#202522] uppercase tracking-wider mb-2">
-                Sale Price (₹) <span className="text-red-500">*</span>
+                Sale Price (ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¹) <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -475,7 +595,7 @@ export default function ProductForm({
 
             <div>
               <label className="block text-xs font-bold text-[#202522] uppercase tracking-wider mb-2">
-                Original Price (₹) (Optional strike-through)
+                Original Price (ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¹) (Optional strike-through)
               </label>
               <input
                 type="number"
@@ -537,11 +657,11 @@ export default function ProductForm({
             Category Hierarchy
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Category Dropdown */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* 1. Category Dropdown */}
             <div>
               <label className="block text-xs font-bold text-[#202522] uppercase tracking-wider mb-2">
-                Category <span className="text-red-500">*</span>
+                1. Category <span className="text-red-500">*</span>
               </label>
               <select
                 required
@@ -562,14 +682,17 @@ export default function ProductForm({
               </span>
             </div>
 
-            {/* Cascading Subcategory Dropdown */}
+            {/* 2. Cascading Subcategory Dropdown */}
             <div>
               <label className="block text-xs font-bold text-[#202522] uppercase tracking-wider mb-2">
-                Subcategory (Filtered by Selected Category)
+                2. Subcategory (Filtered by Category)
               </label>
               <select
                 value={selectedSubcategory}
-                onChange={(e) => setSelectedSubcategory(e.target.value)}
+                onChange={(e) => {
+                  setSelectedSubcategory(e.target.value);
+                  setSelectedSubSubcategory("");
+                }}
                 disabled={!selectedCategory || loadingSubs}
                 className="w-full px-4 py-3 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-sm text-[#202522] focus:outline-none focus:ring-2 focus:ring-[#8CBC67]/30 focus:border-[#8CBC67] transition disabled:opacity-50"
               >
@@ -587,7 +710,38 @@ export default function ProductForm({
                 ))}
               </select>
               <span className="text-[11px] text-[#6B706C] mt-1 block">
-                Populates automatically based on the chosen parent category
+                Sub-classification under selected parent
+              </span>
+            </div>
+
+            {/* 3. Sub-Sub Category Dropdown (3rd Tier Hierarchy) */}
+            <div>
+              <label className="block text-xs font-bold text-[#202522] uppercase tracking-wider mb-2">
+                3. Sub-Sub Category (Optional)
+              </label>
+              <select
+                value={selectedSubSubcategory}
+                onChange={(e) => setSelectedSubSubcategory(e.target.value)}
+                disabled={!selectedSubcategory || loadingSubSubs}
+                className="w-full px-4 py-3 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-sm text-[#202522] focus:outline-none focus:ring-2 focus:ring-[#8CBC67]/30 focus:border-[#8CBC67] transition disabled:opacity-50"
+              >
+                <option value="">
+                  {loadingSubSubs
+                    ? "Loading sub-subcategories..."
+                    : !selectedSubcategory
+                    ? "-- Select a subcategory first --"
+                    : subSubcategories.length === 0
+                    ? "-- No child categories found --"
+                    : "-- Select Sub-Sub Category (Optional) --"}
+                </option>
+                {subSubcategories.map((ss: CategoryItem) => (
+                  <option key={ss._id} value={ss._id}>
+                    {ss.name}
+                  </option>
+                ))}
+              </select>
+              <span className="text-[11px] text-[#6B706C] mt-1 block">
+                Deepest tier (e.g. Birthday &gt; Kids &gt; 1st Birthday)
               </span>
             </div>
           </div>
@@ -665,18 +819,14 @@ export default function ProductForm({
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
                 {allCities.map((c) => {
-                  const isChecked =
-                    availableCities.length === 0 ||
-                    availableCities.includes(c.name) ||
-                    availableCities.includes("All");
+                  const isChecked = availableCities.includes(c.name);
 
                   const toggleCity = () => {
-                    if (availableCities.length === 0) {
-                      // Currently Pan-India; unchecking this city means selecting all other cities
-                      setAvailableCities(allCities.map((item) => item.name).filter((name) => name !== c.name));
-                    } else if (availableCities.includes(c.name)) {
+                    if (isChecked) {
+                      // Deselect this city
                       setAvailableCities(availableCities.filter((name) => name !== c.name));
                     } else {
+                      // Select this city
                       setAvailableCities([...availableCities, c.name]);
                     }
                   };
@@ -855,7 +1005,7 @@ export default function ProductForm({
                     onClick={() => removeIncluded(idx)}
                     className="text-red-500 hover:text-red-700 ml-1 font-bold"
                   >
-                    ×
+                    ÃƒÆ’Ã¢â‚¬â€
                   </button>
                 </span>
               ))}
@@ -896,25 +1046,123 @@ export default function ProductForm({
                     onClick={() => removeNotIncluded(idx)}
                     className="text-red-500 hover:text-red-700 ml-1 font-bold"
                   >
-                    ×
+                    ÃƒÆ’Ã¢â‚¬â€
                   </button>
                 </span>
               ))}
             </div>
           </div>
 
-          {/* Cancellation Policy */}
-          <div>
-            <label className="block text-xs font-bold text-[#202522] uppercase tracking-wider mb-2">
-              Cancellation Policy
-            </label>
-            <textarea
-              rows={2}
-              value={cancellationPolicy}
-              onChange={(e) => setCancellationPolicy(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-xs text-[#202522] focus:outline-none focus:ring-2 focus:ring-[#8CBC67]/30"
-            />
-          </div>
+                      {/* Why Us (Brand USPs) */}
+            <div className="pt-4 border-t border-[#E8E8E3]">
+              <label className="block text-xs font-bold text-[#202522] uppercase tracking-wider mb-1">
+                Why Us (Brand USPs & Guarantees)
+              </label>
+              <p className="text-[11px] text-[#6B706C] mb-2">
+                Add reasons to choose your brand (e.g. On-Time Guarantee, Zero Wall Damage, Verified Decorators).
+              </p>
+              <div className="flex items-center space-x-2 mb-3">
+                <input
+                  type="text"
+                  value={newWhyUsItem}
+                  onChange={(e) => setNewWhyUsItem(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      addWhyUs();
+                    }
+                  }}
+                  placeholder="e.g. Zero Wall Damage: Safe removable tapes and adhesives"
+                  className="flex-1 px-4 py-2.5 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-xs text-[#202522] focus:outline-none focus:ring-2 focus:ring-[#8CBC67]/30"
+                />
+                <button
+                  type="button"
+                  onClick={addWhyUs}
+                  className="px-4 py-2.5 rounded-xl bg-[#EEF6EB] hover:bg-[#8CBC67] hover:text-white text-xs font-bold text-[#8CBC67] transition"
+                >
+                  Add
+                </button>
+              </div>
+              <div className="space-y-1.5">
+                {whyUsList.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-2.5 rounded-xl bg-amber-50/60 border border-amber-200/50 text-xs text-[#202522]"
+                  >
+                    <span className="flex-1 mr-2">{item}</span>
+                    <button
+                      type="button"
+                      onClick={() => removeWhyUs(idx)}
+                      className="text-red-500 hover:text-red-700 font-bold px-1.5 py-0.5 rounded cursor-pointer text-xs"
+                    >
+                      ÃƒÆ’Ã¢â‚¬â€
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Guidelines (Customer / Venue Preparation) */}
+            <div className="pt-4 border-t border-[#E8E8E3]">
+              <label className="block text-xs font-bold text-[#202522] uppercase tracking-wider mb-1">
+                Guidelines (Venue & Customer Preparation)
+              </label>
+              <p className="text-[11px] text-[#6B706C] mb-2">
+                Add venue instructions (e.g. Power Socket requirement, Stool/Ladder, Society Entry Permission).
+              </p>
+              <div className="flex items-center space-x-2 mb-3">
+                <input
+                  type="text"
+                  value={newGuidelinesItem}
+                  onChange={(e) => setNewGuidelinesItem(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      addGuidelines();
+                    }
+                  }}
+                  placeholder="e.g. Continuous Power Socket: Working plug point within 5-10 meters"
+                  className="flex-1 px-4 py-2.5 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-xs text-[#202522] focus:outline-none focus:ring-2 focus:ring-[#8CBC67]/30"
+                />
+                <button
+                  type="button"
+                  onClick={addGuidelines}
+                  className="px-4 py-2.5 rounded-xl bg-[#EEF6EB] hover:bg-[#8CBC67] hover:text-white text-xs font-bold text-[#8CBC67] transition"
+                >
+                  Add
+                </button>
+              </div>
+              <div className="space-y-1.5">
+                {guidelinesList.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-between p-2.5 rounded-xl bg-neutral-50 border border-neutral-200/60 text-xs text-[#202522]"
+                  >
+                    <span className="flex-1 mr-2">{item}</span>
+                    <button
+                      type="button"
+                      onClick={() => removeGuidelines(idx)}
+                      className="text-red-500 hover:text-red-700 font-bold px-1.5 py-0.5 rounded cursor-pointer text-xs"
+                    >
+                      ÃƒÆ’Ã¢â‚¬â€
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Cancellation Policy */}
+            <div className="pt-4 border-t border-[#E8E8E3]">
+              <label className="block text-xs font-bold text-[#202522] uppercase tracking-wider mb-2">
+                Cancellation Policy
+              </label>
+              <textarea
+                rows={2}
+                value={cancellationPolicy}
+                onChange={(e) => setCancellationPolicy(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-xs text-[#202522] focus:outline-none focus:ring-2 focus:ring-[#8CBC67]/30"
+              />
+            </div>
         </div>
 
         {/* Submit Bar */}

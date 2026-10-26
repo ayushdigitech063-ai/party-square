@@ -18,8 +18,11 @@ import {
   MapPin,
   Calendar,
   CreditCard,
+  Download,
+  FileSpreadsheet,
   X,
   Sparkles,
+  ExternalLink,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -48,10 +51,12 @@ export default function AdminBookings() {
     customerName: "",
     customerPhone: "",
     theme: "",
+    productImage: "",
     city: "Delhi",
     eventDate: new Date().toISOString().split("T")[0],
     eventTimeSlot: "Evening (04:00 PM - 08:00 PM)",
     deliveryAddress: "",
+    specialRequests: "",
     amount: "5000",
   });
 
@@ -128,12 +133,14 @@ export default function AdminBookings() {
 
       const res = await createBooking({
         productName: newBooking.theme,
+        productImage: newBooking.productImage,
         customerName: newBooking.customerName,
         customerPhone: newBooking.customerPhone,
         city: newBooking.city || "Delhi",
         eventDate: newBooking.eventDate,
         eventTimeSlot: newBooking.eventTimeSlot,
         deliveryAddress: newBooking.deliveryAddress,
+        specialRequests: newBooking.specialRequests,
         totalAmount,
         advanceAmountPaid: advanceAmount,
         onSiteAmountPending: totalAmount - advanceAmount,
@@ -152,10 +159,12 @@ export default function AdminBookings() {
         customerName: "",
         customerPhone: "",
         theme: "",
+        productImage: "",
         city: "Delhi",
         eventDate: new Date().toISOString().split("T")[0],
         eventTimeSlot: "Evening (04:00 PM - 08:00 PM)",
         deliveryAddress: "",
+        specialRequests: "",
         amount: "5000",
       });
     } catch (err: any) {
@@ -163,6 +172,70 @@ export default function AdminBookings() {
     } finally {
       setIsSavingBooking(false);
     }
+  };
+
+  
+  // Export Bookings to CSV / Excel
+  const handleExportCSV = () => {
+    if (filtered.length === 0) {
+      toast.error("No bookings to export");
+      return;
+    }
+
+    const headers = [
+      "Booking ID",
+      "Customer Name",
+      "Customer Phone",
+      "Customer Email",
+      "Decoration Theme",
+      "City",
+      "Event Date",
+      "Time Slot",
+      "Total Amount (INR)",
+      "Advance Paid (INR)",
+      "Payment Status",
+      "Booking Status",
+      "Delivery Address",
+      "Special Requests",
+      "Created At"
+    ];
+
+    const rows = filtered.map((b) => [
+      b.bookingId || b._id || "",
+      b.customerName || b.user?.name || "Customer",
+      b.customerPhone || b.user?.phone || "",
+      b.customerEmail || b.user?.email || "",
+      b.productName || b.theme || "Standard Setup",
+      b.city || "Delhi",
+      b.eventDate ? new Date(b.eventDate).toLocaleDateString("en-IN") : "",
+      b.eventTimeSlot || "",
+      b.totalAmount || b.amount || 0,
+      b.advanceAmountPaid || 0,
+      b.paymentStatus || "PENDING",
+      b.bookingStatus || "PENDING",
+      (b.deliveryAddress || "").replace(/\n/g, " "),
+      (b.specialRequests || "").replace(/\n/g, " "),
+      b.createdAt ? new Date(b.createdAt).toLocaleString("en-IN") : ""
+    ]);
+
+    const csvString =
+      "\uFEFF" +
+      [
+        headers.map((h) => `"${h}"`).join(","),
+        ...rows.map((e) => e.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","))
+      ].join("\r\n");
+
+    const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    const dateStr = new Date().toISOString().split("T")[0];
+    link.download = `party_square_bookings_${dateStr}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    toast.success(`Exported ${filtered.length} bookings to Excel CSV!`);
   };
 
   // Unique cities for filter
@@ -236,6 +309,15 @@ export default function AdminBookings() {
             title="Refresh bookings"
           >
             <RefreshCw size={16} className={isLoading ? "animate-spin text-[#8CBC67]" : ""} />
+          </button>
+
+          <button
+            onClick={handleExportCSV}
+            className="border border-[#E8E8E3] bg-[#FCFBF7] text-[#202522] hover:bg-[#EEF6EB] hover:text-[#558234] hover:border-[#8CBC67] px-4 py-2.5 rounded-2xl text-xs font-bold flex items-center space-x-1.5 transition cursor-pointer shadow-2xs"
+            title="Download CSV / Excel spreadsheet"
+          >
+            <Download size={15} className="text-[#8CBC67]" />
+            <span>Export CSV</span>
           </button>
 
           <button
@@ -440,12 +522,13 @@ export default function AdminBookings() {
                           <select
                             value={status}
                             onChange={(e) => handleUpdateStatus(b._id, e.target.value)}
-                            className="text-[11px] font-semibold bg-[#FCFBF7] border border-[#E8E8E3] rounded-lg px-2 py-1 outline-none text-[#202522]"
+                            title="Change Booking Status"
+                            className="text-[11px] font-semibold bg-[#FCFBF7] border border-[#E8E8E3] rounded-lg px-2 py-1 outline-none text-[#202522] hover:border-[#8CBC67] cursor-pointer"
                           >
-                            <option value="CONFIRMED">Confirm</option>
-                            <option value="PENDING">Pending</option>
-                            <option value="COMPLETED">Complete</option>
-                            <option value="CANCELLED">Cancel</option>
+                            <option value="CONFIRMED">✓ Confirmed</option>
+                            <option value="PENDING">⏳ Pending</option>
+                            <option value="COMPLETED">★ Completed</option>
+                            <option value="CANCELLED">✕ Cancelled</option>
                           </select>
 
                           {/* View details */}
@@ -519,9 +602,43 @@ export default function AdminBookings() {
                 </div>
               </div>
 
-              <div>
-                <span className="text-[#6B706C] block text-[11px] font-bold">Package / Theme:</span>
-                <p className="text-sm font-bold text-[#202522]">{selectedBooking.productName || selectedBooking.theme}</p>
+              {/* Booked Product Image & Website Link */}
+              <div className="bg-[#FCFBF7] p-3 rounded-2xl border border-[#E8E8E3] flex items-center gap-3.5">
+                <div className="w-16 h-16 rounded-xl overflow-hidden bg-white border border-[#E8E8E3] shrink-0 relative">
+                  <img
+                    src={
+                      selectedBooking.productImage ||
+                      selectedBooking.image ||
+                      (selectedBooking.productName?.toLowerCase().includes("candle") ? "/romaticvibe.png" :
+                       selectedBooking.productName?.toLowerCase().includes("mandap") ? "/wedding.png" :
+                       selectedBooking.productName?.toLowerCase().includes("diya") ? "/diwalidecoration.png" :
+                       "/birthdaydesign.png")
+                    }
+                    alt={selectedBooking.productName || "Product"}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex-1 min-w-0 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-[#8CBC67] tracking-wider block">
+                    Booked Decoration
+                  </span>
+                  <h4 className="font-bold text-sm text-[#202522] truncate">
+                    {selectedBooking.productName || selectedBooking.theme || "Celebration Package"}
+                  </h4>
+                  <a
+                    href={
+                      selectedBooking.productId
+                        ? `/card/${selectedBooking.productId}`
+                        : `/search?q=${encodeURIComponent(selectedBooking.productName || selectedBooking.theme || "")}`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-[11px] font-bold text-[#8CBC67] hover:underline"
+                  >
+                    <span>View Product on Website</span>
+                    <ExternalLink size={12} />
+                  </a>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
