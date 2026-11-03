@@ -47,29 +47,30 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center p-4 selection:bg-[#8CBC67] selection:text-neutral-950">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
+    <div className="min-h-screen w-full relative flex items-center justify-center p-4 sm:p-6 overflow-hidden selection:bg-[#8CBC67] selection:text-neutral-950">
+      {/* Fixed Fullscreen Background Image & Overlay */}
+      <div className="fixed inset-0 z-0 w-full h-full">
         <img 
           src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=2069&auto=format&fit=crop" 
           alt="Event Decoration Background"
           className="w-full h-full object-cover"
         />
-        {/* Dark Overlay for better contrast */}
-        <div className="absolute inset-0 bg-neutral-950/70 backdrop-blur-sm"></div>
+        {/* Smooth Dark Gradient Overlay for perfect full-screen look */}
+        <div className="absolute inset-0 bg-neutral-950/75 backdrop-blur-md" />
       </div>
 
-      <div className="w-full max-w-md bg-white/10 backdrop-blur-md rounded-[2.5rem] shadow-2xl p-8 border border-white/20 relative z-10 overflow-hidden">
+      {/* Floating Centered Glass Card */}
+      <div className="w-full max-w-[430px] my-auto bg-white/10 backdrop-blur-xl rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl p-6 sm:p-8 border border-white/20 relative z-10 overflow-hidden">
         {/* Subtle glow effects */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-[#8CBC67]/20 blur-3xl rounded-full"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#8CBC67]/20 blur-3xl rounded-full"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-[#8CBC67]/25 blur-3xl rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#8CBC67]/25 blur-3xl rounded-full pointer-events-none" />
         
-        <div className="relative z-10 text-center mb-10 mt-4">
-          <div className="mx-auto w-16 h-16 rounded-2xl bg-white border border-[#8CBC67]/50 flex items-center justify-center p-2 mb-6 shadow-lg shadow-[#8CBC67]/20 overflow-hidden">
+        <div className="relative z-10 text-center mb-6 sm:mb-8">
+          <div className="mx-auto w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/95 border border-[#8CBC67]/50 flex items-center justify-center p-2 mb-4 shadow-lg shadow-[#8CBC67]/20 overflow-hidden">
             <img src="/logo-icon.png" alt="Party Square" className="w-full h-full object-contain" />
           </div>
-          <h1 className="font-serif text-3xl font-bold text-white mb-2">Party Square Portal</h1>
-          <p className="text-sm text-neutral-300">Enter your credentials to access the control center</p>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-white mb-1.5">Party Square Portal</h1>
+          <p className="text-xs sm:text-sm text-neutral-300">Enter your credentials to access the control center</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-5 relative z-10">

@@ -89,15 +89,15 @@ export default function SEOContentSection() {
 
   if (isExcluded) return null;
 
-  // Format category display title
+  // Format category display title safely (avoiding undefined on pages like /services)
   const categoryTitle = categoryData?.name
     ? categoryData.name
-    : currentCategorySlug
+    : (currentCategorySlug || "Decorations")
         .replace(/-/g, " ")
         .replace(/\b\w/g, (c) => c.toUpperCase());
 
   const subcategoryTitle = currentSubcategorySlug
-    ? currentSubcategorySlug
+    ? (currentSubcategorySlug || "")
         .replace(/-/g, " ")
         .replace(/\b\w/g, (c) => c.toUpperCase())
     : "";
