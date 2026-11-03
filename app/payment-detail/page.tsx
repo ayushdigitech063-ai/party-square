@@ -952,7 +952,7 @@ function PaymentContent() {
                             setCardNumber(e.target.value.replace(/\D/g, "").replace(/(.{4})/g, "$1 ").trim());
                             setPaymentMsg(null);
                           }}
-                          placeholder="4532 â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ 8901"
+                          placeholder="4532 •••• •••• 8901"
                           className="w-full h-12 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] px-4 text-sm outline-none focus:border-[#8CBC67]"
                         />
                       </div>
@@ -988,7 +988,7 @@ function PaymentContent() {
                               maxLength={4}
                               value={cvv}
                               onChange={(e) => setCvv(e.target.value.replace(/\D/g, ""))}
-                              placeholder="â€¢â€¢â€¢"
+                              placeholder="•••"
                               className="w-full h-12 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] px-3 text-sm outline-none focus:border-[#8CBC67]"
                             />
                           </div>

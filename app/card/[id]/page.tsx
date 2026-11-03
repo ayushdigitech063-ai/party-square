@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -47,7 +47,7 @@ const toISO = (d: Date) =>
     d.getDate(),
   ).padStart(2, "0")}`;
 
-const toNumber = (v: any) => Number(String(v ?? "").replace(/[â‚¹,\s]/g, "")) || 0;
+const toNumber = (v: any) => Number(String(v ?? "").replace(/[₹,\s]/g, "")) || 0;
 
 const INCLUDED_ITEMS = [
   "Complete balloon decoration setup as per image/theme",
@@ -184,11 +184,11 @@ const DEFAULT_FAQS = [
 const FAQS = DEFAULT_FAQS.map(f => [f.question, f.answer]);
 
 const INFO_TABS = [
-  { key: "about", label: "About this package" },
   { key: "overview", label: "Overview" },
   { key: "included", label: "Inclusions" },
   { key: "not-included", label: "Whats not included" },
   { key: "why-us", label: "Why Us" },
+  { key: "about", label: "About this package" },
   { key: "guidelines", label: "Guidelines" },
   { key: "cancel", label: "Cancellation/Refunds" },
   { key: "faqs", label: "FAQs" },
@@ -204,7 +204,15 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
 
   // New UI state (hooks must stay above the early returns)
-  const [activeTab, setActiveTab] = useState("about");
+  const [activeTab, setActiveTab] = useState("overview");
+  const tabsScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollTabs = (direction: "left" | "right") => {
+    if (tabsScrollRef.current) {
+      const amount = direction === "left" ? -180 : 180;
+      tabsScrollRef.current.scrollBy({ left: amount, behavior: "smooth" });
+    }
+  };
   const [pincode, setPincode] = useState("");
   const [pincodeChecked, setPincodeChecked] = useState(false);
   const [pincodeError, setPincodeError] = useState("");
@@ -457,7 +465,7 @@ export default function ProductDetailPage() {
 
   const totalPrice = numericPrice * quantity;
 
-  const formattedTotalPrice = `â‚¹${totalPrice.toLocaleString("en-IN")}`;
+  const formattedTotalPrice = `₹${totalPrice.toLocaleString("en-IN")}`;
 
   const baseOriginalPrice =
     Number(String(foundItem.originalPrice || "").replace(/[^0-9]/g, "")) ||
@@ -465,7 +473,7 @@ export default function ProductDetailPage() {
 
   const originalPrice = baseOriginalPrice * quantity;
 
-  const formattedOriginalPrice = `â‚¹${Math.round(originalPrice).toLocaleString("en-IN")}`;
+  const formattedOriginalPrice = `₹${Math.round(originalPrice).toLocaleString("en-IN")}`;
 
   const discountPercent =
     originalPrice > totalPrice && totalPrice > 0
@@ -479,7 +487,7 @@ export default function ProductDetailPage() {
   const deliveryCharge = pincodeChecked ? DELIVERY_CHARGE : 0;
   const addonsTotal = selectedAddons.reduce((sum, item) => sum + item.price, 0);
   const grandTotal = totalPrice + deliveryCharge + addonsTotal;
-  const formattedGrandTotal = `â‚¹${grandTotal.toLocaleString("en-IN")}`;
+  const formattedGrandTotal = `₹${grandTotal.toLocaleString("en-IN")}`;
 
   const handleToggleAddon = (addon: AddOnItem) => {
     setSelectedAddons((prev) => {
@@ -488,7 +496,7 @@ export default function ProductDetailPage() {
         toast(`Removed ${addon.name}`, { icon: "â„¹ï¸" });
         return prev.filter((a) => a.id !== addon.id);
       } else {
-        toast.success(`Added ${addon.name} (+â‚¹${addon.price.toLocaleString("en-IN")})`);
+        toast.success(`Added ${addon.name} (+₹${addon.price.toLocaleString("en-IN")})`);
         return [...prev, addon];
       }
     });
@@ -716,48 +724,7 @@ export default function ProductDetailPage() {
           </span>
         </div>
 
-        {/* =====================================================
-            TOP CATEGORIES STRIP (As in Competitor Screenshot 2)
-        ====================================================== */}
-        <div className="mb-6 bg-white rounded-2xl p-4 border border-[#E8E8E3] shadow-xs">
-          <div className="flex items-center justify-between mb-2.5">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#8CBC67]">
-              Explore Categories
-            </span>
-            <span className="text-[11px] text-[#6B706C]">
-              Browse other styles & celebrations
-            </span>
-          </div>
-
-          <div
-            className="flex items-start gap-3 sm:gap-4 overflow-x-auto scroll-smooth py-1 scrollbar-none"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          >
-            {[
-              { name: "Kids Birthday", image: "/birthdaykids.png", link: `/${cityParam || "bangalore"}/services/birthday/all-products` },
-              { name: "Adult / Romantic", image: "/romaticvibe.png", link: `/${cityParam || "bangalore"}/services/birthday/all-products` },
-              { name: "Premium Decor", image: "/homepage.png", link: `/${cityParam || "bangalore"}/services/birthday/all-products` },
-              { name: "Birthday Gifts", image: "/card.png", link: `/${cityParam || "bangalore"}/services/birthday/all-products` },
-              { name: "Same Day Decors", image: "/card2.png", link: `/${cityParam || "bangalore"}/services/birthday/all-products` },
-              { name: "Simple Birthday", image: "/birthdaydesign.png", link: `/${cityParam || "bangalore"}/services/birthday/all-products` },
-              { name: "Car Boot Decors", image: "/card3.png", link: `/${cityParam || "bangalore"}/services/birthday/all-products` },
-              { name: "Ring Ceremony", image: "/ring.png", link: `/services/ring-decoration` },
-            ].map((cat, idx) => (
-              <Link
-                key={idx}
-                href={cat.link}
-                className="flex flex-col items-center group cursor-pointer w-[80px] sm:w-[96px] shrink-0 p-1.5 rounded-xl hover:bg-[#EEF6EB]/50 transition"
-              >
-                <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl overflow-hidden border border-[#E8E8E3] group-hover:border-[#8CBC67] group-hover:scale-105 transition-all shadow-2xs">
-                  <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" />
-                </div>
-                <span className="mt-1.5 text-[11px] font-bold text-[#202522] group-hover:text-[#8CBC67] text-center line-clamp-1">
-                  {cat.name}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
+        
 
         {/* MAIN PRODUCT SECTION */}
 
@@ -766,7 +733,7 @@ export default function ProductDetailPage() {
               LEFT - IMAGE + TRUST STRIP + INFO TABS
           ================================================== */}
 
-          <div className="lg:col-span-6 w-full min-w-0 max-w-full overflow-hidden">
+          <div className="lg:col-span-6 w-full min-w-0 max-w-full lg:sticky lg:top-24 self-start">
             <div className="flex flex-col-reverse sm:grid sm:grid-cols-12 gap-3 sm:gap-4">
               {/* THUMBNAILS */}
 
@@ -849,7 +816,7 @@ export default function ProductDetailPage() {
                       }
                       className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-md flex items-center justify-center text-neutral-800 transition cursor-pointer"
                     >
-                      â€¹
+                      ‹
                     </button>
                   )}
 
@@ -865,7 +832,7 @@ export default function ProductDetailPage() {
                       }
                       className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white shadow-md flex items-center justify-center text-neutral-800 transition cursor-pointer"
                     >
-                      â€º
+                      ›
                     </button>
                   )}
                 </div>
@@ -897,23 +864,66 @@ export default function ProductDetailPage() {
             {/* ---------- INFO CARD WITH 8 TABS ---------- */}
 
             <section className="mt-4 bg-white rounded-2xl sm:rounded-3xl border border-[#E8E8E3] shadow-xs p-4 sm:p-6 w-full max-w-full min-w-0 overflow-hidden">
-              {/* TAB PILLS */}
-
-              <div className="flex gap-1.5 sm:gap-2 overflow-x-auto pb-3 border-b border-[#E8E8E3] scrollbar-none w-full max-w-full">
-                {INFO_TABS.map((tab) => (
+              {/* TAB PILLS WITH SMOOTH HORIZONTAL SCROLL & ARROWS */}
+              <div className="relative pb-3 border-b border-[#E8E8E3]">
+                <div className="flex items-center gap-1.5">
+                  {/* Left scroll arrow */}
                   <button
-                    key={tab.key}
                     type="button"
-                    onClick={() => setActiveTab(tab.key)}
-                    className={`whitespace-nowrap px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition shrink-0 cursor-pointer ${
-                      activeTab === tab.key
-                        ? "bg-[#EEF6E8] text-[#202522] shadow-xs border border-[#8CBC67] font-bold"
-                        : "text-[#6B706C] hover:text-[#202522] hover:bg-[#EEF6EB]/40 border border-transparent"
-                    }`}
+                    onClick={() => scrollTabs("left")}
+                    aria-label="Scroll tabs left"
+                    className="w-7 h-7 shrink-0 rounded-full bg-[#FCFBF7] border border-[#E8E8E3] hover:border-[#8CBC67] hover:bg-[#EEF6EB] text-[#202522] flex items-center justify-center transition shadow-2xs cursor-pointer"
                   >
-                    {tab.label}
+                    <ChevronLeft size={14} />
                   </button>
-                ))}
+
+                  {/* Scrollable tabs track */}
+                  <div
+                    ref={tabsScrollRef}
+                    onWheel={(e) => {
+                      if (e.deltaY !== 0 && tabsScrollRef.current) {
+                        tabsScrollRef.current.scrollLeft += e.deltaY;
+                      }
+                    }}
+                    className="flex gap-2 overflow-x-auto scroll-smooth py-1 px-1 scrollbar-none select-none cursor-grab active:cursor-grabbing"
+                    style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+                  >
+                    {INFO_TABS.map((tab) => {
+                      const isActive = activeTab === tab.key;
+                      return (
+                        <button
+                          key={tab.key}
+                          type="button"
+                          onClick={(e) => {
+                            setActiveTab(tab.key);
+                            (e.currentTarget as HTMLElement).scrollIntoView({
+                              behavior: "smooth",
+                              inline: "center",
+                              block: "nearest"
+                            });
+                          }}
+                          className={`whitespace-nowrap px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition shrink-0 cursor-pointer ${
+                            isActive
+                              ? "bg-[#EEF6E8] text-[#202522] shadow-xs border border-[#8CBC67] font-bold ring-1 ring-[#8CBC67]/30"
+                              : "text-[#6B706C] hover:text-[#202522] hover:bg-[#EEF6EB]/40 border border-transparent"
+                          }`}
+                        >
+                          {tab.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Right scroll arrow */}
+                  <button
+                    type="button"
+                    onClick={() => scrollTabs("right")}
+                    aria-label="Scroll tabs right"
+                    className="w-7 h-7 shrink-0 rounded-full bg-[#FCFBF7] border border-[#E8E8E3] hover:border-[#8CBC67] hover:bg-[#EEF6EB] text-[#202522] flex items-center justify-center transition shadow-2xs cursor-pointer"
+                  >
+                    <ChevronRight size={14} />
+                  </button>
+                </div>
               </div>
 
               {/* 1. OVERVIEW */}
@@ -930,38 +940,38 @@ export default function ProductDetailPage() {
                     </p>
                   </div>
 
-                  {/* 4 Feature Badges (Matching Brand Color Palette) */}
+                  {/* 4 Feature Badges (Matching Client Wireframe & Brand Palette) */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
                     <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
                       <Sparkles size={20} className="text-[#8CBC67]" />
                       <p className="mt-3 text-xs font-bold text-[#202522]">
-                        100% Service Record
+                        Premium Product
                       </p>
-                      <p className="text-[11px] text-[#6B706C] mt-0.5">Reliable</p>
+                      <p className="text-[11px] text-[#6B706C] mt-0.5">Quality</p>
                     </div>
 
                     <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
                       <CheckCircle2 size={20} className="text-[#8CBC67]" />
                       <p className="mt-3 text-xs font-bold text-[#202522]">
-                        Original Photos & Setup
+                        Verified
                       </p>
-                      <p className="text-[11px] text-[#6B706C] mt-0.5">Verified</p>
+                      <p className="text-[11px] text-[#6B706C] mt-0.5">Quality</p>
                     </div>
 
                     <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
                       <Truck size={20} className="text-[#8CBC67]" />
                       <p className="mt-3 text-xs font-bold text-[#202522]">
-                        100% Satisfaction
+                        On-Time
                       </p>
-                      <p className="text-[11px] text-[#6B706C] mt-0.5">Guaranteed</p>
+                      <p className="text-[11px] text-[#6B706C] mt-0.5">Setup</p>
                     </div>
 
                     <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
                       <Calendar size={20} className="text-[#8CBC67]" />
                       <p className="mt-3 text-xs font-bold text-[#202522]">
-                        Easy Online Booking
+                        Easy
                       </p>
-                      <p className="text-[11px] text-[#6B706C] mt-0.5">Instant</p>
+                      <p className="text-[11px] text-[#6B706C] mt-0.5">Booking</p>
                     </div>
                   </div>
                 </div>
@@ -1219,29 +1229,31 @@ export default function ProductDetailPage() {
                 {foundItem.name}
               </h1>
 
-              {/* RATING & REVIEWS (Always visible on mobile & desktop) */}
-              <div className="flex items-center gap-2.5 sm:gap-3 mt-4">
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      size={17}
-                      className={
-                        i < Math.round(hasReviews ? rawRating : 4.8)
-                          ? "fill-[#D7A84B] text-[#D7A84B]"
-                          : "text-neutral-300"
-                      }
-                    />
-                  ))}
+              {/* RATING & REVIEWS (Show ONLY if there are reviews/ratings given, otherwise hide as requested) */}
+              {hasReviews && (
+                <div className="flex items-center gap-2.5 sm:gap-3 mt-4">
+                  <div className="flex items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        size={17}
+                        className={
+                          i < Math.round(rawRating)
+                            ? "fill-[#D7A84B] text-[#D7A84B]"
+                            : "text-neutral-300"
+                        }
+                      />
+                    ))}
+                  </div>
+                  <span className="font-bold text-neutral-900 text-sm">
+                    {rawRating.toFixed(1)}
+                  </span>
+                  <span className="text-xs sm:text-sm text-neutral-500">
+                    ({rawReviewCount.toLocaleString("en-IN")} reviews)
+                  </span>
+                  <span className="text-xs text-[#8CBC67] font-semibold hidden sm:inline">• Verified Decor</span>
                 </div>
-                <span className="font-bold text-neutral-900 text-sm">
-                  {(hasReviews ? rawRating : 4.8).toFixed(1)}
-                </span>
-                <span className="text-xs sm:text-sm text-neutral-500">
-                  ({(hasReviews ? rawReviewCount : 126).toLocaleString("en-IN")} reviews)
-                </span>
-                <span className="text-xs text-[#8CBC67] font-semibold hidden sm:inline">â€¢ Verified Decor</span>
-              </div>
+              )}
 
               {/* PRICE & DISCOUNT */}
 
@@ -1347,7 +1359,7 @@ export default function ProductDetailPage() {
                 <p className="mt-2 text-xs font-semibold text-emerald-700">
                   {deliveryCharge > 0
                     ? `For this pincode you have to pay delivery charge of Rs ${deliveryCharge}`
-                    : "Service available in your area â€” free delivery for this pincode"}
+                    : "Service available in your area — free delivery for this pincode"}
                 </p>
               )}
 
@@ -1472,7 +1484,7 @@ export default function ProductDetailPage() {
                       {selectedAddons.length} Add-on{selectedAddons.length > 1 ? "s" : ""} selected
                     </p>
                     <p className="text-xs text-[#8CBC67] font-semibold">
-                      +â‚¹{addonsTotal.toLocaleString("en-IN")} â€¢ Tap to view/edit
+                      +₹{addonsTotal.toLocaleString("en-IN")} • Tap to view/edit
                     </p>
                   </div>
 
@@ -1523,7 +1535,7 @@ export default function ProductDetailPage() {
                       <span className="truncate">{ad.name}</span>
                     </span>
                     <span className="font-semibold shrink-0">
-                      â‚¹{ad.price.toLocaleString("en-IN")}
+                      ₹{ad.price.toLocaleString("en-IN")}
                     </span>
                   </div>
                 ))}
@@ -1536,7 +1548,7 @@ export default function ProductDetailPage() {
                         Checked for {pincode}
                       </span>
                     </span>
-                    <span className="font-semibold">â‚¹{deliveryCharge}</span>
+                    <span className="font-semibold">₹{deliveryCharge}</span>
                   </div>
                 )}
               </div>
@@ -1603,7 +1615,7 @@ export default function ProductDetailPage() {
               {/* CHECKOUT MESSAGE */}
 
               <p className="text-center text-xs text-neutral-400 mt-4">
-                Secure checkout â€¢ Guaranteed satisfaction
+                Secure checkout • Guaranteed satisfaction
               </p>
             </div>
           </div>
@@ -1670,8 +1682,9 @@ export default function ProductDetailPage() {
         </div>
 
         {/* =====================================================
-            CUSTOMER REVIEWS ANCHOR (#reviews)
+            CUSTOMER REVIEWS ANCHOR (#reviews) (Render only if product has reviews)
         ====================================================== */}
+        {(hasReviews || productReviews.length > 0) && (
         <div id="reviews" className="scroll-mt-28 mt-12 mb-8">
           <section className="bg-white rounded-3xl border border-[#E8E8E3] shadow-xs p-6 sm:p-8">
             {/* Header */}
@@ -1692,7 +1705,7 @@ export default function ProductDetailPage() {
                       key={i}
                       size={15}
                       className={
-                        i < Math.round(Number(reviewsAvg || 4.8))
+                        i < Math.round(Number(reviewsAvg || rawRating || 5))
                           ? "fill-[#D7A84B] text-[#D7A84B]"
                           : "text-neutral-200"
                       }
@@ -1701,10 +1714,10 @@ export default function ProductDetailPage() {
                 </div>
                 <div className="border-l border-amber-200 pl-3">
                   <span className="font-extrabold text-sm text-neutral-900">
-                    {reviewsAvg || "4.8"} / 5
+                    {reviewsAvg || rawRating || "5.0"} / 5
                   </span>
                   <span className="text-[11px] text-neutral-500 block">
-                    {productReviews.length > 0 ? productReviews.length : 126} verified reviews
+                    {productReviews.length > 0 ? productReviews.length : rawReviewCount} verified reviews
                   </span>
                 </div>
               </div>
@@ -1772,6 +1785,7 @@ export default function ProductDetailPage() {
             )}
           </section>
         </div>
+        )}
 
       </main>
 
@@ -1809,24 +1823,26 @@ export default function ProductDetailPage() {
           )}
         </button>
 
-        <button
-          type="button"
-          onClick={() => scrollToSection("reviews")}
-          className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold cursor-pointer transition ${
-            activeTab2 === "reviews"
-              ? "bg-[#FCFBF7] text-[#202522] shadow-sm"
-              : "text-[#FCFBF7]/85 hover:text-white"
-          }`}
-        >
-          Reviews
-        </button>
+        {(hasReviews || productReviews.length > 0) && (
+          <button
+            type="button"
+            onClick={() => scrollToSection("reviews")}
+            className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold cursor-pointer transition ${
+              activeTab2 === "reviews"
+                ? "bg-[#FCFBF7] text-[#202522] shadow-sm"
+                : "text-[#FCFBF7]/85 hover:text-white"
+            }`}
+          >
+            Reviews
+          </button>
+        )}
 
         <button
           type="button"
           onClick={() => handleBookNow(foundItem)}
           className="ml-1 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#8CBC67] hover:bg-[#7AB055] active:scale-95 text-white text-xs sm:text-sm font-bold cursor-pointer transition whitespace-nowrap shadow-md flex items-center gap-1.5"
         >
-          <span>â‚¹{grandTotal.toLocaleString("en-IN")} - Book now</span>
+          <span>₹{grandTotal.toLocaleString("en-IN")} - Book now</span>
         </button>
       </div>
 

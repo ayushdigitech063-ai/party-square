@@ -319,7 +319,7 @@ function DropdownPill({
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-5 sm:py-8 grid grid-cols-1 md:grid-cols-[250px_1fr] gap-5 md:gap-12">
-          {/* Left â€” heading + text links */}
+          {/* Left — heading + text links */}
           <div>
             <h3 className="flex items-center gap-2 text-base sm:text-lg font-extrabold text-[#202522] mb-3 sm:mb-4 pb-3 border-b-2 border-[#E8E8E3]">
               <Icon size={18} className="text-[#8CBC67]" />

@@ -24,6 +24,8 @@ const CITIES = new Set([
 ]);
 
 const KNOWN_INNER_ROUTES = [
+  "/admin",
+  "/login",
   "/services",
   "/services/all-products",
   "/services/birthday",
@@ -70,6 +72,8 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/admin") ||
+    pathname === "/login" ||
+    pathname.startsWith("/login/") ||
     pathname.startsWith("/card") ||
     pathname.includes(".")
   ) {
@@ -89,6 +93,19 @@ export function middleware(request: NextRequest) {
 
     const restPath = "/" + segments.slice(1).join("/");
     const matchLower = restPath.toLowerCase();
+
+    // If accessing admin under city prefix (e.g. /mumbai/admin or /mumbai/admin/...), redirect directly to /admin
+    if (matchLower === "/admin" || matchLower.startsWith("/admin/")) {
+      const url = request.nextUrl.clone();
+      url.pathname = restPath;
+      return NextResponse.redirect(url);
+    }
+    if (matchLower === "/login") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      return NextResponse.redirect(url);
+    }
+
     const matchedRoute = KNOWN_INNER_ROUTES.find(r => r.toLowerCase() === matchLower);
 
     if (matchedRoute) {

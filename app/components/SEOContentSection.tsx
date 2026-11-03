@@ -47,7 +47,7 @@ export default function SEOContentSection() {
         segments[0].toLowerCase()
       ));
 
-  const isCategory = segments.length >= 2 && !pathname?.startsWith("/admin");
+  const isCategory = (segments.length >= 2 || pathname?.includes("/services") || pathname?.includes("/Festivals")) && !pathname?.startsWith("/admin");
   const currentCategorySlug = isCategory ? segments[1] : "";
   const currentSubcategorySlug = segments.length >= 3 ? segments[2] : "";
 
@@ -191,11 +191,7 @@ export default function SEOContentSection() {
           </p>
 
           {/* Subheading & Services List */}
-          <div
-            className={`transition-all duration-500 overflow-hidden ${
-              isExpanded ? "max-h-[2000px] opacity-100 mt-6" : "max-h-0 sm:max-h-[360px] opacity-100 mt-4"
-            }`}
-          >
+          <div className="mt-6 space-y-4">
             <h3 className="font-bold text-sm sm:text-base md:text-lg text-[#202522] mt-4 mb-2">
               {subHeading}
             </h3>
@@ -215,20 +211,11 @@ export default function SEOContentSection() {
           </div>
 
           {/* Expand / Collapse Button for Mobile & Clean UX */}
-          <div className="mt-5 pt-4 border-t border-[#E8E8E3] flex items-center justify-between">
-            <span className="text-[11px] text-[#6B706C] font-medium flex items-center gap-1.5">
-              <Sparkles size={12} className="text-[#8CBC67]" />
-              <span>Party Square Verified Event Guide</span>
+          <div className="mt-6 pt-4 border-t border-[#E8E8E3] flex items-center justify-between">
+            <span className="text-xs text-[#6B706C] font-semibold flex items-center gap-2">
+              <Sparkles size={14} className="text-[#8CBC67]" />
+              <span>Party Square Verified Event & Decor Planning</span>
             </span>
-
-            <button
-              type="button"
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="inline-flex items-center gap-1 text-xs font-bold text-[#8CBC67] hover:text-[#7AB055] transition cursor-pointer"
-            >
-              <span>{isExpanded ? "Show Less" : "Read More"}</span>
-              {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-            </button>
           </div>
         </div>
       </div>

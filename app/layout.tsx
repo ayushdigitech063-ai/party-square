@@ -14,6 +14,7 @@ import { WishlistProvider } from "./context/wishlistcontext";
 import { CartProvider } from "./context/CartContext";
 import { CityProvider } from "./context/CityContext";
 import USP from "./components/USP";
+import AboveFooterUSP from "./components/AboveFooterUSP";
 import SEOContentSection from "./components/SEOContentSection";
 
 import { Toaster } from "react-hot-toast";
@@ -54,6 +55,7 @@ export default function RootLayout({
 
             {!isExcludedRoute && <USP />}
             {!isExcludedRoute && <SEOContentSection />}
+            {!isExcludedRoute && <AboveFooterUSP />}
             {!isExcludedRoute && <Footer />}
             <ScrollToTop />
             {!isExcludedRoute && <WhatsAppFloat />}

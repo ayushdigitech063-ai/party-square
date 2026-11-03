@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ChevronRight, MapPin, Sparkles, Clock, Star, ShieldCheck } from "lucide-react";
 import { fetchProducts, ProductItem } from "@/app/lib/api";
 import CityProductsGrid from "../CityProductsGrid";
@@ -46,6 +47,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CityCategoryPage({ params, searchParams }: Props) {
   const { city: citySlug, category: categorySlug } = await params;
+  if (citySlug.toLowerCase() === "admin") {
+    redirect(categorySlug.toLowerCase() === "login" ? "/login" : "/admin");
+  }
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const activeSub = resolvedSearchParams.sub || "";
 

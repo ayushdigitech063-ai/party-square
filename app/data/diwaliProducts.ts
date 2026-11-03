@@ -35,7 +35,7 @@ export const diwaliProducts: Product[] = [
       "Transform your walls and backdrops into a cascading waterfall of golden lights. This fairy light curtain is ideal for creating stunning backdrops for puja spaces, living rooms, or festive photography.",
     price: 1299,
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:â‚¹cEABW4HpUeCh8Q&s=10",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:₹cEABW4HpUeCh8Q&s=10",
     category: "Diwali",
     subcategory: "Rangoli Decoration",
     availability: true,

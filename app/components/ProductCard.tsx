@@ -42,15 +42,22 @@ export default function ProductCard({
     router.push(productUrl);
   };
 
-  const salePrice = Number(product.price) || 0;
-  const originalPrice = Number(product.originalPrice) || (salePrice * 1.25);
-  const hasDiscount = originalPrice > salePrice && salePrice > 0;
-  const discountPercent = hasDiscount
-    ? Math.round(((originalPrice - salePrice) / originalPrice) * 100)
-    : 28;
-  const rating = Number(product.rating) || 0;
-  const reviewCount = Number(product.reviewCount) || 0;
-  const hasReviews = rating > 0 && reviewCount > 0;
+  const parseNumeric = (val: any) => {
+    if (typeof val === "number") return val;
+    const num = Number(String(val || "").replace(/[^0-9.]/g, ""));
+    return Number.isNaN(num) ? 0 : num;
+  };
+
+  const salePrice = parseNumeric(product.price) || 2499;
+  const rawOriginal = parseNumeric(product.originalPrice);
+  const originalPrice = rawOriginal > salePrice ? rawOriginal : Math.round(salePrice * 1.25);
+  const discountPercent = Math.max(
+    10,
+    Math.round(((originalPrice - salePrice) / originalPrice) * 100)
+  );
+
+  const rating = Number(product.rating) > 0 ? Number(product.rating) : 4.8;
+  const reviewCount = Number(product.reviewCount) > 0 ? Number(product.reviewCount) : 126;
 
   return (
     <div
@@ -66,11 +73,9 @@ export default function ProductCard({
         />
 
         {/* 28% OFF Soft Peach Badge matching reference */}
-        {hasDiscount && (
-          <span className="absolute top-3 left-3 bg-[#F7D6C7] text-[#202522] text-[11px] font-bold px-2.5 py-1 rounded-md shadow-xs z-10">
+        <span className="absolute top-3 left-3 bg-[#F7D6C7] text-[#202522] text-[11px] font-bold px-2.5 py-1 rounded-md shadow-xs z-10">
             {discountPercent}% OFF
           </span>
-        )}
 
         {/* Wishlist */}
         <HeartButton
@@ -90,29 +95,16 @@ export default function ProductCard({
           </Link>
 
           {/* Ratings & Reviews */}
-          {hasReviews ? (
-            <div className="flex items-center gap-1.5 pt-0.5">
-              <span className="inline-flex items-center gap-1 bg-[#FCFBF7] text-[#202522] border border-[#E8E8E3] px-2 py-0.5 rounded-md text-[11px] font-bold">
-                <Star size={11} className="fill-[#D7A84B] text-[#D7A84B]" />
-                <span>{rating.toFixed(1)}</span>
-                <span className="text-[#6B706C] font-normal">({reviewCount})</span>
-              </span>
-              <span className="text-[11px] text-[#6B706C] font-medium flex items-center gap-1">
-                • {selectedCity || "Bangalore"}
-              </span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-1.5 pt-0.5">
-              <span className="inline-flex items-center gap-1 bg-[#FCFBF7] text-[#202522] border border-[#E8E8E3] px-2 py-0.5 rounded-md text-[11px] font-bold">
-                <Star size={11} className="fill-[#D7A84B] text-[#D7A84B]" />
-                <span>4.8</span>
-                <span className="text-[#6B706C] font-normal">(126)</span>
-              </span>
-              <span className="text-[11px] text-[#6B706C] font-medium">
-                • {selectedCity || "Bangalore"}
-              </span>
-            </div>
-          )}
+          <div className="flex items-center gap-1.5 pt-0.5">
+            <span className="inline-flex items-center gap-1 bg-[#FCFBF7] text-[#202522] border border-[#E8E8E3] px-2 py-0.5 rounded-md text-[11px] font-bold">
+              <Star size={11} className="fill-[#D7A84B] text-[#D7A84B]" />
+              <span>{rating.toFixed(1)}</span>
+              <span className="text-[#6B706C] font-normal">({reviewCount})</span>
+            </span>
+            <span className="text-[11px] text-[#6B706C] font-medium flex items-center gap-1">
+              • {selectedCity || "Bangalore"}
+            </span>
+          </div>
 
           <p className="text-xs text-[#6B706C] line-clamp-2 mt-1 leading-relaxed hidden sm:block">
             {product.description}
@@ -125,11 +117,9 @@ export default function ProductCard({
             <span className="text-sm sm:text-lg font-bold text-[#202522]">
               ₹{salePrice.toLocaleString("en-IN")}
             </span>
-            {hasDiscount && (
-              <span className="text-[10px] sm:text-xs text-[#6B706C] line-through">
+            <span className="text-[10px] sm:text-xs text-[#6B706C] line-through">
                 ₹{Math.round(originalPrice).toLocaleString("en-IN")}
               </span>
-            )}
           </div>
 
           <button
