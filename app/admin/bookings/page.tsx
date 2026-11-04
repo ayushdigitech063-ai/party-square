@@ -343,8 +343,8 @@ export default function AdminBookings() {
         </div>
 
         <div className="bg-white p-5 rounded-3xl border border-[#E8E8E3] shadow-sm">
-          <span className="text-[11px] uppercase tracking-wider text-amber-700 font-semibold block">Pending</span>
-          <p className="text-2xl font-bold text-amber-700 mt-1">{pendingCount}</p>
+          <span className="text-[11px] uppercase tracking-wider text-[#8CBC67] font-semibold block">Pending</span>
+          <p className="text-2xl font-bold text-[#8CBC67] mt-1">{pendingCount}</p>
         </div>
 
         <div className="bg-white p-5 rounded-3xl border border-[#E8E8E3] shadow-sm">
@@ -490,7 +490,7 @@ export default function AdminBookings() {
                             Adv: ₹{(b.advanceAmountPaid || 0).toLocaleString("en-IN")}
                           </span>
                           {b.onSiteAmountPending > 0 && (
-                            <span className="text-[10px] text-amber-700 block">
+                            <span className="text-[10px] text-[#8CBC67] block">
                               Pending: ₹{b.onSiteAmountPending.toLocaleString("en-IN")}
                             </span>
                           )}
@@ -503,7 +503,7 @@ export default function AdminBookings() {
                               status === "CONFIRMED"
                                 ? "bg-green-100 text-green-800"
                                 : status === "PENDING"
-                                ? "bg-amber-100 text-amber-800"
+                                ? "bg-[#EEF6EB] text-[#202522]"
                                 : status === "COMPLETED"
                                 ? "bg-blue-100 text-blue-800"
                                 : "bg-red-100 text-red-800"
@@ -664,7 +664,7 @@ export default function AdminBookings() {
               {selectedBooking.specialRequests && (
                 <div>
                   <span className="text-[#6B706C] block text-[11px] font-bold">Special Requests:</span>
-                  <p className="text-xs text-amber-800 bg-amber-50 p-2.5 rounded-xl border border-amber-200 mt-1">
+                  <p className="text-xs text-[#202522] bg-[#FCFBF7] p-2.5 rounded-xl border border-[#8CBC67]/30 mt-1">
                     {selectedBooking.specialRequests}
                   </p>
                 </div>
@@ -679,9 +679,9 @@ export default function AdminBookings() {
                   <span className="text-[10px] text-green-700 block">Advance Paid</span>
                   <strong className="text-sm text-green-800">₹{selectedBooking.advanceAmountPaid || 0}</strong>
                 </div>
-                <div className="bg-amber-50 p-2.5 rounded-xl border border-amber-200">
-                  <span className="text-[10px] text-amber-700 block">On-site Balance</span>
-                  <strong className="text-sm text-amber-800">₹{selectedBooking.onSiteAmountPending || 0}</strong>
+                <div className="bg-[#FCFBF7] p-2.5 rounded-xl border border-[#8CBC67]/30">
+                  <span className="text-[10px] text-[#8CBC67] block">On-site Balance</span>
+                  <strong className="text-sm text-[#202522]">₹{selectedBooking.onSiteAmountPending || 0}</strong>
                 </div>
               </div>
             </div>

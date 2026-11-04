@@ -422,7 +422,7 @@ export default function AdminGalleryPage() {
                     </h3>
                     <div className="flex items-center justify-between text-[11px] text-[#6B706C]">
                       <span>Order: #{item.order || 0}</span>
-                      <span className={item.isActive !== false ? "text-[#8CBC67] font-semibold" : "text-amber-600"}>
+                      <span className={item.isActive !== false ? "text-[#8CBC67] font-semibold" : "text-[#8CBC67]"}>
                         {item.isActive !== false ? "Live" : "Hidden"}
                       </span>
                     </div>

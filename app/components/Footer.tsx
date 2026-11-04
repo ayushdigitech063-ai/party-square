@@ -203,7 +203,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/"
-                  className="hover:text-[#202522] hover:underline transition"
+                  className="hover:text-[#8CBC67] hover:underline transition"
                 >
                   Home
                 </Link>
@@ -211,33 +211,33 @@ export default function Footer() {
               <li>
                 <Link
                   href="/about"
-                  className="hover:text-[#202522] hover:underline transition"
+                  className="hover:text-[#8CBC67] hover:underline transition"
                 >
                   About Us
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/services"
-                  className="hover:text-[#202522] hover:underline transition"
-                >
-                  Collections
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/services"
-                  className="hover:text-[#202522] hover:underline transition"
-                >
-                  Gallery
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/contact"
-                  className="hover:text-[#202522] hover:underline transition"
+                  className="hover:text-[#8CBC67] hover:underline transition"
                 >
-                  Contact
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/services/all-products"
+                  className="hover:text-[#8CBC67] hover:underline transition"
+                >
+                  All Products
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/cancellation-and-refund"
+                  className="hover:text-[#8CBC67] hover:underline transition"
+                >
+                  Cancellation & Refund
                 </Link>
               </li>
             </ul>
@@ -319,22 +319,34 @@ export default function Footer() {
           <p>
             © {new Date().getFullYear()} Party Square Events & Decorations. All rights reserved.
           </p>
-          <div className="flex space-x-6">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
             <Link
-              href="/privacy-Policy"
-              className="hover:text-[#202522] hover:underline transition"
+              href="/privacy-policy"
+              className="hover:text-[#8CBC67] hover:underline transition"
             >
               Privacy Policy
             </Link>
             <Link
               href="/terms-and-condition"
-              className="hover:text-[#202522] hover:underline transition"
+              className="hover:text-[#8CBC67] hover:underline transition"
             >
-              Terms of Service
+              Terms & Conditions
+            </Link>
+            <Link
+              href="/cancellation-and-refund"
+              className="hover:text-[#8CBC67] hover:underline transition"
+            >
+              Payment, Cancellation & Refunds
+            </Link>
+            <Link
+              href="/contact"
+              className="hover:text-[#8CBC67] hover:underline transition"
+            >
+              Contact Us
             </Link>
             <Link
               href="/cookie"
-              className="hover:text-[#202522] hover:underline transition"
+              className="hover:text-[#8CBC67] hover:underline transition"
             >
               Cookie Settings
             </Link>

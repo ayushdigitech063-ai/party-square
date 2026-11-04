@@ -418,9 +418,9 @@ export default function AdminCitiesPage() {
           <p className="text-2xl font-bold text-blue-950 mt-1">{seoConfiguredCount} / {totalCount}</p>
         </div>
 
-        <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 shadow-xs">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-amber-800">Popular / Featured</p>
-          <p className="text-2xl font-bold text-amber-900 mt-1">{popularCount}</p>
+        <div className="p-4 rounded-2xl bg-[#FCFBF7]/60 border border-[#8CBC67]/30 shadow-xs">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-[#202522]">Popular / Featured</p>
+          <p className="text-2xl font-bold text-[#202522] mt-1">{popularCount}</p>
         </div>
       </div>
 
@@ -537,11 +537,11 @@ export default function AdminCitiesPage() {
                           className={`inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold transition shadow-xs cursor-pointer ${
                             hasCustomSeo
                               ? "bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100"
-                              : "bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100"
+                              : "bg-[#FCFBF7] text-[#202522] border border-[#8CBC67]/30 hover:bg-[#7AB055]"
                           }`}
                           title="Click to edit City SEO, Keywords, Content & FAQs"
                         >
-                          <Globe size={13} className={hasCustomSeo ? "text-emerald-600" : "text-amber-600"} />
+                          <Globe size={13} className={hasCustomSeo ? "text-emerald-600" : "text-[#8CBC67]"} />
                           <span>{hasCustomSeo ? `SEO Ready (${faqCount} FAQs)` : "Configure SEO"}</span>
                         </button>
                       </td>
@@ -558,12 +558,12 @@ export default function AdminCitiesPage() {
                           onClick={() => handleTogglePopular(city)}
                           className={`inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[11px] font-bold transition cursor-pointer ${
                             city.isPopular
-                              ? "bg-amber-100 text-amber-800 hover:bg-amber-200"
+                              ? "bg-[#EEF6EB] text-[#202522] hover:bg-[#7AB055]"
                               : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"
                           }`}
                           title="Click to toggle popular status"
                         >
-                          <Star size={12} className={city.isPopular ? "fill-amber-600 text-amber-600" : ""} />
+                          <Star size={12} className={city.isPopular ? "fill-amber-600 text-[#8CBC67]" : ""} />
                           <span>{city.isPopular ? "Popular" : "Standard"}</span>
                         </button>
                       </td>
@@ -758,7 +758,7 @@ export default function AdminCitiesPage() {
                           seoMetaTitle.length >= 50 && seoMetaTitle.length <= 60
                             ? "text-emerald-600"
                             : seoMetaTitle.length > 60
-                            ? "text-amber-600"
+                            ? "text-[#8CBC67]"
                             : "text-neutral-400"
                         }`}
                       >
@@ -786,7 +786,7 @@ export default function AdminCitiesPage() {
                           seoMetaDescription.length >= 140 && seoMetaDescription.length <= 160
                             ? "text-emerald-600"
                             : seoMetaDescription.length > 160
-                            ? "text-amber-600"
+                            ? "text-[#8CBC67]"
                             : "text-neutral-400"
                         }`}
                       >

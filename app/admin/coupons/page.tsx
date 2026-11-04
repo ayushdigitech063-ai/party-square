@@ -257,9 +257,9 @@ export default function AdminCouponsPage() {
           <p className="text-2xl font-bold text-emerald-900 mt-1">{activeCount}</p>
         </div>
 
-        <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 shadow-xs">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-amber-800">Expired Promos</p>
-          <p className="text-2xl font-bold text-amber-900 mt-1">{expiredCount}</p>
+        <div className="p-4 rounded-2xl bg-[#FCFBF7]/60 border border-[#8CBC67]/30 shadow-xs">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-[#202522]">Expired Promos</p>
+          <p className="text-2xl font-bold text-[#202522] mt-1">{expiredCount}</p>
         </div>
 
         <div className="p-4 rounded-2xl bg-blue-50/60 border border-blue-200 shadow-xs">

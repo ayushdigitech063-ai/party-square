@@ -39,7 +39,7 @@ const STATUS_TABS = [
 ] as const;
 
 const STATUS_COLORS: Record<string, string> = {
-  PENDING: "bg-amber-100 text-amber-800",
+  PENDING: "bg-[#EEF6EB] text-[#202522]",
   APPROVED: "bg-green-100 text-green-800",
   FEATURED: "bg-purple-100 text-purple-800",
   REJECTED: "bg-red-100 text-red-800",
@@ -255,7 +255,7 @@ export default function AdminReviews() {
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
           {[
             { label: "Total", value: stats.total, icon: MessageSquare, color: "text-neutral-700 bg-neutral-50" },
-            { label: "Pending", value: stats.pending, icon: Clock, color: "text-amber-700 bg-amber-50" },
+            { label: "Pending", value: stats.pending, icon: Clock, color: "text-[#8CBC67] bg-[#FCFBF7]" },
             { label: "Approved", value: stats.approved, icon: CheckCircle, color: "text-green-700 bg-green-50" },
             { label: "Featured", value: stats.featured, icon: Sparkles, color: "text-purple-700 bg-purple-50" },
             { label: "Rejected", value: stats.rejected, icon: XCircle, color: "text-red-700 bg-red-50" },
@@ -540,7 +540,7 @@ export default function AdminReviews() {
                       key={starVal}
                       type="button"
                       onClick={() => setRating(starVal)}
-                      className="p-1 text-neutral-300 hover:text-amber-400 transition cursor-pointer"
+                      className="p-1 text-neutral-300 hover:text-[#8CBC67] transition cursor-pointer"
                     >
                       <Star
                         size={22}

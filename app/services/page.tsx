@@ -77,10 +77,10 @@ export default function AboutPage() {
             <span>The Party Square Legacy</span>
           </div>
           
-          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-serif font-bold tracking-wide text-white drop-shadow-md">
+          <p className="text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-serif font-bold tracking-wide text-white drop-shadow-md">
             <span className="text-white drop-shadow-sm">Crafting Elegance,</span>{" "}
             <span className="font-bold text-[#8CBC67]">Defining Memories</span>
-          </h1>
+          </p>
 
           <p className="text-neutral-200 text-xs sm:text-sm max-w-xl mx-auto font-light leading-relaxed line-clamp-2">
             We transform spaces into extraordinary emotional landscapes, merging luxury design aesthetics with flawless execution.

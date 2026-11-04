@@ -84,7 +84,8 @@ export default function BirthdayServicePage() {
   // Birthday Packages Cards
   const DEFAULT_BIRTHDAY_PACKAGES = [
     {
-      id: "1",
+      id: "classic-kids-theme",
+      slug: "classic-kids-theme",
       image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&auto=format&fit=crop&q=60",
       name: "Classic Kids Theme",
       price: "₹3,499",
@@ -93,7 +94,8 @@ export default function BirthdayServicePage() {
       popular: false,
     },
     {
-      id: "2",
+      id: "pastel-luxe-canopy",
+      slug: "pastel-luxe-canopy",
       image: "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&auto=format&fit=crop&q=60",
       name: "Pastel Luxe Canopy",
       price: "₹6,999",
@@ -102,7 +104,8 @@ export default function BirthdayServicePage() {
       desc: "Bespoke pastel balloon arch with premium sheer canopy, fairy lights, and neon sign.",
     },
     {
-      id: "3",
+      id: "grand-balloon-castle",
+      slug: "grand-balloon-castle",
       image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=800&auto=format&fit=crop&q=60",
       name: "Grand Balloon Castle",
       price: "₹12,499",
@@ -122,6 +125,7 @@ export default function BirthdayServicePage() {
           setBirthdayPackages(
             data.map((p) => ({
               id: p._id,
+              slug: (p.name || p._id).toLowerCase().replace(/[^a-z0-9]+/g, "-"),
               image: p.image || "/birthdaydesign.png",
               name: p.name,
               price: `₹${Number(p.price).toLocaleString("en-IN")}`,
@@ -188,10 +192,10 @@ export default function BirthdayServicePage() {
               <span>India's Premier Birthday Stylists</span>
             </div>
 
-            <h1 className="font-serif text-lg sm:text-2xl md:text-3xl font-bold text-white leading-tight drop-shadow-md">
+            <p className="font-serif text-lg sm:text-2xl md:text-3xl font-bold text-white leading-tight drop-shadow-md">
               <span className="text-white drop-shadow-sm">Make Every Birthday</span>{" "}
               <span className="text-[#8CBC67] font-bold">Unforgettable</span>
-            </h1>
+            </p>
 
             <p className="text-neutral-200 text-[11px] sm:text-xs md:text-sm max-w-xl font-light leading-relaxed line-clamp-1 sm:line-clamp-2">
               Transform your special day into a magical wonderland with vibrant colors and elegance.
@@ -225,9 +229,9 @@ export default function BirthdayServicePage() {
           <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
             Party Packages
           </span>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold">
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#202522]">
             Choose Your Birthday Theme
-          </h2>
+          </h1>
           <p className="text-[#6B706C] text-xs sm:text-sm">
             Explore our specialized decoration packages crafted to bring smiles
             and unforgettable memories.
@@ -287,7 +291,7 @@ export default function BirthdayServicePage() {
                         : "bg-neutral-900 text-white hover:bg-[#8CBC67]"
                     }`}
                   >
-                    View Package Details
+                    SELECT PACKAGE
                   </Link>
                 </div>
               </div>

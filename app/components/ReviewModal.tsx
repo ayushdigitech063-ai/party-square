@@ -155,7 +155,7 @@ export default function ReviewModal({
                   ))}
                 </div>
                 {(hovered || rating) > 0 && (
-                  <span className="text-sm font-bold text-amber-600 ml-1">
+                  <span className="text-sm font-bold text-[#8CBC67] ml-1">
                     {ratingLabels[hovered || rating]}
                   </span>
                 )}

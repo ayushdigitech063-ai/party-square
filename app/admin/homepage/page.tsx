@@ -41,8 +41,8 @@ const SECTION_METADATA: Record<
     description: "Promotional discount banner with coupon code at the very top of frontend",
     editUrl: "/admin/homepage/announcement",
     icon: Megaphone,
-    color: "text-amber-600",
-    bgColor: "bg-amber-50 border-amber-200",
+    color: "text-[#8CBC67]",
+    bgColor: "bg-[#FCFBF7] border-[#8CBC67]/30",
   },
   hero_banner: {
     name: "Hero Banner Slider",

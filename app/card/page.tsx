@@ -569,7 +569,7 @@ function CardContent() {
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="p-16 text-center space-y-4 bg-white rounded-3xl border border-[#E8E8E3]">
-              <AlertCircle size={40} className="mx-auto text-amber-600" />
+              <AlertCircle size={40} className="mx-auto text-[#8CBC67]" />
               <h3 className="font-serif text-xl font-bold text-[#202522]">No matching products found</h3>
               <p className="text-xs text-[#6B706C] max-w-md mx-auto">
                 We couldn&apos;t find any decorations or items matching your current filters. Try relaxing your search terms or category selection.
@@ -809,7 +809,7 @@ export default function CardPage() {
     <React.Suspense
       fallback={
         <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center">
-          <Loader2 className="animate-spin text-amber-700" size={32} />
+          <Loader2 className="animate-spin text-[#8CBC67]" size={32} />
         </div>
       }
     >

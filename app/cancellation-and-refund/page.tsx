@@ -96,7 +96,7 @@ export default function CancellationAndRefundPage() {
                 </tr>
                 <tr>
                   <td className="py-3.5 px-4 font-medium text-[#202522]">Between 12 to 24 hours before setup slot</td>
-                  <td className="py-3.5 px-4 font-bold text-amber-700">80% Refund</td>
+                  <td className="py-3.5 px-4 font-bold text-[#8CBC67]">80% Refund</td>
                   <td className="py-3.5 px-4 text-[#6B706C]">Nominal 20% material preparation cost deduction</td>
                 </tr>
                 <tr>

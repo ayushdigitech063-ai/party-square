@@ -98,7 +98,7 @@ export default function AdminAnnouncementPage() {
             </Link>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600">
+            <div className="w-10 h-10 rounded-xl bg-[#FCFBF7] border border-[#8CBC67]/30 flex items-center justify-center text-[#8CBC67]">
               <Megaphone size={22} />
             </div>
             <div>
@@ -158,7 +158,7 @@ export default function AdminAnnouncementPage() {
             <Eye size={14} /> Live Visual Preview (How it looks on site)
           </span>
           {!isEnabled && (
-            <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+            <span className="text-xs font-medium text-[#8CBC67] bg-[#FCFBF7] px-2 py-0.5 rounded border border-[#8CBC67]/30">
               Notice: Announcement is currently hidden
             </span>
           )}

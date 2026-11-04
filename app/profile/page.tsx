@@ -354,7 +354,7 @@ export default function ProfilePage() {
                                 : isCompleted
                                 ? "bg-blue-100 text-blue-800"
                                 : isPending
-                                ? "bg-amber-100 text-amber-800"
+                                ? "bg-[#EEF6EB] text-[#202522]"
                                 : "bg-red-100 text-red-800"
                             }`}
                           >
@@ -431,7 +431,7 @@ export default function ProfilePage() {
                       </div>
 
                       {booking.onSiteAmountPending > 0 && (
-                        <div className="flex justify-between items-center text-amber-800 text-[11px]">
+                        <div className="flex justify-between items-center text-[#202522] text-[11px]">
                           <span>On-site Pending:</span>
                           <span className="font-bold">
                             ₹{(booking.onSiteAmountPending || 0).toLocaleString("en-IN")}
@@ -451,7 +451,7 @@ export default function ProfilePage() {
                             <button
                               type="button"
                               onClick={() => setReviewingBooking(booking)}
-                              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-bold text-xs transition cursor-pointer"
+                              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#FCFBF7] hover:bg-[#7AB055] border border-[#8CBC67]/30 text-[#202522] font-bold text-xs transition cursor-pointer"
                             >
                               <Star size={13} className="fill-amber-500 text-amber-500" />
                               Rate Your Experience

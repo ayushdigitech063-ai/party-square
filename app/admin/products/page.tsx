@@ -336,7 +336,7 @@ export default function AdminProductsPage() {
           </div>
         ) : error ? (
           <div className="p-16 text-center space-y-4">
-            <AlertTriangle size={36} className="mx-auto text-amber-600" />
+            <AlertTriangle size={36} className="mx-auto text-[#8CBC67]" />
             <p className="text-sm text-red-600 font-medium">{error}</p>
             <button
               onClick={loadProducts}
@@ -490,7 +490,7 @@ export default function AdminProductsPage() {
                             Out of Stock
                           </span>
                         ) : isLowStock ? (
-                          <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
+                          <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#EEF6EB] text-[#202522]">
                             Low: {stockNum} left
                           </span>
                         ) : (

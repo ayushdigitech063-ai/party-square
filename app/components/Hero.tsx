@@ -140,10 +140,10 @@ export default function Hero() {
                 <p className="text-[10px] sm:text-xs tracking-[0.18em] text-[#8CBC67] font-bold mb-1.5 sm:mb-2 uppercase">
                   {currentSlide.subtitle}
                 </p>
-                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-bold text-white leading-tight mb-2 sm:mb-2.5">
+                <p className="text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-bold text-white leading-tight mb-2 sm:mb-2.5">
                   <span className="text-white drop-shadow-sm">{currentSlide.titleFirst}</span> <br />
                   <span className="font-bold text-[#8CBC67]">{currentSlide.titleItalic}</span>
-                </h1>
+                </p>
                 <p className="text-gray-100 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 max-w-md line-clamp-2 font-normal">
                   {currentSlide.description}
                 </p>

@@ -386,7 +386,7 @@ export default function AdminStaffPage() {
 
                     {/* Rating */}
                     <td className="py-4 px-6 text-center">
-                      <div className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 font-bold text-xs">
+                      <div className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-[#FCFBF7] border border-[#8CBC67]/30 text-[#202522] font-bold text-xs">
                         <Star size={12} className="fill-amber-400 text-amber-400" />
                         <span>{(member.rating || 4.8).toFixed(1)}</span>
                       </div>

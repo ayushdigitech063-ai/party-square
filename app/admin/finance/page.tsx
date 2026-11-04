@@ -219,13 +219,13 @@ export default function AdminFinancePage() {
         </div>
 
         {/* Pending Cash to Collect */}
-        <div className="p-5 rounded-3xl bg-amber-50/70 border border-amber-200 shadow-xs space-y-1">
+        <div className="p-5 rounded-3xl bg-[#FCFBF7]/70 border border-[#8CBC67]/30 shadow-xs space-y-1">
           <div className="flex items-center justify-between">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-amber-900">On-Site Cash Pending</p>
-            <Banknote size={15} className="text-amber-700" />
+            <p className="text-[11px] font-bold uppercase tracking-wider text-[#202522]">On-Site Cash Pending</p>
+            <Banknote size={15} className="text-[#8CBC67]" />
           </div>
-          <p className="text-2xl font-bold text-amber-900">₹{totalPendingCash.toLocaleString("en-IN")}</p>
-          <p className="text-[10px] text-amber-700 font-medium">{pendingCashCount} events remaining</p>
+          <p className="text-2xl font-bold text-[#202522]">₹{totalPendingCash.toLocaleString("en-IN")}</p>
+          <p className="text-[10px] text-[#8CBC67] font-medium">{pendingCashCount} events remaining</p>
         </div>
 
         {/* Fully Cleared Accounts */}
@@ -369,7 +369,7 @@ export default function AdminFinancePage() {
                         {isFullyPaid ? (
                           <span className="text-neutral-400 font-normal">₹0 (Cleared)</span>
                         ) : (
-                          <span className="text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg inline-block">
+                          <span className="text-[#8CBC67] bg-[#FCFBF7] border border-[#8CBC67]/30 px-2.5 py-1 rounded-lg inline-block">
                             ₹{pendingAmount.toLocaleString("en-IN")}
                           </span>
                         )}
@@ -381,7 +381,7 @@ export default function AdminFinancePage() {
                           className={`inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-[11px] font-bold ${
                             isFullyPaid
                               ? "bg-[#EEF6EB] text-emerald-800"
-                              : "bg-amber-100 text-amber-900"
+                              : "bg-[#EEF6EB] text-[#202522]"
                           }`}
                         >
                           {isFullyPaid ? (
@@ -391,7 +391,7 @@ export default function AdminFinancePage() {
                             </>
                           ) : (
                             <>
-                              <Clock size={12} className="text-amber-700" />
+                              <Clock size={12} className="text-[#8CBC67]" />
                               <span>Cash Due On-Site</span>
                             </>
                           )}

@@ -143,7 +143,7 @@ export default function AdminCustomers() {
         return { label: "Payment Failed", color: "bg-red-100 text-red-800 border-red-200", icon: AlertCircle };
       }
       if (user.dropoffStage === "PAYMENT_PAGE") {
-        return { label: "Payment Page Drop", color: "bg-amber-100 text-amber-800 border-amber-200", icon: CreditCard };
+        return { label: "Payment Page Drop", color: "bg-[#EEF6EB] text-[#202522] border-[#8CBC67]/30", icon: CreditCard };
       }
       return { label: "Cart Abandoned", color: "bg-orange-100 text-orange-800 border-orange-200", icon: ShoppingCart };
     }
@@ -152,7 +152,7 @@ export default function AdminCustomers() {
       return { label: "Payment Failed", color: "bg-red-100 text-red-800 border-red-200", icon: AlertCircle };
     }
     if (user.latestBooking?.bookingStatus === "PENDING") {
-      return { label: "Payment Pending", color: "bg-amber-100 text-amber-800 border-amber-200", icon: Clock };
+      return { label: "Payment Pending", color: "bg-[#EEF6EB] text-[#202522] border-[#8CBC67]/30", icon: Clock };
     }
 
     if ((user.bookingsCount || 0) === 0 && user.role === "user") {
@@ -423,7 +423,7 @@ export default function AdminCustomers() {
                               <span>{dropInfo.label}</span>
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#EEF6EB] text-[#202522]">
                               <Clock size={11} />
                               <span>Registered Only</span>
                             </span>

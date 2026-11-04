@@ -225,7 +225,7 @@ export default function AdminAnalytics() {
           </div>
         </div>
 
-        <div className="bg-amber-900 text-white p-5 rounded-2xl flex items-center justify-between">
+        <div className="bg-[#8CBC67] text-white p-5 rounded-2xl flex items-center justify-between">
           <div>
             <span className="text-[11px] font-semibold text-amber-200 block uppercase tracking-wider">
               Pending On-Site Collection

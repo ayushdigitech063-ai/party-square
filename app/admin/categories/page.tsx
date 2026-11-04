@@ -232,7 +232,7 @@ export default function AdminCategoriesPage() {
           </div>
         ) : error ? (
           <div className="p-12 text-center space-y-4">
-            <AlertTriangle size={36} className="mx-auto text-amber-600" />
+            <AlertTriangle size={36} className="mx-auto text-[#8CBC67]" />
             <p className="text-sm text-red-600 font-medium">{error}</p>
             <button
               onClick={loadCategories}
@@ -421,7 +421,7 @@ export default function AdminCategoriesPage() {
                 </div>
               ) : null}
               {deleteTarget.subcategoriesCount && deleteTarget.subcategoriesCount > 0 ? (
-                <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-left text-xs text-amber-800 space-y-1">
+                <div className="p-3 bg-[#FCFBF7] border border-[#8CBC67]/30 rounded-xl text-left text-xs text-[#202522] space-y-1">
                   <p className="font-bold">Child Subcategories:</p>
                   <p>
                     This category has {deleteTarget.subcategoriesCount} child subcategories.

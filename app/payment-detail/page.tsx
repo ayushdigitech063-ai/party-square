@@ -492,7 +492,7 @@ function PaymentContent() {
               </div>
 
               {pendingOnSite > 0 && (
-                <div className="flex justify-between items-center text-amber-700 text-xs">
+                <div className="flex justify-between items-center text-[#8CBC67] text-xs">
                   <span>Balance Pending (On-site after setup):</span>
                   <span className="font-bold">₹{pendingOnSite.toLocaleString("en-IN")}</span>
                 </div>
@@ -1175,7 +1175,7 @@ function PaymentContent() {
                   </div>
 
                   {pendingOnSite > 0 && (
-                    <div className="pt-2 border-t border-[#8CBC67]/20 flex justify-between text-[11px] text-amber-800">
+                    <div className="pt-2 border-t border-[#8CBC67]/20 flex justify-between text-[11px] text-[#202522]">
                       <span>Pending at Venue (Post Setup):</span>
                       <span className="font-bold">₹{pendingOnSite.toLocaleString("en-IN")}</span>
                     </div>

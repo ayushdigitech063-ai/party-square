@@ -287,7 +287,7 @@ export default function WallDecorationPage() {
                  
       {/* ================= SPECIAL RED CARD WITH IMAGE SLIDER ================= */}
       <section className="py-16 px-6 max-w-7xl mx-auto">
-        <div className="bg-gradient-to-br from-rose-900 via-rose-800 to-red-950 rounded-3xl p-8 sm:p-12 text-white shadow-2xl border border-rose-700/50 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div className="bg-gradient-to-br from-[#202522] via-[#2A312D] to-neutral-950 rounded-3xl p-8 sm:p-12 text-white shadow-2xl border border-[#8CBC67]/30 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           
           <div className="space-y-6">
             <span className="bg-white/10 border border-white/20 px-4 py-1.5 rounded-full text-rose-200 text-xs font-semibold tracking-widest uppercase inline-block backdrop-blur-md">

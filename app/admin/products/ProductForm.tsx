@@ -1087,7 +1087,7 @@ export default function ProductForm({
                 {whyUsList.map((item, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-between p-2.5 rounded-xl bg-amber-50/60 border border-amber-200/50 text-xs text-[#202522]"
+                    className="flex items-center justify-between p-2.5 rounded-xl bg-[#FCFBF7]/60 border border-[#8CBC67]/30/50 text-xs text-[#202522]"
                   >
                     <span className="flex-1 mr-2">{item}</span>
                     <button

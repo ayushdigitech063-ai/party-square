@@ -60,7 +60,7 @@ export default function KpiCards({
       value: metrics ? String(metrics.lowStockProducts) : "0",
       change: metrics && metrics.lowStockProducts > 0 ? "Action needed" : "All healthy",
       icon: AlertCircle,
-      color: metrics && metrics.lowStockProducts > 0 ? "bg-amber-500 text-white" : "bg-neutral-800 text-white",
+      color: metrics && metrics.lowStockProducts > 0 ? "bg-[#FCFBF7]0 text-white" : "bg-neutral-800 text-white",
       href: "/admin/products",
       trend: [2, 1, 3, 0, 1, 0, metrics ? metrics.lowStockProducts : 0],
     },
