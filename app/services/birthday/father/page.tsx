@@ -79,7 +79,8 @@ export default function FatherBirthdayPage() {
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans selection:bg-[#D7A84B] selection:text-white">
       {/* ================= HERO SECTION WITH badbackgroundimage.png ================= */}
-      <section className="relative h-[320px] sm:h-[340px] md:h-[360px] flex items-center justify-center overflow-hidden text-white">
+      <section className="w-full max-w-[1264px] mx-auto p-3 sm:p-4 lg:px-0">
+        <div className="relative w-full h-[260px] sm:h-[280px] md:h-[301px] rounded-[20px] sm:rounded-[24px] overflow-hidden text-white shadow-xl flex items-center justify-center">
         <div
           className="absolute inset-0 z-0 w-full h-full transform scale-105 transition-transform duration-1000"
           style={{
@@ -133,6 +134,7 @@ export default function FatherBirthdayPage() {
             </div>
           </div>
         </div>
+      </div>
       </section>
 
       {/* ================= EXACT SCREENSHOT STYLE CARDS SECTION ================= */}

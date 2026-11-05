@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import React from "react";
 import type { Metadata } from "next";
 import { fetchCityBySlugOrId } from "@/app/lib/api";
@@ -18,6 +19,9 @@ interface Props {
 // Dynamic SEO Metadata for Googlebot & Search Engines
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { city: citySlug } = await params;
+  if (citySlug.toLowerCase() === "search") {
+    redirect("/search");
+  }
   const cityData = await fetchCityBySlugOrId(citySlug);
 
   const cityName = cityData ? cityData.name : citySlug.charAt(0).toUpperCase() + citySlug.slice(1).replace(/-/g, " ");

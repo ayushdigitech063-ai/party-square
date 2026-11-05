@@ -44,7 +44,8 @@ export default function ChristmasPage() {
   return (
     <div className="min-h-screen bg-[#FCFBF7]">
       {/* 1. HERO SECTION */}
-      <section className="relative w-full min-h-[480px] sm:h-[520px] py-10 sm:py-0 flex flex-col justify-center items-center text-center overflow-hidden">
+      <section className="w-full max-w-[1264px] mx-auto p-3 sm:p-4 lg:px-0">
+        <div className="relative w-full h-[260px] sm:h-[280px] md:h-[301px] rounded-[20px] sm:rounded-[24px] overflow-hidden text-white shadow-xl flex items-center justify-center">
         <div
           className="absolute inset-0 bg-cover bg-center transform scale-105"
           style={{
@@ -69,6 +70,7 @@ export default function ChristmasPage() {
             stunning Christmas trees, sparkling lights, and snowy winter themes.
           </p>
         </div>
+      </div>
       </section>
 
       {/* Naya Section: Christmas Special Highlights */}

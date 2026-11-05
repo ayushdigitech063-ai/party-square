@@ -687,10 +687,10 @@ export default function Navbar() {
           <button
             onClick={() => setIsCityModalOpen(true)}
             aria-label="Select city"
-            className="flex md:hidden items-center gap-1 text-[10.5px] font-bold bg-[#EEF6E8] border border-[#8CBC67]/40 px-2 py-1 rounded-full text-[#202522] max-w-[76px] truncate shrink-0 hover:border-[#8CBC67] transition-colors"
+            className="flex md:hidden items-center gap-1 text-[10.5px] font-bold bg-[#EEF6E8] border border-[#8CBC67]/40 px-2 py-1 rounded-full text-[#202522] shrink-0 whitespace-nowrap shadow-2xs hover:border-[#8CBC67] transition-colors"
           >
             <MapPin size={10} className="text-[#8CBC67] shrink-0" />
-            <span className="truncate">{selectedCity || "City"}</span>
+            <span className="whitespace-nowrap">{selectedCity && selectedCity.toLowerCase() !== "search" ? selectedCity : "Select City"}</span>
           </button>
 
           {/* Mobile Right Controls: Wishlist + Basket + Search + Hamburger Menu */}
@@ -747,7 +747,7 @@ export default function Navbar() {
                 className="flex items-center gap-1.5 h-10 px-3.5 rounded-full border border-[#E8E8E3] text-[15px] font-medium text-[#202522] hover:border-[#8CBC67] hover:text-[#8CBC67] transition-colors"
               >
                 <MapPin size={16} className="text-[#8CBC67] shrink-0" />
-                <span className="whitespace-nowrap">{selectedCity}</span>
+                <span className="whitespace-nowrap">{selectedCity && selectedCity.toLowerCase() !== "search" ? selectedCity : "Select City"}</span>
                 <ChevronDown
                   size={15}
                   className={`transition-transform shrink-0 ${locationOpen ? "rotate-180" : ""}`}

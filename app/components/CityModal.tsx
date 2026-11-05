@@ -88,6 +88,42 @@ export default function CityModal({
     handleClose();
 
     const citySlug = city.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+    // Static pages that must NEVER have a city prefix
+    const staticGlobalRoutes = [
+      "/basket",
+      "/wishlist",
+      "/payment-detail",
+      "/payments",
+      "/profile",
+      "/login",
+      "/admin",
+      "/cookie",
+      "/privacy-policy",
+      "/terms-and-condition",
+      "/cancellation-and-refund",
+      "/contact",
+      "/about",
+      "/search",
+    ];
+
+    if (pathname) {
+      const lowerPath = pathname.toLowerCase();
+      // If currently on /search or another global static page, keep URL query and don't prefix city
+      if (lowerPath === "/search" || lowerPath.startsWith("/search?")) {
+        // Retain the current search query and reload without adding /city/search
+        window.location.reload();
+        return;
+      }
+      const isStaticPage = staticGlobalRoutes.some(
+        (sp) => lowerPath === sp || lowerPath.endsWith(sp)
+      );
+      if (isStaticPage) {
+        window.location.reload();
+        return;
+      }
+    }
+
     if (!pathname || (!pathname.startsWith("/admin") && !pathname.startsWith("/login"))) {
       const segments = pathname ? pathname.split("/").filter(Boolean) : [];
       if (segments.length > 0) {
@@ -95,6 +131,11 @@ export default function CityModal({
         const allCities = availableCities.map((c) => c.toLowerCase());
         if (allCities.includes(first) || ["delhi", "mumbai", "jaipur", "bangalore", "pune", "hyderabad", "chennai", "kolkata", "lucknow", "ahmedabad", "gurugram", "noida", "ghaziabad", "faridabad"].includes(first)) {
           const rest = segments.slice(1).join("/");
+          // If rest is a static global route, don't keep city prefix
+          if (staticGlobalRoutes.some((sp) => ("/" + rest.toLowerCase()) === sp)) {
+            window.location.href = "/" + rest;
+            return;
+          }
           window.location.href = `/${citySlug}${rest ? `/${rest}` : ""}`;
           return;
         }

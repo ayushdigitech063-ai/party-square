@@ -190,28 +190,48 @@ export default function SEOContentSection() {
             {intro}
           </p>
 
-          {/* Subheading & Services List */}
-          <div className="mt-6 space-y-4">
-            <h3 className="font-bold text-sm sm:text-base md:text-lg text-[#202522] mt-4 mb-2">
-              {subHeading}
-            </h3>
+          {/* Subheading & Services List (Collapsible with smooth Read More / Read Less) */}
+          <div className="relative mt-6">
+            <div
+              className={`transition-all duration-500 overflow-hidden ${
+                isExpanded ? "max-h-[3000px] opacity-100" : "max-h-0 sm:max-h-[140px] opacity-90"
+              }`}
+            >
+              <h3 className="font-bold text-sm sm:text-base md:text-lg text-[#202522] mb-2">
+                {subHeading}
+              </h3>
 
-            <p className="text-xs sm:text-sm text-[#6B706C] leading-relaxed mb-4">
-              {servicesIntro}
-            </p>
+              <p className="text-xs sm:text-sm text-[#6B706C] leading-relaxed mb-4">
+                {servicesIntro}
+              </p>
 
-            <div className="space-y-3 pt-1">
-              {points.map((pt, idx) => (
-                <div key={idx} className="text-xs sm:text-sm text-[#6B706C] leading-relaxed">
-                  <span className="font-bold text-[#202522]">{pt.title}: </span>
-                  <span>{pt.desc}</span>
-                </div>
-              ))}
+              <div className="space-y-3 pt-1">
+                {points.map((pt, idx) => (
+                  <div key={idx} className="text-xs sm:text-sm text-[#6B706C] leading-relaxed">
+                    <span className="font-bold text-[#202522]">{pt.title}: </span>
+                    <span>{pt.desc}</span>
+                  </div>
+                ))}
+              </div>
             </div>
+
+            {/* Gradient shadow overlay when collapsed */}
+            {!isExpanded && (
+              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+            )}
           </div>
 
-          {/* Expand / Collapse Button for Mobile & Clean UX */}
-          <div className="mt-6 pt-4 border-t border-[#E8E8E3] flex items-center justify-between">
+          {/* Expand / Collapse Toggle Button & Verification Badge */}
+          <div className="mt-4 pt-4 border-t border-[#E8E8E3] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={() => setIsExpanded((prev) => !prev)}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#8CBC67]/40 bg-[#EEF6EB]/60 hover:bg-[#EEF6EB] text-xs font-bold text-[#202522] hover:text-[#8CBC67] transition shadow-2xs cursor-pointer active:scale-95"
+            >
+              <span>{isExpanded ? "Read Less" : "Read More"}</span>
+              {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+            </button>
+
             <span className="text-xs text-[#6B706C] font-semibold flex items-center gap-2">
               <Sparkles size={14} className="text-[#8CBC67]" />
               <span>Party Square Verified Event & Decor Planning</span>

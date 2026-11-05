@@ -86,49 +86,46 @@ export default function ProductCard({
       </div>
 
       {/* Content */}
-      <div className="p-2.5 sm:p-4 flex flex-col flex-grow justify-between space-y-1.5 sm:space-y-2">
+      <div className="p-2 sm:p-4 flex flex-col flex-grow justify-between space-y-1 sm:space-y-2">
         <div className="space-y-1">
           <Link href={productUrl}>
-            <h3 className="text-xs sm:text-base font-bold text-[#202522] hover:text-[#8CBC67] transition line-clamp-2 leading-snug min-h-[34px] sm:min-h-[44px]">
+            <h3 className="text-xs sm:text-base font-bold text-[#202522] hover:text-[#8CBC67] transition line-clamp-2 leading-snug min-h-[30px] sm:min-h-[44px]">
               {product.name}
             </h3>
           </Link>
 
           {/* Ratings & Reviews */}
-          <div className="flex items-center gap-1.5 pt-0.5">
-            <span className="inline-flex items-center gap-1 bg-[#FCFBF7] text-[#202522] border border-[#E8E8E3] px-2 py-0.5 rounded-md text-[11px] font-bold">
-              <Star size={11} className="fill-[#D7A84B] text-[#D7A84B]" />
+          <div className="flex items-center gap-1 sm:gap-1.5 pt-0.5">
+            <span className="inline-flex items-center gap-0.5 sm:gap-1 bg-[#FCFBF7] text-[#202522] border border-[#E8E8E3] px-1.5 sm:px-2 py-0.5 rounded-md text-[10px] sm:text-[11px] font-bold">
+              <Star size={10} className="fill-[#D7A84B] text-[#D7A84B]" />
               <span>{rating.toFixed(1)}</span>
               <span className="text-[#6B706C] font-normal">({reviewCount})</span>
             </span>
-            <span className="text-[11px] text-[#6B706C] font-medium flex items-center gap-1">
+            <span className="text-[10px] sm:text-[11px] text-[#6B706C] font-medium hidden min-[360px]:inline">
               • {selectedCity || "Bangalore"}
             </span>
           </div>
 
-          <p className="text-xs text-[#6B706C] line-clamp-2 mt-1 leading-relaxed hidden sm:block">
-            {product.description}
-          </p>
+          {/* Description removed as requested to keep the card compact & uniform */}
         </div>
 
-        {/* Bottom */}
-        <div className="pt-2 sm:pt-3 border-t border-[#E8E8E3] flex flex-col min-[420px]:flex-row min-[420px]:items-center justify-between gap-1.5 sm:gap-2">
-          <div className="flex items-baseline gap-1 sm:gap-1.5 flex-wrap">
-            <span className="text-sm sm:text-lg font-bold text-[#202522]">
+        {/* Bottom Pricing & Action */}
+        <div className="pt-1.5 sm:pt-3 border-t border-[#E8E8E3] flex items-center justify-between gap-1 sm:gap-2">
+          <div className="flex items-baseline gap-1 sm:gap-1.5">
+            <span className="text-xs sm:text-lg font-bold text-[#202522]">
               ₹{salePrice.toLocaleString("en-IN")}
             </span>
-            <span className="text-[10px] sm:text-xs text-[#6B706C] line-through">
-                ₹{Math.round(originalPrice).toLocaleString("en-IN")}
-              </span>
+            <span className="text-[9px] sm:text-xs text-[#6B706C] line-through">
+              ₹{Math.round(originalPrice).toLocaleString("en-IN")}
+            </span>
           </div>
 
           <button
             onClick={openProductDetailPage}
-            className="w-full min-[420px]:w-auto bg-[#8CBC67] hover:bg-[#7AB055] text-white text-[11px] sm:text-xs font-bold py-1.5 px-2.5 sm:px-4 sm:py-2 rounded-lg transition shadow-2xs inline-flex items-center justify-center gap-1 shrink-0 cursor-pointer whitespace-nowrap"
+            className="bg-[#8CBC67] hover:bg-[#7AB055] text-white text-[10px] sm:text-xs font-bold py-1 sm:py-2 px-2 sm:px-4 rounded-lg transition shadow-2xs inline-flex items-center justify-center gap-0.5 sm:gap-1 shrink-0 cursor-pointer whitespace-nowrap"
           >
-            <span className="hidden min-[360px]:inline min-[420px]:hidden">Book</span>
-            <span className="inline min-[360px]:hidden min-[420px]:inline">Book Now</span>
-            <ArrowRight size={11} className="shrink-0" />
+            <span>Book</span>
+            <ArrowRight size={10} className="shrink-0" />
           </button>
         </div>
       </div>

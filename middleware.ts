@@ -75,6 +75,8 @@ export function middleware(request: NextRequest) {
     pathname === "/login" ||
     pathname.startsWith("/login/") ||
     pathname.startsWith("/card") ||
+    pathname === "/search" ||
+    pathname.startsWith("/search") ||
     pathname.includes(".")
   ) {
     return NextResponse.next();
@@ -103,6 +105,18 @@ export function middleware(request: NextRequest) {
     if (matchLower === "/login") {
       const url = request.nextUrl.clone();
       url.pathname = "/login";
+      return NextResponse.redirect(url);
+    }
+    // Global static pages like /basket, /wishlist, /profile must NEVER be prefixed by city
+    if (
+      matchLower === "/basket" ||
+      matchLower === "/wishlist" ||
+      matchLower === "/payment-detail" ||
+      matchLower === "/payments" ||
+      matchLower === "/profile"
+    ) {
+      const url = request.nextUrl.clone();
+      url.pathname = matchLower;
       return NextResponse.redirect(url);
     }
 

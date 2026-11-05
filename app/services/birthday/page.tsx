@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { fetchProducts } from "@/app/lib/api";
 import React, { useState, useEffect } from "react";
@@ -168,56 +168,58 @@ export default function BirthdayServicePage() {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#202522] font-sans">
-      {/* ================= HERO SECTION (COMPACT HALF-HEIGHT BANNER) ================= */}
-      <section className="relative h-[180px] sm:h-[200px] md:h-[230px] flex items-center justify-center overflow-hidden text-white">
-        {/* Background Image Container with full cover and center positioning */}
-        <div
-          className="absolute inset-0 z-0 w-full h-full"
-          style={{
-            backgroundImage: "url('/birthdayhomepage.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center 30%",
-            backgroundRepeat: "no-repeat",
-          }}
-        />
+      {/* ================= HERO SECTION (MATCHING HOME PAGE BANNER SIZE & CARD STYLE) ================= */}
+      <section className="w-full max-w-[1264px] mx-auto p-3 sm:p-4 lg:px-0">
+        <div className="relative w-full h-[260px] sm:h-[280px] md:h-[301px] rounded-[20px] sm:rounded-[24px] overflow-hidden text-white shadow-xl flex items-center">
+          {/* Background Image Container with full cover and center positioning */}
+          <div
+            className="absolute inset-0 z-0 w-full h-full"
+            style={{
+              backgroundImage: "url('/birthdayhomepage.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center 30%",
+              backgroundRepeat: "no-repeat",
+            }}
+          />
 
-        {/* Luxury gradient overlay for text readability on left side */}
-        <div className="absolute inset-0 z-10 bg-gradient-to-r from-neutral-950/95 via-neutral-950/80 to-neutral-950/40" />
+          {/* Luxury gradient overlay for text readability on left side */}
+          <div className="absolute inset-0 z-10 bg-gradient-to-r from-neutral-950/95 via-neutral-950/80 to-neutral-950/40" />
 
-        {/* Hero Content on Left Side */}
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 w-full text-center sm:text-left">
-          <div className="max-w-2xl space-y-1.5 sm:space-y-2">
-            <div className="inline-flex items-center space-x-1.5 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-2.5 sm:px-3.5 py-0.5 rounded-full text-[#8CBC67] text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase backdrop-blur-sm shadow-sm">
-              <Gift size={12} className="text-[#8CBC67]" />
-              <span>India's Premier Birthday Stylists</span>
-            </div>
+          {/* Hero Content on Left Side */}
+          <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 md:px-12 w-full text-center sm:text-left">
+            <div className="max-w-2xl space-y-1.5 sm:space-y-2">
+              <div className="inline-flex items-center space-x-1.5 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-2.5 sm:px-3.5 py-0.5 rounded-full text-[#8CBC67] text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase backdrop-blur-sm shadow-sm">
+                <Gift size={12} className="text-[#8CBC67]" />
+                <span>India's Premier Birthday Stylists</span>
+              </div>
 
-            <p className="font-serif text-lg sm:text-2xl md:text-3xl font-bold text-white leading-tight drop-shadow-md">
-              <span className="text-white drop-shadow-sm">Make Every Birthday</span>{" "}
-              <span className="text-[#8CBC67] font-bold">Unforgettable</span>
-            </p>
+              <p className="font-serif text-lg sm:text-2xl md:text-3xl font-bold text-white leading-tight drop-shadow-md">
+                <span className="text-white drop-shadow-sm">Make Every Birthday</span>{" "}
+                <span className="text-[#8CBC67] font-bold">Unforgettable</span>
+              </p>
 
-            <p className="text-neutral-200 text-[11px] sm:text-xs md:text-sm max-w-xl font-light leading-relaxed line-clamp-1 sm:line-clamp-2">
-              Transform your special day into a magical wonderland with vibrant colors and elegance.
-            </p>
+              <p className="text-neutral-200 text-[11px] sm:text-xs md:text-sm max-w-xl font-light leading-relaxed line-clamp-1 sm:line-clamp-2">
+                Transform your special day into a magical wonderland with vibrant colors and elegance.
+              </p>
 
-            <div className="flex flex-row items-center gap-2 sm:gap-3 pt-1 w-full justify-center sm:justify-start">
-              <Link
-                href="/contact"
-                className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full font-bold text-[10px] sm:text-xs uppercase tracking-wider shadow-md hover:shadow-[#8CBC67]/30 transition flex items-center justify-center space-x-1.5 cursor-pointer whitespace-nowrap"
-              >
-                <span>Book Birthday Decor</span>
-                <ArrowRight size={13} className="shrink-0" />
-              </Link>
+              <div className="flex flex-row items-center gap-2 sm:gap-3 pt-1 w-full justify-center sm:justify-start">
+                <Link
+                  href="/contact"
+                  className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full font-bold text-[10px] sm:text-xs uppercase tracking-wider shadow-md hover:shadow-[#8CBC67]/30 transition flex items-center justify-center space-x-1.5 cursor-pointer whitespace-nowrap"
+                >
+                  <span>Book Birthday Decor</span>
+                  <ArrowRight size={13} className="shrink-0" />
+                </Link>
 
-              <a
-                href="https://whatsapp.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/25 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full font-semibold text-[10px] sm:text-xs uppercase tracking-wider transition flex items-center justify-center space-x-1.5 whitespace-nowrap"
-              >
-                <span>Chat on WhatsApp</span>
-              </a>
+                <a
+                  href="https://whatsapp.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/25 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full font-semibold text-[10px] sm:text-xs uppercase tracking-wider transition flex items-center justify-center space-x-1.5 whitespace-nowrap"
+                >
+                  <span>Chat on WhatsApp</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -302,33 +304,30 @@ export default function BirthdayServicePage() {
 
       {/* Kids Birthday products */}
 
-      <section className="py-16 px-6 max-w-7xl mx-auto">
-        <div className="relative mb-12">
-          <div className="flex items-center justify-between gap-6">
+      <section className="py-8 sm:py-16 px-4 sm:px-6 max-w-7xl mx-auto">
+        <div className="relative mb-6 sm:mb-12">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             {/* LEFT - Heading */}
-            <div className="text-left">
-              <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
-                Â  Kids Collection
+            <div className="text-left space-y-1">
+              <span className="text-[11px] sm:text-xs uppercase tracking-[0.2em] text-[#8CBC67] font-bold">
+                Kids Collection
               </span>
-              <div className="flex items-baseline gap-3">
-                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522] mt-1">
+              <div className="flex flex-wrap items-baseline gap-2 sm:gap-3">
+                <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-[#202522]">
                   Kids Birthday Products
                 </h2>
-                <span className="text-[#6B706C] text-2xl">|</span>
-
-                <span className="text-[#6B706C] text-2xl">
+                <span className="text-[#8CBC67] text-sm sm:text-base font-bold bg-[#EEF6EB] px-2.5 py-0.5 rounded-full border border-[#8CBC67]/30">
                   {productsToDisplay.length} Items
                 </span>
               </div>
 
-              <p className="text-[#6B706C] text-sm font-light mt-2">
-                Â Discover fun and colorful birthday products designed to make
-                every child's celebration extra special.
+              <p className="text-[#6B706C] text-xs sm:text-sm font-normal pt-0.5 max-w-2xl leading-relaxed">
+                Discover fun and colorful birthday products designed to make every child's celebration extra special.
               </p>
             </div>
 
             {/* RIGHT - Sort */}
-            <div className="shrink-0">
+            <div className="self-end sm:self-auto shrink-0">
               <ProductSort value={sortBy} onChange={setSortBy} />
             </div>
           </div>

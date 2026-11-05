@@ -113,6 +113,34 @@ export default function Hero() {
     setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
+  // Touch swipe support for mobile
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
+
+  const minSwipeDistance = 45; // Minimum px distance to trigger swipe
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEndX(null);
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX || !touchEndX) return;
+    const distance = touchStartX - touchEndX;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+  };
+
   const currentSlide = slides[currentIndex] || slides[0] || DEFAULT_SLIDES[0];
 
   return (
@@ -121,7 +149,12 @@ export default function Hero() {
       {/* ================= HERO SECTION CARD ================= */}
       {isEnabled && (
         <div className="max-w-[1264px] mx-auto p-3 sm:p-4 lg:px-0">
-          <div className="relative w-full h-[260px] sm:h-[280px] md:h-[301px] rounded-[20px] sm:rounded-[24px] overflow-hidden text-white shadow-xl flex flex-col justify-center">
+          <div
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            className="relative w-full h-[260px] sm:h-[280px] md:h-[301px] rounded-[20px] sm:rounded-[24px] overflow-hidden text-white shadow-xl flex flex-col justify-center select-none touch-pan-y"
+          >
 
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 z-0">
@@ -135,63 +168,45 @@ export default function Hero() {
             </div>
 
             {/* Hero Content */}
-            <div className="relative z-20 h-full flex flex-col justify-center px-6 sm:px-10 md:px-12 py-4 sm:py-0">
+            <div className="relative z-20 h-full flex flex-col justify-center px-4 sm:px-10 md:px-12 py-3 pb-8 sm:py-0">
               <div className="max-w-xl">
-                <p className="text-[10px] sm:text-xs tracking-[0.18em] text-[#8CBC67] font-bold mb-1.5 sm:mb-2 uppercase">
+                <p className="text-[9px] sm:text-xs tracking-[0.18em] text-[#8CBC67] font-bold mb-1 sm:mb-2 uppercase">
                   {currentSlide.subtitle}
                 </p>
-                <p className="text-xl sm:text-2xl md:text-3xl lg:text-[34px] font-bold text-white leading-tight mb-2 sm:mb-2.5">
+                <p className="text-lg sm:text-2xl md:text-3xl lg:text-[34px] font-bold text-white leading-tight mb-1 sm:mb-2.5">
                   <span className="text-white drop-shadow-sm">{currentSlide.titleFirst}</span> <br />
                   <span className="font-bold text-[#8CBC67]">{currentSlide.titleItalic}</span>
                 </p>
-                <p className="text-gray-100 text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4 max-w-md line-clamp-2 font-normal">
+                <p className="text-gray-100 text-[11px] sm:text-sm leading-relaxed mb-2.5 sm:mb-4 max-w-md line-clamp-1 sm:line-clamp-2 font-normal">
                   {currentSlide.description}
                 </p>
 
-                <div className="flex items-center gap-2.5 sm:gap-4 flex-row flex-nowrap sm:flex-wrap">
+                <div className="flex items-center gap-2 sm:gap-4 flex-row flex-nowrap sm:flex-wrap">
                   <Link
                     href={currentSlide.buttonLink || "/services"}
-                    className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm flex items-center space-x-1.5 sm:space-x-2 transition shadow-md cursor-pointer whitespace-nowrap shrink-0"
+                    className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-3 sm:px-6 py-1.5 sm:py-2.5 rounded-full font-semibold text-[11px] sm:text-sm flex items-center space-x-1.5 sm:space-x-2 transition shadow-md cursor-pointer whitespace-nowrap shrink-0"
                   >
                     <span>{currentSlide.buttonText || "Explore Our Services"}</span>
-                    <ArrowRight size={14} />
+                    <ArrowRight size={13} />
                   </Link>
                 </div>
               </div>
             </div>
 
-            {/* Floating side arrows */}
+            {/* Dot pagination / Cursor bar (Shifted to right on mobile to never overlap CTA button) */}
             {slides.length > 1 && (
-              <>
-                <button
-                  onClick={prevSlide}
-                  aria-label="Previous slide"
-                  className="hidden sm:flex absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 text-[#202522] items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
-                >
-                  <ChevronLeft size={16} />
-                </button>
-                <button
-                  onClick={nextSlide}
-                  aria-label="Next slide"
-                  className="hidden sm:flex absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/90 text-[#202522] items-center justify-center hover:bg-white transition shadow-md cursor-pointer"
-                >
-                  <ChevronRight size={16} />
-                </button>
-
-                {/* Dot pagination */}
-                <div className="absolute bottom-3 sm:bottom-3.5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-full">
-                  {slides.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentIndex(idx)}
-                      aria-label={`Go to slide ${idx + 1}`}
-                      className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                        currentIndex === idx ? "w-5 bg-[#8CBC67]" : "w-1.5 bg-white/50 hover:bg-white/80"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </>
+              <div className="absolute bottom-2.5 sm:bottom-3.5 right-4 sm:left-1/2 sm:-translate-x-1/2 z-20 flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-full">
+                {slides.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentIndex(idx)}
+                    aria-label={`Go to slide ${idx + 1}`}
+                    className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                      currentIndex === idx ? "w-5 bg-[#8CBC67]" : "w-1.5 bg-white/50 hover:bg-white/80"
+                    }`}
+                  />
+                ))}
+              </div>
             )}
 
           </div>

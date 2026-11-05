@@ -130,7 +130,8 @@ export default function NavratriPage() {
   return (
     <div className="min-h-screen text-[#202522] font-sans bg-[#FFFFFF] selection:bg-rose-600 selection:text-white overflow-x-hidden pb-20">
       {/* Hero Section */}
-      <section className="relative w-full min-h-[480px] sm:h-[520px] py-10 sm:py-0 px-4 sm:px-6 flex items-center justify-center text-center overflow-hidden">
+      <section className="w-full max-w-[1264px] mx-auto p-3 sm:p-4 lg:px-0">
+        <div className="relative w-full h-[260px] sm:h-[280px] md:h-[301px] rounded-[20px] sm:rounded-[24px] overflow-hidden text-white shadow-xl flex items-center justify-center">
         <div
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: "url('/beground.png')" }}
@@ -153,6 +154,7 @@ export default function NavratriPage() {
             nights, and mesmerizing traditional decorations.
           </p>
         </div>
+      </div>
       </section>
 
       {/* Exclusive Divine Essentials Section */}

@@ -140,14 +140,14 @@ export default function MostLovedDecor() {
               <ChevronRight size={16} />
             </button>
 
-            {/* View All Button — Navigate to Birthday All Products Catalogue */}
+            {/* View All Button (Desktop: Top Right Header, Mobile: Bottom Centered) */}
             <button
               type="button"
               onClick={() => {
                 const citySlug = (selectedCity || "bangalore").toLowerCase().replace(/[^a-z0-9]+/g, "-");
                 router.push(`/${citySlug}/services/birthday/all-products`);
               }}
-              className="inline-flex items-center gap-1.5 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full border border-[#E8E8E3] hover:border-[#8CBC67] bg-white text-xs sm:text-sm font-semibold text-[#202522] hover:bg-[#EEF6EB] transition shrink-0 shadow-2xs cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full border border-[#E8E8E3] hover:border-[#8CBC67] bg-white text-xs sm:text-sm font-semibold text-[#202522] hover:bg-[#EEF6EB] transition shrink-0 shadow-2xs cursor-pointer"
             >
               <span>View All</span>
               <ArrowRight size={13} />
@@ -166,10 +166,10 @@ export default function MostLovedDecor() {
               <div 
                 key={`${item.id || item.slug}-${index}`}
                 onClick={() => openDetailPage(item)}
-                className="flex flex-col items-center group/card cursor-pointer w-[86px] sm:w-[130px] md:w-[145px] shrink-0"
+                className="flex flex-col items-center group/card cursor-pointer w-[95px] sm:w-[130px] md:w-[145px] shrink-0"
               >
                 {/* Circular Image Card */}
-                <div className="w-[78px] h-[78px] sm:w-[115px] sm:h-[115px] rounded-full overflow-hidden border-2 sm:border-4 border-[#E8E8E3] group-hover/card:border-[#8CBC67] shadow-xs group-hover/card:shadow-md transition-all duration-300 relative bg-white shrink-0">
+                <div className="w-[76px] h-[76px] sm:w-[115px] sm:h-[115px] rounded-full overflow-hidden border-2 sm:border-4 border-[#E8E8E3] group-hover/card:border-[#8CBC67] shadow-xs group-hover/card:shadow-md transition-all duration-300 relative bg-white shrink-0">
                   <img 
                     src={item.image} 
                     alt={item.name} 
@@ -183,13 +183,28 @@ export default function MostLovedDecor() {
                   </div>
                 </div>
 
-                {/* Title Below Circle with 2-line wrap */}
-                <h3 className="mt-2 text-xs sm:text-sm font-medium sm:font-semibold text-[#202522] group-hover/card:text-[#8CBC67] transition-colors text-center line-clamp-2 leading-tight w-full px-0.5">
+                {/* Title Below Circle with reduced font size so full name is shown without cutting */}
+                <h3 className="mt-1.5 text-[9.5px] sm:text-xs md:text-[13px] font-semibold text-[#202522] group-hover/card:text-[#8CBC67] transition-colors text-center leading-[1.25] w-full px-0.5 line-clamp-3">
                   {item.name}
                 </h3>
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Mobile View All Button (Placed Cleanly at the Bottom) */}
+        <div className="flex sm:hidden justify-center pt-2">
+          <button
+            type="button"
+            onClick={() => {
+              const citySlug = (selectedCity || "bangalore").toLowerCase().replace(/[^a-z0-9]+/g, "-");
+              router.push(`/${citySlug}/services/birthday/all-products`);
+            }}
+            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full border border-[#8CBC67]/50 bg-[#EEF6EB]/80 text-[#202522] text-xs font-bold shadow-2xs hover:bg-[#8CBC67] hover:text-white transition active:scale-95 cursor-pointer"
+          >
+            <span>View All Most Loved Decor</span>
+            <ArrowRight size={13} />
+          </button>
         </div>
 
       </div>

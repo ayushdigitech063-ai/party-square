@@ -29,6 +29,7 @@ import {
 import { allProducts } from "@/app/data/allCollections";
 import { useCart } from "@/app/context/CartContext";
 import { useWishlist } from "@/app/context/wishlistcontext";
+import { useCity } from "@/app/context/CityContext";
 import ProductCard from "@/app/components/ProductCard";
 import AddOnSection from "@/app/components/AddOneSection";
 import { AddOnItem } from "@/app/data/addonsData";
@@ -200,6 +201,7 @@ export default function ProductDetailPage() {
 
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { selectedCity } = useCity();
 
   const [quantity, setQuantity] = useState(1);
 
@@ -845,87 +847,78 @@ export default function ProductDetailPage() {
             <div className="mt-4 bg-white border border-[#E8E8E3] rounded-2xl overflow-hidden">
               <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-[#E8E8E3]">
                 {[
-                  { Icon: ShieldCheck, text: "Secured payment" },
-                  { Icon: Clock, text: "100% service record" },
-                  { Icon: Camera, text: "Original photos & reviews" },
-                  { Icon: RotateCcw, text: "100% satisfaction guaranteed" },
-                ].map(({ Icon, text }) => (
+                  { Icon: ShieldCheck, text: "Secured payment", onClick: undefined },
+                  { Icon: Clock, text: "100% service record", onClick: undefined },
+                  { Icon: Camera, text: "Original photos & reviews", onClick: () => scrollToSection("reviews") },
+                  { Icon: RotateCcw, text: "100% satisfaction guaranteed", onClick: undefined },
+                ].map(({ Icon, text, onClick }) => (
                   <div
                     key={text}
-                    className="flex items-center gap-2 px-3 py-4 text-xs font-medium text-neutral-700"
+                    onClick={onClick}
+                    className={`flex items-center gap-2 px-3 py-4 text-xs font-medium text-neutral-700 ${
+                      onClick ? "cursor-pointer hover:bg-[#EEF6EB]/50 transition group" : ""
+                    }`}
                   >
                     <Icon size={18} className="text-[#8CBC67] shrink-0" />
-                    <span className="leading-tight">{text}</span>
+                    <span className={`leading-tight ${onClick ? "group-hover:text-[#8CBC67] group-hover:underline" : ""}`}>
+                      {text}
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* ---------- INFO CARD WITH 8 TABS ---------- */}
+                        {/* DESKTOP INFO CARD WITH 8 TABS */}
+            <div className="hidden lg:block">
+              {/* ---------- INFO CARD WITH 8 TABS ---------- */}
 
             <section className="mt-4 bg-white rounded-2xl sm:rounded-3xl border border-[#E8E8E3] shadow-xs p-4 sm:p-6 w-full max-w-full min-w-0 overflow-hidden">
-              {/* TAB PILLS WITH SMOOTH HORIZONTAL SCROLL & ARROWS */}
+              {/* TAB PILLS WITH SMOOTH TOUCH/MOUSE HORIZONTAL SCROLL & AUTO-REVEAL (Matching CherishX Style) */}
               <div className="relative pb-3 border-b border-[#E8E8E3] w-full min-w-0">
-                <div className="flex items-center gap-1.5 w-full min-w-0">
-                  {/* Left scroll arrow */}
-                  <button
-                    type="button"
-                    onClick={() => scrollTabs("left")}
-                    aria-label="Scroll tabs left"
-                    className="w-7 h-7 shrink-0 rounded-full bg-[#FCFBF7] border border-[#E8E8E3] hover:border-[#8CBC67] hover:bg-[#EEF6EB] text-[#202522] flex items-center justify-center transition shadow-2xs cursor-pointer z-10"
-                  >
-                    <ChevronLeft size={14} />
-                  </button>
-
-                  {/* Scrollable tabs track with min-w-0 flex-1 */}
-                  <div className="relative flex-1 min-w-0 overflow-hidden">
-                    <div
-                      ref={tabsScrollRef}
-                      onWheel={(e) => {
-                        if (e.deltaY !== 0 && tabsScrollRef.current) {
-                          tabsScrollRef.current.scrollLeft += e.deltaY;
-                        }
-                      }}
-                      className="flex gap-1.5 sm:gap-2 overflow-x-auto scroll-smooth py-1 px-1 scrollbar-none select-none cursor-grab active:cursor-grabbing w-full"
-                      style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
-                    >
-                      {INFO_TABS.map((tab) => {
-                        const isActive = activeTab === tab.key;
-                        return (
-                          <button
-                            key={tab.key}
-                            type="button"
-                            onClick={(e) => {
-                              setActiveTab(tab.key);
-                              (e.currentTarget as HTMLElement).scrollIntoView({
-                                behavior: "smooth",
-                                inline: "center",
-                                block: "nearest"
-                              });
-                            }}
-                            className={`whitespace-nowrap px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold transition shrink-0 cursor-pointer ${
-                              isActive
-                                ? "bg-[#EEF6E8] text-[#202522] shadow-xs border border-[#8CBC67] font-bold ring-1 ring-[#8CBC67]/30"
-                                : "text-[#6B706C] hover:text-[#202522] hover:bg-[#EEF6EB]/40 border border-transparent"
-                            }`}
-                          >
-                            {tab.label}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Right scroll arrow */}
-                  <button
-                    type="button"
-                    onClick={() => scrollTabs("right")}
-                    aria-label="Scroll tabs right"
-                    className="w-7 h-7 shrink-0 rounded-full bg-[#FCFBF7] border border-[#E8E8E3] hover:border-[#8CBC67] hover:bg-[#EEF6EB] text-[#202522] flex items-center justify-center transition shadow-2xs cursor-pointer z-10"
-                  >
-                    <ChevronRight size={14} />
-                  </button>
+                <div
+                  ref={tabsScrollRef}
+                  onWheel={(e) => {
+                    if (e.deltaY !== 0 && tabsScrollRef.current) {
+                      tabsScrollRef.current.scrollLeft += e.deltaY;
+                    }
+                  }}
+                  className="flex gap-1.5 sm:gap-2 overflow-x-auto scroll-smooth py-1 px-1 scrollbar-none select-none cursor-grab active:cursor-grabbing w-full pr-8"
+                  style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
+                >
+                  {INFO_TABS.map((tab) => {
+                    const isActive = activeTab === tab.key;
+                    return (
+                      <button
+                        key={tab.key}
+                        type="button"
+                        onClick={(e) => {
+                          setActiveTab(tab.key);
+                          const el = e.currentTarget as HTMLElement;
+                          if (tabsScrollRef.current) {
+                            const container = tabsScrollRef.current;
+                            const elLeft = el.offsetLeft;
+                            const elWidth = el.offsetWidth;
+                            const targetScroll = elLeft - (container.clientWidth / 2) + (elWidth / 2);
+                            container.scrollTo({
+                              left: Math.max(0, targetScroll),
+                              behavior: "smooth"
+                            });
+                          }
+                        }}
+                        className={`whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold transition shrink-0 cursor-pointer ${
+                          isActive
+                            ? "bg-[#EEF6E8] text-[#202522] shadow-xs border border-[#8CBC67] font-bold ring-1 ring-[#8CBC67]/30"
+                            : "text-[#6B706C] hover:text-[#202522] hover:bg-[#EEF6EB]/40 border border-[#E8E8E3]/60 bg-white"
+                        }`}
+                      >
+                        {tab.label}
+                      </button>
+                    );
+                  })}
                 </div>
+
+                {/* Right Edge Fade Indicator: Soft gradient cue so user clearly knows hidden tabs exist to scroll/tap */}
+                <div className="absolute right-0 top-0 bottom-3 w-8 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none" />
               </div>
 
               {/* 1. OVERVIEW */}
@@ -1202,6 +1195,7 @@ export default function ProductDetailPage() {
                 </div>
               )}
             </section>
+            </div>
           </div>
 
           {/* =================================================
@@ -1225,15 +1219,22 @@ export default function ProductDetailPage() {
                 Celebration Product
               </p>
 
-              {/* TITLE */}
-
+              {/* TITLE with Dynamic City for SEO (Point 21: e.g. Product Name in {City}) */}
               <h1 className="mt-2 text-2xl sm:text-3xl font-serif font-bold text-neutral-900 leading-tight">
                 {foundItem.name}
+                {selectedCity && selectedCity.toLowerCase() !== "search" && (
+                  <span className="font-normal text-neutral-700"> in {selectedCity}</span>
+                )}
               </h1>
 
-              {/* RATING & REVIEWS (Show ONLY if there are reviews/ratings given, otherwise hide as requested) */}
+              {/* RATING & REVIEWS (Clickable to jump directly to reviews section) */}
               {(true) && (
-                <div className="flex items-center gap-2.5 sm:gap-3 mt-4">
+                <button
+                  type="button"
+                  onClick={() => scrollToSection("reviews")}
+                  className="flex items-center gap-2.5 sm:gap-3 mt-4 group text-left cursor-pointer hover:opacity-85 transition"
+                  aria-label="View customer reviews"
+                >
                   <div className="flex items-center gap-1">
                     {[...Array(5)].map((_, i) => (
                       <Star
@@ -1250,11 +1251,11 @@ export default function ProductDetailPage() {
                   <span className="font-bold text-neutral-900 text-sm">
                     {rawRating.toFixed(1)}
                   </span>
-                  <span className="text-xs sm:text-sm text-neutral-500">
+                  <span className="text-xs sm:text-sm text-neutral-500 group-hover:text-[#8CBC67] group-hover:underline transition font-medium">
                     ({rawReviewCount.toLocaleString("en-IN")} reviews)
                   </span>
                   <span className="text-xs text-[#8CBC67] font-semibold hidden sm:inline">• Verified Decor</span>
-                </div>
+                </button>
               )}
 
               {/* PRICE & DISCOUNT */}
@@ -1620,6 +1621,335 @@ export default function ProductDetailPage() {
                 Secure checkout • Guaranteed satisfaction
               </p>
             </div>
+
+            {/* MOBILE INFO CARD WITH 8 TABS (Pushed below Book Now CTA as requested) */}
+            <div className="block lg:hidden mt-4">
+              {/* ---------- INFO CARD WITH 8 TABS ---------- */}
+
+            <section className="mt-4 bg-white rounded-2xl sm:rounded-3xl border border-[#E8E8E3] shadow-xs p-4 sm:p-6 w-full max-w-full min-w-0 overflow-hidden">
+              {/* TAB PILLS WITH SMOOTH TOUCH/MOUSE HORIZONTAL SCROLL & AUTO-REVEAL (Matching CherishX Style) */}
+              <div className="relative pb-3 border-b border-[#E8E8E3] w-full min-w-0">
+                <div
+                  ref={tabsScrollRef}
+                  onWheel={(e) => {
+                    if (e.deltaY !== 0 && tabsScrollRef.current) {
+                      tabsScrollRef.current.scrollLeft += e.deltaY;
+                    }
+                  }}
+                  className="flex gap-1.5 sm:gap-2 overflow-x-auto scroll-smooth py-1 px-1 scrollbar-none select-none cursor-grab active:cursor-grabbing w-full pr-8"
+                  style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
+                >
+                  {INFO_TABS.map((tab) => {
+                    const isActive = activeTab === tab.key;
+                    return (
+                      <button
+                        key={tab.key}
+                        type="button"
+                        onClick={(e) => {
+                          setActiveTab(tab.key);
+                          const el = e.currentTarget as HTMLElement;
+                          if (tabsScrollRef.current) {
+                            const container = tabsScrollRef.current;
+                            const elLeft = el.offsetLeft;
+                            const elWidth = el.offsetWidth;
+                            const targetScroll = elLeft - (container.clientWidth / 2) + (elWidth / 2);
+                            container.scrollTo({
+                              left: Math.max(0, targetScroll),
+                              behavior: "smooth"
+                            });
+                          }
+                        }}
+                        className={`whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold transition shrink-0 cursor-pointer ${
+                          isActive
+                            ? "bg-[#EEF6E8] text-[#202522] shadow-xs border border-[#8CBC67] font-bold ring-1 ring-[#8CBC67]/30"
+                            : "text-[#6B706C] hover:text-[#202522] hover:bg-[#EEF6EB]/40 border border-[#E8E8E3]/60 bg-white"
+                        }`}
+                      >
+                        {tab.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Right Edge Fade Indicator: Soft gradient cue so user clearly knows hidden tabs exist to scroll/tap */}
+                <div className="absolute right-0 top-0 bottom-3 w-8 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none" />
+              </div>
+
+              {/* 1. OVERVIEW */}
+
+              {activeTab === "overview" && (
+                <div id="overview" className="mt-5 space-y-4">
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-serif font-bold text-neutral-900 leading-tight">
+                      Turn Your Special Moments Into Magical Memories
+                    </h2>
+                    <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-neutral-600">
+                      {foundItem?.description ||
+                        "Grand celebration decoration designed to create a royal and memorable setting for your special day."}
+                    </p>
+                  </div>
+
+                  {/* 4 Feature Badges (Matching Client Wireframe & Brand Palette) */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                      <Sparkles size={20} className="text-[#8CBC67]" />
+                      <p className="mt-3 text-xs font-bold text-[#202522]">
+                        Premium Product
+                      </p>
+                      <p className="text-[11px] text-[#6B706C] mt-0.5">Quality</p>
+                    </div>
+
+                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                      <CheckCircle2 size={20} className="text-[#8CBC67]" />
+                      <p className="mt-3 text-xs font-bold text-[#202522]">
+                        Verified
+                      </p>
+                      <p className="text-[11px] text-[#6B706C] mt-0.5">Quality</p>
+                    </div>
+
+                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                      <Truck size={20} className="text-[#8CBC67]" />
+                      <p className="mt-3 text-xs font-bold text-[#202522]">
+                        On-Time
+                      </p>
+                      <p className="text-[11px] text-[#6B706C] mt-0.5">Setup</p>
+                    </div>
+
+                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                      <Calendar size={20} className="text-[#8CBC67]" />
+                      <p className="mt-3 text-xs font-bold text-[#202522]">
+                        Easy
+                      </p>
+                      <p className="text-[11px] text-[#6B706C] mt-0.5">Booking</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 2. INCLUSIONS */}
+
+              {activeTab === "included" && (
+                <div id="included" className="mt-5">
+                  <p className="text-xs sm:text-sm text-neutral-500">
+                    Everything below is provided and professionally arranged by our decorators:
+                  </p>
+
+                  <div className="mt-3 space-y-2">
+                    {displayIncluded.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between gap-3 rounded-xl border border-neutral-100 bg-neutral-50/60 px-3.5 py-2.5 text-xs sm:text-sm text-neutral-800"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                          <span>{item}</span>
+                        </div>
+                        <span className="shrink-0 bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md">
+                          Included
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 3. WHATS NOT INCLUDED */}
+
+              {activeTab === "not-included" && (
+                <div id="not-included" className="mt-5">
+                  <p className="text-xs sm:text-sm text-neutral-500">
+                    The following items or services are excluded from this decoration package:
+                  </p>
+
+                  <div className="mt-3 space-y-2">
+                    {displayNotIncluded.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between gap-3 rounded-xl border border-neutral-100 bg-neutral-50/60 px-3.5 py-2.5 text-xs sm:text-sm text-neutral-800"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <X size={16} className="text-rose-500 shrink-0" />
+                          <span>{item}</span>
+                        </div>
+                        <span className="shrink-0 bg-rose-50 text-rose-600 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md">
+                          Not included
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 4. WHY US */}
+
+              {activeTab === "why-us" && (
+                <div id="why-us" className="mt-5 space-y-3">
+                  <p className="text-xs sm:text-sm text-neutral-500">
+                    Why Party Square is India&apos;s trusted choice for event decorations:
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                    {((foundItem as any)?.whyUs && (foundItem as any).whyUs.length > 0
+                      ? (foundItem as any).whyUs.map((w: string, idx: number) => {
+                          const parts = w.split(":");
+                          const title = parts.length > 1 ? parts[0].trim() : "Party Square Guarantee";
+                          const desc = parts.length > 1 ? parts.slice(1).join(":").trim() : w;
+                          return { title, desc };
+                        })
+                      : WHY_US_ITEMS
+                    ).map((item: any, idx: number) => (
+                      <div
+                        key={idx}
+                        className="p-3.5 rounded-2xl border border-[#E8E8E3] bg-[#EEF6EB]/40"
+                      >
+                        <h4 className="font-bold text-xs sm:text-sm text-neutral-900 flex items-center gap-2">
+                          <Check size={15} className="text-[#8CBC67] shrink-0" />
+                          {item.title}
+                        </h4>
+                        <p className="text-xs text-neutral-600 mt-1 leading-relaxed pl-5">
+                          {item.desc}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 5. ABOUT THIS PACKAGE */}
+
+              {activeTab === "about" && (
+                <div id="about-package" className="mt-5 space-y-4 w-full max-w-full min-w-0 overflow-hidden break-words">
+                  <div>
+                    <h3 className="font-serif font-bold text-base sm:text-lg text-neutral-900">
+                      About {foundItem?.name || "This Package"}
+                    </h3>
+                    <p className="mt-2 text-xs sm:text-sm leading-relaxed text-[#6B706C] whitespace-pre-line break-words [overflow-wrap:anywhere]">
+                      {foundItem?.fullDescription ||
+                        foundItem?.description ||
+                        "Carefully curated decoration experience designed by our master decorators. Perfect for intimate family events as well as grand celebrations."}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5 pt-1">
+                    <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-100 flex items-center justify-between sm:flex-col sm:items-start">
+                      <p className="text-[10px] text-neutral-500 uppercase font-semibold">Setup Duration</p>
+                      <p className="text-xs sm:text-sm font-bold text-neutral-900 mt-0 sm:mt-0.5">Approx. 1.5 - 2 Hours</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-100 flex items-center justify-between sm:flex-col sm:items-start">
+                      <p className="text-[10px] text-neutral-500 uppercase font-semibold">Setup Type</p>
+                      <p className="text-xs sm:text-sm font-bold text-neutral-900 mt-0 sm:mt-0.5">Doorstep Professional</p>
+                    </div>
+                    <div className="p-3 rounded-xl bg-neutral-50 border border-neutral-100 flex items-center justify-between sm:flex-col sm:items-start">
+                      <p className="text-[10px] text-neutral-500 uppercase font-semibold">Customization</p>
+                      <p className="text-xs sm:text-sm font-bold text-neutral-900 mt-0 sm:mt-0.5">Color & Theme Options</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 6. GUIDELINES */}
+
+              {activeTab === "guidelines" && (
+                <div id="guidelines" className="mt-5 space-y-3">
+                  <p className="text-xs sm:text-sm text-neutral-500">
+                    Essential setup requirements for a smooth and hassle-free experience:
+                  </p>
+
+                  <div className="space-y-2.5 mt-3">
+                    {((foundItem as any)?.guidelines && (foundItem as any).guidelines.length > 0
+                      ? (foundItem as any).guidelines.map((g: string, idx: number) => {
+                          const parts = g.split(":");
+                          const title = parts.length > 1 ? parts[0].trim() : `Guideline ${idx + 1}`;
+                          const desc = parts.length > 1 ? parts.slice(1).join(":").trim() : g;
+                          return { title, desc };
+                        })
+                      : GUIDELINES_ITEMS
+                    ).map((item: any, idx: number) => (
+                      <div
+                        key={idx}
+                        className="p-3.5 rounded-xl border border-neutral-100 bg-neutral-50/60"
+                      >
+                        <h4 className="font-semibold text-xs sm:text-sm text-neutral-900 flex items-center gap-2">
+                          <span className="w-5 h-5 rounded-full bg-[#EEF6EB] text-[#202522] text-[11px] font-bold flex items-center justify-center shrink-0">
+                            {idx + 1}
+                          </span>
+                          {item.title}
+                        </h4>
+                        <p className="text-xs text-neutral-600 mt-1 pl-7 leading-relaxed">
+                          {item.desc}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 7. CANCELLATION & REFUNDS */}
+
+              {activeTab === "cancel" && (
+                <div id="cancellation-refunds" className="mt-5 space-y-4">
+                  <div>
+                    <h3 className="font-serif font-bold text-base sm:text-lg text-neutral-900 mb-1">
+                      Cancellation & Refund Policy
+                    </h3>
+                    {customCancellation ? (
+                      <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed mb-3">
+                        {customCancellation}
+                      </p>
+                    ) : (
+                      <p className="text-xs sm:text-sm text-neutral-500 mb-3">
+                        Transparent and customer-first cancellation and refund guidelines:
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {CANCELLATION_REFUND_POINTS.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="p-3.5 rounded-xl border border-neutral-100 bg-neutral-50/70"
+                      >
+                        <h4 className="font-bold text-xs sm:text-sm text-neutral-900 flex items-center gap-2">
+                          <ShieldCheck size={16} className="text-[#8CBC67] shrink-0" />
+                          {item.title}
+                        </h4>
+                        <p className="text-xs text-neutral-600 mt-1 leading-relaxed">
+                          {item.desc}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 8. FAQS */}
+
+              {activeTab === "faqs" && (
+                <div id="faqs" className="mt-5 space-y-3">
+                  <p className="text-xs sm:text-sm text-neutral-500">
+                    Frequently asked questions about booking, decorators, and setup:
+                  </p>
+
+                  <div className="space-y-2.5 mt-3">
+                    {displayFaqs.map((faq, idx) => (
+                      <div
+                        key={idx}
+                        className="rounded-xl border border-neutral-100 bg-neutral-50/50 p-4 transition hover:bg-neutral-50"
+                      >
+                        <h4 className="font-semibold text-xs sm:text-sm text-neutral-900 flex items-start gap-2">
+                          <span className="font-bold text-[#8CBC67] shrink-0">Q:</span>
+                          <span>{faq.question}</span>
+                        </h4>
+                        <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-neutral-600 pl-5">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </section>
+            </div>
           </div>
         </section>
 
@@ -1795,11 +2125,11 @@ export default function ProductDetailPage() {
           FLOATING QUICK NAV (Matching Brand Theme & Color Palette)
       ====================================================== */}
 
-      <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 sm:gap-2 bg-[#202522]/95 backdrop-blur-md rounded-full p-1.5 shadow-2xl max-w-[calc(100vw-20px)] w-max border border-[#E8E8E3]/30">
+      <div className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 sm:gap-2 bg-[#202522]/95 backdrop-blur-md rounded-full p-1 sm:p-1.5 shadow-2xl max-w-[calc(100vw-16px)] sm:max-w-[calc(100vw-20px)] w-max border border-[#E8E8E3]/30">
         <button
           type="button"
           onClick={() => scrollToSection("overview")}
-          className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold cursor-pointer transition ${
+          className={`px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-sm font-bold cursor-pointer transition ${
             activeTab2 === "overview"
               ? "bg-[#FCFBF7] text-[#202522] shadow-sm"
               : "text-[#FCFBF7]/85 hover:text-white"
@@ -1811,7 +2141,7 @@ export default function ProductDetailPage() {
         <button
           type="button"
           onClick={() => scrollToSection("addons")}
-          className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold cursor-pointer transition flex items-center gap-1.5 ${
+          className={`px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-sm font-bold cursor-pointer transition flex items-center gap-1 sm:gap-1.5 ${
             activeTab2 === "addons"
               ? "bg-[#FCFBF7] text-[#202522] shadow-sm"
               : "text-[#FCFBF7]/85 hover:text-white"
@@ -1819,7 +2149,7 @@ export default function ProductDetailPage() {
         >
           <span>Add-ons</span>
           {selectedAddons.length > 0 && (
-            <span className="bg-[#8CBC67] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+            <span className="bg-[#8CBC67] text-white text-[9px] sm:text-[10px] w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center font-bold">
               {selectedAddons.length}
             </span>
           )}
@@ -1829,7 +2159,7 @@ export default function ProductDetailPage() {
           <button
             type="button"
             onClick={() => scrollToSection("reviews")}
-            className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold cursor-pointer transition ${
+            className={`px-2.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-sm font-bold cursor-pointer transition ${
               activeTab2 === "reviews"
                 ? "bg-[#FCFBF7] text-[#202522] shadow-sm"
                 : "text-[#FCFBF7]/85 hover:text-white"
@@ -1842,9 +2172,9 @@ export default function ProductDetailPage() {
         <button
           type="button"
           onClick={() => handleBookNow(foundItem)}
-          className="ml-1 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#8CBC67] hover:bg-[#7AB055] active:scale-95 text-white text-xs sm:text-sm font-bold cursor-pointer transition whitespace-nowrap shadow-md flex items-center gap-1.5"
+          className="ml-0.5 sm:ml-1 px-3 sm:px-6 py-1.5 sm:py-2.5 rounded-full bg-[#8CBC67] hover:bg-[#7AB055] active:scale-95 text-white text-[11px] sm:text-sm font-bold cursor-pointer transition whitespace-nowrap shadow-md flex items-center gap-1 sm:gap-1.5"
         >
-          <span>₹{grandTotal.toLocaleString("en-IN")} - Book now</span>
+          <span>₹{grandTotal.toLocaleString("en-IN")} • Book</span>
         </button>
       </div>
 

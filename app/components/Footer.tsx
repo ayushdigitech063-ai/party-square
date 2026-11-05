@@ -41,17 +41,11 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#FCFBF7]/65 text-[#202522] font-sans overflow-hidden border-t border-[#8CBC67] pt-12 sm:pt-20 pb-8 sm:pb-10 px-4 sm:px-6 md:px-16 backdrop-blur-[2px]">
-      {/* Background Image with balanced opacity so flowers are clearly visible */}
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat pointer-events-none opacity-50"
-        style={{ backgroundImage: "url('/footerbackgroundimage.png')" }}
-      />
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#FAF7F2]/75 via-[#FAF7F2]/60 to-[#FAF7F2]/80 pointer-events-none" />
-
-      {/* Soft Golden Background Glows */}
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#8CBC67]/15 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-10 w-96 h-96 bg-[#D7A84B]/30 rounded-full blur-[120px] pointer-events-none" />
+    <footer className="relative bg-[#EEF6E8]/90 text-[#202522] font-sans overflow-hidden border-t-2 border-[#8CBC67]/40 pt-12 sm:pt-20 pb-8 sm:pb-10 px-4 sm:px-6 md:px-16 backdrop-blur-[2px]">
+      {/* Brand Green Ambient Overlay & Glows */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#EEF6E8] via-[#F4F9F2] to-[#EEF6EB] pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#8CBC67]/20 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-0 left-10 w-96 h-96 bg-[#8CBC67]/15 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Top Newsletter / Call to Action Banner */}

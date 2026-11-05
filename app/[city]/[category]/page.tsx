@@ -52,6 +52,10 @@ export default async function CityCategoryPage({ params, searchParams }: Props) 
   }
   const resolvedSearchParams = searchParams ? await searchParams : {};
   const activeSub = resolvedSearchParams.sub || "";
+  const catLower = categorySlug.toLowerCase();
+  if (catLower === "search" || catLower === "basket" || catLower === "wishlist" || catLower === "profile" || catLower === "payments" || catLower === "payment-detail") {
+    redirect(`/${catLower}`);
+  }
 
   const cityName = citySlug.charAt(0).toUpperCase() + citySlug.slice(1);
   const categoryName = categorySlug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());

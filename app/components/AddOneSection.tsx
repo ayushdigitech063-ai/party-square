@@ -43,6 +43,7 @@ export default function AddOnSection({
 }: AddOnSectionProps) {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [modalItem, setModalItem] = useState<AddOnItem | null>(null);
+  const [showAllAddons, setShowAllAddons] = useState(false);
 
   // Local state fallback if onToggleAddon isn't provided
   const [localSelectedIds, setLocalSelectedIds] = useState<string[]>([]);
@@ -195,37 +196,23 @@ export default function AddOnSection({
             </div>
           </div>
 
-          {/* 3. ADD-ON PRODUCTS CAROUSEL / GRID */}
+          {/* 3. ADD-ON PRODUCTS GRID (Point 26: 4 cards in mobile, 2 in a row, square image, See More button) */}
           <div className="relative z-10">
-            {/* Left Nav Arrow for Products */}
-            <button
-              type="button"
-              onClick={() => scrollProducts("left")}
-              aria-label="Scroll products left"
-              className="hidden md:flex absolute -left-3.5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white border border-[#E8E8E3] shadow-lg items-center justify-center text-neutral-800 hover:bg-[#8CBC67] hover:text-white hover:scale-105 transition"
-            >
-              <ChevronLeft size={20} />
-            </button>
-
-            {/* Products Horizontal Slider */}
-            <div
-              ref={productsRef}
-              className="flex gap-4 sm:gap-5 overflow-x-auto scroll-smooth pb-3 pt-1 scrollbar-hide px-0.5"
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            >
-              {filteredProducts.map((addon) => {
+            {/* Products Grid: Mobile 2-cols (4 cards initially), Desktop 3-4 cols with See More */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+              {(showAllAddons ? filteredProducts : filteredProducts.slice(0, 4)).map((addon) => {
                 const isSelected = activeSelectedIds.includes(addon.id);
                 return (
                   <div
                     key={addon.id}
-                    className={`w-[210px] sm:w-[230px] shrink-0 bg-white rounded-2xl border transition-all duration-300 flex flex-col justify-between overflow-hidden group shadow-2xs hover:shadow-md ${
+                    className={`bg-white rounded-2xl border transition-all duration-300 flex flex-col justify-between overflow-hidden group shadow-2xs hover:shadow-md ${
                       isSelected
                         ? "border-[#8CBC67] ring-2 ring-[#8CBC67]/30"
                         : "border-neutral-200/80 hover:border-neutral-300"
                     }`}
                   >
-                    {/* Image Area with Bottom-Right + Button */}
-                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-neutral-100">
+                    {/* Square Image Area (1:1 aspect-square matching product listing) with Bottom-Right + Button */}
+                    <div className="relative aspect-square w-full overflow-hidden bg-neutral-100">
                       <img
                         src={addon.image}
                         alt={addon.name}
@@ -233,7 +220,7 @@ export default function AddOnSection({
                         loading="lazy"
                       />
 
-                      {/* + / Check Toggle Button (Exactly as in Competitor Screenshot) */}
+                      {/* + / Check Toggle Button */}
                       <button
                         type="button"
                         onClick={(e) => {
@@ -241,37 +228,37 @@ export default function AddOnSection({
                           handleToggle(addon);
                         }}
                         aria-label={isSelected ? `Remove ${addon.name}` : `Add ${addon.name}`}
-                        className={`absolute bottom-2.5 right-2.5 z-10 w-8 h-8 rounded-full shadow-md flex items-center justify-center transition-all cursor-pointer ${
+                        className={`absolute bottom-2 right-2 z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full shadow-md flex items-center justify-center transition-all cursor-pointer ${
                           isSelected
                             ? "bg-[#8CBC67] text-white scale-105"
                             : "bg-white text-neutral-800 hover:bg-[#8CBC67] hover:text-white hover:scale-110"
                         }`}
                       >
-                        {isSelected ? <Check size={16} strokeWidth={3} /> : <Plus size={18} strokeWidth={2.5} />}
+                        {isSelected ? <Check size={14} strokeWidth={3} /> : <Plus size={16} strokeWidth={2.5} />}
                       </button>
 
                       {/* Selected Ribbon Badge */}
                       {isSelected && (
-                        <span className="absolute top-2 left-2 z-10 bg-[#8CBC67] text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md shadow-xs">
+                        <span className="absolute top-2 left-2 z-10 bg-[#8CBC67] text-white text-[9px] sm:text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md shadow-xs">
                           Added
                         </span>
                       )}
                     </div>
 
                     {/* Card Content */}
-                    <div className="p-3.5 flex flex-col flex-grow justify-between">
+                    <div className="p-2.5 sm:p-3.5 flex flex-col flex-grow justify-between space-y-1">
                       <div>
-                        <h3 className="font-bold text-xs sm:text-[13px] text-neutral-900 line-clamp-1 leading-snug">
+                        <h3 className="font-bold text-[11px] sm:text-xs md:text-[13px] text-neutral-900 line-clamp-1 leading-snug">
                           {addon.name}
                         </h3>
 
-                        <div className="mt-1 flex items-baseline gap-1">
-                          <span className="text-sm font-extrabold text-neutral-950">
+                        <div className="mt-0.5 sm:mt-1 flex items-baseline gap-1">
+                          <span className="text-xs sm:text-sm font-extrabold text-neutral-950">
                             ₹{addon.price.toLocaleString("en-IN")}
                           </span>
                         </div>
 
-                        <p className="mt-1 text-[11px] text-neutral-500 line-clamp-2 leading-relaxed">
+                        <p className="mt-0.5 text-[10px] sm:text-[11px] text-neutral-500 line-clamp-2 leading-relaxed">
                           {addon.description}
                         </p>
                       </div>
@@ -280,7 +267,7 @@ export default function AddOnSection({
                       <button
                         type="button"
                         onClick={() => setModalItem(addon)}
-                        className="text-[11px] font-semibold text-purple-700 hover:text-purple-900 mt-2.5 text-left inline-block cursor-pointer transition hover:underline"
+                        className="text-[10px] sm:text-[11px] font-semibold text-purple-700 hover:text-purple-900 mt-1 text-left inline-block cursor-pointer transition hover:underline"
                       >
                         View more
                       </button>
@@ -290,15 +277,19 @@ export default function AddOnSection({
               })}
             </div>
 
-            {/* Right Nav Arrow for Products */}
-            <button
-              type="button"
-              onClick={() => scrollProducts("right")}
-              aria-label="Scroll products right"
-              className="hidden md:flex absolute -right-3.5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white border border-[#E8E8E3] shadow-lg items-center justify-center text-neutral-800 hover:bg-[#8CBC67] hover:text-white hover:scale-105 transition"
-            >
-              <ChevronRight size={20} />
-            </button>
+            {/* See More / See Less Button (Desktop and Mobile) */}
+            {filteredProducts.length > 4 && (
+              <div className="text-center mt-6">
+                <button
+                  type="button"
+                  onClick={() => setShowAllAddons((prev) => !prev)}
+                  className="inline-flex items-center gap-1.5 px-6 py-2 sm:py-2.5 rounded-full border border-[#8CBC67] bg-[#EEF6EB]/60 hover:bg-[#EEF6EB] text-xs sm:text-sm font-bold text-[#202522] hover:text-[#8CBC67] transition shadow-2xs active:scale-95 cursor-pointer"
+                >
+                  <span>{showAllAddons ? "Show Less Add-ons" : `Show More Add-ons (${filteredProducts.length - 4} more)`}</span>
+                  <ChevronRight size={14} className={`transition-transform duration-300 ${showAllAddons ? "-rotate-90" : "rotate-90"}`} />
+                </button>
+              </div>
+            )}
           </div>
 
           {/* 4. FOOTER NOTE & SELECTION COUNTER */}
