@@ -207,12 +207,17 @@ export default function ProductDetailPage() {
 
   // New UI state (hooks must stay above the early returns)
   const [activeTab, setActiveTab] = useState("overview");
-  const tabsScrollRef = useRef<HTMLDivElement>(null);
+  const desktopTabsScrollRef = useRef<HTMLDivElement>(null);
+  const mobileTabsScrollRef = useRef<HTMLDivElement>(null);
+  const isDraggingTabs = useRef(false);
+  const dragStartX = useRef(0);
+  const dragScrollLeft = useRef(0);
 
   const scrollTabs = (direction: "left" | "right") => {
-    if (tabsScrollRef.current) {
+    const ref = desktopTabsScrollRef.current || mobileTabsScrollRef.current;
+    if (ref) {
       const amount = direction === "left" ? -180 : 180;
-      tabsScrollRef.current.scrollBy({ left: amount, behavior: "smooth" });
+      ref.scrollBy({ left: amount, behavior: "smooth" });
     }
   };
   const [pincode, setPincode] = useState("");
@@ -482,8 +487,20 @@ export default function ProductDetailPage() {
       ? Math.round(((originalPrice - totalPrice) / originalPrice) * 100)
       : 20;
 
-  const rawRating = Number(foundItem?.rating) > 0 ? Number(foundItem.rating) : 4.8;
-  const rawReviewCount = Number(foundItem?.reviewCount) > 0 ? Number(foundItem.reviewCount) : 126;
+  const rawRating =
+    Number(reviewsAvg) > 0
+      ? Number(reviewsAvg)
+      : Number(foundItem?.rating) > 0
+        ? Number(foundItem.rating)
+        : 4.8;
+
+  const rawReviewCount =
+    productReviews.length > 0
+      ? productReviews.length
+      : Number(foundItem?.reviewCount) > 0
+        ? Number(foundItem.reviewCount)
+        : 126;
+
   const hasReviews = rawRating > 0 && rawReviewCount > 0;
 
   const deliveryCharge = pincodeChecked ? DELIVERY_CHARGE : 0;
@@ -876,11 +893,29 @@ export default function ProductDetailPage() {
               {/* TAB PILLS WITH SMOOTH TOUCH/MOUSE HORIZONTAL SCROLL & AUTO-REVEAL (Matching CherishX Style) */}
               <div className="relative pb-3 border-b border-[#E8E8E3] w-full min-w-0">
                 <div
-                  ref={tabsScrollRef}
+                  ref={desktopTabsScrollRef}
                   onWheel={(e) => {
-                    if (e.deltaY !== 0 && tabsScrollRef.current) {
-                      tabsScrollRef.current.scrollLeft += e.deltaY;
+                    if (e.deltaY !== 0 && desktopTabsScrollRef.current) {
+                      desktopTabsScrollRef.current.scrollLeft += e.deltaY;
                     }
+                  }}
+                  onMouseDown={(e) => {
+                    isDraggingTabs.current = true;
+                    dragStartX.current = e.pageX - (desktopTabsScrollRef.current?.offsetLeft || 0);
+                    dragScrollLeft.current = desktopTabsScrollRef.current?.scrollLeft || 0;
+                  }}
+                  onMouseLeave={() => {
+                    isDraggingTabs.current = false;
+                  }}
+                  onMouseUp={() => {
+                    isDraggingTabs.current = false;
+                  }}
+                  onMouseMove={(e) => {
+                    if (!isDraggingTabs.current || !desktopTabsScrollRef.current) return;
+                    e.preventDefault();
+                    const x = e.pageX - (desktopTabsScrollRef.current.offsetLeft || 0);
+                    const walk = (x - dragStartX.current) * 1.5;
+                    desktopTabsScrollRef.current.scrollLeft = dragScrollLeft.current - walk;
                   }}
                   className="flex gap-1.5 sm:gap-2 overflow-x-auto scroll-smooth py-1 px-1 scrollbar-none select-none cursor-grab active:cursor-grabbing w-full pr-8"
                   style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
@@ -894,8 +929,8 @@ export default function ProductDetailPage() {
                         onClick={(e) => {
                           setActiveTab(tab.key);
                           const el = e.currentTarget as HTMLElement;
-                          if (tabsScrollRef.current) {
-                            const container = tabsScrollRef.current;
+                          if (desktopTabsScrollRef.current) {
+                            const container = desktopTabsScrollRef.current;
                             const elLeft = el.offsetLeft;
                             const elWidth = el.offsetWidth;
                             const targetScroll = elLeft - (container.clientWidth / 2) + (elWidth / 2);
@@ -1630,12 +1665,7 @@ export default function ProductDetailPage() {
               {/* TAB PILLS WITH SMOOTH TOUCH/MOUSE HORIZONTAL SCROLL & AUTO-REVEAL (Matching CherishX Style) */}
               <div className="relative pb-3 border-b border-[#E8E8E3] w-full min-w-0">
                 <div
-                  ref={tabsScrollRef}
-                  onWheel={(e) => {
-                    if (e.deltaY !== 0 && tabsScrollRef.current) {
-                      tabsScrollRef.current.scrollLeft += e.deltaY;
-                    }
-                  }}
+                  ref={mobileTabsScrollRef}
                   className="flex gap-1.5 sm:gap-2 overflow-x-auto scroll-smooth py-1 px-1 scrollbar-none select-none cursor-grab active:cursor-grabbing w-full pr-8"
                   style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
                 >
@@ -1648,8 +1678,8 @@ export default function ProductDetailPage() {
                         onClick={(e) => {
                           setActiveTab(tab.key);
                           const el = e.currentTarget as HTMLElement;
-                          if (tabsScrollRef.current) {
-                            const container = tabsScrollRef.current;
+                          if (mobileTabsScrollRef.current) {
+                            const container = mobileTabsScrollRef.current;
                             const elLeft = el.offsetLeft;
                             const elWidth = el.offsetWidth;
                             const targetScroll = elLeft - (container.clientWidth / 2) + (elWidth / 2);
@@ -2046,10 +2076,10 @@ export default function ProductDetailPage() {
                 </div>
                 <div className="border-l border-[#8CBC67]/30 pl-3">
                   <span className="font-extrabold text-sm text-neutral-900">
-                    {reviewsAvg || rawRating || "5.0"} / 5
+                    {rawRating.toFixed(1)} / 5
                   </span>
                   <span className="text-[11px] text-neutral-500 block">
-                    {productReviews.length > 0 ? productReviews.length : rawReviewCount} verified reviews
+                    {rawReviewCount.toLocaleString("en-IN")} verified reviews
                   </span>
                 </div>
               </div>

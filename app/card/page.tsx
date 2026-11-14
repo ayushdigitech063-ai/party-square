@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import {
@@ -354,9 +354,9 @@ function CardContent() {
               <Sparkles size={14} />
               <span>Live Catalogue</span>
             </span>
-            <h1 className="font-serif text-3xl sm:text-5xl font-bold text-[#202522]">
+            <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#202522]">
               Party Square Collections
-            </h1>
+            </h2>
             <p className="text-[#6B706C] text-sm sm:text-base font-light">
               Explore our database-driven collection of luxury decoration themes, gift hampers, and sacred essentials.
             </p>
