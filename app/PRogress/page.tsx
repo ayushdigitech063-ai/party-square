@@ -92,8 +92,8 @@ export default function ProgressBanner() {
     <section className="relative bg-[#FCFBF7] py-8 sm:py-16 px-3 sm:px-6 md:px-16 overflow-hidden border-y border-[#E8E8E3]/80 w-full">
       
       {/* Background Animated Gradient Glow */}
-      <div className="absolute top-1/2 -left-20 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-[#8CBC67]/25 via-[#EEF6E8]/40 to-[#D7A84B]/20 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute top-10 right-10 w-96 h-96 bg-gradient-to-br from-[#8CBC67]/20 to-[#EEF6E8]/30 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 -left-20 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-[#8CBC67]/25 via-[#EEF6EB]/40 to-[#D7A84B]/20 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-10 right-10 w-96 h-96 bg-gradient-to-br from-[#8CBC67]/20 to-[#EEF6EB]/30 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10 space-y-8 sm:space-y-10">
         

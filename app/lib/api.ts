@@ -1,4 +1,4 @@
-﻿// Centralized API client for Party Square frontend & admin
+// Centralized API client for Party Square frontend & admin
 
 export const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "https://decoration-backend-qtx7.onrender.com").replace(/\/$/, "");
 
@@ -1119,3 +1119,83 @@ export async function fetchAnalyticsReport(): Promise<AnalyticsReport> {
 
 
 
+
+// ==========================================
+// ADD-ONS API CLIENT
+// ==========================================
+
+export interface DynamicAddOnItem {
+  _id?: string;
+  id?: string;
+  name: string;
+  category: string;
+  price: number;
+  image: string;
+  description: string;
+  details?: string;
+  popular?: boolean;
+  isActive?: boolean;
+  createdAt?: string;
+}
+
+export async function fetchAddOns(category?: string): Promise<DynamicAddOnItem[]> {
+  try {
+    const url = category && category !== "all"
+      ? `${API_BASE}/api/addons?category=${encodeURIComponent(category)}`
+      : `${API_BASE}/api/addons`;
+    const res = await fetch(url, {
+      method: "GET",
+      cache: "no-store",
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.warn("Could not fetch add-ons from API:", err);
+    return [];
+  }
+}
+
+export async function fetchAddOnsAdmin(): Promise<DynamicAddOnItem[]> {
+  const res = await fetch(`${API_BASE}/api/addons/admin-all`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    // Fallback to public endpoint if admin-all not available
+    const fallbackRes = await fetch(`${API_BASE}/api/addons?activeOnly=false`, {
+      method: "GET",
+      headers: getAuthHeaders(),
+      cache: "no-store",
+    });
+    return handleResponse<DynamicAddOnItem[]>(fallbackRes);
+  }
+  return handleResponse<DynamicAddOnItem[]>(res);
+}
+
+export async function createAddOnAdmin(data: Partial<DynamicAddOnItem>): Promise<DynamicAddOnItem> {
+  const res = await fetch(`${API_BASE}/api/addons`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse<DynamicAddOnItem>(res);
+}
+
+export async function updateAddOnAdmin(id: string, data: Partial<DynamicAddOnItem>): Promise<DynamicAddOnItem> {
+  const res = await fetch(`${API_BASE}/api/addons/${encodeURIComponent(id)}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(data),
+  });
+  return handleResponse<DynamicAddOnItem>(res);
+}
+
+export async function deleteAddOnAdmin(id: string): Promise<{ message: string }> {
+  const res = await fetch(`${API_BASE}/api/addons/${encodeURIComponent(id)}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  return handleResponse<{ message: string }>(res);
+}

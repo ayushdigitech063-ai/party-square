@@ -144,7 +144,7 @@ export default function Hero() {
   const currentSlide = slides[currentIndex] || slides[0] || DEFAULT_SLIDES[0];
 
   return (
-    <div className="w-full bg-[#F3EFE9] font-sans text-[#202522] selection:bg-[#8CBC67] selection:text-black">
+    <div className="w-full bg-[#FCFBF7] font-sans text-[#202522] selection:bg-[#8CBC67] selection:text-black">
 
       {/* ================= HERO SECTION CARD ================= */}
       {isEnabled && (
@@ -173,10 +173,10 @@ export default function Hero() {
                 <p className="text-[9px] sm:text-xs tracking-[0.18em] text-[#8CBC67] font-bold mb-1 sm:mb-2 uppercase">
                   {currentSlide.subtitle}
                 </p>
-                <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-[34px] font-bold text-white leading-tight mb-1 sm:mb-2.5">
-                  <span className="text-white drop-shadow-sm">{currentSlide.titleFirst}</span> <br />
+                <p className="text-lg sm:text-2xl md:text-3xl lg:text-[34px] font-bold text-white leading-tight mb-1 sm:mb-2.5">
+                  <span className="text-white drop-shadow-sm font-bold">{currentSlide.titleFirst}</span> <br />
                   <span className="font-bold text-[#8CBC67]">{currentSlide.titleItalic}</span>
-                </h1>
+                </p>
                 <p className="text-gray-100 text-[11px] sm:text-sm leading-relaxed mb-2.5 sm:mb-4 max-w-md line-clamp-1 sm:line-clamp-2 font-normal">
                   {currentSlide.description}
                 </p>

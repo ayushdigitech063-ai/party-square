@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { getAdminToken, API_BASE, fetchAllBookings } from "@/app/lib/api";
 import {
   LayoutDashboard,
+  Sparkles,
   CalendarCheck,
   Users,
   Image,
@@ -142,6 +143,7 @@ export default function AdminLayout({
     { name: "Bookings", href: "/admin/bookings", icon: CalendarCheck },
     { name: "Customers", href: "/admin/customers", icon: Users },
     { name: "Pricing Packages", href: "/admin/packages", icon: PackageIcon },
+    { name: "Add-ons Manager", href: "/admin/addons", icon: Sparkles },
     { name: "Cities", href: "/admin/cities", icon: MapPin },
     { name: "Gallery Manager", href: "/admin/gallery", icon: Image },
     { name: "Coupons", href: "/admin/coupons", icon: Ticket },

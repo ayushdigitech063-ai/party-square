@@ -942,7 +942,7 @@ export default function ProductDetailPage() {
                         }}
                         className={`whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold transition shrink-0 cursor-pointer ${
                           isActive
-                            ? "bg-[#EEF6E8] text-[#202522] shadow-xs border border-[#8CBC67] font-bold ring-1 ring-[#8CBC67]/30"
+                            ? "bg-[#EEF6EB] text-[#202522] shadow-xs border border-[#8CBC67] font-bold ring-1 ring-[#8CBC67]/30"
                             : "text-[#6B706C] hover:text-[#202522] hover:bg-[#EEF6EB]/40 border border-[#E8E8E3]/60 bg-white"
                         }`}
                       >
@@ -972,7 +972,7 @@ export default function ProductDetailPage() {
 
                   {/* 4 Feature Badges (Matching Client Wireframe & Brand Palette) */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                    <div className="rounded-2xl bg-[#EEF6EB] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
                       <Sparkles size={20} className="text-[#8CBC67]" />
                       <p className="mt-3 text-xs font-bold text-[#202522]">
                         Premium Product
@@ -980,7 +980,7 @@ export default function ProductDetailPage() {
                       <p className="text-[11px] text-[#6B706C] mt-0.5">Quality</p>
                     </div>
 
-                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                    <div className="rounded-2xl bg-[#EEF6EB] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
                       <CheckCircle2 size={20} className="text-[#8CBC67]" />
                       <p className="mt-3 text-xs font-bold text-[#202522]">
                         Verified
@@ -988,7 +988,7 @@ export default function ProductDetailPage() {
                       <p className="text-[11px] text-[#6B706C] mt-0.5">Quality</p>
                     </div>
 
-                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                    <div className="rounded-2xl bg-[#EEF6EB] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
                       <Truck size={20} className="text-[#8CBC67]" />
                       <p className="mt-3 text-xs font-bold text-[#202522]">
                         On-Time
@@ -996,7 +996,7 @@ export default function ProductDetailPage() {
                       <p className="text-[11px] text-[#6B706C] mt-0.5">Setup</p>
                     </div>
 
-                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                    <div className="rounded-2xl bg-[#EEF6EB] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
                       <Calendar size={20} className="text-[#8CBC67]" />
                       <p className="mt-3 text-xs font-bold text-[#202522]">
                         Easy
@@ -1378,7 +1378,7 @@ export default function ProductDetailPage() {
                   onClick={handleCheckPincode}
                   className={`h-11 px-5 rounded-xl text-sm font-bold flex items-center gap-1.5 transition cursor-pointer ${
                     pincodeChecked
-                      ? "bg-[#EEF6E8] text-[#8CBC67]"
+                      ? "bg-[#EEF6EB] text-[#8CBC67]"
                       : "bg-[#8CBC67] hover:bg-[#7AB055] text-white"
                   }`}
                 >
@@ -1418,7 +1418,7 @@ export default function ProductDetailPage() {
                     onClick={() => setSelectedDate(d.iso)}
                     className={`h-[66px] rounded-xl border flex flex-col items-center justify-center transition cursor-pointer ${
                       selectedDate === d.iso
-                        ? "border-[#8CBC67] bg-[#EEF6E8] ring-1 ring-[#8CBC67]"
+                        ? "border-[#8CBC67] bg-[#EEF6EB] ring-1 ring-[#8CBC67]"
                         : "border-[#E8E8E3] hover:border-[#8CBC67]"
                     }`}
                   >
@@ -1447,8 +1447,8 @@ export default function ProductDetailPage() {
                   }}
                   className={`h-[66px] rounded-xl border border-dashed flex flex-col items-center justify-center transition cursor-pointer select-none ${
                     isCustomDate
-                      ? "border-[#8CBC67] bg-[#EEF6E8] ring-1 ring-[#8CBC67] text-[#202522]"
-                      : "border-[#E8E8E3] hover:border-[#8CBC67] text-[#202522] hover:bg-[#EEF6E8]/40"
+                      ? "border-[#8CBC67] bg-[#EEF6EB] ring-1 ring-[#8CBC67] text-[#202522]"
+                      : "border-[#E8E8E3] hover:border-[#8CBC67] text-[#202522] hover:bg-[#EEF6EB]/40"
                   }`}
                   title="Choose from calendar"
                 >
@@ -1691,7 +1691,7 @@ export default function ProductDetailPage() {
                         }}
                         className={`whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold transition shrink-0 cursor-pointer ${
                           isActive
-                            ? "bg-[#EEF6E8] text-[#202522] shadow-xs border border-[#8CBC67] font-bold ring-1 ring-[#8CBC67]/30"
+                            ? "bg-[#EEF6EB] text-[#202522] shadow-xs border border-[#8CBC67] font-bold ring-1 ring-[#8CBC67]/30"
                             : "text-[#6B706C] hover:text-[#202522] hover:bg-[#EEF6EB]/40 border border-[#E8E8E3]/60 bg-white"
                         }`}
                       >
@@ -1721,7 +1721,7 @@ export default function ProductDetailPage() {
 
                   {/* 4 Feature Badges (Matching Client Wireframe & Brand Palette) */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                    <div className="rounded-2xl bg-[#EEF6EB] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
                       <Sparkles size={20} className="text-[#8CBC67]" />
                       <p className="mt-3 text-xs font-bold text-[#202522]">
                         Premium Product
@@ -1729,7 +1729,7 @@ export default function ProductDetailPage() {
                       <p className="text-[11px] text-[#6B706C] mt-0.5">Quality</p>
                     </div>
 
-                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                    <div className="rounded-2xl bg-[#EEF6EB] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
                       <CheckCircle2 size={20} className="text-[#8CBC67]" />
                       <p className="mt-3 text-xs font-bold text-[#202522]">
                         Verified
@@ -1737,7 +1737,7 @@ export default function ProductDetailPage() {
                       <p className="text-[11px] text-[#6B706C] mt-0.5">Quality</p>
                     </div>
 
-                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                    <div className="rounded-2xl bg-[#EEF6EB] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
                       <Truck size={20} className="text-[#8CBC67]" />
                       <p className="mt-3 text-xs font-bold text-[#202522]">
                         On-Time
@@ -1745,7 +1745,7 @@ export default function ProductDetailPage() {
                       <p className="text-[11px] text-[#6B706C] mt-0.5">Setup</p>
                     </div>
 
-                    <div className="rounded-2xl bg-[#EEF6E8] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
+                    <div className="rounded-2xl bg-[#EEF6EB] border border-[#E8E8E3] p-4 transition hover:border-[#8CBC67]">
                       <Calendar size={20} className="text-[#8CBC67]" />
                       <p className="mt-3 text-xs font-bold text-[#202522]">
                         Easy

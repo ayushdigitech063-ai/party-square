@@ -81,6 +81,7 @@ export default function AdminPackagesPage() {
   const [formTarget, setFormTarget] = useState("wall-decoration");
   const [formPopular, setFormPopular] = useState(false);
   const [formFeatures, setFormFeatures] = useState("");
+  const [formPincodes, setFormPincodes] = useState("");
 
   // Image upload loaders
   const [uploadingPrimary, setUploadingPrimary] = useState(false);
@@ -141,6 +142,7 @@ export default function AdminPackagesPage() {
     setFormTarget(selectedTarget === "all" ? "wall-decoration" : selectedTarget);
     setFormPopular(false);
     setFormFeatures("");
+    setFormPincodes("");
     setIsModalOpen(true);
   };
 
@@ -157,6 +159,7 @@ export default function AdminPackagesPage() {
     setFormTarget(pkg.pageTarget || "wall-decoration");
     setFormPopular(!!pkg.isPopular);
     setFormFeatures((pkg.features || []).join("\n"));
+    setFormPincodes(((pkg as any).serviceablePincodes || []).join(", "));
     setIsModalOpen(true);
   };
 
@@ -256,6 +259,10 @@ export default function AdminPackagesPage() {
       pageTarget: formTarget,
       isPopular: formPopular,
       features: featuresList,
+      serviceablePincodes: formPincodes
+        .split(/[\n,]+/)
+        .map((p) => p.trim())
+        .filter((p) => /^\d{6}$/.test(p)),
     };
 
     setIsSubmitting(true);
@@ -890,6 +897,23 @@ export default function AdminPackagesPage() {
                   onChange={(e) => setFormFeatures(e.target.value)}
                   className="w-full px-4 py-2 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-[#202522] focus:outline-none focus:border-[#8CBC67]"
                 />
+              </div>
+
+              {/* Serviceable Pincodes (Optional) */}
+              <div>
+                <label className="block text-[#202522] font-bold mb-1.5 uppercase tracking-wider text-[11px]">
+                  Serviceable Pincodes (Optional - Comma separated)
+                </label>
+                <textarea
+                  rows={2}
+                  placeholder="e.g. 302001, 302015, 302020 or leave blank to serve all areas"
+                  value={formPincodes}
+                  onChange={(e) => setFormPincodes(e.target.value)}
+                  className="w-full px-4 py-2 text-xs rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-[#202522] focus:outline-none focus:border-[#8CBC67] font-mono"
+                />
+                <span className="text-[10px] text-[#6B706C] mt-1 block">
+                  Leave empty to allow this package in all pincodes of the selected city.
+                </span>
               </div>
 
               {/* Popular Switch */}

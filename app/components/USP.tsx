@@ -174,7 +174,7 @@ export default function USP() {
       </div>
 
       {/* 2. Customer Trust & Why Choose Us Section — 2x2 Grid on Mobile */}
-      <div className="bg-[#EEF6E8]/40 border-t border-b border-[#E8E8E3] py-6 sm:py-10">
+      <div className="bg-[#EEF6EB]/40 border-t border-b border-[#E8E8E3] py-6 sm:py-10">
         <div className="max-w-6xl mx-auto px-3.5 sm:px-6 lg:px-8">
           <div className="text-center mb-5 sm:mb-7">
             <span className="text-[10px] sm:text-xs font-bold text-[#8CBC67] uppercase tracking-widest">WHY CHOOSE US</span>
@@ -185,7 +185,7 @@ export default function USP() {
               const IconComponent = item.icon;
               return (
                 <div key={item.id} className="bg-white p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-[#E8E8E3] flex flex-col items-center text-center gap-2 sm:gap-3 shadow-2xs hover:border-[#8CBC67] transition">
-                  <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#EEF6E8] flex items-center justify-center text-[#8CBC67] shrink-0">
+                  <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#EEF6EB] flex items-center justify-center text-[#8CBC67] shrink-0">
                     <IconComponent size={16} strokeWidth={2.2} className="sm:hidden" />
                     <IconComponent size={22} strokeWidth={2.2} className="hidden sm:block" />
                   </div>

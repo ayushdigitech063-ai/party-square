@@ -21,7 +21,7 @@ const DEFAULT_BIRTHDAY_SUB_CATEGORIES: SubCategoryItem[] = [
     slug: "kids-birthday",
     name: "Kids Birthday",
     image: "/birthdaykids.png",
-    gradientBg: "from-[#EEF6E8] via-[#DCFCE7] to-[#8CBC67]/30",
+    gradientBg: "from-[#EEF6EB] via-[#DCFCE7] to-[#8CBC67]/30",
   },
   {
     id: "adult-birthday",
@@ -49,7 +49,7 @@ const DEFAULT_BIRTHDAY_SUB_CATEGORIES: SubCategoryItem[] = [
     slug: "same-day-decors",
     name: "Same Day Decors",
     image: "/card2.png",
-    gradientBg: "from-[#EEF6E8] via-[#FCFBF7] to-[#8CBC67]/20",
+    gradientBg: "from-[#EEF6EB] via-[#FCFBF7] to-[#8CBC67]/20",
   },
   {
     id: "simple-birthday",
@@ -83,7 +83,7 @@ const SUB_CATEGORIES_BY_CATEGORY: Record<string, SubCategoryItem[]> = {
       slug: "kids-birthday",
       name: "Kids Themes",
       image: "/birthdaykids.png",
-      gradientBg: "from-[#EEF6E8] to-[#8CBC67]/30",
+      gradientBg: "from-[#EEF6EB] to-[#8CBC67]/30",
     },
     {
       id: "jungle-theme",
@@ -104,7 +104,7 @@ const SUB_CATEGORIES_BY_CATEGORY: Record<string, SubCategoryItem[]> = {
       slug: "princess-theme",
       name: "Fairytale Princess",
       image: "/childbirthday3.png",
-      gradientBg: "from-[#EEF6E8] to-[#8CBC67]/25",
+      gradientBg: "from-[#EEF6EB] to-[#8CBC67]/25",
     },
     {
       id: "premium-theme",
@@ -125,7 +125,7 @@ const SUB_CATEGORIES_BY_CATEGORY: Record<string, SubCategoryItem[]> = {
       slug: "floral-backdrops",
       name: "Artistic Floral",
       image: "/wallbg.png",
-      gradientBg: "from-[#F7D6C7]/50 to-[#EEF6E8]",
+      gradientBg: "from-[#F7D6C7]/50 to-[#EEF6EB]",
     },
     {
       id: "car-boot",
@@ -155,7 +155,7 @@ const SUB_CATEGORIES_BY_CATEGORY: Record<string, SubCategoryItem[]> = {
       slug: "room-decor",
       name: "Romantic Room Decor",
       image: "/romaticvibe.png",
-      gradientBg: "from-[#EEF6E8] to-[#8CBC67]/25",
+      gradientBg: "from-[#EEF6EB] to-[#8CBC67]/25",
     },
     {
       id: "terrace-setup",
@@ -213,7 +213,7 @@ const SUB_CATEGORIES_BY_CATEGORY: Record<string, SubCategoryItem[]> = {
       slug: "room-decor",
       name: "Room & Bed Decor",
       image: "/romaticvibe.png",
-      gradientBg: "from-[#EEF6E8] to-[#8CBC67]/25",
+      gradientBg: "from-[#EEF6EB] to-[#8CBC67]/25",
     },
     {
       id: "terrace-setup",
@@ -315,7 +315,7 @@ const SUB_CATEGORIES_BY_CATEGORY: Record<string, SubCategoryItem[]> = {
       slug: "floral-backdrops",
       name: "Floral & Leafy Walls",
       image: "/wallbg.png",
-      gradientBg: "from-[#F7D6C7]/50 to-[#EEF6E8]",
+      gradientBg: "from-[#F7D6C7]/50 to-[#EEF6EB]",
     },
     {
       id: "door-styling",

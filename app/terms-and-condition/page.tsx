@@ -144,7 +144,7 @@ export default function TermsAndConditionPage() {
   return (
     <div className="min-h-screen bg-[#FCFBF7] text-[#202522] font-sans selection:bg-[#8CBC67] selection:text-white pb-20">
       {/* Header Banner */}
-      <section className="relative bg-gradient-to-b from-[#EEF6E8] to-[#FCFBF7] pt-14 pb-12 px-4 sm:px-6 md:px-12 border-b border-[#E8E8E3]">
+      <section className="relative bg-gradient-to-b from-[#EEF6EB] to-[#FCFBF7] pt-14 pb-12 px-4 sm:px-6 md:px-12 border-b border-[#E8E8E3]">
         <div className="max-w-4xl mx-auto text-center space-y-3">
           <div className="inline-flex items-center gap-2 bg-white border border-[#E8E8E3] px-4 py-1.5 rounded-full text-[#8CBC67] text-xs font-bold uppercase tracking-wider shadow-2xs">
             <Sparkles size={13} />
@@ -170,7 +170,7 @@ export default function TermsAndConditionPage() {
             className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E8E8E3] shadow-xs space-y-3 transition hover:border-[#8CBC67]"
           >
             <div className="flex items-center gap-3 border-b border-[#E8E8E3] pb-3">
-              <span className="w-9 h-9 rounded-xl bg-[#EEF6E8] text-[#8CBC67] flex items-center justify-center font-bold text-xs shrink-0">
+              <span className="w-9 h-9 rounded-xl bg-[#EEF6EB] text-[#8CBC67] flex items-center justify-center font-bold text-xs shrink-0">
                 {term.number}
               </span>
               <h2 className="text-lg sm:text-xl font-serif font-bold text-[#202522]">
@@ -182,7 +182,7 @@ export default function TermsAndConditionPage() {
         ))}
 
         {/* Footer Support Notice */}
-        <div className="rounded-2xl bg-[#EEF6E8] border border-[#8CBC67]/40 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 mt-8">
+        <div className="rounded-2xl bg-[#EEF6EB] border border-[#8CBC67]/40 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 mt-8">
           <div className="space-y-1 text-center sm:text-left">
             <h3 className="text-lg font-bold text-[#202522]">Have questions regarding our terms?</h3>
             <p className="text-xs sm:text-sm text-[#6B706C]">

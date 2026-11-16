@@ -21,7 +21,7 @@ export default function CancellationAndRefundPage() {
   return (
     <div className="min-h-screen bg-[#FCFBF7] text-[#202522] font-sans selection:bg-[#8CBC67] selection:text-white pb-20">
       {/* Header Banner */}
-      <section className="relative bg-gradient-to-b from-[#EEF6E8] to-[#FCFBF7] pt-14 pb-12 px-4 sm:px-6 md:px-12 border-b border-[#E8E8E3]">
+      <section className="relative bg-gradient-to-b from-[#EEF6EB] to-[#FCFBF7] pt-14 pb-12 px-4 sm:px-6 md:px-12 border-b border-[#E8E8E3]">
         <div className="max-w-4xl mx-auto text-center space-y-3">
           <div className="inline-flex items-center gap-2 bg-white border border-[#E8E8E3] px-4 py-1.5 rounded-full text-[#8CBC67] text-xs font-bold uppercase tracking-wider shadow-2xs">
             <Sparkles size={13} />
@@ -42,7 +42,7 @@ export default function CancellationAndRefundPage() {
         {/* Quick Highlights Summary Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="p-5 rounded-2xl bg-white border border-[#E8E8E3] shadow-xs space-y-2">
-            <div className="w-10 h-10 rounded-xl bg-[#EEF6E8] text-[#8CBC67] flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-[#EEF6EB] text-[#8CBC67] flex items-center justify-center font-bold">
               100%
             </div>
             <h3 className="font-bold text-sm text-[#202522]">Free Cancellation</h3>
@@ -62,7 +62,7 @@ export default function CancellationAndRefundPage() {
           </div>
 
           <div className="p-5 rounded-2xl bg-white border border-[#E8E8E3] shadow-xs space-y-2">
-            <div className="w-10 h-10 rounded-xl bg-[#EEF6E8] text-[#8CBC67] flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-[#EEF6EB] text-[#8CBC67] flex items-center justify-center font-bold">
               3-5
             </div>
             <h3 className="font-bold text-sm text-[#202522]">Days Fast Refund</h3>
@@ -165,7 +165,7 @@ export default function CancellationAndRefundPage() {
         </div>
 
         {/* Support Section */}
-        <div className="rounded-2xl bg-[#EEF6E8] border border-[#8CBC67]/40 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="rounded-2xl bg-[#EEF6EB] border border-[#8CBC67]/40 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-1 text-center sm:text-left">
             <h3 className="text-lg font-bold text-[#202522]">Need Help with a Booking or Cancellation?</h3>
             <p className="text-xs sm:text-sm text-[#6B706C]">

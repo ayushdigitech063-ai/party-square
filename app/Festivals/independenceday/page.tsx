@@ -112,7 +112,7 @@ export default function IndependenceDayPage() {
   const productsToDisplay = sortedProducts;
 
   return (
-    <div className="min-h-screen text-[#202522] font-sans bg-[#F8FAFC] selection:bg-orange-600 selection:text-white overflow-x-hidden pb-20">
+    <div className="min-h-screen text-[#202522] font-sans bg-[#F8FAFC] selection:bg-[#8CBC67] selection:text-white overflow-x-hidden pb-20">
       {/* Hero Section */}
       <section className="w-full max-w-[1264px] mx-auto p-3 sm:p-4 lg:px-0">
         <div className="relative w-full h-[260px] sm:h-[280px] md:h-[301px] rounded-[20px] sm:rounded-[24px] overflow-hidden text-white shadow-xl flex items-center justify-center">
@@ -124,13 +124,13 @@ export default function IndependenceDayPage() {
         </div>
 
         <div className="relative z-10 space-y-6 max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center space-x-2 bg-orange-500/20 border border-orange-500/40 px-5 py-2 rounded-full text-orange-300 text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
-            <Sparkles size={15} className="text-orange-400" />
+          <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-5 py-2 rounded-full text-[#D7A84B] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
+            <Sparkles size={15} className="text-[#D7A84B]" />
             <span>Happy Independence Day • Celebrating Freedom 2026</span>
           </div>
           <h1 className="font-serif text-4xl sm:text-7xl font-bold tracking-tight text-white drop-shadow-2xl">
             Proud{" "}
-            <span className="text-orange-400 italic font-normal">
+            <span className="text-[#D7A84B] italic font-normal">
               Independence Day
             </span>{" "}
             Celebrations
@@ -205,13 +205,13 @@ export default function IndependenceDayPage() {
       <section className="py-12 px-6 max-w-6xl mx-auto">
         <div className="bg-gradient-to-r from-orange-950 via-neutral-950 to-emerald-950 text-white rounded-[32px] overflow-hidden shadow-2xl border border-orange-500/30 grid grid-cols-1 lg:grid-cols-12 items-center">
           <div className="p-8 sm:p-12 lg:col-span-7 flex flex-col justify-center space-y-5">
-            <div className="inline-flex items-center space-x-2 bg-orange-500/20 border border-orange-500/40 px-3.5 py-1.5 rounded-full text-orange-300 text-xs font-bold uppercase tracking-widest w-max">
-              <ShieldCheck size={14} className="text-orange-400" />
+            <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-3.5 py-1.5 rounded-full text-[#D7A84B] text-xs font-bold uppercase tracking-widest w-max">
+              <ShieldCheck size={14} className="text-[#D7A84B]" />
               <span>Patriotic Spirit Showcase</span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white leading-tight">
               Saluting the Pride of{" "}
-              <span className="text-orange-400 italic">Our Motherland</span>
+              <span className="text-[#D7A84B] italic">Our Motherland</span>
             </h2>
             <p className="text-neutral-200 text-xs sm:text-sm leading-relaxed font-light">
               Experience the unmatched zeal of Independence Day celebrations.
@@ -221,13 +221,13 @@ export default function IndependenceDayPage() {
             </p>
             <div className="space-y-2.5 pt-1">
               <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                <CheckCircle size={16} className="text-orange-400 shrink-0" />
+                <CheckCircle size={16} className="text-[#D7A84B] shrink-0" />
                 <span>
                   Professional flag podium setup and floral decoration
                 </span>
               </div>
               <div className="flex items-center space-x-2.5 text-xs sm:text-sm text-neutral-200">
-                <CheckCircle size={16} className="text-orange-400 shrink-0" />
+                <CheckCircle size={16} className="text-[#D7A84B] shrink-0" />
                 <span>
                   Complete sound system and patriotic backdrop styling
                 </span>
@@ -237,7 +237,7 @@ export default function IndependenceDayPage() {
             <div className="pt-3">
               <Link
                 href="/contact"
-                className="bg-orange-500 hover:bg-orange-400 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
+                className="bg-[#8CBC67] hover:bg-orange-400 text-neutral-950 px-8 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-xl inline-flex items-center space-x-2"
               >
                 <span>Book Independence Day Package</span>
                 <ArrowRight size={16} />

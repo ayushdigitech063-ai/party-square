@@ -128,7 +128,7 @@ export default function NavratriPage() {
   const productsToDisplay = sortedProducts;
 
   return (
-    <div className="min-h-screen text-[#202522] font-sans bg-[#FFFFFF] selection:bg-rose-600 selection:text-white overflow-x-hidden pb-20">
+    <div className="min-h-screen text-[#202522] font-sans bg-[#FFFFFF] selection:bg-[#8CBC67] selection:text-white overflow-x-hidden pb-20">
       {/* Hero Section */}
       <section className="w-full max-w-[1264px] mx-auto p-3 sm:p-4 lg:px-0">
         <div className="relative w-full h-[260px] sm:h-[280px] md:h-[301px] rounded-[20px] sm:rounded-[24px] overflow-hidden text-white shadow-xl flex items-center justify-center">
@@ -140,13 +140,13 @@ export default function NavratriPage() {
         </div>
 
         <div className="relative z-10 space-y-6 max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center space-x-2 bg-rose-500/20 border border-rose-500/40 px-5 py-2 rounded-full text-rose-300 text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
-            <Sparkles size={15} className="text-rose-400" />
+          <div className="inline-flex items-center space-x-2 bg-[#EEF6EB] border border-[#8CBC67]/40 px-5 py-2 rounded-full text-[#8CBC67] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
+            <Sparkles size={15} className="text-[#8CBC67]" />
             <span>Shubh Navratri • Festival of Divine Grace 2026</span>
           </div>
           <h1 className="font-serif text-4xl sm:text-7xl font-bold tracking-tight text-white drop-shadow-2xl">
             Divine{" "}
-            <span className="text-rose-400 italic font-normal">Navratri</span>{" "}
+            <span className="text-[#8CBC67] italic font-normal">Navratri</span>{" "}
             Celebrations
           </h1>
           <p className="text-neutral-200 text-sm sm:text-lg max-w-2xl mx-auto leading-relaxed font-light">
@@ -217,7 +217,7 @@ export default function NavratriPage() {
       {/* Mata Ji Pandal Cards Section */}
       <section className="py-12 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-          <span className="text-xs uppercase tracking-[0.25em] text-rose-600 font-bold">
+          <span className="text-xs uppercase tracking-[0.25em] text-[#8CBC67] font-bold">
             Mata Ji Pandal
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#202522]">
@@ -246,7 +246,7 @@ export default function NavratriPage() {
       {/* Special Garba Pandal Section */}
       {/* <section className="py-16 px-6 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <span className="text-xs uppercase tracking-[0.3em] text-rose-700 font-bold bg-rose-100 px-4 py-1.5 rounded-full inline-block">
+          <span className="text-xs uppercase tracking-[0.3em] text-[#8CBC67] font-bold bg-[#EEF6EB] px-4 py-1.5 rounded-full inline-block">
             Garba Nights
           </span>
           <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#202522]">

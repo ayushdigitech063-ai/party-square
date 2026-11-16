@@ -72,7 +72,7 @@ const FAQSection = () => {
         {/* Heading */}
         <div className="mx-auto mb-10 max-w-3xl text-center">
           {badge && (
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#8CBC67]/30 bg-[#EEF6E8] px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#8CBC67]">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#8CBC67]/30 bg-[#EEF6EB] px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#8CBC67]">
               <Sparkles className="h-4 w-4 text-[#8CBC67]" />
               {badge}
             </div>
@@ -117,7 +117,7 @@ const FAQSection = () => {
                       className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-colors ${
                         isOpen
                           ? "bg-[#8CBC67] text-white"
-                          : "bg-[#EEF6E8] text-[#8CBC67]"
+                          : "bg-[#EEF6EB] text-[#8CBC67]"
                       }`}
                     >
                       {String(index + 1).padStart(2, "0")}
@@ -165,9 +165,9 @@ const FAQSection = () => {
           })}
         </div>
 
-        {/* Bottom CTA — Matching Brand Palette (#FCFBF7 / #EEF6E8 / #8CBC67) */}
+        {/* Bottom CTA — Matching Brand Palette (#FCFBF7 / #EEF6EB / #8CBC67) */}
         <div className="mx-auto mt-12 max-w-4xl">
-          <div className="relative overflow-hidden rounded-[28px] bg-[#EEF6E8] border border-[#8CBC67]/40 px-6 py-10 text-center sm:px-10 shadow-sm">
+          <div className="relative overflow-hidden rounded-[28px] bg-[#EEF6EB] border border-[#8CBC67]/40 px-6 py-10 text-center sm:px-10 shadow-sm">
             
             <div className="absolute -left-20 -top-20 h-40 w-40 rounded-full bg-[#8CBC67]/15 blur-3xl" />
             <div className="absolute -right-20 -bottom-20 h-40 w-40 rounded-full bg-[#F7D6C7]/20 blur-3xl" />

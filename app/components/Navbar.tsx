@@ -506,9 +506,9 @@ function MobileAccordion({
     <div className="rounded-xl border border-[#E8E8E3]/60 overflow-hidden bg-white">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="group w-full flex items-center gap-3 px-3.5 py-3 hover:bg-[#EEF6E8] transition"
+        className="group w-full flex items-center gap-3 px-3.5 py-3 hover:bg-[#EEF6EB] transition"
       >
-        <div className="w-8 h-8 rounded-lg bg-[#EEF6E8] group-hover:bg-[#8CBC67]/15 flex items-center justify-center shrink-0 transition">
+        <div className="w-8 h-8 rounded-lg bg-[#EEF6EB] group-hover:bg-[#8CBC67]/15 flex items-center justify-center shrink-0 transition">
           <item.icon size={15} className="text-[#8CBC67]" />
         </div>
         <span className="text-sm font-semibold text-[#202522] group-hover:text-[#7AB055] flex-1 text-left">{item.label}</span>
@@ -524,7 +524,7 @@ function MobileAccordion({
               key={child.href}
               href={toCityHref(child.href)}
               onClick={onClose}
-              className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-semibold text-[#6B706C] hover:text-[#8CBC67] hover:bg-[#EEF6E8] transition"
+              className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs font-semibold text-[#6B706C] hover:text-[#8CBC67] hover:bg-[#EEF6EB] transition"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#8CBC67]/50 shrink-0"></span>
               {child.label}
@@ -687,7 +687,7 @@ export default function Navbar() {
           <button
             onClick={() => setIsCityModalOpen(true)}
             aria-label="Select city"
-            className="flex md:hidden items-center gap-1 text-[10.5px] font-bold bg-[#EEF6E8] border border-[#8CBC67]/40 px-2 py-1 rounded-full text-[#202522] shrink-0 whitespace-nowrap shadow-2xs hover:border-[#8CBC67] transition-colors"
+            className="flex md:hidden items-center gap-1 text-[10.5px] font-bold bg-[#EEF6EB] border border-[#8CBC67]/40 px-2 py-1 rounded-full text-[#202522] shrink-0 whitespace-nowrap shadow-2xs hover:border-[#8CBC67] transition-colors"
           >
             <MapPin size={10} className="text-[#8CBC67] shrink-0" />
             <span className="whitespace-nowrap">{selectedCity && selectedCity.toLowerCase() !== "search" ? selectedCity : "Select City"}</span>
@@ -908,7 +908,7 @@ export default function Navbar() {
               </div>
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-9 h-9 rounded-full bg-[#F5F5F3] border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:bg-[#EEF6E8] hover:text-[#8CBC67] transition"
+                className="w-9 h-9 rounded-full bg-[#F5F5F3] border border-[#E8E8E3] flex items-center justify-center text-[#6B706C] hover:bg-[#EEF6EB] hover:text-[#8CBC67] transition"
                 aria-label="Close menu"
               >
                 <X size={17} />
@@ -919,7 +919,7 @@ export default function Navbar() {
               {/* Profile Card */}
               <div className="mx-3 mt-3 mb-1">
                 {isLoggedIn ? (
-                  <div className="rounded-2xl bg-gradient-to-br from-[#EEF6E8] to-[#FCFBF7] border border-[#8CBC67]/20 p-3.5 flex items-center gap-3">
+                  <div className="rounded-2xl bg-gradient-to-br from-[#EEF6EB] to-[#FCFBF7] border border-[#8CBC67]/20 p-3.5 flex items-center gap-3">
                     <div className="w-11 h-11 rounded-full bg-[#8CBC67] flex items-center justify-center text-white font-bold text-base shrink-0 shadow">
                       {userName ? userName[0].toUpperCase() : <User size={18} />}
                     </div>
@@ -951,12 +951,12 @@ export default function Navbar() {
               </div>
               {/* Quick Action Tiles */}
               <div className="px-3 mt-3 grid grid-cols-3 gap-2">
-                <Link href="/basket" onClick={() => setMobileMenuOpen(false)} className="flex flex-col items-center justify-center gap-1.5 py-3.5 rounded-2xl border border-[#E8E8E3] bg-[#FCFBF7] hover:bg-[#EEF6E8] hover:border-[#8CBC67]/40 relative transition">
+                <Link href="/basket" onClick={() => setMobileMenuOpen(false)} className="flex flex-col items-center justify-center gap-1.5 py-3.5 rounded-2xl border border-[#E8E8E3] bg-[#FCFBF7] hover:bg-[#EEF6EB] hover:border-[#8CBC67]/40 relative transition">
                   <ShoppingBasket size={20} className="text-[#8CBC67]" />
                   {cartCount > 0 && (<span className="absolute top-2 right-2.5 min-w-[16px] h-[16px] px-1 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">{cartCount}</span>)}
                   <span className="text-[11px] font-semibold text-[#202522]">Basket</span>
                 </Link>
-                <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)} className="flex flex-col items-center justify-center gap-1.5 py-3.5 rounded-2xl border border-[#E8E8E3] bg-[#FCFBF7] hover:bg-[#EEF6E8] hover:border-[#8CBC67]/40 relative transition">
+                <Link href="/wishlist" onClick={() => setMobileMenuOpen(false)} className="flex flex-col items-center justify-center gap-1.5 py-3.5 rounded-2xl border border-[#E8E8E3] bg-[#FCFBF7] hover:bg-[#EEF6EB] hover:border-[#8CBC67]/40 relative transition">
                   <Heart size={20} className="text-[#8CBC67]" />
                   {wishlist.length > 0 && (<span className="absolute top-2 right-2.5 min-w-[16px] h-[16px] px-1 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">{wishlist.length}</span>)}
                   <span className="text-[11px] font-semibold text-[#202522]">Wishlist</span>
@@ -979,8 +979,8 @@ export default function Navbar() {
                   if (item.type === "link") {
                     return (
                       <Link key={item.label} href={toCityHref(item.href)} onClick={() => setMobileMenuOpen(false)}
-                        className="group flex items-center gap-3 px-3.5 py-3 rounded-xl bg-white border border-[#E8E8E3]/60 hover:border-[#8CBC67]/40 hover:bg-[#EEF6E8] transition">
-                        <div className="w-8 h-8 rounded-lg bg-[#EEF6E8] group-hover:bg-[#8CBC67]/15 flex items-center justify-center shrink-0 transition">
+                        className="group flex items-center gap-3 px-3.5 py-3 rounded-xl bg-white border border-[#E8E8E3]/60 hover:border-[#8CBC67]/40 hover:bg-[#EEF6EB] transition">
+                        <div className="w-8 h-8 rounded-lg bg-[#EEF6EB] group-hover:bg-[#8CBC67]/15 flex items-center justify-center shrink-0 transition">
                           <item.icon size={15} className="text-[#8CBC67]" />
                         </div>
                         <span className="text-sm font-semibold text-[#202522] group-hover:text-[#7AB055] flex-1">{item.label}</span>
@@ -1000,7 +1000,7 @@ export default function Navbar() {
                   { label: "Terms & Conditions", href: "/terms-and-condition" },
                 ].map((link, i, arr) => (
                   <Link key={link.href} href={link.href} onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center justify-between px-4 py-3 text-xs font-medium text-[#6B706C] hover:text-[#8CBC67] hover:bg-[#EEF6E8] transition ${i < arr.length - 1 ? "border-b border-[#E8E8E3]" : ""}`}>
+                    className={`flex items-center justify-between px-4 py-3 text-xs font-medium text-[#6B706C] hover:text-[#8CBC67] hover:bg-[#EEF6EB] transition ${i < arr.length - 1 ? "border-b border-[#E8E8E3]" : ""}`}>
                     <span>{link.label}</span>
                     <ChevronRight size={13} />
                   </Link>

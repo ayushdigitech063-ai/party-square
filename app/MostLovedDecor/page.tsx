@@ -116,9 +116,9 @@ export default function MostLovedDecor() {
                 <span>{badge}</span>
               </div>
             )}
-            <h2 className="text-xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-[#202522]">
+            <h1 className="text-xl sm:text-3xl lg:text-4xl font-serif font-bold tracking-tight text-[#202522]">
               {title || "Most Loved Decorations"}
-            </h2>
+            </h1>
           </div>
 
           <div className="flex items-center gap-2">

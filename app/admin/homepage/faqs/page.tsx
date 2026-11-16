@@ -235,7 +235,7 @@ export default function AdminFAQsPage() {
           <button
             onClick={handleSaveAll}
             disabled={isSaving || isLoading}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#8CBC67] text-white text-xs font-semibold hover:bg-[#7ba859] transition-all shadow-sm disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#8CBC67] text-white text-xs font-semibold hover:bg-[#8CBC67] transition-all shadow-sm disabled:opacity-50"
           >
             {isSaving ? (
               <RefreshCw size={14} className="animate-spin" />
@@ -429,7 +429,7 @@ export default function AdminFAQsPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-[#8CBC67] text-white text-xs font-semibold hover:bg-[#7ba859] shadow-sm"
+                  className="px-5 py-2 rounded-xl bg-[#8CBC67] text-white text-xs font-semibold hover:bg-[#8CBC67] shadow-sm"
                 >
                   {editingIndex !== null ? "Update Question" : "Add Question"}
                 </button>

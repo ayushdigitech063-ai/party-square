@@ -65,7 +65,7 @@ export default function ProductCard({
       onClick={openProductDetailPage}
     >
       {/* Image */}
-      <div className="relative aspect-square w-full overflow-hidden bg-[#EEF6E8]">
+      <div className="relative aspect-square w-full overflow-hidden bg-[#EEF6EB]">
         <img
           src={product.image}
           alt={product.name}

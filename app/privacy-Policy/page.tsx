@@ -134,7 +134,7 @@ const privacySections: PrivacySection[] = [
         <p>
           You have full rights to review, update, or request the deletion of your account and personal data from our servers. If you have any inquiries or privacy requests, please reach out to our grievance officer:
         </p>
-        <div className="mt-3 p-4 rounded-xl bg-[#EEF6E8] border border-[#8CBC67]/40 space-y-1.5 text-xs sm:text-sm">
+        <div className="mt-3 p-4 rounded-xl bg-[#EEF6EB] border border-[#8CBC67]/40 space-y-1.5 text-xs sm:text-sm">
           <p><strong>Grievance & Privacy Officer:</strong> Party Square Legal & Security Team</p>
           <p><strong>Email:</strong> privacy@partysquare.in / support@partysquare.in</p>
           <p><strong>Operating Office:</strong> Party Square Headquarters, Jaipur & Bangalore, India</p>
@@ -150,7 +150,7 @@ export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-[#FCFBF7] text-[#202522] font-sans selection:bg-[#8CBC67] selection:text-white pb-20">
       {/* Hero Banner */}
-      <section className="relative bg-gradient-to-b from-[#EEF6E8] to-[#FCFBF7] pt-14 pb-12 px-4 sm:px-6 md:px-12 border-b border-[#E8E8E3]">
+      <section className="relative bg-gradient-to-b from-[#EEF6EB] to-[#FCFBF7] pt-14 pb-12 px-4 sm:px-6 md:px-12 border-b border-[#E8E8E3]">
         <div className="max-w-4xl mx-auto text-center space-y-3">
           <div className="inline-flex items-center gap-2 bg-white border border-[#E8E8E3] px-4 py-1.5 rounded-full text-[#8CBC67] text-xs font-bold uppercase tracking-wider shadow-2xs">
             <Sparkles size={13} />
@@ -186,7 +186,7 @@ export default function PrivacyPolicyPage() {
                     onClick={() => setActiveSection(sec.number)}
                     className={`block px-3 py-2 rounded-xl text-xs font-medium transition ${
                       activeSection === sec.number
-                        ? "bg-[#EEF6E8] text-[#8CBC67] font-bold"
+                        ? "bg-[#EEF6EB] text-[#8CBC67] font-bold"
                         : "text-[#6B706C] hover:text-[#202522] hover:bg-neutral-50"
                     }`}
                   >
@@ -208,7 +208,7 @@ export default function PrivacyPolicyPage() {
                   className="bg-white rounded-2xl border border-[#E8E8E3] p-6 sm:p-8 shadow-xs space-y-3"
                 >
                   <div className="flex items-center gap-3 border-b border-[#E8E8E3] pb-3">
-                    <div className="w-9 h-9 rounded-xl bg-[#EEF6E8] text-[#8CBC67] flex items-center justify-center shrink-0">
+                    <div className="w-9 h-9 rounded-xl bg-[#EEF6EB] text-[#8CBC67] flex items-center justify-center shrink-0">
                       <Icon size={18} />
                     </div>
                     <h2 className="text-lg sm:text-xl font-serif font-bold text-[#202522]">

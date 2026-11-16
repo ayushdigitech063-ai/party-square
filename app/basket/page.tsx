@@ -296,7 +296,7 @@ export default function BasketPage() {
             {/* Compact Coupon Section */}
             <div className="pt-1.5 pb-1">
               {appliedCoupon ? (
-                <div className="flex items-center justify-between bg-[#EEF6E8] text-[#202522] border border-[#8CBC67]/30 px-3 py-1.5 rounded-lg">
+                <div className="flex items-center justify-between bg-[#EEF6EB] text-[#202522] border border-[#8CBC67]/30 px-3 py-1.5 rounded-lg">
                   <div className="flex items-center space-x-1.5">
                     <Tag size={13} className="text-[#8CBC67]" />
                     <span className="text-[11px] font-bold uppercase tracking-wider">

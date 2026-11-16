@@ -114,7 +114,7 @@ export default function LohriPage() {
   const productsToDisplay = sortedProducts;
 
   return (
-    <div className="min-h-screen text-[#202522] font-sans bg-[#FFF9F5] selection:bg-orange-600 selection:text-white overflow-x-hidden pb-20">
+    <div className="min-h-screen text-[#202522] font-sans bg-[#FFF9F5] selection:bg-[#8CBC67] selection:text-white overflow-x-hidden pb-20">
       {/* =====================================================
           HERO SECTION
       ====================================================== */}
@@ -131,15 +131,15 @@ export default function LohriPage() {
         </div>
 
         <div className="relative z-10 space-y-6 max-w-4xl mx-auto px-4">
-          <div className="inline-flex items-center space-x-2 bg-orange-500/20 border border-orange-500/40 px-5 py-2 rounded-full text-orange-300 text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
-            <Flame size={15} className="text-orange-400" />
+          <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-5 py-2 rounded-full text-[#D7A84B] text-xs font-semibold tracking-widest uppercase backdrop-blur-md shadow-md">
+            <Flame size={15} className="text-[#D7A84B]" />
 
             <span>Happy Lohri • Festival of Harvest & Warmth 2026</span>
           </div>
 
           <h1 className="font-serif text-4xl sm:text-7xl font-bold tracking-tight text-white drop-shadow-2xl">
             Joyful{" "}
-            <span className="text-orange-400 italic font-normal">Lohri</span>{" "}
+            <span className="text-[#D7A84B] italic font-normal">Lohri</span>{" "}
             Celebrations
           </h1>
 
@@ -221,15 +221,15 @@ export default function LohriPage() {
       <section className="py-12 px-6 max-w-6xl mx-auto">
         <div className="bg-gradient-to-r from-orange-950 via-amber-950 to-neutral-950 text-white rounded-[28px] overflow-hidden shadow-xl border border-orange-500/30 grid grid-cols-1 lg:grid-cols-12 items-center">
           <div className="p-6 sm:p-10 lg:col-span-7 flex flex-col justify-center space-y-4">
-            <div className="inline-flex items-center space-x-2 bg-orange-500/20 border border-orange-500/40 px-3 py-1 rounded-full text-orange-300 text-[11px] font-bold uppercase tracking-widest w-max">
-              <Sparkles size={13} className="text-orange-400" />
+            <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 border border-[#8CBC67]/40 px-3 py-1 rounded-full text-[#D7A84B] text-[11px] font-bold uppercase tracking-widest w-max">
+              <Sparkles size={13} className="text-[#D7A84B]" />
 
               <span>Grand Festival Highlight</span>
             </div>
 
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white leading-tight">
               The Spirit of{" "}
-              <span className="text-orange-400 italic">Punjabi Festivity</span>
+              <span className="text-[#D7A84B] italic">Punjabi Festivity</span>
             </h2>
 
             <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed font-light">
@@ -241,7 +241,7 @@ export default function LohriPage() {
 
             <div className="space-y-2 pt-1">
               <div className="flex items-center space-x-2 text-xs text-neutral-200">
-                <CheckCircle size={14} className="text-orange-400 shrink-0" />
+                <CheckCircle size={14} className="text-[#D7A84B] shrink-0" />
 
                 <span>
                   Safe and managed bonfire styling with seating arrangements
@@ -249,7 +249,7 @@ export default function LohriPage() {
               </div>
 
               <div className="flex items-center space-x-2 text-xs text-neutral-200">
-                <CheckCircle size={14} className="text-orange-400 shrink-0" />
+                <CheckCircle size={14} className="text-[#D7A84B] shrink-0" />
 
                 <span>Authentic cultural props and ethnic photo booths</span>
               </div>
@@ -258,7 +258,7 @@ export default function LohriPage() {
             <div className="pt-2">
               <Link
                 href="/Festivals/lohri/all-products"
-                className="bg-orange-500 hover:bg-orange-400 text-neutral-950 px-6 py-3 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-lg inline-flex items-center space-x-2"
+                className="bg-[#8CBC67] hover:bg-orange-400 text-neutral-950 px-6 py-3 rounded-full font-extrabold text-xs uppercase tracking-widest transition shadow-lg inline-flex items-center space-x-2"
               >
                 <span>Explore All Packages</span>
                 <ArrowRight size={14} />

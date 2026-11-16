@@ -41,9 +41,9 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#EEF6E8]/90 text-[#202522] font-sans overflow-hidden border-t-2 border-[#8CBC67]/40 pt-12 sm:pt-20 pb-8 sm:pb-10 px-4 sm:px-6 md:px-16 backdrop-blur-[2px]">
+    <footer className="relative bg-[#EEF6EB]/90 text-[#202522] font-sans overflow-hidden border-t-2 border-[#8CBC67]/40 pt-12 sm:pt-20 pb-8 sm:pb-10 px-4 sm:px-6 md:px-16 backdrop-blur-[2px]">
       {/* Brand Green Ambient Overlay & Glows */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#EEF6E8] via-[#F4F9F2] to-[#EEF6EB] pointer-events-none" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#EEF6EB] via-[#F4F9F2] to-[#EEF6EB] pointer-events-none" />
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#8CBC67]/20 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-0 left-10 w-96 h-96 bg-[#8CBC67]/15 rounded-full blur-[140px] pointer-events-none" />
 

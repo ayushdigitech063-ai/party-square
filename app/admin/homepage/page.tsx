@@ -172,7 +172,7 @@ export default function AdminHomePageHub() {
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#8CBC67] text-white text-xs font-semibold hover:bg-[#7ba859] transition-all shadow-sm"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#8CBC67] text-white text-xs font-semibold hover:bg-[#8CBC67] transition-all shadow-sm"
           >
             <Eye size={14} />
             <span>View Live Site</span>

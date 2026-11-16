@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
+import { fetchAddOns } from "@/app/lib/api";
 import {
   Sparkles,
   Star,
@@ -44,6 +45,31 @@ export default function AddOnSection({
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [modalItem, setModalItem] = useState<AddOnItem | null>(null);
   const [showAllAddons, setShowAllAddons] = useState(false);
+  const [dynamicAddons, setDynamicAddons] = useState<AddOnItem[]>(ADDON_PRODUCTS);
+
+  useEffect(() => {
+    async function loadLiveAddons() {
+      try {
+        const live = await fetchAddOns();
+        if (Array.isArray(live) && live.length > 0) {
+          const mapped: AddOnItem[] = live.map((item: any) => ({
+            id: item._id || item.id,
+            name: item.name,
+            category: item.category || "recommended",
+            price: Number(item.price) || 0,
+            image: item.image,
+            description: item.description || "",
+            details: item.details || "",
+            popular: !!item.popular
+          }));
+          setDynamicAddons(mapped);
+        }
+      } catch (e) {
+        // Fallback to static ADDON_PRODUCTS
+      }
+    }
+    loadLiveAddons();
+  }, []);
 
   // Local state fallback if onToggleAddon isn't provided
   const [localSelectedIds, setLocalSelectedIds] = useState<string[]>([]);
@@ -63,11 +89,11 @@ export default function AddOnSection({
 
   // Filtered products based on active category
   const filteredProducts = useMemo(() => {
-    if (activeCategory === "all") return ADDON_PRODUCTS;
+    if (activeCategory === "all") return dynamicAddons;
     if (activeCategory === "recommended")
-      return ADDON_PRODUCTS.filter((item) => item.category === "recommended" || item.popular);
-    return ADDON_PRODUCTS.filter((item) => item.category === activeCategory);
-  }, [activeCategory]);
+      return dynamicAddons.filter((item) => item.category === "recommended" || item.popular);
+    return dynamicAddons.filter((item) => item.category === activeCategory);
+  }, [activeCategory, dynamicAddons]);
 
   // Horizontal scroll refs
   const categoriesRef = useRef<HTMLDivElement>(null);
