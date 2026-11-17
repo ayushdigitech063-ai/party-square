@@ -31,6 +31,7 @@ import {
   uploadImage,
   PricingPackage
 } from "@/app/lib/api";
+import LiveProductPreviewModal from "../components/LiveProductPreviewModal";
 
 const PAGE_TARGETS = [
   { id: "all", label: "All Packages", path: "" },
@@ -86,6 +87,7 @@ export default function AdminPackagesPage() {
   // Image upload loaders
   const [uploadingPrimary, setUploadingPrimary] = useState(false);
   const [uploadingGallery, setUploadingGallery] = useState(false);
+  const [showLivePreview, setShowLivePreview] = useState(false);
 
   // Load packages
   const loadData = async () => {
@@ -654,12 +656,23 @@ export default function AdminPackagesPage() {
                   Configure city-specific pricing, discount strike-through, and upload package photos.
                 </p>
               </div>
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="p-2 rounded-xl text-[#6B706C] hover:text-[#202522] hover:bg-neutral-100 transition"
-              >
-                <X size={20} />
-              </button>
+              <div className="flex items-center space-x-2">
+                <button
+                  type="button"
+                  onClick={() => setShowLivePreview(true)}
+                  className="px-3 py-1.5 rounded-xl border border-[#8CBC67] bg-[#EEF6EB] hover:bg-[#8CBC67] hover:text-white text-[#202522] text-xs font-bold flex items-center space-x-1.5 transition cursor-pointer"
+                  title="Live Preview"
+                >
+                  <Eye size={14} className="text-[#8CBC67] group-hover:text-white" />
+                  <span>Preview</span>
+                </button>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="p-2 rounded-xl text-[#6B706C] hover:text-[#202522] hover:bg-neutral-100 transition"
+                >
+                  <X size={20} />
+                </button>
+              </div>
             </div>
 
             {/* Modal Form */}
@@ -938,6 +951,14 @@ export default function AdminPackagesPage() {
               <div className="flex items-center space-x-3 pt-4 border-t border-[#E8E8E3]">
                 <button
                   type="button"
+                  onClick={() => setShowLivePreview(true)}
+                  className="py-3 px-4 rounded-xl border border-[#8CBC67] text-[#202522] hover:bg-[#EEF6EB] font-bold text-xs flex items-center justify-center space-x-1.5 transition"
+                >
+                  <Eye size={15} className="text-[#8CBC67]" />
+                  <span>Live Preview</span>
+                </button>
+                <button
+                  type="button"
                   onClick={() => setIsModalOpen(false)}
                   className="flex-1 py-3 px-4 rounded-xl border border-[#E8E8E3] text-[#6B706C] hover:text-[#202522] font-bold transition"
                 >
@@ -959,6 +980,30 @@ export default function AdminPackagesPage() {
           </div>
         </div>
       )}
+
+      {/* Live Preview Modal */}
+      <LiveProductPreviewModal
+        isOpen={showLivePreview}
+        onClose={() => setShowLivePreview(false)}
+        product={{
+          name: formName || "Package Setup Title",
+          price: formPrice ? Number(formPrice) : 0,
+          originalPrice: formOriginalPrice ? Number(formOriginalPrice) : undefined,
+          image: formImage || (formImages && formImages.length > 0 ? formImages[0] : undefined),
+          images: formImages.length > 0 ? formImages : formImage ? [formImage] : [],
+          description: formDescription || "Customized premium decoration theme setup.",
+          fullDescription: formDescription,
+          badge: formPopular ? "✨ Most Popular" : undefined,
+          categoryName: PAGE_TARGETS.find((p) => p.id === formTarget)?.label.replace(/[^\w\s&]/gi, "").trim(),
+          included: formFeatures
+            ? formFeatures.split("\n").map((f) => f.trim()).filter(Boolean)
+            : undefined,
+          serviceablePincodes: formPincodes
+            ? formPincodes.split(",").map((p) => p.trim()).filter(Boolean)
+            : [],
+          availableCities: formCity && formCity !== "All Cities" ? [formCity] : undefined
+        }}
+      />
     </div>
   );
 }

@@ -15,8 +15,10 @@ import {
   Sparkles,
   X,
   MapPin,
-  Check
+  Check,
+  Eye
 } from "lucide-react";
+import LiveProductPreviewModal from "../components/LiveProductPreviewModal";
 import toast from "react-hot-toast";
 import {
   fetchCategories,
@@ -83,6 +85,7 @@ export default function ProductForm({
   const [images, setImages] = useState<string[]>(initialData?.images || []);
   const [uploadingPrimary, setUploadingPrimary] = useState(false);
   const [uploadingGallery, setUploadingGallery] = useState(false);
+  const [showLivePreview, setShowLivePreview] = useState(false);
 
   // Inclusions & Extras
   const [includedList, setIncludedList] = useState<string[]>(
@@ -442,15 +445,27 @@ export default function ProductForm({
           </div>
         </div>
 
-        {inModal && onCancel && (
+        <div className="flex items-center space-x-3">
           <button
             type="button"
-            onClick={onCancel}
-            className="w-9 h-9 rounded-xl bg-neutral-100 text-[#6B706C] hover:text-[#202522] hover:bg-neutral-200 flex items-center justify-center transition"
+            onClick={() => setShowLivePreview(true)}
+            className="px-4 py-2.5 rounded-2xl border border-[#8CBC67] bg-[#EEF6EB]/50 hover:bg-[#EEF6EB] text-[#202522] text-xs sm:text-sm font-bold flex items-center space-x-2 transition cursor-pointer shadow-xs"
+            title="Preview how this decoration will look to customers"
           >
-            <X size={18} />
+            <Eye size={16} className="text-[#8CBC67]" />
+            <span>Live Preview</span>
           </button>
-        )}
+
+          {inModal && onCancel && (
+            <button
+              type="button"
+              onClick={onCancel}
+              className="w-9 h-9 rounded-xl bg-neutral-100 text-[#6B706C] hover:text-[#202522] hover:bg-neutral-200 flex items-center justify-center transition"
+            >
+              <X size={18} />
+            </button>
+          )}
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -1219,7 +1234,16 @@ export default function ProductForm({
         </div>
 
         {/* Submit Bar */}
-        <div className="flex items-center justify-end space-x-4 pt-2">
+        <div className="flex items-center justify-end space-x-3 sm:space-x-4 pt-2">
+          <button
+            type="button"
+            onClick={() => setShowLivePreview(true)}
+            className="px-5 py-3 rounded-2xl border border-[#8CBC67] text-[#202522] hover:bg-[#EEF6EB] text-sm font-bold flex items-center space-x-2 transition cursor-pointer"
+          >
+            <Eye size={17} className="text-[#8CBC67]" />
+            <span>Live Preview</span>
+          </button>
+
           {inModal && onCancel ? (
             <button
               type="button"
@@ -1252,6 +1276,35 @@ export default function ProductForm({
           </button>
         </div>
       </form>
+
+      {/* Live Preview Modal */}
+      <LiveProductPreviewModal
+        isOpen={showLivePreview}
+        onClose={() => setShowLivePreview(false)}
+        product={{
+          name: name || "Decoration Setup Title",
+          price: price ? Number(price) : 0,
+          originalPrice: originalPrice ? Number(originalPrice) : undefined,
+          image: image || (images && images.length > 0 ? images[0] : undefined),
+          images: images.length > 0 ? images : image ? [image] : [],
+          description: description || "No short description entered yet.",
+          fullDescription: fullDescription,
+          badge: badge,
+          categoryName: categories.find((c) => c._id === selectedCategory)?.name,
+          included: includedList,
+          notIncluded: notIncludedList,
+          whyUs: whyUsList,
+          guidelines: guidelinesList,
+          cancellationPolicy: cancellationPolicy,
+          serviceablePincodes: serviceablePincodesInput
+            ? serviceablePincodesInput
+                .split(",")
+                .map((p) => p.trim())
+                .filter(Boolean)
+            : [],
+          availableCities: availableCities
+        }}
+      />
     </div>
   );
 }
