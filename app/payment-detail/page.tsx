@@ -27,7 +27,7 @@ import {
 } from "lucide-react";
 
 import { getProductById } from "@/app/data/productResolver";
-import { fetchProductByIdOrSlug, createBooking } from "@/app/lib/api";
+import { fetchProductByIdOrSlug, createBooking, validateCoupon } from "@/app/lib/api";
 import { useCity } from "@/app/context/CityContext";
 import LoginModal from "@/app/components/LoginModal";
 
@@ -118,6 +118,7 @@ function PaymentContent() {
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   const [couponDiscount, setCouponDiscount] = useState(0);
   const [couponMsg, setCouponMsg] = useState<{ text: string; error?: boolean } | null>(null);
+  const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
 
   // Flow & processing states
   const [paymentMsg, setPaymentMsg] = useState<string | null>(null);
@@ -252,7 +253,7 @@ function PaymentContent() {
   const pendingOnSite = finalTotal - advanceAmountPayable;
 
   // Coupons
-  const applyCoupon = () => {
+  const applyCoupon = async () => {
     const code = couponCode.trim().toUpperCase();
     setCouponMsg(null);
 
@@ -261,28 +262,31 @@ function PaymentContent() {
       return;
     }
 
-    const coupons: Record<string, number> = {
-      WELCOME1000: 1000,
-      FESTIVE1000: 1000,
-      PARTY500: 500,
-      FLORAL500: 500,
-      DREAM10: Math.round(baseTotal * 0.1),
-    };
+    const currentOrderAmount = baseTotal + addonsTotal;
+    setIsValidatingCoupon(true);
 
-    const discount = coupons[code];
-
-    if (!discount) {
+    try {
+      const res = await validateCoupon(code, currentOrderAmount);
+      if (res && res.valid) {
+        setAppliedCoupon(res.code || code);
+        setCouponDiscount(res.discountAmount || 0);
+        setCouponMsg({
+          text: `Coupon applied successfully! You saved ₹${Number(res.discountAmount).toLocaleString("en-IN")}.`,
+          error: false
+        });
+        toast.success(`Coupon ${res.code || code} applied!`);
+        return;
+      }
+    } catch (err: any) {
+      // Backend error (e.g. Invalid, Inactive, Expired, Min order value)
+      const errorText = err?.message || "Invalid coupon code.";
       setAppliedCoupon(null);
       setCouponDiscount(0);
-      setCouponMsg({ text: "Invalid coupon code.", error: true });
+      setCouponMsg({ text: errorText, error: true });
       return;
+    } finally {
+      setIsValidatingCoupon(false);
     }
-
-    setAppliedCoupon(code);
-    setCouponDiscount(discount);
-    setCouponMsg({
-      text: `Coupon applied successfully! You saved ₹${discount.toLocaleString("en-IN")}.`,
-    });
   };
 
   const removeCoupon = () => {
@@ -1114,9 +1118,14 @@ function PaymentContent() {
                       <button
                         type="button"
                         onClick={applyCoupon}
-                        className="bg-[#202522] text-white hover:bg-black px-4 py-2 rounded-xl text-xs font-bold transition"
+                        disabled={isValidatingCoupon}
+                        className="bg-[#202522] text-white hover:bg-black px-4 py-2 rounded-xl text-xs font-bold transition disabled:opacity-60 flex items-center justify-center min-w-[70px]"
                       >
-                        Apply
+                        {isValidatingCoupon ? (
+                          <Loader2 size={14} className="animate-spin" />
+                        ) : (
+                          "Apply"
+                        )}
                       </button>
                     </div>
                   )}

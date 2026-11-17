@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { validateCoupon } from "@/app/lib/api";
 
 export default function BasketPage() {
   const router = useRouter();
@@ -26,11 +27,13 @@ export default function BasketPage() {
     code: string;
     type: "percent" | "flat";
     value: number;
+    discountAmount?: number;
   } | null>(null);
   const [couponMsg, setCouponMsg] = useState<{
     text: string;
     ok: boolean;
   } | null>(null);
+  const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
 
   // Component load hone par aur localStorage change hone par Party Square_cart load karna
   useEffect(() => {
@@ -83,16 +86,34 @@ export default function BasketPage() {
     window.dispatchEvent(new CustomEvent("cartUpdated"));
   };
 
-  const handleApplyCoupon = () => {
+  const handleApplyCoupon = async () => {
     const code = couponInput.trim().toUpperCase();
-    const coupon = COUPONS[code];
-    if (!coupon) {
-      setAppliedCoupon(null);
-      setCouponMsg({ text: "Invalid coupon code", ok: false });
+    if (!code) {
+      setCouponMsg({ text: "Please enter a coupon code", ok: false });
       return;
     }
-    setAppliedCoupon({ code, ...coupon });
-    setCouponMsg({ text: `Coupon ${code} applied!`, ok: true });
+
+    setIsValidatingCoupon(true);
+    setCouponMsg(null);
+
+    try {
+      const res = await validateCoupon(code, grandTotalPrice);
+      if (res && res.valid) {
+        setAppliedCoupon({
+          code: res.code || code,
+          type: res.coupon?.discountType === "PERCENTAGE" ? "percent" : "flat",
+          value: res.coupon?.discountValue || 0,
+          discountAmount: res.discountAmount || 0,
+        });
+        setCouponMsg({ text: `Coupon ${res.code || code} applied! Saved ₹${res.discountAmount.toLocaleString("en-IN")}`, ok: true });
+        return;
+      }
+    } catch (err: any) {
+      setAppliedCoupon(null);
+      setCouponMsg({ text: err?.message || "Invalid coupon code", ok: false });
+    } finally {
+      setIsValidatingCoupon(false);
+    }
   };
 
   const handleRemoveCoupon = () => {
@@ -116,18 +137,14 @@ export default function BasketPage() {
     return acc + Number(price) * qty;
   }, 0);
   const discountAmount = appliedCoupon
-    ? appliedCoupon.type === "percent"
+    ? appliedCoupon.discountAmount !== undefined
+      ? appliedCoupon.discountAmount
+      : appliedCoupon.type === "percent"
       ? Math.round((grandTotalPrice * appliedCoupon.value) / 100)
       : Math.min(appliedCoupon.value, grandTotalPrice)
     : 0;
-  const finalTotal = grandTotalPrice - discountAmount;
+  const finalTotal = Math.max(0, grandTotalPrice - discountAmount);
   const formattedGrandTotal = `₹${finalTotal.toLocaleString("en-IN")}`;
-
-  // Replace with your backend validation later
-  const COUPONS: Record<string, { type: "percent" | "flat"; value: number }> = {
-    DREAM10: { type: "percent", value: 10 },
-    WELCOME500: { type: "flat", value: 500 },
-  };
 
   if (cart.length === 0) {
     return (
@@ -323,9 +340,10 @@ export default function BasketPage() {
                   </div>
                   <button
                     onClick={handleApplyCoupon}
-                    className="bg-[#202522] hover:bg-black text-white px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition cursor-pointer"
+                    disabled={isValidatingCoupon}
+                    className="bg-[#202522] hover:bg-black text-white px-3.5 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition cursor-pointer disabled:opacity-60"
                   >
-                    Apply
+                    {isValidatingCoupon ? "..." : "Apply"}
                   </button>
                 </div>
               )}
