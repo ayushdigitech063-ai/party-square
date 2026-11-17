@@ -546,16 +546,16 @@ export default function ProductForm({
                   }}
                   className="w-full px-4 py-3 rounded-xl border border-[#E8E8E3] bg-[#FCFBF7] text-sm font-semibold text-[#202522] focus:outline-none focus:ring-2 focus:ring-[#8CBC67]/30 focus:border-[#8CBC67] transition"
                 >
-                  <option value="Premium Product">âœ¨ Premium Product</option>
-                  <option value="Verified Quality Product">âœ“ Verified Quality Product</option>
-                  <option value="Best Seller">ðŸ”¥ Best Seller</option>
-                  <option value="Trending Decor">ðŸ“ˆ Trending Decor</option>
-                  <option value="Most Popular">â­ Most Popular</option>
-                  <option value="New Arrival">ðŸŽ‰ New Arrival</option>
-                  <option value="Festive Special">ðŸª” Festive Special</option>
-                  <option value="Budget Friendly">ðŸ’° Budget Friendly</option>
-                  <option value="None">ðŸš« No Badge (Blank)</option>
-                  <option value="Custom">âœï¸ Custom Badge (Write Below)...</option>
+                  <option value="Premium Product">✨ Premium Product</option>
+                  <option value="Verified Quality Product">✓ Verified Quality Product</option>
+                  <option value="Best Seller">🔥 Best Seller</option>
+                  <option value="Trending Decor">📈 Trending Decor</option>
+                  <option value="Most Popular">⭐ Most Popular</option>
+                  <option value="New Arrival">🎉 New Arrival</option>
+                  <option value="Festive Special">🪔 Festive Special</option>
+                  <option value="Budget Friendly">💰 Budget Friendly</option>
+                  <option value="None">🚫 No Badge (Blank)</option>
+                  <option value="Custom">✏️ Custom Badge (Write Below)...</option>
                 </select>
 
                 <input
@@ -606,7 +606,7 @@ export default function ProductForm({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div>
               <label className="block text-xs font-bold text-[#202522] uppercase tracking-wider mb-2">
-                Sale Price (ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¹) <span className="text-red-500">*</span>
+                Sale Price (₹) <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -621,7 +621,7 @@ export default function ProductForm({
 
             <div>
               <label className="block text-xs font-bold text-[#202522] uppercase tracking-wider mb-2">
-                Original Price (ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¹) (Optional strike-through)
+                Original Price (₹) (Optional strike-through)
               </label>
               <input
                 type="number"
@@ -1073,7 +1073,7 @@ export default function ProductForm({
                     onClick={() => removeIncluded(idx)}
                     className="text-red-500 hover:text-red-700 ml-1 font-bold"
                   >
-                    ÃƒÆ’Ã¢â‚¬â€
+                    <X size={14} />
                   </button>
                 </span>
               ))}
@@ -1114,7 +1114,7 @@ export default function ProductForm({
                     onClick={() => removeNotIncluded(idx)}
                     className="text-red-500 hover:text-red-700 ml-1 font-bold"
                   >
-                    ÃƒÆ’Ã¢â‚¬â€
+                    <X size={14} />
                   </button>
                 </span>
               ))}
@@ -1163,7 +1163,7 @@ export default function ProductForm({
                       onClick={() => removeWhyUs(idx)}
                       className="text-red-500 hover:text-red-700 font-bold px-1.5 py-0.5 rounded cursor-pointer text-xs"
                     >
-                      ÃƒÆ’Ã¢â‚¬â€
+                      <X size={14} />
                     </button>
                   </div>
                 ))}
@@ -1212,7 +1212,7 @@ export default function ProductForm({
                       onClick={() => removeGuidelines(idx)}
                       className="text-red-500 hover:text-red-700 font-bold px-1.5 py-0.5 rounded cursor-pointer text-xs"
                     >
-                      ÃƒÆ’Ã¢â‚¬â€
+                      <X size={14} />
                     </button>
                   </div>
                 ))}
