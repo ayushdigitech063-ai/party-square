@@ -34,6 +34,8 @@ import {
   CityItem
 } from "@/app/lib/api";
 import ProductForm from "./ProductForm";
+import DuplicateCityModal from "../components/DuplicateCityModal";
+import { Copy } from "lucide-react";
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState<ProductItem[]>([]);
@@ -66,6 +68,7 @@ export default function AdminProductsPage() {
   // Delete Confirmation Modal State
   const [deleteTarget, setDeleteTarget] = useState<ProductItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [duplicateTarget, setDuplicateTarget] = useState<ProductItem | null>(null);
 
   // Load Main Categories for filter dropdown
   useEffect(() => {
@@ -526,6 +529,14 @@ export default function AdminProductsPage() {
                           >
                             <Eye size={16} />
                           </Link>
+                          <button
+                            type="button"
+                            onClick={() => setDuplicateTarget(prod)}
+                            className="p-2 rounded-xl text-[#8CBC67] hover:bg-[#EEF6EB] transition cursor-pointer"
+                            title="Duplicate to other cities"
+                          >
+                            <Copy size={16} />
+                          </button>
                           <button
                             type="button"
                             onClick={() => {

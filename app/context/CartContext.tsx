@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { X } from "lucide-react";
 
 export interface Product {
   id: string;
@@ -121,10 +122,9 @@ const cartCount = cart.length;
     <button
       onClick={closeNotification}
       className="text-gray-400 hover:text-white p-1 transition cursor-pointer"
-      aria-label="Close"
-    >
-      âœ•
-    </button>
+      aria-label="Close">
+          <X size={16} />
+        </button>
   </div>
 )}
       {children}

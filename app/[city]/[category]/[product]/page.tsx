@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { city, category, product } = await params;
   let productData: any = null;
   try {
-    productData = await fetchProductByIdOrSlug(product);
+    productData = await fetchProductByIdOrSlug(product, city);
   } catch (e) {
     // Fallback: check static catalog
   }
@@ -94,7 +94,7 @@ export default async function CityProductDetailPage({ params }: Props) {
   const { city, category, product } = await params;
   let productData: any = null;
   try {
-    productData = await fetchProductByIdOrSlug(product);
+    productData = await fetchProductByIdOrSlug(product, city);
   } catch (e) {
     // Fallback to static catalog
   }

@@ -454,6 +454,44 @@ export default function CityCategorySubNav({
   const router = useRouter();
   const searchParams = useSearchParams();
   const activeSub = searchParams.get("sub") || "";
+  const [apiSubcategories, setApiSubcategories] = useState<SubCategoryItem[]>([]);
+  const [loadingApiSubs, setLoadingApiSubs] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchDynamicSubs() {
+      try {
+        setLoadingApiSubs(true);
+        const apiBase = process.env.NEXT_PUBLIC_API_URL || "https://decoration-backend-qtx7.onrender.com";
+        const catRes = await fetch(`${apiBase}/api/categories?search=${encodeURIComponent(categorySlug)}`);
+        const catData = await catRes.json();
+        const cats = Array.isArray(catData) ? catData : (catData.categories || []);
+        const currentCat = cats.find((c: any) => c.slug === categorySlug.toLowerCase() || c.name.toLowerCase() === categoryName.toLowerCase());
+        
+        if (currentCat && currentCat._id) {
+          const subRes = await fetch(`${apiBase}/api/categories?parentCategory=${currentCat._id}&isActive=true`);
+          const subData = await subRes.json();
+          const subs = Array.isArray(subData) ? subData : (subData.categories || []);
+          if (isMounted && subs.length > 0) {
+            const mapped: SubCategoryItem[] = subs.map((s: any, idx: number) => ({
+              id: s._id || s.slug,
+              slug: s.slug,
+              name: s.name,
+              image: s.image || "/birthdaydesign.png",
+              gradientBg: idx % 2 === 0 ? "from-[#EEF6EB] to-[#8CBC67]/25" : "from-[#FEF9C3] to-[#FACC15]/40",
+            }));
+            setApiSubcategories(mapped);
+          }
+        }
+      } catch (e) {
+        console.warn("Failed to load dynamic subcategories:", e);
+      } finally {
+        if (isMounted) setLoadingApiSubs(false);
+      }
+    }
+    fetchDynamicSubs();
+    return () => { isMounted = false; };
+  }, [categorySlug, categoryName]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -463,6 +501,8 @@ export default function CityCategorySubNav({
   const list: SubCategoryItem[] =
     dynamicSubcategories && dynamicSubcategories.length > 0
       ? dynamicSubcategories
+      : apiSubcategories.length > 0
+      ? apiSubcategories
       : SUB_CATEGORIES_BY_CATEGORY[normalizedSlug] ||
         SUB_CATEGORIES_BY_CATEGORY["birthday"];
 

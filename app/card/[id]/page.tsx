@@ -185,8 +185,8 @@ const DEFAULT_FAQS = [
 const FAQS = DEFAULT_FAQS.map(f => [f.question, f.answer]);
 
 const INFO_TABS = [
-  { key: "overview", label: "Overview" },
   { key: "included", label: "Inclusions" },
+  { key: "overview", label: "Overview" },
   { key: "not-included", label: "Whats not included" },
   { key: "why-us", label: "Why Us" },
   { key: "about", label: "About this package" },
@@ -206,7 +206,7 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
 
   // New UI state (hooks must stay above the early returns)
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("included");
   const desktopTabsScrollRef = useRef<HTMLDivElement>(null);
   const mobileTabsScrollRef = useRef<HTMLDivElement>(null);
   const isDraggingTabs = useRef(false);
@@ -512,7 +512,7 @@ export default function ProductDetailPage() {
     setSelectedAddons((prev) => {
       const exists = prev.some((a) => a.id === addon.id);
       if (exists) {
-        toast(`Removed ${addon.name}`, { icon: "â„¹ï¸" });
+        toast(`Removed ${addon.name}`);
         return prev.filter((a) => a.id !== addon.id);
       } else {
         toast.success(`Added ${addon.name} (+₹${addon.price.toLocaleString("en-IN")})`);
@@ -544,7 +544,13 @@ export default function ProductDetailPage() {
   /* ---------------- ADD TO CART ---------------- */
 
   const handleAddToCart = () => {
-    addToCart(foundItem, quantity);
+    if (!foundItem) return;
+    const itemToAdd = {
+      ...foundItem,
+      city: cityParam || selectedCity || foundItem.city || "Delhi",
+      price: Number(foundItem.price) || 0
+    };
+    addToCart(itemToAdd, quantity);
   };
 
   /* ---------------- BOOK NOW ---------------- */
@@ -552,7 +558,7 @@ export default function ProductDetailPage() {
   const handleBookNow = (foundItem: any) => {
     const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
     if (!token) {
-      toast("Please login to proceed with your booking", { icon: "ðŸ”’" });
+      toast("Please login to proceed with your booking", { icon: "🔒" });
       setShowLoginModal(true);
       return;
     }
@@ -1242,11 +1248,12 @@ export default function ProductDetailPage() {
 
             <div className="bg-white rounded-3xl border border-[#E8E8E3] p-5 shadow-sm">
               {/* BADGE */}
-
-              <div className="inline-flex items-center gap-2 bg-[#EEF6EB] text-[#202522] px-3.5 py-1.5 rounded-full text-xs font-bold mb-4">
-                <Sparkles size={12} />
-                Verified Quality Product
-              </div>
+              {((foundItem as any)?.badge || "Verified Quality Product") && (
+                <div className="inline-flex items-center gap-2 bg-[#EEF6EB] text-[#202522] border border-[#8CBC67]/40 px-3.5 py-1.5 rounded-full text-xs font-bold mb-4 shadow-2xs">
+                  <Sparkles size={13} className="text-[#8CBC67]" />
+                  <span>{(foundItem as any)?.badge || "Verified Quality Product"}</span>
+                </div>
+              )}
 
               {/* CATEGORY */}
 
@@ -1632,11 +1639,11 @@ export default function ProductDetailPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
                 <button
+                  type="button"
                   onClick={handleAddToCart}
                   className="h-12 rounded-full border border-[#E8E8E3] hover:border-[#8CBC67] bg-white hover:bg-[#EEF6EB]/60 text-[#202522] font-bold text-sm flex items-center justify-center gap-2 transition cursor-pointer"
                 >
                   <ShoppingBag size={17} className="text-[#8CBC67]" />
-
                   <span>Add to Basket</span>
                 </button>
 
@@ -1982,53 +1989,6 @@ export default function ProductDetailPage() {
             </div>
           </div>
         </section>
-
-        {/* =====================================================
-            ABOUT THIS PACKAGE DETAILED SECTION (As requested by client)
-        ====================================================== */}
-        {(foundItem?.fullDescription || foundItem?.description) && (
-          <div id="about" className="scroll-mt-28 mt-10">
-            <section className="bg-white rounded-3xl border border-[#E8E8E3] shadow-xs p-6 sm:p-8">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-neutral-100 gap-2">
-                <div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#8CBC67]">
-                    Detailed Overview & Specifications
-                  </span>
-                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-neutral-900 mt-1">
-                    About the Package
-                  </h3>
-                </div>
-                <span className="text-xs text-[#6B706C] bg-neutral-100 px-3 py-1 rounded-full font-medium w-max">
-                  Verified Setup Details
-                </span>
-              </div>
-
-              <div className="mt-5 space-y-4">
-                <p className="text-sm sm:text-base leading-relaxed text-[#202522] whitespace-pre-line break-words [overflow-wrap:anywhere]">
-                  {foundItem?.fullDescription || foundItem?.description}
-                </p>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3">
-                  <div className="p-4 rounded-2xl bg-[#EEF6EB]/50 border border-[#8CBC67]/30">
-                    <p className="text-[11px] text-[#6B706C] uppercase font-bold tracking-wider">Setup Duration</p>
-                    <p className="text-sm font-bold text-[#202522] mt-1">Approx. 1.5 - 2 Hours</p>
-                    <p className="text-xs text-[#6B706C] mt-0.5">Professional on-site decorator</p>
-                  </div>
-                  <div className="p-4 rounded-2xl bg-[#EEF6EB]/50 border border-[#8CBC67]/30">
-                    <p className="text-[11px] text-[#6B706C] uppercase font-bold tracking-wider">Service Mode</p>
-                    <p className="text-sm font-bold text-[#202522] mt-1">Doorstep Execution</p>
-                    <p className="text-xs text-[#6B706C] mt-0.5">All materials & tools included</p>
-                  </div>
-                  <div className="p-4 rounded-2xl bg-[#EEF6EB]/50 border border-[#8CBC67]/30">
-                    <p className="text-[11px] text-[#6B706C] uppercase font-bold tracking-wider">Customization</p>
-                    <p className="text-sm font-bold text-[#202522] mt-1">Colors & Balloon Themes</p>
-                    <p className="text-xs text-[#6B706C] mt-0.5">Tailored to your celebration</p>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
-        )}
 
         {/* =====================================================
             ADD-ONS (scroll target for step 3 and the floating bar)

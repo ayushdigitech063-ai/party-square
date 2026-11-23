@@ -216,6 +216,8 @@ export interface ProductItem {
   gradientBg?: string;
   isSpecialCard?: boolean;
   showUnitPrice?: boolean;
+  city?: string;
+  productGroupId?: string;
   availableCities?: string[];
   serviceablePincodes?: string[];
   createdAt: string;
@@ -275,8 +277,11 @@ export async function fetchProducts(params?: {
   return handleResponse<PaginatedProducts>(res);
 }
 
-export async function fetchProductByIdOrSlug(idOrSlug: string): Promise<ProductItem> {
-  const res = await fetch(`${API_BASE}/api/products/${encodeURIComponent(idOrSlug)}`, {
+export async function fetchProductByIdOrSlug(idOrSlug: string, city?: string): Promise<ProductItem> {
+  const url = city
+    ? `${API_BASE}/api/products/${encodeURIComponent(idOrSlug)}?city=${encodeURIComponent(city)}`
+    : `${API_BASE}/api/products/${encodeURIComponent(idOrSlug)}`;
+  const res = await fetch(url, {
     method: "GET",
     headers: getAuthHeaders(),
     cache: "no-store",
@@ -313,6 +318,35 @@ export async function deleteProduct(id: string): Promise<{ message: string }> {
 // ==========================================
 // UPLOAD API
 // ==========================================
+
+
+export async function duplicateProductToCities(
+  productId: string,
+  targetCities: string[],
+  customPrices?: Record<string, number>
+): Promise<{ success: boolean; productGroupId: string; createdCount: number; skippedCities: string[] }> {
+  const res = await fetch(`${API_BASE}/api/products/${productId}/duplicate-cities`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ targetCities, customPrices }),
+  });
+  return handleResponse(res);
+}
+
+export async function resolveCityProduct(
+  targetCity: string,
+  productGroupId?: string,
+  slug?: string
+): Promise<{ found: boolean; product?: ProductItem; message?: string }> {
+  const query = new URLSearchParams({ targetCity });
+  if (productGroupId) query.append("productGroupId", productGroupId);
+  if (slug) query.append("slug", slug);
+  const res = await fetch(`${API_BASE}/api/products/resolve-city?${query.toString()}`, {
+    method: "GET",
+    cache: "no-store",
+  });
+  return handleResponse(res);
+}
 
 export async function uploadImage(file: File): Promise<{ url: string; public_id: string; message: string }> {
   const formData = new FormData();

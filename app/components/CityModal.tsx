@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { X, MapPin, Check } from "lucide-react";
 import { useCity } from "@/app/context/CityContext";
 import { useRouter, usePathname } from "next/navigation";
+import { resolveCityProduct } from "@/app/lib/api";
 
 interface CityModalProps {
   isOpen?: boolean;

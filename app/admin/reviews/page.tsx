@@ -26,8 +26,10 @@ import {
   deleteReviewAdmin,
   createReviewAdmin,
   fetchProducts,
+  fetchCities,
   ReviewItem,
   ProductItem,
+  CityItem,
 } from "@/app/lib/api";
 
 const STATUS_TABS = [
@@ -61,6 +63,7 @@ export default function AdminReviews() {
   // Manual Review Creation Modal State
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [productsList, setProductsList] = useState<ProductItem[]>([]);
+  const [citiesList, setCitiesList] = useState<CityItem[]>([]);
   const [selectedProductId, setSelectedProductId] = useState("");
   const [customProductUrl, setCustomProductUrl] = useState("");
   const [customProductName, setCustomProductName] = useState("");
@@ -88,7 +91,7 @@ export default function AdminReviews() {
     loadReviews(activeFilter);
   }, [activeFilter]);
 
-  // Load products list for dropdown
+  // Load products and cities list for dropdowns
   useEffect(() => {
     fetchProducts({ limit: 200 })
       .then((res: any) => {
@@ -100,6 +103,14 @@ export default function AdminReviews() {
         }
       })
       .catch((err) => console.error("Error loading products:", err));
+
+    fetchCities(false)
+      .then((cities) => {
+        if (Array.isArray(cities) && cities.length > 0) {
+          setCitiesList(cities);
+        }
+      })
+      .catch((err) => console.error("Error loading cities:", err));
   }, []);
 
   const handleStatusUpdate = async (
@@ -517,15 +528,29 @@ export default function AdminReviews() {
 
                 <div>
                   <label className="block text-xs font-bold text-neutral-800 mb-1">
-                    City / Location
+                    City / Location <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
+                  <select
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    placeholder="e.g. South Delhi, Gurgaon, Mumbai"
                     className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-200 bg-neutral-50 text-xs text-neutral-900 focus:outline-none focus:border-[#8CBC67]"
-                  />
+                  >
+                    {citiesList.length > 0 ? (
+                      citiesList.map((c) => (
+                        <option key={c._id || c.name} value={c.name}>
+                          {c.name}
+                        </option>
+                      ))
+                    ) : (
+                      <>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Gurgaon">Gurgaon</option>
+                        <option value="Noida">Noida</option>
+                        <option value="Bangalore">Bangalore</option>
+                        <option value="Mumbai">Mumbai</option>
+                      </>
+                    )}
+                  </select>
                 </div>
               </div>
 
