@@ -448,7 +448,12 @@ export default function AdminProductsPage() {
 
                       {/* Available Cities */}
                       <td className="py-4 px-6">
-                        {(!prod.availableCities || prod.availableCities.length === 0 || prod.availableCities.includes("All")) ? (
+                        {prod.city ? (
+                          <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#EEF6EB] text-emerald-800">
+                            <MapPin size={10} />
+                            <span>{prod.city}</span>
+                          </span>
+                        ) : (!prod.availableCities || prod.availableCities.length === 0 || prod.availableCities.includes("All")) ? (
                           <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#EEF6EB] text-emerald-800">
                             <MapPin size={10} />
                             <span>All Cities</span>
