@@ -57,31 +57,51 @@ export default function AboutPage() {
   return (
     <div className="w-full bg-[#FCFBF7] font-sans text-[#202522] selection:bg-[#8CBC67] selection:text-white overflow-hidden">
       
-      {/* ================= HERO BANNER ================= */}
-      <section className="relative w-full min-h-[480px] sm:h-[520px] py-10 sm:py-0 flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="/home2.png" 
-            alt="Party Square Luxury Story" 
-            className="w-full h-full object-cover object-center scale-105"
+      {/* ================= HERO SECTION (MATCHING HOME PAGE BANNER SIZE & CARD STYLE) ================= */}
+      <section className="w-full max-w-[1264px] mx-auto p-3 sm:p-4 lg:px-0">
+        <div className="relative w-full h-[260px] sm:h-[280px] md:h-[301px] rounded-[20px] sm:rounded-[24px] overflow-hidden text-white shadow-xl flex items-center">
+          <div
+            className="absolute inset-0 z-0 w-full h-full"
+            style={{
+              backgroundImage: "url('/home2.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
-        </div>
-
-        <div className="max-w-5xl mx-auto px-6 text-center relative z-10 space-y-4 pt-10">
-          <div className="inline-flex items-center space-x-2 bg-[#8CBC67]/20 backdrop-blur-md border border-[#8CBC67]/50 px-4 py-1.5 rounded-full text-[#8CBC67] text-xs uppercase tracking-[0.25em] font-semibold shadow-lg">
-            <Sparkles size={13} className="text-[#8CBC67]" />
-            <span>The Art of Celebration</span>
+          <div className="absolute inset-0 z-10 bg-gradient-to-r from-neutral-950/95 via-neutral-950/80 to-neutral-950/40" />
+          <div className="relative z-20 max-w-7xl mx-auto px-6 sm:px-10 md:px-12 w-full text-center sm:text-left">
+            <div className="max-w-2xl space-y-1.5 sm:space-y-2">
+              <div className="inline-flex items-center space-x-1.5 bg-[#8CBC67]/20 border border-[#8CBC67]/50 px-2.5 sm:px-3.5 py-0.5 rounded-full text-[#8CBC67] text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase backdrop-blur-sm shadow-sm">
+                <Sparkles size={12} className="text-[#8CBC67]" />
+                <span>Corporate Planner & Events</span>
+              </div>
+              <h1 className="font-serif text-lg sm:text-2xl md:text-3xl font-bold text-white leading-tight drop-shadow-md">
+                <span className="text-white drop-shadow-sm">Corporate Event</span>{' '}
+                <span className="text-[#8CBC67] font-bold">Planning & Decor</span>
+              </h1>
+              <p className="text-neutral-200 text-[11px] sm:text-xs md:text-sm max-w-xl font-light leading-relaxed line-clamp-1 sm:line-clamp-2">
+                Discover the philosophy, passion, and meticulous craftsmanship behind Party Square — India&apos;s premier event styling house.
+              </p>
+              <div className="flex flex-row items-center gap-2 sm:gap-3 pt-1 w-full justify-center sm:justify-start">
+                <Link
+                  href="/contact"
+                  className="bg-[#8CBC67] hover:bg-[#7AB055] text-white px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full font-bold text-[10px] sm:text-xs uppercase tracking-wider shadow-md hover:shadow-[#8CBC67]/30 transition flex items-center justify-center space-x-1.5 cursor-pointer whitespace-nowrap"
+                >
+                  <span>Plan Corporate Event</span>
+                  <ArrowRight size={13} className="shrink-0" />
+                </Link>
+                <a
+                  href="https://whatsapp.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="border border-white/40 bg-white/10 backdrop-blur-md text-white hover:bg-white/25 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full font-semibold text-[10px] sm:text-xs uppercase tracking-wider transition flex items-center justify-center space-x-1.5 whitespace-nowrap"
+                >
+                  <span>Chat on WhatsApp</span>
+                </a>
+              </div>
+            </div>
           </div>
-          
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold tracking-wide text-white drop-shadow-md">
-            Designing Dreams, <br />
-            <span className="font-bold text-[#8CBC67]">Inspiring Emotions</span>
-          </h1>
-
-          <p className="text-neutral-200 text-sm md:text-lg max-w-2xl mx-auto font-light leading-relaxed">
-            Discover the philosophy, passion, and meticulous craftsmanship behind Party Square — India&apos;s premier luxury event styling house.
-          </p>
         </div>
       </section>
 
